@@ -1,6 +1,6 @@
 {
   "name": "@lukeashford/aurelius-design",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Design system for Aurelius applications — A cohesive visual language for creative technologists",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -16,8 +16,7 @@
       "import": "./dist/tailwind.preset.mjs",
       "require": "./dist/tailwind.preset.js"
     },
-    "./styles/base.css": "./dist/styles/base.css",
-    "./styles/variables.css": "./dist/styles/variables.css"
+    "./styles/base.css": "./dist/styles/base.css"
   },
   "files": [
     "dist"
@@ -31,16 +30,17 @@
     "dev:all": "concurrently -k \"npm run dev\" \"npm run dev:demo\""
   },
   "peerDependencies": {
-    "tailwindcss": ">=3.0.0",
     "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react-dom": "^18.0.0",
+    "tailwindcss": ">=3.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
     "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.3.7",
+    "concurrently": "^8.2.2",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "concurrently": "^8.2.2",
     "tailwindcss": "^3.4.0",
     "tsup": "^8.0.0",
     "typescript": "^5.0.0"
@@ -61,5 +61,8 @@
     "aurelius"
   ],
   "author": "Your Name",
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "dependencies": {
+    "lucide-react": "^0.555.0"
+  }
 }

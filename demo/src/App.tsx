@@ -9,18 +9,23 @@ import InputsSection from './sections/InputsSection'
 import CardsSection from './sections/CardsSection'
 import AvatarSection from './sections/AvatarSection'
 import TooltipSection from './sections/TooltipSection'
+import FormsSection from './sections/FormsSection'
+import FeedbackSection from './sections/FeedbackSection'
+import ModalSection from './sections/ModalSection'
 
 const nav = [
   {id: 'overview', label: 'Overview'},
   {id: 'colors', label: 'Colors'},
   {id: 'typography', label: 'Typography'},
-  {id: 'spacing', label: 'Spacing'},
   {id: 'buttons', label: 'Buttons'},
   {id: 'badges', label: 'Badges'},
   {id: 'inputs', label: 'Inputs'},
+  {id: 'forms', label: 'Forms'},
   {id: 'cards', label: 'Cards'},
   {id: 'avatar', label: 'Avatar'},
+  {id: 'feedback', label: 'Feedback'},
   {id: 'tooltip', label: 'Tooltip'},
+  {id: 'modal', label: 'Overlays'},
 ]
 
 export default function App() {
@@ -98,6 +103,10 @@ export default function App() {
             <InputsSection/>
           </section>
 
+          <section id="forms" className="section">
+            <FormsSection/>
+          </section>
+
           <section id="cards" className="section">
             <CardsSection/>
           </section>
@@ -106,8 +115,16 @@ export default function App() {
             <AvatarSection/>
           </section>
 
+          <section id="feedback" className="section">
+            <FeedbackSection/>
+          </section>
+
           <section id="tooltip" className="section">
             <TooltipSection/>
+          </section>
+
+          <section id="modal" className="section">
+            <ModalSection/>
           </section>
         </main>
       </div>

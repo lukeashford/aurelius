@@ -1,7 +1,7 @@
 import React from 'react'
 import {Button, type ButtonSize, type ButtonVariant} from '@lukeashford/aurelius-design'
 
-const variants: ButtonVariant[] = ['primary', 'secondary', 'ghost', 'danger']
+const variants: ButtonVariant[] = ['primary', 'important', 'elevated', 'outlined', 'featured', 'ghost', 'danger']
 const sizes: ButtonSize[] = ['sm', 'md', 'lg', 'xl']
 
 export default function ButtonsSection() {

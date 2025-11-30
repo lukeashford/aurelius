@@ -28,7 +28,7 @@ export default function AvatarSection() {
             <h4 className="mb-3 text-gold">With Image & Status</h4>
             <div className="flex items-center gap-4">
               <Avatar
-                  src="https://images.unsplash.com/photo-1544723795-3fb6469f5b39?q=80&w=200&auto=format&fit=facearea&facepad=3"
+                  src="https://i.postimg.cc/qvJsCQwy/2-C3-A5121-2.jpg"
                   alt="Profile"
                   size="lg"
                   status="online"
