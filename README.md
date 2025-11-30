@@ -3,7 +3,7 @@
 **A cohesive visual language for creative technologists — combining technical sophistication with an
 artistic sensibility.**
 
-[View the Live Demo](https://aurelius-design.onrender.com/)
+[View the Live Demo](https://aurelius.lukeashford.com/)
 
 ---
 
