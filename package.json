@@ -1,6 +1,6 @@
 {
   "name": "@lukeashford/aurelius-design",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Design system for Aurelius applications — A cohesive visual language for creative technologists",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
