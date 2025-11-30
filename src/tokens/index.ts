@@ -1,3 +1,6 @@
 export { colors, type ColorToken } from './colors'
 export { typography, type TypographyToken } from './typography'
 export { spacing, type SpacingToken } from './spacing'
+export { shadows, type ShadowToken } from './shadows'
+export { duration, easing, type DurationToken, type EasingToken } from './transitions'
+export { radii, type RadiusToken } from './radii'
