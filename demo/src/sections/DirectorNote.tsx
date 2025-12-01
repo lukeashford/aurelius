@@ -1,5 +1,5 @@
 import React from 'react'
-import {Button, Card} from '@lukeashford/aurelius-design'
+import {Button, Card} from '@lukeashford/aurelius'
 
 export default function DirectorNote() {
   return (

@@ -1,7 +1,7 @@
 import React from 'react'
 import { 
   Select, Textarea, Checkbox, Radio, Switch, Label, HelperText, Card
-} from '@lukeashford/aurelius-design'
+} from '@lukeashford/aurelius'
 
 export default function FormsSection() {
   return (

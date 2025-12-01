@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {colors, typography,} from '@lukeashford/aurelius-design'
+import {colors, typography,} from '@lukeashford/aurelius'
 
 import ColorsSection from './sections/ColorsSection'
 import TypographySection from './sections/TypographySection'
@@ -76,7 +76,7 @@ export default function App() {
             className="fixed left-0 top-0 h-full w-60 hidden lg:block border-r border-ash/40 bg-charcoal/50 backdrop-blur-sm">
           <div className="p-4 border-b border-ash/40">
             <h2 className="text-xl font-semibold text-white">Aurelius Design</h2>
-            <a href="https://github.com/lukeashford/aurelius-design"
+            <a href="https://github.com/lukeashford/aurelius"
                target="_blank"
                rel="noopener noreferrer"
                className="text-xs text-gold hover:text-goldBright transition-colors mt-2 inline-block">

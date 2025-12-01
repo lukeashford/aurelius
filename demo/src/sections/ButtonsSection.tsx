@@ -1,5 +1,5 @@
 import React from 'react'
-import {Button, type ButtonSize, type ButtonVariant} from '@lukeashford/aurelius-design'
+import {Button, type ButtonSize, type ButtonVariant} from '@lukeashford/aurelius'
 
 const variants: ButtonVariant[] = ['primary', 'important', 'elevated', 'outlined', 'featured', 'ghost', 'danger']
 const sizes: ButtonSize[] = ['sm', 'md', 'lg', 'xl']

@@ -1,5 +1,5 @@
 import React from 'react'
-import {Input} from '@lukeashford/aurelius-design'
+import {Input} from '@lukeashford/aurelius'
 
 export default function InputsSection() {
   return (

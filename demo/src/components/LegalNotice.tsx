@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Button } from '@lukeashford/aurelius-design';
+import { Card, Button } from '@lukeashford/aurelius';
 
 export const LegalNotice = () => {
   return (

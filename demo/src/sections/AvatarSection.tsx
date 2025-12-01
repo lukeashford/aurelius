@@ -1,5 +1,5 @@
 import React from 'react'
-import {Avatar, type AvatarSize} from '@lukeashford/aurelius-design'
+import {Avatar, type AvatarSize} from '@lukeashford/aurelius'
 
 const sizes: AvatarSize[] = ['xs', 'sm', 'md', 'lg', 'xl', '2xl']
 

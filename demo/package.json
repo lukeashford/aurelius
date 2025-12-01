@@ -9,7 +9,7 @@
     "preview": "vite build && vite preview"
   },
   "dependencies": {
-    "@lukeashford/aurelius-design": "file:..",
+    "@lukeashford/aurelius": "file:..",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Card, Modal } from '@lukeashford/aurelius-design'
+import { Button, Card, Modal } from '@lukeashford/aurelius'
 
 export default function ModalSection() {
   const [isOpen, setIsOpen] = useState(false)

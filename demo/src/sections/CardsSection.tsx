@@ -1,5 +1,5 @@
 import React from 'react'
-import {Card} from '@lukeashford/aurelius-design'
+import {Card} from '@lukeashford/aurelius'
 
 export default function CardsSection() {
   return (

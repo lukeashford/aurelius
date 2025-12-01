@@ -1,5 +1,5 @@
 import React from 'react'
-import {Alert, Card, Skeleton, Spinner} from '@lukeashford/aurelius-design'
+import {Alert, Card, Skeleton, Spinner} from '@lukeashford/aurelius'
 
 export default function FeedbackSection() {
   return (

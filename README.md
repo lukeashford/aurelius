@@ -34,8 +34,8 @@ This package is **AI-Optimized**. It includes a machine-readable manifest file t
 assistants understand the design system without hallucinating styles.
 
 **How to Prompt Your Agent:**
-> "I have installed `@lukeashford/aurelius-design`. Before writing any code, read
-`node_modules/@lukeashford/aurelius-design/dist/llms.md`. This file contains the Design Philosophy (
+> "I have installed `@lukeashford/aurelius`. Before writing any code, read
+`node_modules/@lukeashford/aurelius/dist/llms.md`. This file contains the Design Philosophy (
 > which you must strictly follow) and the Component API you have available."
 
 ---
@@ -45,20 +45,20 @@ assistants understand the design system without hallucinating styles.
 ### 1. Install Package
 
 ```bash
-npm install @lukeashford/aurelius-design
+npm install @lukeashford/aurelius
 ```
 
 ### 2. Configure Tailwind
 
 ```javascript
 // tailwind.config.js
-const aureliusPreset = require('@lukeashford/aurelius-design/tailwind.preset')
+const aureliusPreset = require('@lukeashford/aurelius/tailwind.preset')
 
 module.exports = {
   presets: [aureliusPreset],
   content: [
     './src/**/*.{js,ts,jsx,tsx}',
-    './node_modules/@lukeashford/aurelius-design/dist/**/*.{js,mjs}',
+    './node_modules/@lukeashford/aurelius/dist/**/*.{js,mjs}',
   ],
 }
 ```
@@ -67,7 +67,7 @@ module.exports = {
 
 ```css
 /* In your global CSS */
-@import '@lukeashford/aurelius-design/styles/base.css';
+@import '@lukeashford/aurelius/styles/base.css';
 ```
 
 ---
@@ -75,7 +75,7 @@ module.exports = {
 ## Quick Start
 
 ```tsx
-import {Button, Card, Input} from '@lukeashford/aurelius-design'
+import {Button, Card, Input} from '@lukeashford/aurelius'
 
 export function LoginForm() {
   return (

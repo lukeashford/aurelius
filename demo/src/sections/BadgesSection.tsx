@@ -1,5 +1,5 @@
 import React from 'react'
-import { Badge, type BadgeVariant } from '@lukeashford/aurelius-design'
+import { Badge, type BadgeVariant } from '@lukeashford/aurelius'
 
 const variants: BadgeVariant[] = ['default', 'gold', 'success', 'error', 'warning', 'info']
 
