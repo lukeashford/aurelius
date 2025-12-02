@@ -58,7 +58,7 @@ module.exports = {
   presets: [aureliusPreset],
   content: [
     './src/**/*.{js,ts,jsx,tsx}',
-    './node_modules/@lukeashford/aurelius/dist/**/*.{js,mjs}',
+    './node_modules/@lukeashford/aurelius/**/*.{js,mjs,ts}',
   ],
 }
 ```

@@ -1,6 +1,6 @@
 {
   "name": "@lukeashford/aurelius",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Design system for Aurelius applications — A cohesive visual language for creative technologists",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -16,7 +16,8 @@
       "import": "./dist/tailwind.preset.mjs",
       "require": "./dist/tailwind.preset.js"
     },
-    "./styles/base.css": "./dist/styles/base.css"
+    "./styles/*": "./dist/styles/*",
+    "./package.json": "./package.json"
   },
   "files": [
     "dist"
