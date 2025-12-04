@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 
 export interface SwitchProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onChange'> {
   checked?: boolean
@@ -16,6 +16,18 @@ export const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
     const [internalChecked, setInternalChecked] = useState(defaultChecked)
     const isControlled = controlledChecked !== undefined
     const checked = isControlled ? controlledChecked : internalChecked
+    const buttonRef = useRef<HTMLButtonElement | null>(null)
+    const setRefs = useCallback(
+      (node: HTMLButtonElement | null) => {
+        buttonRef.current = node
+        if (typeof ref === 'function') {
+          ref(node)
+        } else if (ref) {
+          ref.current = node
+        }
+      },
+      [ref]
+    )
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
       if (disabled) return
@@ -35,7 +47,7 @@ export const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
           aria-checked={checked}
           data-state={checked ? 'checked' : 'unchecked'}
           disabled={disabled}
-          ref={ref}
+          ref={setRefs}
           onClick={handleClick}
           className={cx('switch', className)}
           {...rest}
@@ -43,7 +55,13 @@ export const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
           <span className="switch-thumb" />
         </button>
         {label && (
-          <span className="text-sm text-silver cursor-pointer" onClick={() => !disabled && handleClick({} as any)}>
+          <span
+            className="text-sm text-silver cursor-pointer"
+            onClick={() => {
+              if (disabled) return
+              buttonRef.current?.click()
+            }}
+          >
             {label}
           </span>
         )}
