@@ -19,16 +19,26 @@ const icons = {
   error: XCircle,
 }
 
+const variantStyles = {
+  info: 'bg-info/10 border-info text-info',
+  success: 'bg-success/10 border-success text-success',
+  warning: 'bg-warning/10 border-warning text-warning',
+  error: 'bg-error/10 border-error text-error',
+}
+
 export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
   ({ variant = 'info', title, children, className, ...rest }, ref) => {
     const Icon = icons[variant]
-    const variantClass = `alert-${variant}`
 
     return (
       <div
         ref={ref}
         role="alert"
-        className={cx('alert', variantClass, 'flex gap-3', className)}
+        className={cx(
+          'relative w-full p-4 rounded-none border border-l-4 flex gap-3',
+          variantStyles[variant],
+          className
+        )}
         {...rest}
       >
         <Icon className="h-5 w-5 shrink-0" />

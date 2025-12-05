@@ -28,7 +28,7 @@
   }
 
   table, th, td {
-    border: 1px solid theme('colors.gold.muted');
+    border: 1px solid theme('colors.gold-muted');
   }
 
   th, td {
@@ -43,7 +43,7 @@
   progress {
     appearance: none;
     -webkit-appearance: none;
-    border: 1px solid theme('colors.gold.muted');
+    border: 1px solid theme('colors.gold-muted');
     border-radius: 0;
     background-color: theme('colors.charcoal');
     width: 100%;
@@ -114,7 +114,7 @@
   }
 
   a:hover {
-    color: theme('colors.gold.light');
+    color: theme('colors.gold-light');
   }
 
   /* Focus styles */
@@ -149,324 +149,15 @@
   }
 }
 
-/* === COMPONENT CLASSES === */
-
-@layer components {
-  /* Button base */
-  .btn {
-    @apply inline-flex items-center justify-center font-semibold tracking-wide
-    transition-all duration-[150ms] ease-out rounded-none hover:shadow-glow
-    disabled:opacity-50 disabled:cursor-not-allowed;
-  }
-
-  .btn-primary {
-    @apply bg-charcoal text-white border border-gold/30
-    hover:border-gold hover:shadow-glow hover:text-gold-light
-    active:bg-white/5
-    focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2
-    focus-visible:ring-offset-obsidian;
-  }
-
-  .btn-important {
-    @apply bg-gold text-obsidian border border-gold
-    hover:bg-gold-light hover:text-obsidian
-    active:bg-gold-bright
-    focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2
-    focus-visible:ring-offset-obsidian;
-  }
-
-  .btn-elevated {
-    @apply bg-charcoal text-white border-0 shadow-lg
-    hover:shadow-xl hover:text-gold-light
-    active:bg-white/5
-    focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2
-    focus-visible:ring-offset-obsidian;
-  }
-
-  .btn-outlined {
-    @apply bg-transparent text-white border border-ash
-    hover:border-white hover:text-white
-    active:bg-white/5
-    focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2
-    focus-visible:ring-offset-obsidian;
-  }
-
-  .btn-featured {
-    @apply bg-charcoal text-white border border-gold shadow-[0_0_10px_rgba(201,162,39,0.2)]
-    hover:shadow-[0_0_15px_rgba(201,162,39,0.4)] hover:text-gold-light
-    active:bg-white/5
-    focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2
-    focus-visible:ring-offset-obsidian;
-  }
-
-  .btn-ghost {
-    @apply bg-transparent text-gold hover:text-gold-light active:text-gold-bright
-    focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2
-    focus-visible:ring-offset-obsidian;
-  }
-
-  .btn-danger {
-    @apply bg-error text-white hover:bg-error/90 active:bg-error/80
-    focus-visible:ring-2 focus-visible:ring-error focus-visible:ring-offset-2
-    focus-visible:ring-offset-obsidian;
-  }
-
-  .btn-sm {
-    @apply h-8 px-3 text-sm rounded-none;
-  }
-
-  .btn-md {
-    @apply h-10 px-4 text-sm rounded-none;
-  }
-
-  .btn-lg {
-    @apply h-12 px-6 text-base rounded-none;
-  }
-
-  .btn-xl {
-    @apply h-14 px-8 text-lg rounded-none;
-  }
-
-  /* Input base */
-  .input {
-    @apply w-full h-10 px-3 bg-graphite border border-ash rounded-none
-    text-white placeholder:text-zinc
-    transition-all duration-[150ms] ease-out
-    focus:border-gold focus:ring-1 focus:ring-gold focus:outline-none
-    disabled:bg-slate disabled:text-dim disabled:cursor-not-allowed;
-  }
-
-  .input-error {
-    @apply border-error focus:border-error focus:ring-error;
-  }
-
-  /* Textarea */
-  .textarea {
-    @apply w-full px-3 py-2 bg-graphite border border-ash rounded-none
-    text-white placeholder:text-zinc min-h-[80px]
-    transition-all duration-[150ms] ease-out
-    focus:border-gold focus:ring-1 focus:ring-gold focus:outline-none
-    disabled:bg-slate disabled:text-dim disabled:cursor-not-allowed;
-  }
-
-  .textarea-error {
-    @apply border-error focus:border-error focus:ring-error;
-  }
-
-  /* Card base */
-  .card {
-    @apply bg-charcoal rounded-none p-6 shadow-sm border border-gold/30;
-  }
-
-  .card-elevated {
-    @apply shadow-lg border-0;
-  }
-
-  .card-outlined {
-    @apply shadow-none border border-ash;
-  }
-
-  .card-featured {
-    @apply border border-gold shadow-[0_0_10px_rgba(201,162,39,0.2)];
-  }
-
-  .card-interactive {
-    @apply transition-all duration-[200ms]
-    hover:border-gold hover:shadow-glow
-    cursor-pointer;
-  }
-
-  /* Badge base */
-  .badge {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full
-    text-xs font-medium border;
-  }
-
-  .badge-default {
-    @apply bg-slate text-silver border-slate;
-  }
-
-  .badge-gold {
-    @apply bg-gold/20 text-gold border-gold/30;
-  }
-
-  .badge-success {
-    @apply bg-success/20 text-success border-success/30;
-  }
-
-  .badge-error {
-    @apply bg-error/20 text-error border-error/30;
-  }
-
-  .badge-warning {
-    @apply bg-warning/20 text-warning border-warning/30;
-  }
-
-  .badge-info {
-    @apply bg-info/20 text-info border-info/30;
-  }
-
-  /* Avatar base */
-  .avatar {
-    @apply inline-flex items-center justify-center
-    rounded-full border-2 border-ash
-    bg-slate text-silver font-semibold
-    overflow-hidden;
-  }
-
-  .avatar-xs {
-    @apply w-6 h-6 text-xs;
-  }
-
-  .avatar-sm {
-    @apply w-8 h-8 text-sm;
-  }
-
-  .avatar-md {
-    @apply w-10 h-10 text-base;
-  }
-
-  .avatar-lg {
-    @apply w-12 h-12 text-lg;
-  }
-
-  .avatar-xl {
-    @apply w-16 h-16 text-xl;
-  }
-
-  .avatar-2xl {
-    @apply w-24 h-24 text-2xl;
-  }
-
-  /* Tooltip */
-  .tooltip {
-    @apply absolute z-50 px-3 py-1.5
-    bg-graphite text-white text-sm
-    rounded-md shadow-lg border border-ash
-    pointer-events-none;
-  }
-
-  /* Divider */
-  .divider {
-    @apply border-t border-ash my-4;
-  }
-
-  .divider-vertical {
-    @apply border-l border-ash mx-4;
-  }
-
-  /* Label */
-  .label {
-    @apply block text-sm font-medium text-silver mb-1.5;
-  }
-
-  .label-required::after {
-    @apply text-error ml-1;
-    content: '*';
-  }
-
-  /* Form Elements */
-  .select {
-    @apply appearance-none bg-graphite border border-ash rounded-none
-    text-white px-3 py-2 pr-8
-    focus:border-gold focus:ring-1 focus:ring-gold focus:outline-none
-    disabled:opacity-50 disabled:cursor-not-allowed;
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23C9A227' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-    background-position: right 0.5rem center;
-    background-repeat: no-repeat;
-    background-size: 1.5em 1.5em;
-  }
-
-  .textarea {
-    @apply w-full bg-graphite border border-ash rounded-none
-    text-white px-3 py-2
-    focus:border-gold focus:ring-1 focus:ring-gold focus:outline-none
-    disabled:opacity-50 disabled:cursor-not-allowed;
-  }
-
-  .checkbox {
-    @apply appearance-none h-4 w-4 border border-ash rounded-sm bg-graphite
-    checked:bg-gold checked:border-gold focus:ring-1 focus:ring-gold focus:ring-offset-1 focus:ring-offset-obsidian
-    transition duration-200 ease-in-out cursor-pointer
-    disabled:opacity-50 disabled:cursor-not-allowed;
-    background-position: center;
-    background-size: contain;
-    background-repeat: no-repeat;
-  }
-
-  .checkbox:checked {
-    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='obsidian' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
-  }
-
-  .radio {
-    @apply appearance-none h-4 w-4 border border-ash rounded-full bg-graphite
-    checked:bg-gold checked:border-gold focus:ring-1 focus:ring-gold focus:ring-offset-1 focus:ring-offset-obsidian
-    transition duration-200 ease-in-out cursor-pointer
-    disabled:opacity-50 disabled:cursor-not-allowed;
-    background-position: center;
-    background-size: contain;
-    background-repeat: no-repeat;
-  }
-
-  .radio:checked {
-    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='obsidian' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");
-  }
-
-  .switch {
-    @apply relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-obsidian disabled:opacity-50 disabled:cursor-not-allowed bg-charcoal;
-  }
-
-  .switch[data-state="checked"] {
-    @apply bg-gold;
-  }
-
-  .switch-thumb {
-    @apply pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out translate-x-0;
-  }
-
-  .switch[data-state="checked"] .switch-thumb {
-    @apply translate-x-5;
-  }
-
-  /* Modal */
-  .modal-backdrop {
-    @apply fixed inset-0 z-40 bg-obsidian/80 backdrop-blur-sm;
-  }
-
-  .modal-content {
-    @apply bg-charcoal border border-gold/30 shadow-2xl z-50
-    w-full max-w-lg p-6 rounded-none relative;
-  }
-
-  /* Alert */
-  .alert {
-    @apply relative w-full p-4 rounded-none border border-l-4;
-  }
-
-  .alert-info {
-    @apply bg-info/10 border-info text-info;
-  }
-
-  .alert-success {
-    @apply bg-success/10 border-success text-success;
-  }
-
-  .alert-warning {
-    @apply bg-warning/10 border-warning text-warning;
-  }
-
-  .alert-error {
-    @apply bg-error/10 border-error text-error;
-  }
-}
-
 /* === UTILITY CLASSES === */
 
 @layer utilities {
   /* Gold gradient text */
   .text-gradient-gold {
-    @apply bg-gradient-to-r from-gold via-gold-light to-gold
-    bg-clip-text text-transparent;
+    background: linear-gradient(to right, theme('colors.gold.DEFAULT'), theme('colors.gold-light'), theme('colors.gold.DEFAULT'));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 
   /* Glow effects */
@@ -500,19 +191,21 @@
 
   /* Backdrop blur */
   .backdrop-glass {
-    @apply backdrop-blur-md bg-charcoal/80;
+    backdrop-filter: blur(12px);
+    background-color: rgba(20, 20, 20, 0.8); /* charcoal with 80% opacity */
   }
 
   /* Focus ring utilities */
-  .focus-ring {
-    @apply focus-visible:outline-none focus-visible:ring-2
-    focus-visible:ring-gold focus-visible:ring-offset-2
-    focus-visible:ring-offset-obsidian;
+  .focus-ring:focus-visible {
+    outline: 2px solid #c9a227;
+    outline-offset: 2px;
   }
 
   /* Truncate text */
   .truncate {
-    @apply overflow-hidden text-ellipsis whitespace-nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   /* Line clamp */

@@ -12,20 +12,22 @@ function cx(...classes: Array<string | number | false | null | undefined>) {
 
 export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
   ({ variant = 'default', className, ...rest }, ref) => {
-    const variantClass =
-      variant === 'gold'
-        ? 'badge-gold'
-        : variant === 'success'
-        ? 'badge-success'
-        : variant === 'error'
-        ? 'badge-error'
-        : variant === 'warning'
-        ? 'bg-warning/20 text-warning border-warning/30'
-        : variant === 'info'
-        ? 'bg-info/20 text-info border-info/30'
-        : 'badge-default'
+    // Base badge styles
+    const base = 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border'
 
-    return <span ref={ref} className={cx('badge', variantClass, className)} {...rest} />
+    // Variant styles
+    const variantClasses = {
+      default: 'bg-slate text-silver border-slate',
+      gold: 'bg-gold/20 text-gold border-gold/30',
+      success: 'bg-success/20 text-success border-success/30',
+      error: 'bg-error/20 text-error border-error/30',
+      warning: 'bg-warning/20 text-warning border-warning/30',
+      info: 'bg-info/20 text-info border-info/30',
+    }
+
+    const variantClass = variantClasses[variant]
+
+    return <span ref={ref} className={cx(base, variantClass, className)} {...rest} />
   }
 )
 

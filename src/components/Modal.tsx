@@ -60,11 +60,14 @@ export const Modal = ({ isOpen, onClose, title, children, className }: ModalProp
 
   const content = (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6" onClick={onClose}>
-      <div className="modal-backdrop" aria-hidden="true" />
+      <div className="fixed inset-0 z-40 bg-obsidian/80 backdrop-blur-sm" aria-hidden="true" />
       <div
         role="dialog"
         aria-modal="true"
-        className={cx('modal-content relative', className)}
+        className={cx(
+          'bg-charcoal border border-gold/30 shadow-2xl z-50 w-full max-w-lg p-6 rounded-none relative',
+          className
+        )}
         data-state="open"
         onClick={(e) => e.stopPropagation()}
       >

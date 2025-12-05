@@ -1,40 +1,11 @@
 import type {Config} from 'tailwindcss'
 import {colors, spacing, typography, shadows, duration, easing, radii} from './tokens'
+import {aureliusSafelist} from './generated/safelist'
 
 const preset: Partial<Config> = {
-  // Safelist color utilities used dynamically in the demo so Tailwind doesn't purge them
-  safelist: [
-    // Black spectrum
-    'bg-void',
-    'bg-obsidian',
-    'bg-charcoal',
-    'bg-graphite',
-    'bg-slate',
-    'bg-ash',
-
-    // Gold spectrum
-    'bg-gold',
-    'bg-gold-light',
-    'bg-gold-bright',
-    'bg-gold-muted',
-    'bg-gold-pale',
-
-    // Neutrals
-    'bg-white',
-    'bg-silver',
-    'bg-zinc',
-    'bg-dim',
-
-    // Semantic
-    'bg-success',
-    'bg-success-muted',
-    'bg-error',
-    'bg-error-muted',
-    'bg-warning',
-    'bg-warning-muted',
-    'bg-info',
-    'bg-info-muted',
-  ],
+  // Safelist all token-derived and structural utilities
+  // This ensures Aurelius components work even when consumers only scan their own source files
+  safelist: aureliusSafelist,
   theme: {
     extend: {
       colors: {

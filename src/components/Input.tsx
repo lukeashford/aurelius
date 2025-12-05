@@ -12,11 +12,19 @@ function cx(...classes: Array<string | number | false | null | undefined>) {
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ error = false, className, leadingIcon, trailingIcon, disabled, ...rest }, ref) => {
-    const base = 'input'
-    const errorCls = error ? 'input-error' : ''
+    // Base input styles
+    const base =
+        'w-full h-10 px-3 bg-graphite border border-ash rounded-none ' +
+        'text-white placeholder:text-zinc ' +
+        'transition-all duration-fast ' +
+        'focus:border-gold focus:ring-1 focus:ring-gold focus:outline-none ' +
+        'disabled:bg-slate disabled:text-dim disabled:cursor-not-allowed'
+
+    // Error styles
+    const errorCls = error ? 'border-error focus:border-error focus:ring-error' : ''
 
     return (
-      <div className={cx('relative', disabled && 'opacity-90')}> 
+      <div className={cx('relative', disabled && 'opacity-90')}>
         {leadingIcon && (
           <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-silver">
             {leadingIcon}

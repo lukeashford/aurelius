@@ -13,10 +13,11 @@ export const Label = React.forwardRef<HTMLLabelElement, LabelProps>(
     return (
       <label
         ref={ref}
-        className={cx('label', required && 'label-required', className)}
+        className={cx('block text-sm font-medium text-silver mb-1.5', className)}
         {...rest}
       >
         {children}
+        {required && <span className="text-error ml-1">*</span>}
       </label>
     )
   }
