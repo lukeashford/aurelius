@@ -49,10 +49,10 @@ export const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
           disabled={disabled}
           ref={setRefs}
           onClick={handleClick}
-          className={cx('switch', className)}
+          className={cx('aurelius-switch', className)}
           {...rest}
         >
-          <span className="switch-thumb" />
+          <span className="aurelius-switch-thumb" />
         </button>
         {label && (
           <span

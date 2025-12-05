@@ -12,8 +12,8 @@ function cx(...classes: Array<string | number | false | null | undefined>) {
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ error = false, className, leadingIcon, trailingIcon, disabled, ...rest }, ref) => {
-    const base = 'input'
-    const errorCls = error ? 'input-error' : ''
+    const base = 'aurelius-input'
+    const errorCls = error ? 'aurelius-input--error' : ''
 
     return (
       <div className={cx('relative', disabled && 'opacity-90')}> 

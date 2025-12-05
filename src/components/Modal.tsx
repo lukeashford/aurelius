@@ -60,11 +60,11 @@ export const Modal = ({ isOpen, onClose, title, children, className }: ModalProp
 
   const content = (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6" onClick={onClose}>
-      <div className="modal-backdrop" aria-hidden="true" />
+      <div className="aurelius-modal-backdrop" aria-hidden="true" />
       <div
         role="dialog"
         aria-modal="true"
-        className={cx('modal-content relative', className)}
+        className={cx('aurelius-modal-content relative', className)}
         data-state="open"
         onClick={(e) => e.stopPropagation()}
       >

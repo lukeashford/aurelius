@@ -13,7 +13,7 @@ export const Label = React.forwardRef<HTMLLabelElement, LabelProps>(
     return (
       <label
         ref={ref}
-        className={cx('label', required && 'label-required', className)}
+        className={cx('aurelius-label', required && 'aurelius-label--required', className)}
         {...rest}
       >
         {children}

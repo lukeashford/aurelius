@@ -16,7 +16,7 @@ function cx(...classes: Array<string | number | false | null | undefined>) {
 
 export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
   ({ error = false, className, disabled, options, children, ...rest }, ref) => {
-    const base = 'select'
+    const base = 'aurelius-select'
     const errorCls = error ? 'border-error focus:border-error focus:ring-error' : ''
 
     return (

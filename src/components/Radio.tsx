@@ -18,7 +18,7 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
           type="radio"
           id={inputId}
           ref={ref}
-          className={cx('radio', className)}
+          className={cx('aurelius-radio', className)}
           {...rest}
         />
         {label && (

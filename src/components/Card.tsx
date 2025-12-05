@@ -13,20 +13,20 @@ function cx(...classes: Array<string | number | false | null | undefined>) {
 
 export const Card = React.forwardRef<HTMLDivElement, CardProps>(
     ({variant = 'default', interactive = false, className, ...rest}, ref) => {
-      const base = 'card'
+      const base = 'aurelius-card'
       const variantClass =
           variant === 'elevated'
-              ? 'card-elevated'
+              ? 'aurelius-card--elevated'
               : variant === 'outlined'
-                  ? 'card-outlined'
+                  ? 'aurelius-card--outlined'
                   : variant === 'ghost'
                       ? 'bg-transparent shadow-none border-0'
                       : variant === 'featured'
-                          ? 'card-featured'
+                          ? 'aurelius-card--featured'
                           : ''
 
       // Use the design system's interactive class so hover styles match CSS
-      const interactiveClass = interactive ? 'card-interactive' : ''
+      const interactiveClass = interactive ? 'aurelius-card--interactive' : ''
 
       return <div ref={ref}
                   className={cx(base, variantClass, interactiveClass, className)} {...rest} />

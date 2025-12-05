@@ -14,18 +14,18 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
   ({ variant = 'default', className, ...rest }, ref) => {
     const variantClass =
       variant === 'gold'
-        ? 'badge-gold'
+        ? 'aurelius-badge--gold'
         : variant === 'success'
-        ? 'badge-success'
+        ? 'aurelius-badge--success'
         : variant === 'error'
-        ? 'badge-error'
+        ? 'aurelius-badge--error'
         : variant === 'warning'
         ? 'bg-warning/20 text-warning border-warning/30'
         : variant === 'info'
         ? 'bg-info/20 text-info border-info/30'
-        : 'badge-default'
+        : 'aurelius-badge--default'
 
-    return <span ref={ref} className={cx('badge', variantClass, className)} {...rest} />
+    return <span ref={ref} className={cx('aurelius-badge', variantClass, className)} {...rest} />
   }
 )
 

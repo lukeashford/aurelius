@@ -18,7 +18,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
           type="checkbox"
           id={inputId}
           ref={ref}
-          className={cx('checkbox', className)}
+          className={cx('aurelius-checkbox', className)}
           {...rest}
         />
         {label && (

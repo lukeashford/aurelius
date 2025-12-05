@@ -27,25 +27,25 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       const isDisabled = disabled || loading
       const variantClass =
           variant === 'primary'
-              ? 'btn-primary'
+              ? 'aurelius-btn--primary'
               : variant === 'important'
-                  ? 'btn-important'
+                  ? 'aurelius-btn--important'
                   : variant === 'elevated'
-                      ? 'btn-elevated'
+                      ? 'aurelius-btn--elevated'
                       : variant === 'outlined'
-                          ? 'btn-outlined'
+                          ? 'aurelius-btn--outlined'
                           : variant === 'featured'
-                              ? 'btn-featured'
+                              ? 'aurelius-btn--featured'
                               : variant === 'ghost'
-                                  ? 'btn-ghost'
-                                  : 'btn-danger'
+                                  ? 'aurelius-btn--ghost'
+                                  : 'aurelius-btn--danger'
 
-      const sizeClass = `btn-${size}`
+      const sizeClass = `aurelius-btn--${size}`
 
       return (
           <button
               ref={ref}
-              className={cx('btn', variantClass, sizeClass, loading && 'opacity-80', className)}
+              className={cx('aurelius-btn', variantClass, sizeClass, loading && 'opacity-80', className)}
               disabled={isDisabled}
               {...rest}
           >
