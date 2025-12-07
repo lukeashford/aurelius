@@ -1,11 +1,7 @@
 import type {Config} from 'tailwindcss'
-import {colors, spacing, typography, shadows, duration, easing, radii} from './tokens'
-import {aureliusSafelist} from './generated/safelist'
+import {colors, duration, easing, radii, shadows, spacing, typography} from './tokens'
 
 const preset: Partial<Config> = {
-  // Safelist all token-derived and structural utilities
-  // This ensures Aurelius components work even when consumers only scan their own source files
-  safelist: aureliusSafelist,
   theme: {
     extend: {
       colors: {

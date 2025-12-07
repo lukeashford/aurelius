@@ -21,7 +21,7 @@ Aurelius blends technical precision with a cinematic aesthetic, relying on deep 
 Aurelius is a **Tailwind-first design system** that ships three primary things:
 
 1. **React Components** (the preferred way to consume the design system)
-2. **A Tailwind Preset** (design tokens + safelist for Tailwind users)
+2. **A Tailwind Preset** (design tokens)
 3. **Precompiled CSS** (fallback for non-Tailwind users)
 
 ---
@@ -56,8 +56,7 @@ module.exports = {
   presets: [aureliusPreset],
   content: [
     './src/**/*.{js,ts,jsx,tsx}',
-    // ⚠️ Only scan YOUR source files - NOT node_modules!
-    // The preset's safelist ensures all Aurelius classes are generated
+    './node_modules/@lukeashford/aurelius/dist/**/*.{js,mjs}',
   ],
 }
 ```
@@ -82,11 +81,7 @@ export function LoginForm() {
 }
 ```
 
-**That's it!** No CSS import needed. The preset handles everything:
-- ✅ Wires in design tokens (colors, spacing, shadows, etc.)
-- ✅ Safelists all component classes
-- ✅ Makes all token-based utilities available
-
+**That's it!** The preset handles the rest.
 ---
 
 ### For Non-Tailwind Users

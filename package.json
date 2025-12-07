@@ -23,11 +23,8 @@
     "dist"
   ],
   "scripts": {
-    "generate:safelist": "node scripts/generate-safelist.js",
-    "generate:css-content": "node -e \"const fs=require('fs');const {aureliusSafelist}=require('./dist/generated/safelist.js');fs.writeFileSync('dist/safelist-content.txt',aureliusSafelist.join(' '))\"",
     "build:css": "tailwindcss -c tailwind.build.config.cjs -i src/styles/base.css -o dist/styles/base.css --minify",
-    "prebuild": "npm run generate:safelist",
-    "build": "tsup && npm run generate:css-content && npm run build:css && node scripts/generate-manifest.js",
+    "build": "tsup && npm run build:css && node scripts/generate-manifest.js",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "npm run build",
