@@ -5,7 +5,6 @@ export default defineConfig({
     'src/index.ts',
     'src/tailwind.preset.ts',
     'src/tokens/index.ts',
-    'src/generated/safelist.ts',
   ],
   format: ['cjs', 'esm'],
   dts: true,

@@ -11,10 +11,10 @@ module.exports = {
   // Use the Aurelius preset (same as consumers would)
   presets: [aureliusPreset],
 
-  // Scan source CSS and a generated safelist content file
+  // Scan source CSS and component files to generate only used styles
   content: [
     './src/styles/base.css',
-    './dist/safelist-content.txt',
+    './src/components/**/*.{ts,tsx}',
   ],
 
   // Keep preflight for base styles

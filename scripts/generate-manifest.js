@@ -129,7 +129,6 @@ function generateManifest() {
       for (const [groupName, groupTokens] of Object.entries(tokensModule)) {
           if (groupName === 'default') continue;
           
-          // Skip internal things if any, but tokens usually don't have them.
           // Format title
           const title = groupName.charAt(0).toUpperCase() + groupName.slice(1);
           output += `### ${title}\n\n`;
