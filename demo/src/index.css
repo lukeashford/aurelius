@@ -1,22 +1,27 @@
-@import '@lukeashford/aurelius/styles/base.css';
+/* Tailwind directives - the Aurelius preset handles all styling */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* Demo-specific utilities */
-.section {
-  @apply space-y-4;
-}
+@layer components {
+  .section {
+    @apply space-y-4;
+  }
 
-.section-header {
-  @apply mb-4;
-}
+  .section-header {
+    @apply mb-4;
+  }
 
-.kitchen-grid {
-  @apply grid gap-6;
-}
+  .kitchen-grid {
+    @apply grid gap-6;
+  }
 
-.sidebar-link {
-  @apply block px-3 py-2 rounded-md text-silver hover:text-white hover:bg-ash/30 transition-colors;
-}
+  .sidebar-link {
+    @apply block px-3 py-2 rounded-md text-silver hover:text-white hover:bg-ash/30 transition-colors;
+  }
 
-.sidebar-link.active {
-  @apply text-white bg-ash/30;
+  .sidebar-link.active {
+    @apply text-white bg-ash/30;
+  }
 }
