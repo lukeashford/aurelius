@@ -75,10 +75,11 @@ import './index.css'
 ## Rules (MUST follow)
 
 1. **Dark mode only.** Use `bg-obsidian`, `bg-charcoal`, `bg-void`. Never white backgrounds.
-2. **Gold is for primary actions only.** Don't overuse `text-gold` or `bg-gold`.
-3. **Use components first.** Check the Components table below before building custom elements.
-4. **Use Tailwind classes from this manifest.** Never hardcode hex values or use arbitrary values like `bg-[#123]`.
-5. **Subtle borders over shadows.** Prefer `border-ash` over heavy drop shadows.
+2. **Text colors.** Use `text - white` for headings and primary content. Use `text-silver` for secondary text, descriptions, and metadata.
+3. **Gold is for primary actions only.** Don't overuse `text-gold` or `bg-gold`.
+4. **Use components first.** Check the Components table below before building custom elements.
+5. **Use Tailwind classes from this manifest.** Never hardcode hex values or use arbitrary values like `bg-[#123]`.
+6. **Subtle borders over shadows.** Prefer `border-ash` over heavy drop shadows.
 
 ---
 

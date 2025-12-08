@@ -1,5 +1,8 @@
 # Aurelius
 
+[![npm version](https://img.shields.io/npm/v/@lukeashford/aurelius.svg)](https://www.npmjs.com/package/@lukeashford/aurelius)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 **A dark-mode design system for creative technologists** — combining technical sophistication with a
 cinematic aesthetic.
 
