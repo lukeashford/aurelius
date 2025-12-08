@@ -17,10 +17,12 @@
       "require": "./dist/tailwind.preset.js"
     },
     "./styles/*": "./dist/styles/*",
+    "./llms.md": "./llms.md",
     "./package.json": "./package.json"
   },
   "files": [
-    "dist"
+    "dist",
+    "llms.md"
   ],
   "scripts": {
     "build:css": "tailwindcss -c tailwind.build.config.cjs -i src/styles/base.css -o dist/styles/base.css --minify",
