@@ -27,12 +27,33 @@ quiet luxury.
 
 ---
 
+## AI Agent Optimization 🤖
+
+This package includes a machine-readable manifest and ESLint enforcement for AI coding assistants.
+
+**Prompt your agent:**
+
+> Use the Aurelius design system for this project.
+>
+> 1. Run `npm install @lukeashford/aurelius`
+> 2. Read `node_modules/@lukeashford/aurelius/llms.md` completely before writing any code
+> 3. Follow its setup instructions (Tailwind config, ESLint, fonts)
+> 4. Use only the components and Tailwind classes listed in that file
+
+The manifest provides complete setup instructions, so agents can bootstrap a project from scratch
+while staying within design system constraints.
+
+[View the manifest](./llms.md)
+
+---
+
 ## Quick Start
 
 ### 1. Install
 
 ```bash
 npm install @lukeashford/aurelius
+npm install -D eslint eslint-plugin-tailwindcss
 ```
 
 ### 2. Configure Tailwind
@@ -50,7 +71,58 @@ module.exports = {
 }
 ```
 
-### 3. Import fonts and directives
+### 3. Configure ESLint
+
+This enforces the design system — agents and developers get errors when using arbitrary values or
+non-Aurelius classes.
+
+```javascript
+// eslint.config.js
+import tailwindcss from 'eslint-plugin-tailwindcss';
+
+export default [
+  {
+    plugins: {tailwindcss},
+    rules: {
+      'tailwindcss/no-arbitrary-value': 'error',
+      'tailwindcss/no-custom-classname': 'error',
+    },
+    settings: {
+      tailwindcss: {config: './tailwind.config.js'},
+    },
+  },
+];
+```
+
+<details>
+<summary>Legacy .eslintrc.js format</summary>
+```javascript
+module.exports = {
+  plugins: ['tailwindcss'],
+  rules: {
+    'tailwindcss/no-arbitrary-value': 'error',
+    'tailwindcss/no-custom-classname': 'error',
+  },
+  settings: {
+    tailwindcss: { config: './tailwind.config.js' },
+  },
+}
+```
+</details>
+
+### 4. Update package.json scripts
+
+```json
+{
+  "scripts": {
+    "lint": "eslint src --max-warnings 0",
+    "dev": "npm run lint && vite",
+    "build": "npm run lint && vite build"
+  }
+}
+```
+
+### 5. Import fonts and create index.css
 
 ```typescript
 // main.tsx
@@ -65,7 +137,7 @@ import './index.css'
 @tailwind utilities;
 ```
 
-### 4. Use components
+### 6. Use components
 
 ```tsx
 import {Button, Card, Input} from '@lukeashford/aurelius'
@@ -87,7 +159,7 @@ function LoginForm() {
 
 ## Non-Tailwind Users
 
-If you're not using Tailwind, import the precompiled CSS instead:
+Import the precompiled CSS instead:
 
 ```typescript
 // main.tsx
@@ -95,19 +167,3 @@ import '@lukeashford/aurelius/styles/base.css'
 ```
 
 This includes all base styles, utilities, and fonts. Components work identically.
-
----
-
-## AI Agent Optimization 🤖
-
-This package includes a machine-readable manifest for AI coding assistants.
-
-**Prompt your agent:**
-
-> "I'm using `@lukeashford/aurelius`. Read `node_modules/@lukeashford/aurelius/llms.md` before
-> writing any code. It contains the design rules and available components."
-
-The manifest prevents hallucinated styles and ensures agents use existing components and token-based
-utilities.
-
-[View the manifest](./llms.md)
