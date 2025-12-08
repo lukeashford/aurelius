@@ -3,13 +3,6 @@ import {Card} from '@lukeashford/aurelius'
 
 type Tokens = Record<string, string>
 
-function toKebab(key: string) {
-  return key
-  .replace(/([a-z])([A-Z])/g, '$1-$2')
-  .replace(/_/g, '-')
-  .toLowerCase()
-}
-
 const families: Record<string, string[]> = {
   Black: ['void', 'obsidian', 'charcoal', 'graphite', 'slate', 'ash'],
   Gold: ['gold', 'goldLight', 'goldBright', 'goldMuted', 'goldPale'],
@@ -26,13 +19,44 @@ const families: Record<string, string[]> = {
   ],
 }
 
+// Explicit mapping so Tailwind JIT can see every class as a literal
+const bgClasses: Record<string, string> = {
+  void: 'bg-void',
+  obsidian: 'bg-obsidian',
+  charcoal: 'bg-charcoal',
+  graphite: 'bg-graphite',
+  slate: 'bg-slate',
+  ash: 'bg-ash',
+
+  gold: 'bg-gold',
+  goldLight: 'bg-gold-light',
+  goldBright: 'bg-gold-bright',
+  goldMuted: 'bg-gold-muted',
+  goldPale: 'bg-gold-pale',
+
+  white: 'bg-white',
+  silver: 'bg-silver',
+  zinc: 'bg-zinc',
+  dim: 'bg-dim',
+
+  success: 'bg-success',
+  successMuted: 'bg-success-muted',
+  error: 'bg-error',
+  errorMuted: 'bg-error-muted',
+  warning: 'bg-warning',
+  warningMuted: 'bg-warning-muted',
+  info: 'bg-info',
+  infoMuted: 'bg-info-muted',
+}
+
 export default function ColorsSection({tokens}: { tokens: Tokens }) {
   return (
       <div>
         <header className="section-header">
           <h2 className="text-2xl">Colors</h2>
-          <p className="text-silver">Core palette organized by family. Utilities reflect Tailwind
-            preset names.</p>
+          <p className="text-silver">
+            Core palette organized by family. Utilities reflect Tailwind preset names.
+          </p>
         </header>
 
         <div className="space-y-10">
@@ -40,18 +64,9 @@ export default function ColorsSection({tokens}: { tokens: Tokens }) {
               <div key={family}>
                 <h3 className="mb-4 text-lg text-gold">{family}</h3>
                 <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
-                  {keys.map(k => {
+                  {keys.map((k) => {
                     const value = tokens[k]
-
-                    // Compute class more simply based on preset shape
-                    const className =
-                        k === 'gold'
-                            ? 'bg-gold'
-                            : k.startsWith('gold')
-                                ? `bg-gold-${toKebab(k.replace('gold', ''))}`
-                                : ['success', 'error', 'warning', 'info'].some(n => k.startsWith(n))
-                                    ? `bg-${toKebab(k)}`
-                                    : `bg-${toKebab(k)}`
+                    const className = bgClasses[k] || ''
 
                     return (
                         <Card key={k} className="p-3">
