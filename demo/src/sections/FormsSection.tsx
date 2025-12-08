@@ -67,11 +67,12 @@ export default function FormsSection() {
 
            <div className="space-y-2">
              <div className="font-medium text-sm text-silver mb-2">Switch</div>
-             <div className="flex gap-8">
-               <Switch label="Notifications" />
-               <Switch label="Dark Mode" defaultChecked />
-               <Switch label="Disabled" disabled />
-             </div>
+            {/* Allow wrapping so items don't overflow the card on small screens */}
+            <div className="flex flex-wrap gap-8">
+              <Switch label="Notifications" />
+              <Switch label="Dark Mode" defaultChecked />
+              <Switch label="Disabled" disabled />
+            </div>
           </div>
         </Card>
       </div>
