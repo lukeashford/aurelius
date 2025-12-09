@@ -1,0 +1,337 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FormsSection matches snapshot 1`] = `
+<div>
+  <div
+    class="space-y-8"
+  >
+    <header
+      class="section-header"
+    >
+      <h2
+        class="text-2xl"
+      >
+        Form Elements
+      </h2>
+      <p
+        class="text-silver"
+      >
+        Standard form components with consistent styling.
+      </p>
+    </header>
+    <div
+      class="grid grid-cols-1 gap-8 md:grid-cols-2"
+    >
+      <div
+        class="rounded-none p-6 bg-charcoal shadow-sm border border-gold/30 p-6 space-y-4"
+      >
+        <h3
+          class="text-gold font-medium"
+        >
+          Select
+        </h3>
+        <div>
+          <label
+            class="block text-sm font-medium text-silver mb-1.5"
+          >
+            Standard Select
+          </label>
+          <select
+            class="appearance-none bg-graphite border border-ash rounded-none text-white px-3 py-2 pr-8 focus:border-gold focus:ring-1 focus:ring-gold focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
+            style="background-repeat: no-repeat; background-size: 1.5em 1.5em;"
+          >
+            <option
+              value="1"
+            >
+              Option 1
+            </option>
+            <option
+              value="2"
+            >
+              Option 2
+            </option>
+            <option
+              value="3"
+            >
+              Option 3
+            </option>
+          </select>
+          <p
+            class="mt-1.5 text-xs text-silver"
+          >
+            Select an option from the list.
+          </p>
+        </div>
+        <div>
+          <label
+            class="block text-sm font-medium text-silver mb-1.5"
+          >
+            Error State
+          </label>
+          <select
+            class="appearance-none bg-graphite border border-ash rounded-none text-white px-3 py-2 pr-8 focus:border-gold focus:ring-1 focus:ring-gold focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed border-error focus:border-error focus:ring-error"
+            style="background-repeat: no-repeat; background-size: 1.5em 1.5em;"
+          >
+            <option
+              value="1"
+            >
+              Invalid Selection
+            </option>
+          </select>
+          <p
+            class="mt-1.5 text-xs text-error"
+          >
+            This field is required.
+          </p>
+        </div>
+      </div>
+      <div
+        class="rounded-none p-6 bg-charcoal shadow-sm border border-gold/30 p-6 space-y-4"
+      >
+        <h3
+          class="text-gold font-medium"
+        >
+          Textarea
+        </h3>
+        <div>
+          <label
+            class="block text-sm font-medium text-silver mb-1.5"
+          >
+            Description
+          </label>
+          <textarea
+            class="w-full px-3 py-2 bg-graphite border border-ash rounded-none text-white placeholder:text-zinc min-h-[80px] transition-all duration-fast focus:border-gold focus:ring-1 focus:ring-gold focus:outline-none disabled:bg-slate disabled:text-dim disabled:cursor-not-allowed"
+            placeholder="Enter a description..."
+            rows="3"
+          />
+        </div>
+        <div>
+          <label
+            class="block text-sm font-medium text-silver mb-1.5"
+          >
+            Error State
+          </label>
+          <textarea
+            class="w-full px-3 py-2 bg-graphite border border-ash rounded-none text-white placeholder:text-zinc min-h-[80px] transition-all duration-fast focus:border-gold focus:ring-1 focus:ring-gold focus:outline-none disabled:bg-slate disabled:text-dim disabled:cursor-not-allowed border-error focus:border-error focus:ring-error"
+            placeholder="Invalid input..."
+            rows="3"
+          />
+          <p
+            class="mt-1.5 text-xs text-error"
+          >
+            Please provide more details.
+          </p>
+        </div>
+      </div>
+      <div
+        class="rounded-none p-6 bg-charcoal shadow-sm border border-gold/30 p-6 space-y-6"
+      >
+        <h3
+          class="text-gold font-medium"
+        >
+          Toggles
+        </h3>
+        <div
+          class="space-y-2"
+        >
+          <div
+            class="font-medium text-sm text-silver mb-2"
+          >
+            Checkbox
+          </div>
+          <div
+            class="flex items-center"
+          >
+            <input
+              class="appearance-none h-4 w-4 border border-ash rounded-sm bg-graphite checked:bg-gold checked:border-gold focus:ring-1 focus:ring-gold focus:ring-offset-1 focus:ring-offset-obsidian transition duration-200 ease-in-out cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              id="4kyvc9ykz"
+              style="background-position: center; background-size: contain; background-repeat: no-repeat;"
+              type="checkbox"
+            />
+            <label
+              class="ml-2 text-sm text-silver cursor-pointer select-none"
+              for="4kyvc9ykz"
+            >
+              Accept terms and conditions
+            </label>
+          </div>
+          <div
+            class="flex items-center"
+          >
+            <input
+              checked=""
+              class="appearance-none h-4 w-4 border border-ash rounded-sm bg-graphite checked:bg-gold checked:border-gold focus:ring-1 focus:ring-gold focus:ring-offset-1 focus:ring-offset-obsidian transition duration-200 ease-in-out cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              id="ca9hjsd6h"
+              style="background-position: center; background-size: contain; background-repeat: no-repeat;"
+              type="checkbox"
+            />
+            <label
+              class="ml-2 text-sm text-silver cursor-pointer select-none"
+              for="ca9hjsd6h"
+            >
+              Subscribe to newsletter
+            </label>
+          </div>
+          <div
+            class="flex items-center"
+          >
+            <input
+              class="appearance-none h-4 w-4 border border-ash rounded-sm bg-graphite checked:bg-gold checked:border-gold focus:ring-1 focus:ring-gold focus:ring-offset-1 focus:ring-offset-obsidian transition duration-200 ease-in-out cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled=""
+              id="szqot7ums"
+              style="background-position: center; background-size: contain; background-repeat: no-repeat;"
+              type="checkbox"
+            />
+            <label
+              class="ml-2 text-sm text-silver cursor-pointer select-none"
+              for="szqot7ums"
+            >
+              Disabled
+            </label>
+          </div>
+        </div>
+        <div
+          class="space-y-2"
+        >
+          <div
+            class="font-medium text-sm text-silver mb-2"
+          >
+            Radio
+          </div>
+          <div
+            class="flex gap-4"
+          >
+            <div
+              class="flex items-center"
+            >
+              <input
+                class="appearance-none h-4 w-4 border border-ash rounded-full bg-graphite checked:bg-gold checked:border-gold focus:ring-1 focus:ring-gold focus:ring-offset-1 focus:ring-offset-obsidian transition duration-200 ease-in-out cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                id="plan"
+                name="plan"
+                style="background-position: center; background-size: contain; background-repeat: no-repeat;"
+                type="radio"
+              />
+              <label
+                class="ml-2 text-sm text-silver cursor-pointer select-none"
+                for="plan"
+              >
+                Free
+              </label>
+            </div>
+            <div
+              class="flex items-center"
+            >
+              <input
+                checked=""
+                class="appearance-none h-4 w-4 border border-ash rounded-full bg-graphite checked:bg-gold checked:border-gold focus:ring-1 focus:ring-gold focus:ring-offset-1 focus:ring-offset-obsidian transition duration-200 ease-in-out cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                id="plan"
+                name="plan"
+                style="background-position: center; background-size: contain; background-repeat: no-repeat;"
+                type="radio"
+              />
+              <label
+                class="ml-2 text-sm text-silver cursor-pointer select-none"
+                for="plan"
+              >
+                Pro
+              </label>
+            </div>
+            <div
+              class="flex items-center"
+            >
+              <input
+                class="appearance-none h-4 w-4 border border-ash rounded-full bg-graphite checked:bg-gold checked:border-gold focus:ring-1 focus:ring-gold focus:ring-offset-1 focus:ring-offset-obsidian transition duration-200 ease-in-out cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled=""
+                id="plan"
+                name="plan"
+                style="background-position: center; background-size: contain; background-repeat: no-repeat;"
+                type="radio"
+              />
+              <label
+                class="ml-2 text-sm text-silver cursor-pointer select-none"
+                for="plan"
+              >
+                Enterprise
+              </label>
+            </div>
+          </div>
+        </div>
+        <div
+          class="space-y-2"
+        >
+          <div
+            class="font-medium text-sm text-silver mb-2"
+          >
+            Switch
+          </div>
+          <div
+            class="flex flex-wrap gap-8"
+          >
+            <div
+              class="flex items-center gap-2"
+            >
+              <button
+                aria-checked="false"
+                class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-obsidian disabled:opacity-50 disabled:cursor-not-allowed bg-charcoal"
+                data-state="unchecked"
+                role="switch"
+                type="button"
+              >
+                <span
+                  class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out translate-x-0"
+                />
+              </button>
+              <span
+                class="text-sm text-silver cursor-pointer"
+              >
+                Notifications
+              </span>
+            </div>
+            <div
+              class="flex items-center gap-2"
+            >
+              <button
+                aria-checked="true"
+                class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-obsidian disabled:opacity-50 disabled:cursor-not-allowed bg-gold"
+                data-state="checked"
+                role="switch"
+                type="button"
+              >
+                <span
+                  class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out translate-x-5"
+                />
+              </button>
+              <span
+                class="text-sm text-silver cursor-pointer"
+              >
+                Dark Mode
+              </span>
+            </div>
+            <div
+              class="flex items-center gap-2"
+            >
+              <button
+                aria-checked="false"
+                class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-obsidian disabled:opacity-50 disabled:cursor-not-allowed bg-charcoal"
+                data-state="unchecked"
+                disabled=""
+                role="switch"
+                type="button"
+              >
+                <span
+                  class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out translate-x-0"
+                />
+              </button>
+              <span
+                class="text-sm text-silver cursor-pointer"
+              >
+                Disabled
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

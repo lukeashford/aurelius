@@ -35,7 +35,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           className={cx(
             base,
             errorCls,
-            (leadingIcon || trailingIcon) && 'pl-9 pr-9',
+            (leadingIcon || trailingIcon) ? 'pl-9 pr-9' : false,
             className
           )}
           disabled={disabled}

@@ -1,0 +1,85 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ModalSection matches snapshot when modal is closed 1`] = `
+<div>
+  <div
+    class="space-y-8"
+  >
+    <header
+      class="section-header"
+    >
+      <h2
+        class="text-2xl"
+      >
+        Overlays
+      </h2>
+      <p
+        class="text-silver"
+      >
+        Components that overlay the main content.
+      </p>
+    </header>
+    <div
+      class="rounded-none p-6 bg-charcoal shadow-sm border border-gold/30 p-8 flex flex-col items-center justify-center gap-4"
+    >
+      <h3
+        class="text-gold font-medium"
+      >
+        Modal Dialog
+      </h3>
+      <p
+        class="text-silver text-center max-w-md"
+      >
+        Modals are used for critical information or focused tasks that require user attention.
+      </p>
+      <button
+        class="inline-flex items-center justify-center font-semibold tracking-wide transition-all duration-fast rounded-none disabled:opacity-50 disabled:cursor-not-allowed bg-charcoal text-white border border-gold/30 hover:border-gold hover:shadow-glow hover:text-gold-light active:bg-white/5 focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-obsidian h-10 px-4 text-sm"
+      >
+        Open Modal
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ModalSection matches snapshot when modal is open 1`] = `
+<div>
+  <div
+    class="space-y-8"
+  >
+    <header
+      class="section-header"
+    >
+      <h2
+        class="text-2xl"
+      >
+        Overlays
+      </h2>
+      <p
+        class="text-silver"
+      >
+        Components that overlay the main content.
+      </p>
+    </header>
+    <div
+      class="rounded-none p-6 bg-charcoal shadow-sm border border-gold/30 p-8 flex flex-col items-center justify-center gap-4"
+    >
+      <h3
+        class="text-gold font-medium"
+      >
+        Modal Dialog
+      </h3>
+      <p
+        class="text-silver text-center max-w-md"
+      >
+        Modals are used for critical information or focused tasks that require user attention.
+      </p>
+      <button
+        class="inline-flex items-center justify-center font-semibold tracking-wide transition-all duration-fast rounded-none disabled:opacity-50 disabled:cursor-not-allowed bg-charcoal text-white border border-gold/30 hover:border-gold hover:shadow-glow hover:text-gold-light active:bg-white/5 focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-obsidian h-10 px-4 text-sm"
+      >
+        Open Modal
+      </button>
+    </div>
+  </div>
+</div>
+`;
