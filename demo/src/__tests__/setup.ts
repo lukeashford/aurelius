@@ -25,3 +25,21 @@ Object.defineProperty(window, 'matchMedia', {
     dispatchEvent: jest.fn(),
   })),
 });
+
+// Mock Math.random to return deterministic values for consistent snapshots
+let mockRandomCounter = 0;
+const originalRandom = Math.random;
+
+beforeEach(() => {
+  mockRandomCounter = 0;
+  Math.random = () => {
+    mockRandomCounter++;
+    // Return deterministic values based on counter
+    // This ensures IDs are consistent across test runs
+    return mockRandomCounter * 0.1;
+  };
+});
+
+afterEach(() => {
+  Math.random = originalRandom;
+});
