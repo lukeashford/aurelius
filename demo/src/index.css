@@ -1,7 +1,5 @@
-@import 'tailwindcss';
-@import '@lukeashford/aurelius/styles/fonts.css';
-
-@config '../tailwind.config.ts';
+/* Import the complete Aurelius design system (includes Tailwind v4, fonts, and theme) */
+@import '@lukeashford/aurelius/styles/base.css';
 
 /* Demo-specific utilities */
 @layer components {

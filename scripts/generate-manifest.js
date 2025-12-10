@@ -3,44 +3,61 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
 const OUT = path.join(ROOT, 'llms.md');
-const TOKENS_FILE = path.join(ROOT, 'dist/tokens/index.js');
+
+// Hardcoded token values for manifest generation (matches theme.css)
+const colors = {
+  void: '#000000',
+  obsidian: '#0a0a0a',
+  charcoal: '#141414',
+  graphite: '#1f1f1f',
+  slate: '#2a2a2a',
+  ash: '#3d3d3d',
+  gold: '#c9a227',
+  goldLight: '#d4b84a',
+  goldBright: '#e5c84d',
+  goldMuted: '#8b7355',
+  goldPale: '#d4c4a8',
+  white: '#ffffff',
+  silver: '#a3a3a3',
+  zinc: '#71717a',
+  dim: '#52525b',
+  success: '#22c55e',
+  successMuted: '#166534',
+  error: '#dc2626',
+  errorMuted: '#991b1b',
+  warning: '#d97706',
+  warningMuted: '#92400e',
+  info: '#0ea5e9',
+  infoMuted: '#0369a1',
+};
 
 function generateManifest() {
-  // Load tokens
-  let tokens = {};
-  if (fs.existsSync(TOKENS_FILE)) {
-    delete require.cache[require.resolve(TOKENS_FILE)];
-    tokens = require(TOKENS_FILE);
-  } else {
-    console.warn('⚠️ Tokens not found. Run `npm run build` first.');
-  }
-
   let output = `# Aurelius Design System — AI Manifest
 
-## Setup
+## Setup (Tailwind v4 CSS-first)
 
 ### 1. Install dependencies
 
 \`\`\`bash
-npm install -D eslint eslint-plugin-tailwindcss
+npm install @lukeashford/aurelius
+npm install -D tailwindcss @tailwindcss/vite eslint eslint-plugin-tailwindcss
 \`\`\`
 
-### 2. Configure Tailwind
+### 2. Import base CSS (includes Tailwind v4, theme, and fonts)
 
-\`\`\`javascript
-// tailwind.config.js
-const aureliusPreset = require('@lukeashford/aurelius/tailwind.preset')
-
-module.exports = {
-  presets: [aureliusPreset],
-  content: [
-    './src/**/*.{js,ts,jsx,tsx}',
-    './node_modules/@lukeashford/aurelius/dist/**/*.{js,mjs}',
-  ],
-}
+\`\`\`css
+/* src/index.css */
+@import '@lukeashford/aurelius/styles/base.css';
 \`\`\`
 
-### 3. Configure ESLint (enforces design system)
+That's it! No tailwind.config.js needed. The base.css includes:
+- Tailwind v4 with all utilities
+- Aurelius theme variables (\`--color-*\`, \`--font-*\`, etc.)
+- Custom fonts (Marcellus, Raleway, JetBrains Mono)
+- Base styles for headings, links, scrollbars, etc.
+- Custom utilities (\`.glow\`, \`.text-gradient-gold\`, etc.)
+
+### 3. Configure ESLint (optional, enforces design system)
 
 \`\`\`javascript
 // eslint.config.js
@@ -53,38 +70,21 @@ export default [
       'tailwindcss/no-arbitrary-value': 'error',
       'tailwindcss/no-custom-classname': 'error',
     },
-    settings: {
-      tailwindcss: { config: './tailwind.config.js' },
-    },
   },
 ];
 \`\`\`
 
-### 4. Add lint script
-
-\`\`\`json
-{
-  "scripts": {
-    "lint": "eslint src --max-warnings 0",
-    "dev": "npm run lint && vite",
-    "build": "npm run lint && vite build"
-  }
-}
-\`\`\`
-
-### 5. Import fonts and directives
+### 4. Vite configuration
 
 \`\`\`typescript
-// main.tsx
-import '@lukeashford/aurelius/styles/fonts.css'
-import './index.css'
-\`\`\`
+// vite.config.ts
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
 
-\`\`\`css
-/* index.css */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+})
 \`\`\`
 
 ---
@@ -92,7 +92,7 @@ import './index.css'
 ## Rules (MUST follow)
 
 1. **Dark mode only.** Use \`bg-obsidian\`, \`bg-charcoal\`, \`bg-void\`. Never white backgrounds.
-2. **Text colors.** Use \`text - white\` for headings and primary content. Use \`text-silver\` for secondary text, descriptions, and metadata.
+2. **Text colors.** Use \`text-white\` for headings and primary content. Use \`text-silver\` for secondary text, descriptions, and metadata.
 3. **Gold is for primary actions only.** Don't overuse \`text-gold\` or \`bg-gold\`.
 4. **Use components first.** Check the Components table below before building custom elements.
 5. **Use Tailwind classes from this manifest.** Never hardcode hex values or use arbitrary values like \`bg-[#123]\`.
@@ -167,13 +167,9 @@ Use ONLY these token-based classes. Arbitrary values like \`bg-[#0a0a0a]\` will 
 `;
 
   // Generate color classes from tokens
-  if (tokens.colors) {
-    const colorNames = Object.keys(tokens.colors);
-    const bgClasses = colorNames.map(c => `bg-${c.replace(/([A-Z])/g, '-$1').toLowerCase()}`);
-    output += bgClasses.join(', ') + '\n';
-  } else {
-    output += 'bg-void, bg-obsidian, bg-charcoal, bg-graphite, bg-slate, bg-ash, bg-gold, bg-gold-light, bg-gold-muted\n';
-  }
+  const colorNames = Object.keys(colors);
+  const bgClasses = colorNames.map(c => `bg-${c.replace(/([A-Z])/g, '-$1').toLowerCase()}`);
+  output += bgClasses.join(', ') + '\n';
 
   output += `
 ### Text (\`text-*\`)
@@ -196,6 +192,20 @@ Append \`/10\`, \`/20\`, \`/30\`, etc. to colors: \`bg-gold/20\`, \`border-ash/5
 
 ---
 
+## CSS Variables (for JS runtime access)
+
+Access theme values via CSS variables:
+
+\`\`\`typescript
+// For runtime token access
+import { colors, typography } from '@lukeashford/aurelius'
+
+// Or use CSS variables directly
+getComputedStyle(document.documentElement).getPropertyValue('--color-gold')
+\`\`\`
+
+---
+
 ## What NOT to do
 
 \`\`\`tsx
@@ -214,16 +224,6 @@ Append \`/10\`, \`/20\`, \`/30\`, etc. to colors: \`bg-gold/20\`, \`border-ash/5
 // ✅ Correct
 <div className="bg-obsidian text-gold border border-ash p-4">
 <Button variant="primary">Click</Button>
-\`\`\`
-
----
-
-## Non-Tailwind fallback
-
-If not using Tailwind, import precompiled CSS:
-
-\`\`\`typescript
-import '@lukeashford/aurelius/styles/base.css'
 \`\`\`
 `;
 

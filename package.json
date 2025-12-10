@@ -1,6 +1,6 @@
 {
   "name": "@lukeashford/aurelius",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Design system for Aurelius applications — A cohesive visual language for creative technologists",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -11,11 +11,14 @@
       "import": "./dist/index.mjs",
       "require": "./dist/index.js"
     },
-    "./tailwind.preset": {
-      "types": "./dist/tailwind.preset.d.ts",
-      "import": "./dist/tailwind.preset.mjs",
-      "require": "./dist/tailwind.preset.js"
+    "./tokens": {
+      "types": "./dist/tokens/index.d.ts",
+      "import": "./dist/tokens/index.mjs",
+      "require": "./dist/tokens/index.js"
     },
+    "./styles/base.css": "./dist/styles/base.css",
+    "./styles/theme.css": "./dist/styles/theme.css",
+    "./styles/fonts.css": "./dist/styles/fonts.css",
     "./styles/*": "./dist/styles/*",
     "./llms.md": "./llms.md",
     "./package.json": "./package.json"
@@ -25,8 +28,8 @@
     "llms.md"
   ],
   "scripts": {
-    "build:css": "tailwindcss -c tailwind.build.config.cjs -i src/styles/base.css -o dist/styles/base.css --minify",
-    "build": "tsup && node scripts/generate-manifest.js",
+    "generate:tokens": "tailwind-resolver -i src/styles/base.css -o src/tokens/generated",
+    "build": "npm run generate:tokens && tsup && node scripts/generate-manifest.js",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "npm run build",
@@ -57,6 +60,7 @@
     "jest-environment-jsdom": "^29.7.0",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
+    "tailwind-resolver": "^0.3.4",
     "tailwindcss": "^4.1.17",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
