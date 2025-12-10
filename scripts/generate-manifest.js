@@ -143,28 +143,57 @@ Import from \`@lukeashford/aurelius\`:
       const content = fs.readFileSync(path.join(componentsDir, file), 'utf8');
       const name = file.replace('.tsx', '');
 
+      // Extract exported type aliases (e.g., export type ButtonVariant = 'primary' | 'secondary')
+      // Handle both single-line and multi-line definitions
+      const typeAliasRegex = /export\s+type\s+(\w+)\s*=\s*((?:[^\n;]|\n\s*\|)+)/g;
+      const typeAliases = {};
+      let typeMatch;
+
+      while ((typeMatch = typeAliasRegex.exec(content)) !== null) {
+        const typeName = typeMatch[1];
+        const typeDefinition = typeMatch[2].trim();
+
+        // Extract union values from string literal types
+        // Match patterns like 'value' | "value" | `value`
+        const unionValues = typeDefinition.match(/['"`]([^'"`]+)['"`]/g);
+        if (unionValues) {
+          // Remove quotes and store
+          typeAliases[typeName] = unionValues.map(v => v.replace(/['"`]/g, ''));
+        }
+      }
+
       // Extract props from interface
       const propsMatch = content.match(/interface\s+\w*Props[^{]*{([^}]+)}/s);
-      let propsStr = '';
+      const propsWithVariants = [];
 
       if (propsMatch) {
         const propsBlock = propsMatch[1];
-        const props = propsBlock
+        const propLines = propsBlock
         .split('\n')
         .map(line => line.trim())
         .filter(
             line => line && !line.startsWith('//') && !line.startsWith('/*') && !line.startsWith(
-                '*'))
-        .map(line => {
-          const match = line.match(/^(\w+)\??:/);
-          return match ? match[1] : null;
-        })
-        .filter(Boolean);
+                '*'));
 
-        propsStr = props.join(', ');
+        propLines.forEach(line => {
+          // Match prop name and its type
+          const propMatch = line.match(/^(\w+)\??:\s*(\w+)/);
+          if (propMatch) {
+            const propName = propMatch[1];
+            const propType = propMatch[2];
+
+            // Check if the prop type is one of our exported type aliases
+            if (typeAliases[propType]) {
+              propsWithVariants.push(`${propName} (${typeAliases[propType].join(', ')})`);
+            } else {
+              propsWithVariants.push(propName);
+            }
+          }
+        });
       }
 
-      output += `| ${name} | ${propsStr || 'children'} |\n`;
+      const propsStr = propsWithVariants.length > 0 ? propsWithVariants.join(', ') : 'children';
+      output += `| ${name} | ${propsStr} |\n`;
     });
   }
 

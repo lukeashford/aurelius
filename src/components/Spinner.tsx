@@ -1,7 +1,9 @@
 import React from 'react'
 
+export type SpinnerSize = 'sm' | 'md' | 'lg'
+
 export interface SpinnerProps extends React.SVGAttributes<SVGElement> {
-  size?: 'sm' | 'md' | 'lg'
+  size?: SpinnerSize
 }
 
 function cx(...classes: Array<string | number | false | null | undefined>) {

@@ -64,23 +64,23 @@ Import from `@lukeashford/aurelius`:
 
 | Component | Props |
 |-----------|-------|
-| Alert | variant, title |
-| Avatar | src, alt, name, size, status |
-| Badge | variant |
-| Button | variant, size, loading |
-| Card | variant, interactive |
+| Alert | variant (info, success, warning, error), title |
+| Avatar | src, alt, name, size (xs, sm, md, lg, xl, 2xl), status (online, offline, busy) |
+| Badge | variant (default, gold, success, error, warning, info) |
+| Button | variant (primary, important, elevated, outlined, featured, ghost, danger), size (sm, md, lg, xl), loading |
+| Card | variant (default, elevated, outlined, ghost, featured), interactive |
 | Checkbox | label |
 | HelperText | error |
 | Input | error, leadingIcon, trailingIcon |
 | Label | required |
-| Modal | isOpen, onClose, title, children, className |
+| Modal | isOpen, title, children, className |
 | Radio | label |
 | Select | error, options |
 | Skeleton | children |
-| Spinner | size |
-| Switch | checked, defaultChecked, onCheckedChange, label |
+| Spinner | size (sm, md, lg) |
+| Switch | checked, defaultChecked, label |
 | Textarea | error |
-| Tooltip | content, children, open, side |
+| Tooltip | content, children, open, side (top, right, bottom, left) |
 
 ### Component usage example
 
