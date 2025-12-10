@@ -1,6 +1,7 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+@import '@lukeashford/aurelius/styles/fonts.css';
+
+@config '../tailwind.config.ts';
 
 /* Demo-specific utilities */
 @layer components {

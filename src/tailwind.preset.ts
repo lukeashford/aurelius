@@ -188,9 +188,9 @@ const preset: Partial<Config> = {
       },
 
       fontFamily: {
-        heading: typography.fontHeading as unknown as string[],
-        body: typography.fontBody as unknown as string[],
-        mono: typography.fontMono as unknown as string[],
+        heading: typography.fontHeading,
+        body: typography.fontBody,
+        mono: typography.fontMono,
       },
 
       fontSize: typography.fontSize as any,

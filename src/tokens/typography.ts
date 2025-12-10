@@ -1,9 +1,9 @@
 export const typography = {
   // Headings use Marcellus, a classic serif
-  fontHeading: ['Marcellus', 'serif'],
+  fontHeading: '"Marcellus", serif',
   // Body and UI use Raleway
-  fontBody: ['Raleway', 'system-ui', 'sans-serif'],
-  fontMono: ['JetBrains Mono', 'Fira Code', 'SF Mono', 'monospace'],
+  fontBody: '"Raleway", system-ui, sans-serif',
+  fontMono: '"JetBrains Mono", "Fira Code", "SF Mono", monospace',
 
   fontSize: {
     xs: ['0.75rem', {lineHeight: '1rem'}],

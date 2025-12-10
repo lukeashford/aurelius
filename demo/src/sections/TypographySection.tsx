@@ -4,10 +4,6 @@ import {Card} from '@lukeashford/aurelius'
 type Typography = any
 
 export default function TypographySection({tokens}: { tokens: Typography }) {
-  const body = (tokens.fontBody || ['Inter', 'system-ui']).join(', ')
-  const heading = (tokens.fontHeading || ['Plus Jakarta Sans', 'Inter']).join(', ')
-  const mono = (tokens.fontMono || ['JetBrains Mono', 'monospace']).join(', ')
-
   return (
       <div>
         <header className="section-header">
@@ -27,7 +23,7 @@ export default function TypographySection({tokens}: { tokens: Typography }) {
               <h6>Heading Six — H6</h6>
             </div>
             <div className="mt-4 text-sm text-silver">
-              Stack: <code className="text-white">{heading}</code>
+              Stack: <code className="text-white">{tokens.fontHeading}</code>
             </div>
           </Card>
 
@@ -45,8 +41,8 @@ export default function TypographySection({tokens}: { tokens: Typography }) {
   return \`Hello, \${name}!\`
 }`}</code></pre>
             <div className="mt-4 text-sm text-silver space-y-1">
-              <div>Body Stack: <code className="text-white">{body}</code></div>
-              <div>Mono Stack: <code className="text-white">{mono}</code></div>
+              <div>Body Stack: <code className="text-white">{tokens.fontBody}</code></div>
+              <div>Mono Stack: <code className="text-white">{tokens.fontMono}</code></div>
             </div>
           </Card>
         </div>
