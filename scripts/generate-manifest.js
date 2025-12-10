@@ -4,7 +4,12 @@ const path = require('path');
 const ROOT = path.resolve(__dirname, '..');
 const OUT = path.join(ROOT, 'llms.md');
 
-// Hardcoded token values for manifest generation (matches theme.css)
+/**
+ * Token values for manifest generation
+ *
+ * ⚠️ IMPORTANT: These values MUST match src/styles/theme.css
+ * If you update theme.css, update these values to match!
+ */
 const colors = {
   void: '#000000',
   obsidian: '#0a0a0a',

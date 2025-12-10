@@ -2,8 +2,15 @@
 export * from './generated'
 export { defaultTheme, variants, selectors, tailwind } from './generated'
 
-// Backward-compatible token exports
-// These provide the same flat structure as the original token files
+/**
+ * Backward-compatible token exports
+ *
+ * ⚠️ IMPORTANT: These values MUST match src/styles/theme.css
+ * If you update theme.css, update these values to match!
+ *
+ * The tailwind-resolver generates tokens in ./generated/, but those have
+ * a different structure. These flat exports maintain backward compatibility.
+ */
 
 /** Color tokens - flat object of all design system colors */
 export const colors = {

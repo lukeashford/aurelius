@@ -1,6 +1,9 @@
 /* Import the complete Aurelius design system (includes Tailwind v4, fonts, and theme) */
 @import '@lukeashford/aurelius/styles/base.css';
 
+/* Tell Tailwind to scan the Aurelius package for utility classes */
+@source "../node_modules/@lukeashford/aurelius/dist";
+
 /* Demo-specific utilities */
 @layer components {
   .section {
