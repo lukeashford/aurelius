@@ -1,29 +1,34 @@
 # Aurelius Design System — AI Manifest
 
-## Setup (Tailwind v4 CSS-first)
+## Setup (Tailwind v4)
 
-### 1. Install dependencies
+### 1. Install
 
 ```bash
 npm install @lukeashford/aurelius
-npm install -D tailwindcss @tailwindcss/vite eslint eslint-plugin-tailwindcss
+npm install -D eslint eslint-plugin-tailwindcss
 ```
 
-### 2. Import base CSS (includes Tailwind v4, theme, and fonts)
+### 2. Import the design system
+
+Create or update your `index.css`:
 
 ```css
-/* src/index.css */
+/* Import the complete Aurelius design system (includes Tailwind v4, fonts, and theme) */
 @import '@lukeashford/aurelius/styles/base.css';
+
+/* Tell Tailwind to scan the Aurelius package for utility classes */
+@source "../node_modules/@lukeashford/aurelius/dist";
 ```
 
-That's it! No tailwind.config.js needed. The base.css includes:
-- Tailwind v4 with all utilities
-- Aurelius theme variables (`--color-*`, `--font-*`, etc.)
-- Custom fonts (Marcellus, Raleway, JetBrains Mono)
-- Base styles for headings, links, scrollbars, etc.
-- Custom utilities (`.glow`, `.text-gradient-gold`, etc.)
+Then import it in your entry file:
 
-### 3. Configure ESLint (optional, enforces design system)
+```typescript
+// main.tsx or index.tsx
+import './index.css'
+```
+
+### 3. Configure ESLint (enforces design system)
 
 ```javascript
 // eslint.config.js
@@ -38,19 +43,6 @@ export default [
     },
   },
 ];
-```
-
-### 4. Vite configuration
-
-```typescript
-// vite.config.ts
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'
-
-export default defineConfig({
-  plugins: [react(), tailwindcss()],
-})
 ```
 
 ---
@@ -110,39 +102,25 @@ import { Button, Card, Input, Badge } from '@lukeashford/aurelius'
 Use ONLY these token-based classes. Arbitrary values like `bg-[#0a0a0a]` will fail linting.
 
 ### Backgrounds (`bg-*`)
-bg-void, bg-obsidian, bg-charcoal, bg-graphite, bg-slate, bg-ash, bg-gold, bg-gold-light, bg-gold-bright, bg-gold-muted, bg-gold-pale, bg-white, bg-silver, bg-zinc, bg-dim, bg-success, bg-success-muted, bg-error, bg-error-muted, bg-warning, bg-warning-muted, bg-info, bg-info-muted
+bg-void, bg-obsidian, bg-charcoal, bg-graphite, bg-slate, bg-ash, bg-gold, bg-gold-light, bg-gold-bright, bg-gold-muted, bg-gold-pale, bg-gold-glow, bg-white, bg-silver, bg-zinc, bg-dim, bg-success, bg-success-muted, bg-error, bg-error-muted, bg-warning, bg-warning-muted, bg-info, bg-info-muted
 
 ### Text (`text-*`)
-text-white, text-silver, text-gold, text-gold-light, text-gold-muted, text-dim, text-success, text-error, text-warning, text-info
+text-void, text-obsidian, text-charcoal, text-graphite, text-slate, text-ash, text-gold, text-gold-light, text-gold-bright, text-gold-muted, text-gold-pale, text-gold-glow, text-white, text-silver, text-zinc, text-dim, text-success, text-success-muted, text-error, text-error-muted, text-warning, text-warning-muted, text-info, text-info-muted
 
 ### Borders (`border-*`)
-border-ash, border-gold, border-gold-muted, border-charcoal, border-graphite, border-success, border-error
+border-void, border-obsidian, border-charcoal, border-graphite, border-slate, border-ash, border-gold, border-gold-light, border-gold-bright, border-gold-muted, border-gold-pale, border-gold-glow, border-white, border-silver, border-zinc, border-dim, border-success, border-success-muted, border-error, border-error-muted, border-warning, border-warning-muted, border-info, border-info-muted
 
-### Spacing (`p-*`, `m-*`, `gap-*`, `space-*`)
-0, 1, 2, 3, 4, 5, 6, 8, 10, 12, 16, 20, 24, 32, 40, 48, 64
+### Typography
 
-### Border Radius (`rounded-*`)
-none (preferred for Aurelius aesthetic), sm, md, lg, xl, 2xl, full
+**Font families:** `font-heading` ("Marcellus", serif), `font-body` ("Raleway", system-ui, sans-serif), `font-mono` ("JetBrains Mono", "Fira Code", "SF Mono", monospace)
 
-### Shadows (`shadow-*`)
-sm, md, lg, xl, glow, glow-sm, glow-lg
+Standard Tailwind classes for size (`text-sm`, `text-lg`, etc.), weight (`font-medium`, `font-bold`), and spacing are available.
+
+### Custom Utilities
+text-gradient-gold, glow, glow-sm, glow-lg, scroll-smooth, scrollbar-hide, backdrop-glass, focus-ring, line-clamp-2, line-clamp-3, center-absolute
 
 ### Opacity modifiers
 Append `/10`, `/20`, `/30`, etc. to colors: `bg-gold/20`, `border-ash/50`
-
----
-
-## CSS Variables (for JS runtime access)
-
-Access theme values via CSS variables:
-
-```typescript
-// For runtime token access
-import { colors, typography } from '@lukeashford/aurelius'
-
-// Or use CSS variables directly
-getComputedStyle(document.documentElement).getPropertyValue('--color-gold')
-```
 
 ---
 

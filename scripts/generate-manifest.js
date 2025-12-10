@@ -2,67 +2,100 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
+const THEME_CSS = path.join(ROOT, 'src/styles/theme.css');
 const OUT = path.join(ROOT, 'llms.md');
 
 /**
- * Token values for manifest generation
- *
- * ⚠️ IMPORTANT: These values MUST match src/styles/theme.css
- * If you update theme.css, update these values to match!
+ * Parse theme.css to extract design tokens
+ * Single source of truth — no hardcoded values
  */
-const colors = {
-  void: '#000000',
-  obsidian: '#0a0a0a',
-  charcoal: '#141414',
-  graphite: '#1f1f1f',
-  slate: '#2a2a2a',
-  ash: '#3d3d3d',
-  gold: '#c9a227',
-  goldLight: '#d4b84a',
-  goldBright: '#e5c84d',
-  goldMuted: '#8b7355',
-  goldPale: '#d4c4a8',
-  white: '#ffffff',
-  silver: '#a3a3a3',
-  zinc: '#71717a',
-  dim: '#52525b',
-  success: '#22c55e',
-  successMuted: '#166534',
-  error: '#dc2626',
-  errorMuted: '#991b1b',
-  warning: '#d97706',
-  warningMuted: '#92400e',
-  info: '#0ea5e9',
-  infoMuted: '#0369a1',
-};
+function parseThemeCSS() {
+  const css = fs.readFileSync(THEME_CSS, 'utf8');
+
+  // Extract all CSS custom properties from @theme block
+  const themeMatch = css.match(/@theme\s*{([^}]+(?:{[^}]*}[^}]*)*)}/s);
+  if (!themeMatch) {
+    throw new Error('Could not find @theme block in theme.css');
+  }
+  const themeBlock = themeMatch[1];
+
+  // Parse custom properties
+  const props = {};
+  const propRegex = /--([\w-]+):\s*([^;]+);/g;
+  let match;
+  while ((match = propRegex.exec(themeBlock)) !== null) {
+    props[match[1]] = match[2].trim();
+  }
+
+  // Group colors
+  const colors = {};
+  Object.entries(props).forEach(([key, value]) => {
+    if (key.startsWith('color-')) {
+      const name = key.replace('color-', '');
+      colors[name] = value;
+    }
+  });
+
+  // Extract font families
+  const fonts = {
+    heading: props['font-heading'],
+    body: props['font-body'],
+    mono: props['font-mono'],
+  };
+
+  // Extract @utility class names
+  const utilities = [];
+  const utilityRegex = /@utility\s+([\w-]+)/g;
+  while ((match = utilityRegex.exec(css)) !== null) {
+    utilities.push(match[1]);
+  }
+
+  return {colors, fonts, utilities};
+}
+
+/**
+ * Convert camelCase or kebab-case to Tailwind class format
+ */
+function toTailwindClass(prefix, name) {
+  // gold-light -> gold-light, goldLight -> gold-light
+  const kebab = name.replace(/([A-Z])/g, '-$1').toLowerCase();
+  return `${prefix}-${kebab}`;
+}
 
 function generateManifest() {
+  const tokens = parseThemeCSS();
+
   let output = `# Aurelius Design System — AI Manifest
 
-## Setup (Tailwind v4 CSS-first)
+## Setup (Tailwind v4)
 
-### 1. Install dependencies
+### 1. Install
 
 \`\`\`bash
 npm install @lukeashford/aurelius
-npm install -D tailwindcss @tailwindcss/vite eslint eslint-plugin-tailwindcss
+npm install -D eslint eslint-plugin-tailwindcss
 \`\`\`
 
-### 2. Import base CSS (includes Tailwind v4, theme, and fonts)
+### 2. Import the design system
+
+Create or update your \`index.css\`:
 
 \`\`\`css
-/* src/index.css */
+/* Import the complete Aurelius design system (includes Tailwind v4, fonts, and theme) */
 @import '@lukeashford/aurelius/styles/base.css';
+
+/* Tell Tailwind to scan the Aurelius package for utility classes */
+@source "../node_modules/@lukeashford/aurelius/dist";
 \`\`\`
 
-That's it! No tailwind.config.js needed. The base.css includes:
-- Tailwind v4 with all utilities
-- Aurelius theme variables (\`--color-*\`, \`--font-*\`, etc.)
-- Custom fonts (Marcellus, Raleway, JetBrains Mono)
-- Base styles for headings, links, scrollbars, etc.
-- Custom utilities (\`.glow\`, \`.text-gradient-gold\`, etc.)
+Then import it in your entry file:
 
-### 3. Configure ESLint (optional, enforces design system)
+\`\`\`typescript
+// main.tsx or index.tsx
+import './index.css'
+\`\`\`
+
+### 3. Configure ESLint (enforces design system)
 
 \`\`\`javascript
 // eslint.config.js
@@ -77,19 +110,6 @@ export default [
     },
   },
 ];
-\`\`\`
-
-### 4. Vite configuration
-
-\`\`\`typescript
-// vite.config.ts
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'
-
-export default defineConfig({
-  plugins: [react(), tailwindcss()],
-})
 \`\`\`
 
 ---
@@ -171,43 +191,36 @@ Use ONLY these token-based classes. Arbitrary values like \`bg-[#0a0a0a]\` will 
 ### Backgrounds (\`bg-*\`)
 `;
 
-  // Generate color classes from tokens
-  const colorNames = Object.keys(colors);
-  const bgClasses = colorNames.map(c => `bg-${c.replace(/([A-Z])/g, '-$1').toLowerCase()}`);
+  // Generate background classes from parsed colors
+  const bgClasses = Object.keys(tokens.colors).map(c => toTailwindClass('bg', c));
   output += bgClasses.join(', ') + '\n';
 
   output += `
 ### Text (\`text-*\`)
-text-white, text-silver, text-gold, text-gold-light, text-gold-muted, text-dim, text-success, text-error, text-warning, text-info
+`;
+  const textClasses = Object.keys(tokens.colors).map(c => toTailwindClass('text', c));
+  output += textClasses.join(', ') + '\n';
 
+  output += `
 ### Borders (\`border-*\`)
-border-ash, border-gold, border-gold-muted, border-charcoal, border-graphite, border-success, border-error
+`;
+  const borderClasses = Object.keys(tokens.colors).map(c => toTailwindClass('border', c));
+  output += borderClasses.join(', ') + '\n';
 
-### Spacing (\`p-*\`, \`m-*\`, \`gap-*\`, \`space-*\`)
-0, 1, 2, 3, 4, 5, 6, 8, 10, 12, 16, 20, 24, 32, 40, 48, 64
+  output += `
+### Typography
 
-### Border Radius (\`rounded-*\`)
-none (preferred for Aurelius aesthetic), sm, md, lg, xl, 2xl, full
+**Font families:** \`font-heading\` (${tokens.fonts.heading}), \`font-body\` (${tokens.fonts.body}), \`font-mono\` (${tokens.fonts.mono})
 
-### Shadows (\`shadow-*\`)
-sm, md, lg, xl, glow, glow-sm, glow-lg
+Standard Tailwind classes for size (\`text-sm\`, \`text-lg\`, etc.), weight (\`font-medium\`, \`font-bold\`), and spacing are available.
 
+### Custom Utilities
+`;
+  output += tokens.utilities.join(', ') + '\n';
+
+  output += `
 ### Opacity modifiers
 Append \`/10\`, \`/20\`, \`/30\`, etc. to colors: \`bg-gold/20\`, \`border-ash/50\`
-
----
-
-## CSS Variables (for JS runtime access)
-
-Access theme values via CSS variables:
-
-\`\`\`typescript
-// For runtime token access
-import { colors, typography } from '@lukeashford/aurelius'
-
-// Or use CSS variables directly
-getComputedStyle(document.documentElement).getPropertyValue('--color-gold')
-\`\`\`
 
 ---
 

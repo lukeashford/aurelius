@@ -8,9 +8,6 @@
  * Import '@lukeashford/aurelius/styles/base.css' for complete styling.
  */
 
-// Export design tokens (backward compatible + new generated tokens)
-export * from './tokens'
-
 // React components
 export * from './components'
 

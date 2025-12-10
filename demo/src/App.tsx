@@ -1,5 +1,4 @@
 import React, {useState} from 'react'
-import {colors, typography,} from '@lukeashford/aurelius'
 
 import ColorsSection from './sections/ColorsSection'
 import TypographySection from './sections/TypographySection'
@@ -107,11 +106,11 @@ export default function App() {
           </section>
 
           <section id="colors" className="section">
-            <ColorsSection tokens={colors}/>
+            <ColorsSection/>
           </section>
 
           <section id="typography" className="section">
-            <TypographySection tokens={typography}/>
+            <TypographySection/>
           </section>
 
           <section id="buttons" className="section">

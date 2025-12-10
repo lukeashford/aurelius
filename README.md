@@ -59,19 +59,23 @@ npm install @lukeashford/aurelius
 npm install -D eslint eslint-plugin-tailwindcss
 ```
 
-### 2. Configure Tailwind
+### 2. Import the design system
 
-```javascript
-// tailwind.config.js
-const aureliusPreset = require('@lukeashford/aurelius/tailwind.preset')
+Create or update your `index.css`:
 
-module.exports = {
-  presets: [aureliusPreset],
-  content: [
-    './src/**/*.{js,ts,jsx,tsx}',
-    './node_modules/@lukeashford/aurelius/dist/**/*.{js,mjs}',
-  ],
-}
+```css
+/* Import the complete Aurelius design system (includes Tailwind v4, fonts, and theme) */
+@import '@lukeashford/aurelius/styles/base.css';
+
+/* Tell Tailwind to scan the Aurelius package for utility classes */
+@source "../node_modules/@lukeashford/aurelius/dist";
+```
+
+Then import it in your entry file:
+
+```typescript
+// main.tsx or index.tsx
+import './index.css'
 ```
 
 ### 3. Configure ESLint
@@ -90,15 +94,13 @@ export default [
       'tailwindcss/no-arbitrary-value': 'error',
       'tailwindcss/no-custom-classname': 'error',
     },
-    settings: {
-      tailwindcss: {config: './tailwind.config.js'},
-    },
   },
 ];
 ```
 
 <details>
 <summary>Legacy .eslintrc.js format</summary>
+
 ```javascript
 module.exports = {
   plugins: ['tailwindcss'],
@@ -106,11 +108,9 @@ module.exports = {
     'tailwindcss/no-arbitrary-value': 'error',
     'tailwindcss/no-custom-classname': 'error',
   },
-  settings: {
-    tailwindcss: { config: './tailwind.config.js' },
-  },
 }
 ```
+
 </details>
 
 ### 4. Update package.json scripts
@@ -125,22 +125,7 @@ module.exports = {
 }
 ```
 
-### 5. Import fonts and create index.css
-
-```typescript
-// main.tsx
-import '@lukeashford/aurelius/styles/fonts.css'
-import './index.css'
-```
-
-```css
-/* index.css */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-```
-
-### 6. Use components
+### 5. Use components
 
 ```tsx
 import {Button, Card, Input} from '@lukeashford/aurelius'
@@ -159,14 +144,3 @@ function LoginForm() {
 ```
 
 ---
-
-## Non-Tailwind Users
-
-Import the precompiled CSS instead:
-
-```typescript
-// main.tsx
-import '@lukeashford/aurelius/styles/base.css'
-```
-
-This includes all base styles, utilities, and fonts. Components work identically.
