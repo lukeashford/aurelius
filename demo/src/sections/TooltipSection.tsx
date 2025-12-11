@@ -8,7 +8,7 @@ export default function TooltipSection() {
 
   return (
       <div>
-        <header className="section-header">
+        <header className="mb-4">
           <h2 className="text-2xl">Tooltip</h2>
           <p className="text-silver">Simple controlled tooltips demonstrating positioning.</p>
         </header>

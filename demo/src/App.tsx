@@ -78,14 +78,18 @@ export default function App() {
             <a href="https://github.com/lukeashford/aurelius"
                target="_blank"
                rel="noopener noreferrer"
-               className="text-xs text-gold hover:text-goldBright transition-colors mt-2 inline-block">
+               className="text-xs text-gold hover:text-gold-bright transition-colors mt-2 inline-block">
               View Source on GitHub →
             </a>
           </div>
           <nav className="p-3 space-y-1">
             {nav.map(n => (
                 <a key={n.id} href={`#${n.id}`}
-                   className={`sidebar-link ${active === n.id ? 'active' : ''}`}>
+                   className={`block px-3 py-2 rounded-md transition-colors ${
+                     active === n.id
+                       ? 'text-white bg-ash/30'
+                       : 'text-silver hover:text-white hover:bg-ash/30'
+                   }`}>
                   {n.label}
                 </a>
             ))}
@@ -93,7 +97,7 @@ export default function App() {
         </aside>
 
         <main className="max-w-screen-xl mx-auto p-6 lg:pl-64 space-y-16">
-          <section id="overview" className="section">
+          <section id="overview" className="space-y-4">
             <h1 className="text-3xl sm:text-4xl font-semibold">Aurelius Design</h1>
             <p className="mt-3 text-silver max-w-3xl">
               A cohesive visual language for creative technologists — combining technical
@@ -101,51 +105,51 @@ export default function App() {
             </p>
           </section>
 
-          <section id="director-note" className="section">
+          <section id="director-note" className="space-y-4">
             <DirectorNote/>
           </section>
 
-          <section id="colors" className="section">
+          <section id="colors" className="space-y-4">
             <ColorsSection/>
           </section>
 
-          <section id="typography" className="section">
+          <section id="typography" className="space-y-4">
             <TypographySection/>
           </section>
 
-          <section id="buttons" className="section">
+          <section id="buttons" className="space-y-4">
             <ButtonsSection/>
           </section>
 
-          <section id="badges" className="section">
+          <section id="badges" className="space-y-4">
             <BadgesSection/>
           </section>
 
-          <section id="inputs" className="section">
+          <section id="inputs" className="space-y-4">
             <InputsSection/>
           </section>
 
-          <section id="forms" className="section">
+          <section id="forms" className="space-y-4">
             <FormsSection/>
           </section>
 
-          <section id="cards" className="section">
+          <section id="cards" className="space-y-4">
             <CardsSection/>
           </section>
 
-          <section id="avatar" className="section">
+          <section id="avatar" className="space-y-4">
             <AvatarSection/>
           </section>
 
-          <section id="feedback" className="section">
+          <section id="feedback" className="space-y-4">
             <FeedbackSection/>
           </section>
 
-          <section id="tooltip" className="section">
+          <section id="tooltip" className="space-y-4">
             <TooltipSection/>
           </section>
 
-          <section id="modal" className="section">
+          <section id="modal" className="space-y-4">
             <ModalSection/>
           </section>
 

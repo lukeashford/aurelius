@@ -6,7 +6,7 @@ export default function ModalSection() {
 
   return (
     <div className="space-y-8">
-      <header className="section-header">
+      <header className="mb-4">
         <h2 className="text-2xl">Overlays</h2>
         <p className="text-silver">Components that overlay the main content.</p>
       </header>

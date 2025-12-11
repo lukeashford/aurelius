@@ -6,7 +6,7 @@ import {
 export default function FormsSection() {
   return (
     <div className="space-y-8">
-      <header className="section-header">
+      <header className="mb-4">
         <h2 className="text-2xl">Form Elements</h2>
         <p className="text-silver">Standard form components with consistent styling.</p>
       </header>

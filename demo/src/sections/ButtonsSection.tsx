@@ -7,7 +7,7 @@ const sizes: ButtonSize[] = ['sm', 'md', 'lg', 'xl']
 export default function ButtonsSection() {
   return (
       <div>
-        <header className="section-header">
+        <header className="mb-4">
           <h2 className="text-2xl">Buttons</h2>
           <p className="text-silver">All variants and sizes, including disabled and loading
             states.</p>

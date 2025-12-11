@@ -80,68 +80,32 @@ import './index.css'
 
 ### 3. Configure ESLint
 
-This enforces the design system — agents and developers get errors when using arbitrary values or
-non-Aurelius classes. **If ESLint complains from these rules, you're leaving the Aurelius design
-system rails.**
+Aurelius provides an ESLint helper that enforces design system constraints — preventing arbitrary
+values and non-Aurelius classes. **If ESLint complains, you're leaving the design system rails.**
 
 ```javascript
 // eslint.config.mjs
-import eslintPluginBetterTailwindcss from 'eslint-plugin-better-tailwindcss';
-import poupeTailwindcss from '@poupe/eslint-plugin-tailwindcss';
+import { createAureliusESLintConfig } from '@lukeashford/aurelius/eslint';
 
-export default [
-  // JS/TS/React files: enforce allowed Tailwind classes only
-  {
-    files: ['**/*.{js,jsx,ts,tsx}'],
-    plugins: {
-      'better-tailwindcss': eslintPluginBetterTailwindcss,
-    },
-    settings: {
-      'better-tailwindcss': {
-        // Tailwind v4 CSS entry that imports Aurelius + @source
-        entryPoint: './src/index.css',
-      },
-    },
-    rules: {
-      // No custom/non-Aurelius class names
-      'better-tailwindcss/no-unknown-classes': 'error',
+export default createAureliusESLintConfig();
+```
 
-      // No arbitrary value utilities (bg-[...], text-[...], etc.)
-      'better-tailwindcss/no-restricted-classes': [
-        'error',
-        {
-          restrict: ['\\[.*\\]'],
-        },
-      ],
-    },
-  },
+**Using a different CSS entry point?**
 
-  // CSS files: enforce Tailwind v4 CSS usage and tokens
-  {
-    files: ['**/*.css'],
-    language: 'tailwindcss/css',
-    plugins: {
-      tailwindcss: poupeTailwindcss,
-    },
-    rules: {
-      ...poupeTailwindcss.configs.recommended.rules,
-      'tailwindcss/no-conflicting-utilities': 'error',
-      'tailwindcss/valid-apply-directive': 'error',
-      'tailwindcss/valid-modifier-syntax': 'error',
-      'tailwindcss/prefer-theme-tokens': 'warn',
-      'tailwindcss/no-arbitrary-value-overuse': 'warn',
-    },
-  },
-];
+```javascript
+// eslint.config.mjs
+import { createAureliusESLintConfig } from '@lukeashford/aurelius/eslint';
+
+export default createAureliusESLintConfig({
+  entryPoint: './app/styles.css'
+});
 ```
 
 **What this enforces:**
 
-- `better-tailwindcss/no-unknown-classes` → No custom/non-Aurelius class names in your components
-- `better-tailwindcss/no-restricted-classes` → No arbitrary value utilities like `bg-[#123456]` or
-  `text-[15px]`
-- `@poupe/eslint-plugin-tailwindcss` rules → Enforce Tailwind v4 CSS usage in `.css` files, prefer
-  theme tokens over raw CSS
+- No custom/non-Aurelius class names in your components
+- No arbitrary value utilities like `bg-[#123456]` or `text-[15px]`
+- Tailwind v4 CSS best practices in `.css` files
 
 ### 4. Update package.json scripts
 

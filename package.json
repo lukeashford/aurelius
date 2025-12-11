@@ -11,6 +11,11 @@
       "import": "./dist/index.mjs",
       "require": "./dist/index.js"
     },
+    "./eslint": {
+      "types": "./dist/eslint.d.ts",
+      "import": "./dist/eslint.mjs",
+      "require": "./dist/eslint.js"
+    },
     "./styles/base.css": "./dist/styles/base.css",
     "./styles/theme.css": "./dist/styles/theme.css",
     "./styles/fonts.css": "./dist/styles/fonts.css",
@@ -34,10 +39,26 @@
   "peerDependencies": {
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0",
-    "tailwindcss": ">=4.0.0"
+    "tailwindcss": ">=4.0.0",
+    "eslint": ">=9.0.0",
+    "eslint-plugin-better-tailwindcss": ">=4.0.0-beta",
+    "@poupe/eslint-plugin-tailwindcss": ">=0.2.0",
+    "@typescript-eslint/parser": ">=8.0.0"
   },
   "peerDependenciesMeta": {
     "tailwindcss": {
+      "optional": true
+    },
+    "eslint": {
+      "optional": true
+    },
+    "eslint-plugin-better-tailwindcss": {
+      "optional": true
+    },
+    "@poupe/eslint-plugin-tailwindcss": {
+      "optional": true
+    },
+    "@typescript-eslint/parser": {
       "optional": true
     }
   },

@@ -95,66 +95,35 @@ Then import it in your entry file:
 import './index.css'
 \`\`\`
 
-### 3. Configure ESLint (enforces design system)
+### 3. Configure ESLint
+
+Aurelius provides an ESLint helper that enforces design system constraints.
 
 \`\`\`javascript
 // eslint.config.mjs
-import eslintPluginBetterTailwindcss from 'eslint-plugin-better-tailwindcss';
-import poupeTailwindcss from '@poupe/eslint-plugin-tailwindcss';
+import { createAureliusESLintConfig } from '@lukeashford/aurelius/eslint';
 
-export default [
-  // JS/TS/React files: enforce allowed Tailwind classes only
-  {
-    files: ['**/*.{js,jsx,ts,tsx}'],
-    plugins: {
-      'better-tailwindcss': eslintPluginBetterTailwindcss,
-    },
-    settings: {
-      'better-tailwindcss': {
-        // Tailwind v4 CSS entry that imports Aurelius + @source
-        entryPoint: './src/index.css',
-      },
-    },
-    rules: {
-      // No custom/non-Aurelius class names
-      'better-tailwindcss/no-unknown-classes': 'error',
+export default createAureliusESLintConfig();
+\`\`\`
 
-      // No arbitrary value utilities (bg-[...], text-[...], etc.)
-      'better-tailwindcss/no-restricted-classes': [
-        'error',
-        {
-          restrict: ['\\\\[.*\\\\]'],
-        },
-      ],
-    },
-  },
+**Using a different CSS entry point?**
 
-  // CSS files: enforce Tailwind v4 CSS usage and tokens
-  {
-    files: ['**/*.css'],
-    language: 'tailwindcss/css',
-    plugins: {
-      tailwindcss: poupeTailwindcss,
-    },
-    rules: {
-      ...poupeTailwindcss.configs.recommended.rules,
-      'tailwindcss/no-conflicting-utilities': 'error',
-      'tailwindcss/valid-apply-directive': 'error',
-      'tailwindcss/valid-modifier-syntax': 'error',
-      'tailwindcss/prefer-theme-tokens': 'warn',
-      'tailwindcss/no-arbitrary-value-overuse': 'warn',
-    },
-  },
-];
+\`\`\`javascript
+// eslint.config.mjs
+import { createAureliusESLintConfig } from '@lukeashford/aurelius/eslint';
+
+export default createAureliusESLintConfig({
+  entryPoint: './app/styles.css'
+});
 \`\`\`
 
 **What this enforces:**
 
-- \`better-tailwindcss/no-unknown-classes\` → Use only Tailwind classes that are registered in your Aurelius CSS entry file.
-- \`better-tailwindcss/no-restricted-classes\` → Do **not** use arbitrary value utilities (\`bg-[...]\`, \`text-[...]\`, etc.).
-- \`@poupe/eslint-plugin-tailwindcss\` rules → Enforce Tailwind v4 CSS usage in \`.css\` files. No conflicting utilities, prefer theme tokens over raw CSS, and more.
+- No custom/non-Aurelius class names in your components
+- No arbitrary value utilities (\`bg-[...]\`, \`text-[...]\`, etc.)
+- Tailwind v4 CSS best practices in \`.css\` files
 
-**If ESLint complains from these rules, you're leaving the Aurelius design system rails.**
+**If ESLint complains, you're leaving the Aurelius design system rails.**
 
 ---
 

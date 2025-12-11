@@ -4,7 +4,7 @@ import {Input} from '@lukeashford/aurelius'
 export default function InputsSection() {
   return (
       <div>
-        <header className="section-header">
+        <header className="mb-4">
           <h2 className="text-2xl">Inputs</h2>
           <p className="text-silver">Text field states: default, invalid, disabled. Icons
             supported.</p>
@@ -20,7 +20,7 @@ export default function InputsSection() {
             <label className="block text-sm text-silver">With Icons</label>
             <Input
                 placeholder="Search..."
-                leadingIcon={<span className="i-heroicons-magnifying-glass-20-solid">🔎</span>}
+                leadingIcon={<span>🔎</span>}
                 trailingIcon={<span className="text-silver">⌘K</span>}
             />
           </div>

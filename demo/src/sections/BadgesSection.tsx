@@ -6,7 +6,7 @@ const variants: BadgeVariant[] = ['default', 'gold', 'success', 'error', 'warnin
 export default function BadgesSection() {
   return (
     <div>
-      <header className="section-header">
+      <header className="mb-4">
         <h2 className="text-2xl">Badges</h2>
         <p className="text-silver">Inline status and metadata indicators.</p>
       </header>
