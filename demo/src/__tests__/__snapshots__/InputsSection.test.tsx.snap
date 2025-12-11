@@ -1,0 +1,113 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InputsSection matches snapshot 1`] = `
+<div>
+  <div>
+    <header
+      class="section-header"
+    >
+      <h2
+        class="text-2xl"
+      >
+        Inputs
+      </h2>
+      <p
+        class="text-silver"
+      >
+        Text field states: default, invalid, disabled. Icons supported.
+      </p>
+    </header>
+    <div
+      class="grid gap-6 md:grid-cols-2"
+    >
+      <div
+        class="space-y-3"
+      >
+        <label
+          class="block text-sm text-silver"
+        >
+          Default
+        </label>
+        <div
+          class="relative"
+        >
+          <input
+            class="w-full h-10 px-3 bg-graphite border border-ash rounded-none text-white placeholder:text-zinc transition-all duration-fast focus:border-gold focus:ring-1 focus:ring-gold focus:outline-none disabled:bg-slate disabled:text-dim disabled:cursor-not-allowed"
+            placeholder="Enter your email"
+          />
+        </div>
+      </div>
+      <div
+        class="space-y-3"
+      >
+        <label
+          class="block text-sm text-silver"
+        >
+          With Icons
+        </label>
+        <div
+          class="relative"
+        >
+          <span
+            class="pointer-events-none absolute inset-y-0 left-3 flex items-center text-silver"
+          >
+            <span
+              class="i-heroicons-magnifying-glass-20-solid"
+            >
+              🔎
+            </span>
+          </span>
+          <input
+            class="w-full h-10 px-3 bg-graphite border border-ash rounded-none text-white placeholder:text-zinc transition-all duration-fast focus:border-gold focus:ring-1 focus:ring-gold focus:outline-none disabled:bg-slate disabled:text-dim disabled:cursor-not-allowed pl-9 pr-9"
+            placeholder="Search..."
+          />
+          <span
+            class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-silver"
+          >
+            <span
+              class="text-silver"
+            >
+              ⌘K
+            </span>
+          </span>
+        </div>
+      </div>
+      <div
+        class="space-y-3"
+      >
+        <label
+          class="block text-sm text-silver"
+        >
+          Invalid
+        </label>
+        <div
+          class="relative"
+        >
+          <input
+            class="w-full h-10 px-3 bg-graphite border border-ash rounded-none text-white placeholder:text-zinc transition-all duration-fast focus:border-gold focus:ring-1 focus:ring-gold focus:outline-none disabled:bg-slate disabled:text-dim disabled:cursor-not-allowed border-error focus:border-error focus:ring-error"
+            placeholder="Invalid value"
+          />
+        </div>
+      </div>
+      <div
+        class="space-y-3"
+      >
+        <label
+          class="block text-sm text-silver"
+        >
+          Disabled
+        </label>
+        <div
+          class="relative opacity-90"
+        >
+          <input
+            class="w-full h-10 px-3 bg-graphite border border-ash rounded-none text-white placeholder:text-zinc transition-all duration-fast focus:border-gold focus:ring-1 focus:ring-gold focus:outline-none disabled:bg-slate disabled:text-dim disabled:cursor-not-allowed"
+            disabled=""
+            placeholder="Disabled input"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -7,7 +7,7 @@
       "DOM"
     ],
     "jsx": "react-jsx",
-    "moduleResolution": "Bundler",
+    "moduleResolution": "bundler",
     "strict": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
@@ -15,7 +15,9 @@
     "noEmit": true,
     "types": [
       "vite/client",
-      "node"
+      "node",
+      "jest",
+      "@testing-library/jest-dom"
     ]
   },
   "include": [

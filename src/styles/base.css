@@ -1,5 +1,8 @@
-@import './fonts.css';
+/* Aurelius Design System - Base CSS
+ * Import this file to get the complete Aurelius design system
+ * Includes Tailwind v4, fonts, and theme variables
+ */
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+@import './fonts.css';
+@import './theme.css';

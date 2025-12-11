@@ -2,42 +2,97 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
+const THEME_CSS = path.join(ROOT, 'src/styles/theme.css');
 const OUT = path.join(ROOT, 'llms.md');
-const TOKENS_FILE = path.join(ROOT, 'dist/tokens/index.js');
+
+/**
+ * Parse theme.css to extract design tokens
+ * Single source of truth — no hardcoded values
+ */
+function parseThemeCSS() {
+  const css = fs.readFileSync(THEME_CSS, 'utf8');
+
+  // Extract all CSS custom properties from @theme block
+  const themeMatch = css.match(/@theme\s*{([^}]+(?:{[^}]*}[^}]*)*)}/s);
+  if (!themeMatch) {
+    throw new Error('Could not find @theme block in theme.css');
+  }
+  const themeBlock = themeMatch[1];
+
+  // Parse custom properties
+  const props = {};
+  const propRegex = /--([\w-]+):\s*([^;]+);/g;
+  let match;
+  while ((match = propRegex.exec(themeBlock)) !== null) {
+    props[match[1]] = match[2].trim();
+  }
+
+  // Group colors
+  const colors = {};
+  Object.entries(props).forEach(([key, value]) => {
+    if (key.startsWith('color-')) {
+      const name = key.replace('color-', '');
+      colors[name] = value;
+    }
+  });
+
+  // Extract font families
+  const fonts = {
+    heading: props['font-heading'],
+    body: props['font-body'],
+    mono: props['font-mono'],
+  };
+
+  // Extract @utility class names
+  const utilities = [];
+  const utilityRegex = /@utility\s+([\w-]+)/g;
+  while ((match = utilityRegex.exec(css)) !== null) {
+    utilities.push(match[1]);
+  }
+
+  return {colors, fonts, utilities};
+}
+
+/**
+ * Convert camelCase or kebab-case to Tailwind class format
+ */
+function toTailwindClass(prefix, name) {
+  // gold-light -> gold-light, goldLight -> gold-light
+  const kebab = name.replace(/([A-Z])/g, '-$1').toLowerCase();
+  return `${prefix}-${kebab}`;
+}
 
 function generateManifest() {
-  // Load tokens
-  let tokens = {};
-  if (fs.existsSync(TOKENS_FILE)) {
-    delete require.cache[require.resolve(TOKENS_FILE)];
-    tokens = require(TOKENS_FILE);
-  } else {
-    console.warn('⚠️ Tokens not found. Run `npm run build` first.');
-  }
+  const tokens = parseThemeCSS();
 
   let output = `# Aurelius Design System — AI Manifest
 
-## Setup
+## Setup (Tailwind v4)
 
-### 1. Install dependencies
+### 1. Install
 
 \`\`\`bash
+npm install @lukeashford/aurelius
 npm install -D eslint eslint-plugin-tailwindcss
 \`\`\`
 
-### 2. Configure Tailwind
+### 2. Import the design system
 
-\`\`\`javascript
-// tailwind.config.js
-const aureliusPreset = require('@lukeashford/aurelius/tailwind.preset')
+Create or update your \`index.css\`:
 
-module.exports = {
-  presets: [aureliusPreset],
-  content: [
-    './src/**/*.{js,ts,jsx,tsx}',
-    './node_modules/@lukeashford/aurelius/dist/**/*.{js,mjs}',
-  ],
-}
+\`\`\`css
+/* Import the complete Aurelius design system (includes Tailwind v4, fonts, and theme) */
+@import '@lukeashford/aurelius/styles/base.css';
+
+/* Tell Tailwind to scan the Aurelius package for utility classes */
+@source "../node_modules/@lukeashford/aurelius/dist";
+\`\`\`
+
+Then import it in your entry file:
+
+\`\`\`typescript
+// main.tsx or index.tsx
+import './index.css'
 \`\`\`
 
 ### 3. Configure ESLint (enforces design system)
@@ -53,38 +108,8 @@ export default [
       'tailwindcss/no-arbitrary-value': 'error',
       'tailwindcss/no-custom-classname': 'error',
     },
-    settings: {
-      tailwindcss: { config: './tailwind.config.js' },
-    },
   },
 ];
-\`\`\`
-
-### 4. Add lint script
-
-\`\`\`json
-{
-  "scripts": {
-    "lint": "eslint src --max-warnings 0",
-    "dev": "npm run lint && vite",
-    "build": "npm run lint && vite build"
-  }
-}
-\`\`\`
-
-### 5. Import fonts and directives
-
-\`\`\`typescript
-// main.tsx
-import '@lukeashford/aurelius/styles/fonts.css'
-import './index.css'
-\`\`\`
-
-\`\`\`css
-/* index.css */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 \`\`\`
 
 ---
@@ -92,7 +117,7 @@ import './index.css'
 ## Rules (MUST follow)
 
 1. **Dark mode only.** Use \`bg-obsidian\`, \`bg-charcoal\`, \`bg-void\`. Never white backgrounds.
-2. **Text colors.** Use \`text - white\` for headings and primary content. Use \`text-silver\` for secondary text, descriptions, and metadata.
+2. **Text colors.** Use \`text-white\` for headings and primary content. Use \`text-silver\` for secondary text, descriptions, and metadata.
 3. **Gold is for primary actions only.** Don't overuse \`text-gold\` or \`bg-gold\`.
 4. **Use components first.** Check the Components table below before building custom elements.
 5. **Use Tailwind classes from this manifest.** Never hardcode hex values or use arbitrary values like \`bg-[#123]\`.
@@ -118,28 +143,57 @@ Import from \`@lukeashford/aurelius\`:
       const content = fs.readFileSync(path.join(componentsDir, file), 'utf8');
       const name = file.replace('.tsx', '');
 
+      // Extract exported type aliases (e.g., export type ButtonVariant = 'primary' | 'secondary')
+      // Handle both single-line and multi-line definitions
+      const typeAliasRegex = /export\s+type\s+(\w+)\s*=\s*((?:[^\n;]|\n\s*\|)+)/g;
+      const typeAliases = {};
+      let typeMatch;
+
+      while ((typeMatch = typeAliasRegex.exec(content)) !== null) {
+        const typeName = typeMatch[1];
+        const typeDefinition = typeMatch[2].trim();
+
+        // Extract union values from string literal types
+        // Match patterns like 'value' | "value" | `value`
+        const unionValues = typeDefinition.match(/['"`]([^'"`]+)['"`]/g);
+        if (unionValues) {
+          // Remove quotes and store
+          typeAliases[typeName] = unionValues.map(v => v.replace(/['"`]/g, ''));
+        }
+      }
+
       // Extract props from interface
       const propsMatch = content.match(/interface\s+\w*Props[^{]*{([^}]+)}/s);
-      let propsStr = '';
+      const propsWithVariants = [];
 
       if (propsMatch) {
         const propsBlock = propsMatch[1];
-        const props = propsBlock
+        const propLines = propsBlock
         .split('\n')
         .map(line => line.trim())
         .filter(
             line => line && !line.startsWith('//') && !line.startsWith('/*') && !line.startsWith(
-                '*'))
-        .map(line => {
-          const match = line.match(/^(\w+)\??:/);
-          return match ? match[1] : null;
-        })
-        .filter(Boolean);
+                '*'));
 
-        propsStr = props.join(', ');
+        propLines.forEach(line => {
+          // Match prop name and its type
+          const propMatch = line.match(/^(\w+)\??:\s*(\w+)/);
+          if (propMatch) {
+            const propName = propMatch[1];
+            const propType = propMatch[2];
+
+            // Check if the prop type is one of our exported type aliases
+            if (typeAliases[propType]) {
+              propsWithVariants.push(`${propName} (${typeAliases[propType].join(', ')})`);
+            } else {
+              propsWithVariants.push(propName);
+            }
+          }
+        });
       }
 
-      output += `| ${name} | ${propsStr || 'children'} |\n`;
+      const propsStr = propsWithVariants.length > 0 ? propsWithVariants.join(', ') : 'children';
+      output += `| ${name} | ${propsStr} |\n`;
     });
   }
 
@@ -166,31 +220,34 @@ Use ONLY these token-based classes. Arbitrary values like \`bg-[#0a0a0a]\` will 
 ### Backgrounds (\`bg-*\`)
 `;
 
-  // Generate color classes from tokens
-  if (tokens.colors) {
-    const colorNames = Object.keys(tokens.colors);
-    const bgClasses = colorNames.map(c => `bg-${c.replace(/([A-Z])/g, '-$1').toLowerCase()}`);
-    output += bgClasses.join(', ') + '\n';
-  } else {
-    output += 'bg-void, bg-obsidian, bg-charcoal, bg-graphite, bg-slate, bg-ash, bg-gold, bg-gold-light, bg-gold-muted\n';
-  }
+  // Generate background classes from parsed colors
+  const bgClasses = Object.keys(tokens.colors).map(c => toTailwindClass('bg', c));
+  output += bgClasses.join(', ') + '\n';
 
   output += `
 ### Text (\`text-*\`)
-text-white, text-silver, text-gold, text-gold-light, text-gold-muted, text-dim, text-success, text-error, text-warning, text-info
+`;
+  const textClasses = Object.keys(tokens.colors).map(c => toTailwindClass('text', c));
+  output += textClasses.join(', ') + '\n';
 
+  output += `
 ### Borders (\`border-*\`)
-border-ash, border-gold, border-gold-muted, border-charcoal, border-graphite, border-success, border-error
+`;
+  const borderClasses = Object.keys(tokens.colors).map(c => toTailwindClass('border', c));
+  output += borderClasses.join(', ') + '\n';
 
-### Spacing (\`p-*\`, \`m-*\`, \`gap-*\`, \`space-*\`)
-0, 1, 2, 3, 4, 5, 6, 8, 10, 12, 16, 20, 24, 32, 40, 48, 64
+  output += `
+### Typography
 
-### Border Radius (\`rounded-*\`)
-none (preferred for Aurelius aesthetic), sm, md, lg, xl, 2xl, full
+**Font families:** \`font-heading\` (${tokens.fonts.heading}), \`font-body\` (${tokens.fonts.body}), \`font-mono\` (${tokens.fonts.mono})
 
-### Shadows (\`shadow-*\`)
-sm, md, lg, xl, glow, glow-sm, glow-lg
+Standard Tailwind classes for size (\`text-sm\`, \`text-lg\`, etc.), weight (\`font-medium\`, \`font-bold\`), and spacing are available.
 
+### Custom Utilities
+`;
+  output += tokens.utilities.join(', ') + '\n';
+
+  output += `
 ### Opacity modifiers
 Append \`/10\`, \`/20\`, \`/30\`, etc. to colors: \`bg-gold/20\`, \`border-ash/50\`
 
@@ -214,16 +271,6 @@ Append \`/10\`, \`/20\`, \`/30\`, etc. to colors: \`bg-gold/20\`, \`border-ash/5
 // ✅ Correct
 <div className="bg-obsidian text-gold border border-ash p-4">
 <Button variant="primary">Click</Button>
-\`\`\`
-
----
-
-## Non-Tailwind fallback
-
-If not using Tailwind, import precompiled CSS:
-
-\`\`\`typescript
-import '@lukeashford/aurelius/styles/base.css'
 \`\`\`
 `;
 

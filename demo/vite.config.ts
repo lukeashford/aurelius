@@ -1,11 +1,12 @@
 import {defineConfig} from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'node:path'
+import tailwindcss from "@tailwindcss/vite";
 
 // Vite config for the demo site
 // Using library via file:.. ensures symlinked live updates while root tsup --watch runs
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
       // Ensure single react copy when linked

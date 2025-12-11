@@ -1,10 +1,12 @@
 import React from 'react'
 
+export type TooltipSide = 'top' | 'right' | 'bottom' | 'left'
+
 export interface TooltipProps {
   content: React.ReactNode
   children: React.ReactElement
   open?: boolean
-  side?: 'top' | 'right' | 'bottom' | 'left'
+  side?: TooltipSide
 }
 
 function cx(...classes: Array<string | number | false | null | undefined>) {

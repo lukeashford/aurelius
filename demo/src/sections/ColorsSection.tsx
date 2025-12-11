@@ -1,26 +1,8 @@
 import React from 'react'
 import {Card} from '@lukeashford/aurelius'
 
-type Tokens = Record<string, string>
-
-const families: Record<string, string[]> = {
-  Black: ['void', 'obsidian', 'charcoal', 'graphite', 'slate', 'ash'],
-  Gold: ['gold', 'goldLight', 'goldBright', 'goldMuted', 'goldPale'],
-  Neutrals: ['white', 'silver', 'zinc', 'dim'],
-  Semantic: [
-    'success',
-    'successMuted',
-    'error',
-    'errorMuted',
-    'warning',
-    'warningMuted',
-    'info',
-    'infoMuted',
-  ],
-}
-
 // Explicit mapping so Tailwind JIT can see every class as a literal
-const bgClasses: Record<string, string> = {
+const bgClasses = {
   void: 'bg-void',
   obsidian: 'bg-obsidian',
   charcoal: 'bg-charcoal',
@@ -47,9 +29,42 @@ const bgClasses: Record<string, string> = {
   warningMuted: 'bg-warning-muted',
   info: 'bg-info',
   infoMuted: 'bg-info-muted',
+} as const
+
+type ColorKey = keyof typeof bgClasses
+
+const families: Record<string, ColorKey[]> = {
+  Black: ['void', 'obsidian', 'charcoal', 'graphite', 'slate', 'ash'],
+  Gold: ['gold', 'goldLight', 'goldBright', 'goldMuted', 'goldPale'],
+  Neutrals: ['white', 'silver', 'zinc', 'dim'],
+  Semantic: [
+    'success',
+    'successMuted',
+    'error',
+    'errorMuted',
+    'warning',
+    'warningMuted',
+    'info',
+    'infoMuted',
+  ],
 }
 
-export default function ColorsSection({tokens}: { tokens: Tokens }) {
+function ColorCard({token}: { token: ColorKey }) {
+  const className = bgClasses[token]
+
+  return (
+      <Card className="p-3">
+        <div className={`h-16 w-full  ${className}`}/>
+        <div className="mt-2 text-sm">
+          <div className="font-mono text-white">{token}</div>
+          <div className="text-silver">{token}</div>
+          <div className="text-xs text-silver/80">.{className}</div>
+        </div>
+      </Card>
+  )
+}
+
+export default function ColorsSection() {
   return (
       <div>
         <header className="section-header">
@@ -60,27 +75,15 @@ export default function ColorsSection({tokens}: { tokens: Tokens }) {
         </header>
 
         <div className="space-y-10">
-          {Object.entries(families).map(([family, keys]) => (
-              <div key={family}>
+          {Object.entries(families).map(([family, tokens]) => (
+              <section key={family}>
                 <h3 className="mb-4 text-lg text-gold">{family}</h3>
                 <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
-                  {keys.map((k) => {
-                    const value = tokens[k]
-                    const className = bgClasses[k] || ''
-
-                    return (
-                        <Card key={k} className="p-3">
-                          <div className={`h-16 w-full rounded-lg ${className}`}/>
-                          <div className="mt-2 text-sm">
-                            <div className="font-mono text-white">{k}</div>
-                            <div className="text-silver">{value}</div>
-                            <div className="text-xs text-silver/80">.{className}</div>
-                          </div>
-                        </Card>
-                    )
-                  })}
+                  {tokens.map((token) => (
+                      <ColorCard key={token} token={token}/>
+                  ))}
                 </div>
-              </div>
+              </section>
           ))}
         </div>
       </div>

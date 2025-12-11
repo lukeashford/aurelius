@@ -1,0 +1,127 @@
+name: Test React Compatibility
+
+on:
+  push:
+    branches: [main, master, 'claude/**']
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  test-root:
+    name: Test Root Package (React ${{ matrix.react-version }})
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        react-version: ['18.3.0', '19.2.1']
+        node-version: ['20']
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Override React version to ${{ matrix.react-version }}
+        run: |
+          npm install react@${{ matrix.react-version }} react-dom@${{ matrix.react-version }} --save-dev --legacy-peer-deps
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Build
+        run: npm run build
+
+  test-demo:
+    name: Test Demo (React ${{ matrix.react-version }})
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        react-version: ['18.3.0', '19.2.1']
+        node-version: ['20']
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install root dependencies
+        run: npm ci
+
+      - name: Override React version in root to ${{ matrix.react-version }}
+        run: |
+          npm install react@${{ matrix.react-version }} react-dom@${{ matrix.react-version }} --save-dev --legacy-peer-deps
+
+      - name: Build root package
+        run: npm run build
+
+      - name: Install demo dependencies
+        working-directory: ./demo
+        run: npm ci
+
+      - name: Override React version in demo to ${{ matrix.react-version }}
+        working-directory: ./demo
+        run: |
+          npm install react@${{ matrix.react-version }} react-dom@${{ matrix.react-version }} --legacy-peer-deps
+
+      - name: Run unit tests
+        working-directory: ./demo
+        run: npm test -- --ci --coverage --maxWorkers=2
+
+      - name: Build demo
+        working-directory: ./demo
+        run: npm run build
+
+      - name: Install Playwright Browsers
+        working-directory: ./demo
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Playwright tests
+        working-directory: ./demo
+        run: npm run test:e2e
+        env:
+          CI: true
+
+      - name: Upload Playwright Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report-react-${{ matrix.react-version }}
+          path: demo/playwright-report/
+          retention-days: 30
+
+      - name: Upload Playwright Snapshots
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-snapshots-react-${{ matrix.react-version }}
+          path: demo/e2e/**/*-snapshots/
+          retention-days: 30
+
+  test-summary:
+    name: Test Summary
+    runs-on: ubuntu-latest
+    needs: [test-root, test-demo]
+    if: always()
+
+    steps:
+      - name: Check test results
+        run: |
+          if [ "${{ needs.test-root.result }}" != "success" ] || [ "${{ needs.test-demo.result }}" != "success" ]; then
+            echo "Tests failed! Check the logs above."
+            exit 1
+          fi
+          echo "✅ All tests passed on React 18.3.0 and 19.2.1!"

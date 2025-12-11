@@ -27,7 +27,7 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
 
       // Interactive styles
       const interactiveClass = interactive
-          ? 'transition-all duration-normal hover:border-gold hover:shadow-glow cursor-pointer'
+          ? 'transition-all duration-200 hover:border-gold hover:shadow-glow cursor-pointer'
           : ''
 
       const variantClass = variantClasses[variant]

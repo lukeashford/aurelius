@@ -1,26 +1,31 @@
 # Aurelius Design System — AI Manifest
 
-## Setup
+## Setup (Tailwind v4)
 
-### 1. Install dependencies
+### 1. Install
 
 ```bash
+npm install @lukeashford/aurelius
 npm install -D eslint eslint-plugin-tailwindcss
 ```
 
-### 2. Configure Tailwind
+### 2. Import the design system
 
-```javascript
-// tailwind.config.js
-const aureliusPreset = require('@lukeashford/aurelius/tailwind.preset')
+Create or update your `index.css`:
 
-module.exports = {
-  presets: [aureliusPreset],
-  content: [
-    './src/**/*.{js,ts,jsx,tsx}',
-    './node_modules/@lukeashford/aurelius/dist/**/*.{js,mjs}',
-  ],
-}
+```css
+/* Import the complete Aurelius design system (includes Tailwind v4, fonts, and theme) */
+@import '@lukeashford/aurelius/styles/base.css';
+
+/* Tell Tailwind to scan the Aurelius package for utility classes */
+@source "../node_modules/@lukeashford/aurelius/dist";
+```
+
+Then import it in your entry file:
+
+```typescript
+// main.tsx or index.tsx
+import './index.css'
 ```
 
 ### 3. Configure ESLint (enforces design system)
@@ -36,38 +41,8 @@ export default [
       'tailwindcss/no-arbitrary-value': 'error',
       'tailwindcss/no-custom-classname': 'error',
     },
-    settings: {
-      tailwindcss: { config: './tailwind.config.js' },
-    },
   },
 ];
-```
-
-### 4. Add lint script
-
-```json
-{
-  "scripts": {
-    "lint": "eslint src --max-warnings 0",
-    "dev": "npm run lint && vite",
-    "build": "npm run lint && vite build"
-  }
-}
-```
-
-### 5. Import fonts and directives
-
-```typescript
-// main.tsx
-import '@lukeashford/aurelius/styles/fonts.css'
-import './index.css'
-```
-
-```css
-/* index.css */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 ```
 
 ---
@@ -75,7 +50,7 @@ import './index.css'
 ## Rules (MUST follow)
 
 1. **Dark mode only.** Use `bg-obsidian`, `bg-charcoal`, `bg-void`. Never white backgrounds.
-2. **Text colors.** Use `text - white` for headings and primary content. Use `text-silver` for secondary text, descriptions, and metadata.
+2. **Text colors.** Use `text-white` for headings and primary content. Use `text-silver` for secondary text, descriptions, and metadata.
 3. **Gold is for primary actions only.** Don't overuse `text-gold` or `bg-gold`.
 4. **Use components first.** Check the Components table below before building custom elements.
 5. **Use Tailwind classes from this manifest.** Never hardcode hex values or use arbitrary values like `bg-[#123]`.
@@ -89,23 +64,23 @@ Import from `@lukeashford/aurelius`:
 
 | Component | Props |
 |-----------|-------|
-| Alert | variant, title |
-| Avatar | src, alt, name, size, status |
-| Badge | variant |
-| Button | variant, size, loading |
-| Card | variant, interactive |
+| Alert | variant (info, success, warning, error), title |
+| Avatar | src, alt, name, size (xs, sm, md, lg, xl, 2xl), status (online, offline, busy) |
+| Badge | variant (default, gold, success, error, warning, info) |
+| Button | variant (primary, important, elevated, outlined, featured, ghost, danger), size (sm, md, lg, xl), loading |
+| Card | variant (default, elevated, outlined, ghost, featured), interactive |
 | Checkbox | label |
 | HelperText | error |
 | Input | error, leadingIcon, trailingIcon |
 | Label | required |
-| Modal | isOpen, onClose, title, children, className |
+| Modal | isOpen, title, children, className |
 | Radio | label |
 | Select | error, options |
 | Skeleton | children |
-| Spinner | size |
-| Switch | checked, defaultChecked, onCheckedChange, label |
+| Spinner | size (sm, md, lg) |
+| Switch | checked, defaultChecked, label |
 | Textarea | error |
-| Tooltip | content, children, open, side |
+| Tooltip | content, children, open, side (top, right, bottom, left) |
 
 ### Component usage example
 
@@ -130,19 +105,19 @@ Use ONLY these token-based classes. Arbitrary values like `bg-[#0a0a0a]` will fa
 bg-void, bg-obsidian, bg-charcoal, bg-graphite, bg-slate, bg-ash, bg-gold, bg-gold-light, bg-gold-bright, bg-gold-muted, bg-gold-pale, bg-gold-glow, bg-white, bg-silver, bg-zinc, bg-dim, bg-success, bg-success-muted, bg-error, bg-error-muted, bg-warning, bg-warning-muted, bg-info, bg-info-muted
 
 ### Text (`text-*`)
-text-white, text-silver, text-gold, text-gold-light, text-gold-muted, text-dim, text-success, text-error, text-warning, text-info
+text-void, text-obsidian, text-charcoal, text-graphite, text-slate, text-ash, text-gold, text-gold-light, text-gold-bright, text-gold-muted, text-gold-pale, text-gold-glow, text-white, text-silver, text-zinc, text-dim, text-success, text-success-muted, text-error, text-error-muted, text-warning, text-warning-muted, text-info, text-info-muted
 
 ### Borders (`border-*`)
-border-ash, border-gold, border-gold-muted, border-charcoal, border-graphite, border-success, border-error
+border-void, border-obsidian, border-charcoal, border-graphite, border-slate, border-ash, border-gold, border-gold-light, border-gold-bright, border-gold-muted, border-gold-pale, border-gold-glow, border-white, border-silver, border-zinc, border-dim, border-success, border-success-muted, border-error, border-error-muted, border-warning, border-warning-muted, border-info, border-info-muted
 
-### Spacing (`p-*`, `m-*`, `gap-*`, `space-*`)
-0, 1, 2, 3, 4, 5, 6, 8, 10, 12, 16, 20, 24, 32, 40, 48, 64
+### Typography
 
-### Border Radius (`rounded-*`)
-none (preferred for Aurelius aesthetic), sm, md, lg, xl, 2xl, full
+**Font families:** `font-heading` ("Marcellus", serif), `font-body` ("Raleway", system-ui, sans-serif), `font-mono` ("JetBrains Mono", "Fira Code", "SF Mono", monospace)
 
-### Shadows (`shadow-*`)
-sm, md, lg, xl, glow, glow-sm, glow-lg
+Standard Tailwind classes for size (`text-sm`, `text-lg`, etc.), weight (`font-medium`, `font-bold`), and spacing are available.
+
+### Custom Utilities
+text-gradient-gold, glow, glow-sm, glow-lg, scroll-smooth, scrollbar-hide, backdrop-glass, focus-ring, line-clamp-2, line-clamp-3, center-absolute
 
 ### Opacity modifiers
 Append `/10`, `/20`, `/30`, etc. to colors: `bg-gold/20`, `border-ash/50`
@@ -167,14 +142,4 @@ Append `/10`, `/20`, `/30`, etc. to colors: `bg-gold/20`, `border-ash/50`
 // ✅ Correct
 <div className="bg-obsidian text-gold border border-ash p-4">
 <Button variant="primary">Click</Button>
-```
-
----
-
-## Non-Tailwind fallback
-
-If not using Tailwind, import precompiled CSS:
-
-```typescript
-import '@lukeashford/aurelius/styles/base.css'
 ```

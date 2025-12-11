@@ -1,13 +1,14 @@
 import React from 'react'
 
 export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
+export type AvatarStatus = 'online' | 'offline' | 'busy'
 
 export interface AvatarProps extends React.HTMLAttributes<HTMLDivElement> {
   src?: string
   alt?: string
   name?: string
   size?: AvatarSize
-  status?: 'online' | 'offline' | 'busy'
+  status?: AvatarStatus
 }
 
 function cx(...classes: Array<string | number | false | null | undefined>) {
