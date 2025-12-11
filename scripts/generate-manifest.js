@@ -73,7 +73,7 @@ function generateManifest() {
 
 \`\`\`bash
 npm install @lukeashford/aurelius
-npm install -D eslint eslint-plugin-tailwindcss
+npm install -D eslint eslint-plugin-better-tailwindcss @poupe/eslint-plugin-tailwindcss
 \`\`\`
 
 ### 2. Import the design system
@@ -98,19 +98,63 @@ import './index.css'
 ### 3. Configure ESLint (enforces design system)
 
 \`\`\`javascript
-// eslint.config.js
-import tailwindcss from 'eslint-plugin-tailwindcss';
+// eslint.config.mjs
+import eslintPluginBetterTailwindcss from 'eslint-plugin-better-tailwindcss';
+import poupeTailwindcss from '@poupe/eslint-plugin-tailwindcss';
 
 export default [
+  // JS/TS/React files: enforce allowed Tailwind classes only
   {
-    plugins: { tailwindcss },
+    files: ['**/*.{js,jsx,ts,tsx}'],
+    plugins: {
+      'better-tailwindcss': eslintPluginBetterTailwindcss,
+    },
+    settings: {
+      'better-tailwindcss': {
+        // Tailwind v4 CSS entry that imports Aurelius + @source
+        entryPoint: './src/index.css',
+      },
+    },
     rules: {
-      'tailwindcss/no-arbitrary-value': 'error',
-      'tailwindcss/no-custom-classname': 'error',
+      // No custom/non-Aurelius class names
+      'better-tailwindcss/no-unknown-classes': 'error',
+
+      // No arbitrary value utilities (bg-[...], text-[...], etc.)
+      'better-tailwindcss/no-restricted-classes': [
+        'error',
+        {
+          restrict: ['\\\\[.*\\\\]'],
+        },
+      ],
+    },
+  },
+
+  // CSS files: enforce Tailwind v4 CSS usage and tokens
+  {
+    files: ['**/*.css'],
+    language: 'tailwindcss/css',
+    plugins: {
+      tailwindcss: poupeTailwindcss,
+    },
+    rules: {
+      ...poupeTailwindcss.configs.recommended.rules,
+      'tailwindcss/no-conflicting-utilities': 'error',
+      'tailwindcss/valid-apply-directive': 'error',
+      'tailwindcss/valid-modifier-syntax': 'error',
+      'tailwindcss/prefer-theme-tokens': 'warn',
+      'tailwindcss/no-arbitrary-value-overuse': 'warn',
     },
   },
 ];
 \`\`\`
+
+**What this enforces:**
+
+- \`better-tailwindcss/no-unknown-classes\` → Use only Tailwind classes that are registered in your Aurelius CSS entry file.
+- \`better-tailwindcss/no-restricted-classes\` → Do **not** use arbitrary value utilities (\`bg-[...]\`, \`text-[...]\`, etc.).
+- \`@poupe/eslint-plugin-tailwindcss\` rules → Enforce Tailwind v4 CSS usage in \`.css\` files. No conflicting utilities, prefer theme tokens over raw CSS, and more.
+
+**If ESLint complains from these rules, you're leaving the Aurelius design system rails.**
 
 ---
 

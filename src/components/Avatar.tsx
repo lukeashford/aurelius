@@ -46,7 +46,6 @@ export const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
         {...rest}
       >
         {src ? (
-          // eslint-disable-next-line @next/next/no-img-element
           <img src={src} alt={alt || name || 'Avatar'} className="h-full w-full object-cover" />
         ) : (
           <span aria-hidden>{initials(name) || '·'}</span>
