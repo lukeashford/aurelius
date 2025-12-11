@@ -32,7 +32,7 @@ export default [
       },
     },
     rules: {
-      // Equivalent to "no custom classnames"
+      // Only Tailwind-known classes (no custom classnames)
       'better-tailwindcss/no-unknown-classes': 'error',
 
       // Block arbitrary value utilities like bg-[...], text-[...], shadow-[...]
