@@ -4,7 +4,7 @@ import {Button, Card} from '@lukeashford/aurelius'
 export default function DirectorNote() {
   return (
       <div className="space-y-6">
-        <header className="mb-4">
+        <header className="section-header">
           <h2 className="text-2xl">Director's Note</h2>
           <p className="text-silver">A word on the philosophy and usage of this system.</p>
         </header>

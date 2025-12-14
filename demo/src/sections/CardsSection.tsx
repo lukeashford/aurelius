@@ -4,7 +4,7 @@ import {Card} from '@lukeashford/aurelius'
 export default function CardsSection() {
   return (
       <div>
-        <header className="mb-4">
+        <header className="section-header">
           <h2 className="text-2xl">Cards</h2>
           <p className="text-silver">Surface variations for content grouping.</p>
         </header>

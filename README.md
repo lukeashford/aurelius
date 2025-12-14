@@ -56,7 +56,7 @@ while staying within design system constraints.
 
 ```bash
 npm install @lukeashford/aurelius
-npm install -D eslint eslint-plugin-better-tailwindcss @poupe/eslint-plugin-tailwindcss
+npm install -D eslint @typescript-eslint/parser eslint-plugin-better-tailwindcss @poupe/eslint-plugin-tailwindcss @eslint/css tailwind-csstree
 ```
 
 ### 2. Import the design system
@@ -78,23 +78,21 @@ Then import it in your entry file:
 import './index.css'
 ```
 
-### 3. Configure ESLint
+### 3. Configure ESLint (simplest form)
 
-Aurelius provides an ESLint helper that enforces design system constraints — preventing arbitrary
-values and non-Aurelius classes. **If ESLint complains, you're leaving the design system rails.**
+Aurelius ships with a default ESLint config you can re-export in one line. It enforces design system
+constraints — if ESLint complains, you're leaving the rails.
 
 ```javascript
 // eslint.config.mjs
-import { createAureliusESLintConfig } from '@lukeashford/aurelius/eslint';
-
-export default createAureliusESLintConfig();
+export {default} from '@lukeashford/aurelius/eslint';
 ```
 
-**Using a different CSS entry point?**
+**Need a different CSS entry point?**
 
 ```javascript
 // eslint.config.mjs
-import { createAureliusESLintConfig } from '@lukeashford/aurelius/eslint';
+import {createAureliusESLintConfig} from '@lukeashford/aurelius/eslint';
 
 export default createAureliusESLintConfig({
   entryPoint: './app/styles.css'
@@ -103,9 +101,10 @@ export default createAureliusESLintConfig({
 
 **What this enforces:**
 
-- No custom/non-Aurelius class names in your components
-- No arbitrary value utilities like `bg-[#123456]` or `text-[15px]`
-- Tailwind v4 CSS best practices in `.css` files
+- **JS/TS/JSX/TSX files:** No custom/non-Aurelius class names, no arbitrary value utilities like
+  `bg-[#123456]` or `text-[15px]`
+- **CSS files:** Tailwind v4 CSS best practices, valid `@apply` directives, no arbitrary value
+  overuse, and proper theme token usage
 
 ### 4. Update package.json scripts
 

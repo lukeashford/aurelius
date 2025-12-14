@@ -4,7 +4,7 @@ import {Input} from '@lukeashford/aurelius'
 export default function InputsSection() {
   return (
       <div>
-        <header className="mb-4">
+        <header className="section-header">
           <h2 className="text-2xl">Inputs</h2>
           <p className="text-silver">Text field states: default, invalid, disabled. Icons
             supported.</p>

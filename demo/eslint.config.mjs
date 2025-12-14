@@ -1,3 +1,1 @@
-import { createAureliusESLintConfig } from '@lukeashford/aurelius/eslint';
-
-export default createAureliusESLintConfig();
+export {default} from '@lukeashford/aurelius/eslint';

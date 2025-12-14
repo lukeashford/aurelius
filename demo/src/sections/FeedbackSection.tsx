@@ -4,7 +4,7 @@ import {Alert, Card, Skeleton, Spinner} from '@lukeashford/aurelius'
 export default function FeedbackSection() {
   return (
       <div className="space-y-8">
-        <header className="mb-4">
+        <header className="section-header">
           <h2 className="text-2xl">Feedback & States</h2>
           <p className="text-silver">Visual indicators for system status and loading states.</p>
         </header>

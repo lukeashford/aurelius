@@ -1,14 +1,15 @@
+// scripts/eslint.mjs
 import eslintPluginBetterTailwindcss from 'eslint-plugin-better-tailwindcss';
 import poupeTailwindcss from '@poupe/eslint-plugin-tailwindcss';
+import css from '@eslint/css';
+import { tailwind4 } from 'tailwind-csstree';
 import tsParser from '@typescript-eslint/parser';
 
-export interface AureliusESLintOptions {
-  /**
-   * Path to your CSS entry file that imports Aurelius
-   * @default './src/index.css'
-   */
-  entryPoint?: string;
-}
+/**
+ * @typedef {Object} AureliusESLintOptions
+ * @property {string} [entryPoint] - Path to your CSS entry file that imports Aurelius. Defaults to
+ *     './src/index.css'
+ */
 
 /**
  * Creates an ESLint configuration that enforces Aurelius design system constraints.
@@ -18,8 +19,8 @@ export interface AureliusESLintOptions {
  * - Enforces only Aurelius-approved Tailwind classes
  * - Validates Tailwind v4 CSS usage
  *
- * @param options - Configuration options
- * @returns ESLint configuration array
+ * @param {AureliusESLintOptions} [options={}] - Configuration options
+ * @returns {any[]} ESLint configuration array
  *
  * @example
  * // With default entry point (./src/index.css)
@@ -31,8 +32,8 @@ export interface AureliusESLintOptions {
  * import { createAureliusESLintConfig } from '@lukeashford/aurelius/eslint';
  * export default createAureliusESLintConfig({ entryPoint: './app/styles.css' });
  */
-export function createAureliusESLintConfig(options: AureliusESLintOptions = {}): any[] {
-  const { entryPoint = './src/index.css' } = options;
+export function createAureliusESLintConfig(options = {}) {
+  const {entryPoint = './src/index.css'} = options;
 
   return [
     // Ignore generated files
@@ -63,7 +64,17 @@ export function createAureliusESLintConfig(options: AureliusESLintOptions = {}):
       },
       rules: {
         // Only Tailwind-known classes (no custom classnames)
-        'better-tailwindcss/no-unknown-classes': 'error',
+        'better-tailwindcss/no-unknown-classes': [
+          'error',
+          {
+            // Allow custom classes when they are defined using Aurelius/Tailwind utilities
+            // (e.g., `@utility x { @apply bg-obsidian text-white; }`).
+            // This still blocks any class that isn't generated from the Aurelius-based
+            // Tailwind pipeline, so "a&b"-style composites are fine but "c" isn't if
+            // it doesn't come from Aurelius tokens.
+            detectComponentClasses: true,
+          },
+        ],
 
         // Block arbitrary value utilities like bg-[...], text-[...], shadow-[...]
         'better-tailwindcss/no-restricted-classes': [
@@ -79,8 +90,12 @@ export function createAureliusESLintConfig(options: AureliusESLintOptions = {}):
     {
       files: ['**/*.css'],
       ignores: ['**/fonts.css', '**/theme.css'],
-      language: 'tailwindcss/css',
+      language: 'css/css',
+      languageOptions: {
+        customSyntax: tailwind4,
+      },
       plugins: {
+        css,
         tailwindcss: poupeTailwindcss,
       },
       rules: {
@@ -92,7 +107,7 @@ export function createAureliusESLintConfig(options: AureliusESLintOptions = {}):
         'tailwindcss/valid-apply-directive': 'error',
         'tailwindcss/valid-modifier-syntax': 'error',
         'tailwindcss/prefer-theme-tokens': 'warn',
-        'tailwindcss/no-arbitrary-value-overuse': 'warn',
+        'tailwindcss/no-arbitrary-value-overuse': 'error',
       },
     },
   ];

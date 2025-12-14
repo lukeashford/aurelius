@@ -6,7 +6,7 @@ const sizes: AvatarSize[] = ['xs', 'sm', 'md', 'lg', 'xl', '2xl']
 export default function AvatarSection() {
   return (
       <div>
-        <header className="mb-4">
+        <header className="section-header">
           <h2 className="text-2xl">Avatar</h2>
           <p className="text-silver">User identity with sizes and fallback initials.</p>
         </header>

@@ -3,3 +3,10 @@
 
 /* Tell Tailwind to scan the Aurelius package for utility classes */
 @source "../node_modules/@lukeashford/aurelius/dist";
+
+/* Demo-specific utilities */
+@layer components {
+  .section-header {
+    @apply mb-24;
+  }
+}

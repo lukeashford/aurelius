@@ -11,11 +11,7 @@
       "import": "./dist/index.mjs",
       "require": "./dist/index.js"
     },
-    "./eslint": {
-      "types": "./dist/eslint.d.ts",
-      "import": "./dist/eslint.mjs",
-      "require": "./dist/eslint.js"
-    },
+    "./eslint": "./scripts/eslint.mjs",
     "./styles/base.css": "./dist/styles/base.css",
     "./styles/theme.css": "./dist/styles/theme.css",
     "./styles/fonts.css": "./dist/styles/fonts.css",
@@ -25,10 +21,11 @@
   },
   "files": [
     "dist",
+    "scripts/eslint.mjs",
     "llms.md"
   ],
   "scripts": {
-    "build": "tsup && node scripts/generate-manifest.js",
+    "build": "npm run typecheck && npm run lint && tsup && node scripts/generate-manifest.js",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src --max-warnings 0",
@@ -43,7 +40,9 @@
     "eslint": ">=9.0.0",
     "eslint-plugin-better-tailwindcss": ">=4.0.0-beta",
     "@poupe/eslint-plugin-tailwindcss": ">=0.2.0",
-    "@typescript-eslint/parser": ">=8.0.0"
+    "@typescript-eslint/parser": ">=8.0.0",
+    "@eslint/css": ">=0.9.0",
+    "tailwind-csstree": ">=0.1.0"
   },
   "peerDependenciesMeta": {
     "tailwindcss": {
@@ -59,6 +58,12 @@
       "optional": true
     },
     "@typescript-eslint/parser": {
+      "optional": true
+    },
+    "@eslint/css": {
+      "optional": true
+    },
+    "tailwind-csstree": {
       "optional": true
     }
   },

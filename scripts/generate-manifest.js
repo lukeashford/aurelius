@@ -73,7 +73,7 @@ function generateManifest() {
 
 \`\`\`bash
 npm install @lukeashford/aurelius
-npm install -D eslint eslint-plugin-better-tailwindcss @poupe/eslint-plugin-tailwindcss
+npm install -D eslint @typescript-eslint/parser eslint-plugin-better-tailwindcss @poupe/eslint-plugin-tailwindcss @eslint/css tailwind-csstree
 \`\`\`
 
 ### 2. Import the design system
@@ -97,33 +97,13 @@ import './index.css'
 
 ### 3. Configure ESLint
 
-Aurelius provides an ESLint helper that enforces design system constraints.
+Aurelius ships with a default ESLint config you can re-export in one line. It enforces design system
+constraints — if ESLint complains, you're leaving the rails.
 
 \`\`\`javascript
 // eslint.config.mjs
-import { createAureliusESLintConfig } from '@lukeashford/aurelius/eslint';
-
-export default createAureliusESLintConfig();
+export { default } from '@lukeashford/aurelius/eslint';
 \`\`\`
-
-**Using a different CSS entry point?**
-
-\`\`\`javascript
-// eslint.config.mjs
-import { createAureliusESLintConfig } from '@lukeashford/aurelius/eslint';
-
-export default createAureliusESLintConfig({
-  entryPoint: './app/styles.css'
-});
-\`\`\`
-
-**What this enforces:**
-
-- No custom/non-Aurelius class names in your components
-- No arbitrary value utilities (\`bg-[...]\`, \`text-[...]\`, etc.)
-- Tailwind v4 CSS best practices in \`.css\` files
-
-**If ESLint complains, you're leaving the Aurelius design system rails.**
 
 ---
 
@@ -133,7 +113,7 @@ export default createAureliusESLintConfig({
 2. **Text colors.** Use \`text-white\` for headings and primary content. Use \`text-silver\` for secondary text, descriptions, and metadata.
 3. **Gold is for primary actions only.** Don't overuse \`text-gold\` or \`bg-gold\`.
 4. **Use components first.** Check the Components table below before building custom elements.
-5. **Use Tailwind classes from this manifest.** Never hardcode hex values or use arbitrary values like \`bg-[#123]\`.
+5. **Stay on-system.** No custom/non-Aurelius class names, no arbitrary value utilities (\`bg-[...]\`, \`text-[...]\`, etc.), and follow Tailwind v4 CSS best practices in \`.css\` files.
 6. **Subtle borders over shadows.** Prefer \`border-ash\` over heavy drop shadows.
 
 ---
@@ -149,10 +129,11 @@ Import from \`@lukeashford/aurelius\`:
   // Generate components table
   const componentsDir = path.join(ROOT, 'src/components');
   if (fs.existsSync(componentsDir)) {
-    const files = fs.readdirSync(componentsDir)
-    .filter(f => f.endsWith('.tsx') && f !== 'index.tsx');
+    const files = fs
+    .readdirSync(componentsDir)
+    .filter((f) => f.endsWith('.tsx') && f !== 'index.tsx');
 
-    files.forEach(file => {
+    files.forEach((file) => {
       const content = fs.readFileSync(path.join(componentsDir, file), 'utf8');
       const name = file.replace('.tsx', '');
 
@@ -183,12 +164,16 @@ Import from \`@lukeashford/aurelius\`:
         const propsBlock = propsMatch[1];
         const propLines = propsBlock
         .split('\n')
-        .map(line => line.trim())
+        .map((line) => line.trim())
         .filter(
-            line => line && !line.startsWith('//') && !line.startsWith('/*') && !line.startsWith(
-                '*'));
+            (line) =>
+                line &&
+                !line.startsWith('//') &&
+                !line.startsWith('/*') &&
+                !line.startsWith('*')
+        );
 
-        propLines.forEach(line => {
+        propLines.forEach((line) => {
           // Match prop name and its type
           const propMatch = line.match(/^(\w+)\??:\s*(\w+)/);
           if (propMatch) {
@@ -234,19 +219,19 @@ Use ONLY these token-based classes. Arbitrary values like \`bg-[#0a0a0a]\` will 
 `;
 
   // Generate background classes from parsed colors
-  const bgClasses = Object.keys(tokens.colors).map(c => toTailwindClass('bg', c));
+  const bgClasses = Object.keys(tokens.colors).map((c) => toTailwindClass('bg', c));
   output += bgClasses.join(', ') + '\n';
 
   output += `
 ### Text (\`text-*\`)
 `;
-  const textClasses = Object.keys(tokens.colors).map(c => toTailwindClass('text', c));
+  const textClasses = Object.keys(tokens.colors).map((c) => toTailwindClass('text', c));
   output += textClasses.join(', ') + '\n';
 
   output += `
 ### Borders (\`border-*\`)
 `;
-  const borderClasses = Object.keys(tokens.colors).map(c => toTailwindClass('border', c));
+  const borderClasses = Object.keys(tokens.colors).map((c) => toTailwindClass('border', c));
   output += borderClasses.join(', ') + '\n';
 
   output += `

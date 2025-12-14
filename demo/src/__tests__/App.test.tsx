@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import {render, screen} from '@testing-library/react';
 import App from '../App';
 
 describe('App', () => {
@@ -8,12 +8,12 @@ describe('App', () => {
   });
 
   it('renders the main heading', () => {
-    render(<App />);
-    expect(screen.getByRole('heading', { name: /Aurelius Design/i, level: 1 })).toBeInTheDocument();
+    render(<App/>);
+    expect(screen.getByRole('heading', {name: /Aurelius Design/i, level: 1})).toBeInTheDocument();
   });
 
   it('renders navigation sidebar with all sections', () => {
-    render(<App />);
+    render(<App/>);
 
     const navItems = [
       'Overview',
@@ -32,12 +32,12 @@ describe('App', () => {
     ];
 
     navItems.forEach(item => {
-      expect(screen.getByRole('link', { name: item })).toBeInTheDocument();
+      expect(screen.getByRole('link', {name: item})).toBeInTheDocument();
     });
   });
 
   it('renders all section components', () => {
-    render(<App />);
+    render(<App/>);
 
     // Check that all section IDs are present
     expect(document.getElementById('overview')).toBeInTheDocument();
@@ -56,31 +56,31 @@ describe('App', () => {
   });
 
   it('displays main view by default', () => {
-    render(<App />);
+    render(<App/>);
     expect(screen.getByText(/A cohesive visual language/i)).toBeInTheDocument();
   });
 
   it('switches to legal view when hash is #legal', () => {
     window.location.hash = '#legal';
-    render(<App />);
+    render(<App/>);
 
     // Check that the main view content is not present
     expect(screen.queryByText(/A cohesive visual language/i)).not.toBeInTheDocument();
     // Check for Impressum heading
-    expect(screen.getByRole('heading', { name: /Impressum/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', {name: /Impressum/i})).toBeInTheDocument();
   });
 
-  it('has correct navigation structure with section class', () => {
-    const { container } = render(<App />);
-    const sections = container.querySelectorAll('.section');
+  it('renders expected number of sections', () => {
+    const {container} = render(<App/>);
+    const sections = container.querySelectorAll('.section-header');
 
-    // Should have all the main sections
+    // Should have all the main sections rendered
     expect(sections.length).toBeGreaterThanOrEqual(12);
   });
 
   it('renders GitHub link in sidebar', () => {
-    render(<App />);
-    const githubLink = screen.getByRole('link', { name: /View Source on GitHub/i });
+    render(<App/>);
+    const githubLink = screen.getByRole('link', {name: /View Source on GitHub/i});
 
     expect(githubLink).toBeInTheDocument();
     expect(githubLink).toHaveAttribute('href', 'https://github.com/lukeashford/aurelius');
@@ -89,7 +89,7 @@ describe('App', () => {
   });
 
   it('applies correct background and text colors', () => {
-    const { container } = render(<App />);
+    const {container} = render(<App/>);
     const mainDiv = container.firstChild as HTMLElement;
 
     expect(mainDiv).toHaveClass('bg-obsidian');
@@ -97,7 +97,7 @@ describe('App', () => {
   });
 
   it('has sidebar with correct styling classes', () => {
-    const { container } = render(<App />);
+    const {container} = render(<App/>);
     const sidebar = container.querySelector('aside');
 
     expect(sidebar).toBeInTheDocument();
@@ -107,12 +107,12 @@ describe('App', () => {
   });
 
   it('navigation links have correct href attributes', () => {
-    render(<App />);
+    render(<App/>);
 
-    const overviewLink = screen.getByRole('link', { name: 'Overview' });
+    const overviewLink = screen.getByRole('link', {name: 'Overview'});
     expect(overviewLink).toHaveAttribute('href', '#overview');
 
-    const colorsLink = screen.getByRole('link', { name: 'Colors' });
+    const colorsLink = screen.getByRole('link', {name: 'Colors'});
     expect(colorsLink).toHaveAttribute('href', '#colors');
   });
 });

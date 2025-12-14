@@ -113,7 +113,7 @@ const tokenCardClass =
 export default function TypographySection() {
   return (
       <div>
-        <header className="mb-4">
+        <header className="section-header">
           <h2 className="text-2xl">Typography</h2>
           <p className="text-silver">
             Font stacks and type scale used throughout the system.

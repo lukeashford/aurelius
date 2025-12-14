@@ -67,7 +67,7 @@ function ColorCard({token}: { token: ColorKey }) {
 export default function ColorsSection() {
   return (
       <div>
-        <header className="mb-4">
+        <header className="section-header">
           <h2 className="text-2xl">Colors</h2>
           <p className="text-silver">
             Core palette organized by family. Utilities reflect Tailwind preset names.
