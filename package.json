@@ -1,6 +1,6 @@
 {
   "name": "@lukeashford/aurelius",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Design system for Aurelius applications — A cohesive visual language for creative technologists",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -11,6 +11,7 @@
       "import": "./dist/index.mjs",
       "require": "./dist/index.js"
     },
+    "./eslint": "./scripts/eslint.mjs",
     "./styles/base.css": "./dist/styles/base.css",
     "./styles/theme.css": "./dist/styles/theme.css",
     "./styles/fonts.css": "./dist/styles/fonts.css",
@@ -20,27 +21,55 @@
   },
   "files": [
     "dist",
+    "scripts/eslint.mjs",
     "llms.md"
   ],
   "scripts": {
-    "build": "tsup && node scripts/generate-manifest.js",
+    "build": "npm run typecheck && npm run lint && tsup && node scripts/generate-manifest.js",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
+    "lint": "eslint src --max-warnings 0",
     "prepublishOnly": "npm run build",
     "dev:demo": "npm --prefix demo run dev",
     "dev:all": "concurrently -k \"npm run dev\" \"npm run dev:demo\""
   },
   "peerDependencies": {
+    "@eslint/css": ">=0.9.0",
+    "@poupe/eslint-plugin-tailwindcss": ">=0.2.0",
+    "@typescript-eslint/parser": ">=8.0.0",
+    "eslint": ">=9.0.0",
+    "eslint-plugin-better-tailwindcss": ">=4.0.0-beta",
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0",
+    "tailwind-csstree": ">=0.1.0",
     "tailwindcss": ">=4.0.0"
   },
   "peerDependenciesMeta": {
     "tailwindcss": {
       "optional": true
+    },
+    "eslint": {
+      "optional": true
+    },
+    "eslint-plugin-better-tailwindcss": {
+      "optional": true
+    },
+    "@poupe/eslint-plugin-tailwindcss": {
+      "optional": true
+    },
+    "@typescript-eslint/parser": {
+      "optional": true
+    },
+    "@eslint/css": {
+      "optional": true
+    },
+    "tailwind-csstree": {
+      "optional": true
     }
   },
   "devDependencies": {
+    "@eslint/css": "^0.9.0",
+    "@poupe/eslint-plugin-tailwindcss": "^0.2.4",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
     "@testing-library/user-event": "^14.5.2",
@@ -48,8 +77,12 @@
     "@types/node": "^20.0.0",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
+    "@typescript-eslint/eslint-plugin": "^8.49.0",
+    "@typescript-eslint/parser": "^8.49.0",
     "@vitejs/plugin-react": "^4.3.4",
     "concurrently": "^8.2.2",
+    "eslint": "^9.0.0",
+    "eslint-plugin-better-tailwindcss": "^4.0.0-beta",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "react": "^19.2.1",

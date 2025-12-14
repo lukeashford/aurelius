@@ -51,9 +51,7 @@ exports[`InputsSection matches snapshot 1`] = `
           <span
             class="pointer-events-none absolute inset-y-0 left-3 flex items-center text-silver"
           >
-            <span
-              class="i-heroicons-magnifying-glass-20-solid"
-            >
+            <span>
               🔎
             </span>
           </span>

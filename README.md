@@ -56,7 +56,7 @@ while staying within design system constraints.
 
 ```bash
 npm install @lukeashford/aurelius
-npm install -D eslint eslint-plugin-tailwindcss
+npm install -D eslint @typescript-eslint/parser eslint-plugin-better-tailwindcss @poupe/eslint-plugin-tailwindcss @eslint/css tailwind-csstree
 ```
 
 ### 2. Import the design system
@@ -78,40 +78,33 @@ Then import it in your entry file:
 import './index.css'
 ```
 
-### 3. Configure ESLint
+### 3. Configure ESLint (simplest form)
 
-This enforces the design system — agents and developers get errors when using arbitrary values or
-non-Aurelius classes.
-
-```javascript
-// eslint.config.js
-import tailwindcss from 'eslint-plugin-tailwindcss';
-
-export default [
-  {
-    plugins: {tailwindcss},
-    rules: {
-      'tailwindcss/no-arbitrary-value': 'error',
-      'tailwindcss/no-custom-classname': 'error',
-    },
-  },
-];
-```
-
-<details>
-<summary>Legacy .eslintrc.js format</summary>
+Aurelius ships with a default ESLint config you can re-export in one line. It enforces design system
+constraints — if ESLint complains, you're leaving the rails.
 
 ```javascript
-module.exports = {
-  plugins: ['tailwindcss'],
-  rules: {
-    'tailwindcss/no-arbitrary-value': 'error',
-    'tailwindcss/no-custom-classname': 'error',
-  },
-}
+// eslint.config.mjs
+export {default} from '@lukeashford/aurelius/eslint';
 ```
 
-</details>
+**Need a different CSS entry point?**
+
+```javascript
+// eslint.config.mjs
+import {createAureliusESLintConfig} from '@lukeashford/aurelius/eslint';
+
+export default createAureliusESLintConfig({
+  entryPoint: './app/styles.css'
+});
+```
+
+**What this enforces:**
+
+- **JS/TS/JSX/TSX files:** No custom/non-Aurelius class names, no arbitrary value utilities like
+  `bg-[#123456]` or `text-[15px]`
+- **CSS files:** Tailwind v4 CSS best practices, valid `@apply` directives, no arbitrary value
+  overuse, and proper theme token usage
 
 ### 4. Update package.json scripts
 

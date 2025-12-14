@@ -6,7 +6,7 @@
 
 ```bash
 npm install @lukeashford/aurelius
-npm install -D eslint eslint-plugin-tailwindcss
+npm install -D eslint @typescript-eslint/parser eslint-plugin-better-tailwindcss @poupe/eslint-plugin-tailwindcss @eslint/css tailwind-csstree
 ```
 
 ### 2. Import the design system
@@ -28,21 +28,14 @@ Then import it in your entry file:
 import './index.css'
 ```
 
-### 3. Configure ESLint (enforces design system)
+### 3. Configure ESLint
+
+Aurelius ships with a default ESLint config you can re-export in one line. It enforces design system
+constraints — if ESLint complains, you're leaving the rails.
 
 ```javascript
-// eslint.config.js
-import tailwindcss from 'eslint-plugin-tailwindcss';
-
-export default [
-  {
-    plugins: { tailwindcss },
-    rules: {
-      'tailwindcss/no-arbitrary-value': 'error',
-      'tailwindcss/no-custom-classname': 'error',
-    },
-  },
-];
+// eslint.config.mjs
+export { default } from '@lukeashford/aurelius/eslint';
 ```
 
 ---
@@ -53,7 +46,7 @@ export default [
 2. **Text colors.** Use `text-white` for headings and primary content. Use `text-silver` for secondary text, descriptions, and metadata.
 3. **Gold is for primary actions only.** Don't overuse `text-gold` or `bg-gold`.
 4. **Use components first.** Check the Components table below before building custom elements.
-5. **Use Tailwind classes from this manifest.** Never hardcode hex values or use arbitrary values like `bg-[#123]`.
+5. **Stay on-system.** No custom/non-Aurelius class names, no arbitrary value utilities (`bg-[...]`, `text-[...]`, etc.), and follow Tailwind v4 CSS best practices in `.css` files.
 6. **Subtle borders over shadows.** Prefer `border-ash` over heavy drop shadows.
 
 ---
