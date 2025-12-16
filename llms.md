@@ -60,17 +60,26 @@ Import from `@lukeashford/aurelius`:
 | Alert | variant (info, success, warning, error), title |
 | Avatar | src, alt, name, size (xs, sm, md, lg, xl, 2xl), status (online, offline, busy) |
 | Badge | variant (default, gold, success, error, warning, info) |
+| BrandIcon | size (sm, md, lg), variant (solid, outline) |
 | Button | variant (primary, important, elevated, outlined, featured, ghost, danger), size (sm, md, lg, xl), loading |
-| Card | variant (default, elevated, outlined, ghost, featured), interactive |
+| Card | variant (default, elevated, outlined, ghost, featured), interactive, selected |
 | Checkbox | label |
+| ColorSwatch | color, label |
 | HelperText | error |
+| IconButton | icon |
+| ImageCard | src, alt, aspectRatio (square, video), overlay |
 | Input | error, leadingIcon, trailingIcon |
 | Label | required |
+| MarkdownContent | children |
+| Message | variant (user, sent, assistant, received) |
 | Modal | isOpen, title, children, className |
 | Radio | label |
+| SectionHeading | level (h2, h3) |
 | Select | error, options |
 | Skeleton | children |
 | Spinner | size (sm, md, lg) |
+| Stepper | steps, currentStep, status (complete, error) |
+| StreamingCursor | children |
 | Switch | checked, defaultChecked, label |
 | Textarea | error |
 | Tooltip | content, children, open, side (top, right, bottom, left) |

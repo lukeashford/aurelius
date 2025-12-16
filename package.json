@@ -110,6 +110,7 @@
   "author": "Your Name",
   "license": "MIT",
   "dependencies": {
-    "lucide-react": "^0.555.0"
+    "lucide-react": "^0.555.0",
+    "@tailwindcss/typography": "^0.5.15"
   }
 }
