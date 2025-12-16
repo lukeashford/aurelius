@@ -1,0 +1,124 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MessageSection matches snapshot 1`] = `
+<div>
+  <div>
+    <header
+      class="section-header"
+    >
+      <h2
+        class="text-2xl"
+      >
+        Messages
+      </h2>
+      <p
+        class="text-silver"
+      >
+        Chat message components for conversational interfaces.
+      </p>
+    </header>
+    <div
+      class="space-y-8"
+    >
+      <div>
+        <h3
+          class="text-lg font-semibold mb-4"
+        >
+          Variants
+        </h3>
+        <div
+          class="space-y-3"
+        >
+          <div>
+            <p
+              class="text-silver text-sm mb-2 font-mono"
+            >
+              user
+            </p>
+            <div
+              class="rounded-none px-4 py-3 max-w-4xl bg-gold text-obsidian ml-auto"
+            >
+              This is a 
+              user
+               message. It demonstrates the styling for this variant.
+            </div>
+          </div>
+          <div>
+            <p
+              class="text-silver text-sm mb-2 font-mono"
+            >
+              sent
+            </p>
+            <div
+              class="rounded-none px-4 py-3 max-w-4xl bg-gold text-obsidian ml-auto"
+            >
+              This is a 
+              sent
+               message. It demonstrates the styling for this variant.
+            </div>
+          </div>
+          <div>
+            <p
+              class="text-silver text-sm mb-2 font-mono"
+            >
+              assistant
+            </p>
+            <div
+              class="rounded-none px-4 py-3 max-w-4xl bg-charcoal border border-ash text-white mr-auto"
+            >
+              This is a 
+              assistant
+               message. It demonstrates the styling for this variant.
+            </div>
+          </div>
+          <div>
+            <p
+              class="text-silver text-sm mb-2 font-mono"
+            >
+              received
+            </p>
+            <div
+              class="rounded-none px-4 py-3 max-w-4xl bg-charcoal border border-ash text-white mr-auto"
+            >
+              This is a 
+              received
+               message. It demonstrates the styling for this variant.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3
+          class="text-lg font-semibold mb-4"
+        >
+          Conversation Example
+        </h3>
+        <div
+          class="space-y-3 max-w-4xl"
+        >
+          <div
+            class="rounded-none px-4 py-3 max-w-4xl bg-gold text-obsidian ml-auto"
+          >
+            Hello! Can you help me understand how to use this component?
+          </div>
+          <div
+            class="rounded-none px-4 py-3 max-w-4xl bg-charcoal border border-ash text-white mr-auto"
+          >
+            Of course! The Message component is designed for chat interfaces. It supports different variants for user and assistant messages, and automatically aligns them appropriately.
+          </div>
+          <div
+            class="rounded-none px-4 py-3 max-w-4xl bg-gold text-obsidian ml-auto"
+          >
+            That's great! What about longer messages with multiple paragraphs?
+          </div>
+          <div
+            class="rounded-none px-4 py-3 max-w-4xl bg-charcoal border border-ash text-white mr-auto"
+          >
+            Longer messages work perfectly fine. The component will expand to fit the content while maintaining the maximum width constraint. This ensures readability even with extensive text. You can include any content you need within the message.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

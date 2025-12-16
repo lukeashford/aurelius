@@ -1,0 +1,94 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StreamingCursorSection matches snapshot 1`] = `
+<div>
+  <div>
+    <header
+      class="section-header"
+    >
+      <h2
+        class="text-2xl"
+      >
+        Streaming Cursor
+      </h2>
+      <p
+        class="text-silver"
+      >
+        Animated cursor for streaming text and real-time content.
+      </p>
+    </header>
+    <div
+      class="space-y-8"
+    >
+      <div>
+        <h3
+          class="text-lg font-semibold mb-4"
+        >
+          Basic Usage
+        </h3>
+        <div
+          class="bg-charcoal border border-ash p-4 rounded-none"
+        >
+          <p
+            class="text-white"
+          >
+            Typing text
+            <span
+              aria-hidden="true"
+              class="inline-block w-1.5 h-4 bg-gold animate-pulse"
+            />
+          </p>
+        </div>
+      </div>
+      <div>
+        <h3
+          class="text-lg font-semibold mb-4"
+        >
+          Interactive Demo
+        </h3>
+        <div
+          class="space-y-4"
+        >
+          <div
+            class="bg-charcoal border border-ash p-4 rounded-none min-h-[100px]"
+          >
+            <p
+              class="text-white"
+            />
+          </div>
+          <button
+            class="px-4 py-2 bg-gold text-obsidian rounded-none disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gold-bright transition-colors"
+          >
+            Start Streaming
+          </button>
+        </div>
+      </div>
+      <div>
+        <h3
+          class="text-lg font-semibold mb-4"
+        >
+          In Context
+        </h3>
+        <div
+          class="bg-charcoal border border-ash p-4 rounded-none space-y-3"
+        >
+          <p
+            class="text-silver text-sm"
+          >
+            Assistant is typing...
+          </p>
+          <p
+            class="text-white"
+          >
+            The streaming cursor is perfect for AI chat interfaces where responses are generated in real-time. It provides visual feedback that content is being actively generated
+            <span
+              aria-hidden="true"
+              class="inline-block w-1.5 h-4 bg-gold animate-pulse"
+            />
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -1,0 +1,147 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ImageCardSection matches snapshot 1`] = `
+<div>
+  <div>
+    <header
+      class="section-header"
+    >
+      <h2
+        class="text-2xl"
+      >
+        Image Cards
+      </h2>
+      <p
+        class="text-silver"
+      >
+        Cards with images and optional overlays in different aspect ratios.
+      </p>
+    </header>
+    <div
+      class="space-y-8"
+    >
+      <div>
+        <h3
+          class="text-lg font-semibold mb-4"
+        >
+          Aspect Ratios
+        </h3>
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 gap-6"
+        >
+          <div>
+            <p
+              class="text-silver text-sm mb-2 font-mono"
+            >
+              square
+            </p>
+            <div
+              class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group"
+            >
+              <div
+                class="relative"
+              >
+                <img
+                  alt="square aspect ratio example"
+                  class="w-full h-full object-cover aspect-square"
+                  src="https://picsum.photos/seed/square/800/800"
+                />
+              </div>
+            </div>
+          </div>
+          <div>
+            <p
+              class="text-silver text-sm mb-2 font-mono"
+            >
+              video
+            </p>
+            <div
+              class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group"
+            >
+              <div
+                class="relative"
+              >
+                <img
+                  alt="video aspect ratio example"
+                  class="w-full h-full object-cover aspect-video"
+                  src="https://picsum.photos/seed/video/800/800"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3
+          class="text-lg font-semibold mb-4"
+        >
+          With Overlay
+        </h3>
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 gap-6"
+        >
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group"
+          >
+            <div
+              class="relative"
+            >
+              <img
+                alt="Image with overlay"
+                class="w-full h-full object-cover aspect-square"
+                src="https://picsum.photos/seed/overlay1/800/800"
+              />
+              <div
+                class="absolute inset-0 bg-obsidian/80 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center"
+              >
+                <div
+                  class="absolute inset-0 bg-gradient-to-t from-obsidian/90 to-transparent flex items-end p-4"
+                >
+                  <div>
+                    <h4
+                      class="text-white font-semibold text-lg"
+                    >
+                      Image Title
+                    </h4>
+                    <p
+                      class="text-silver text-sm"
+                    >
+                      Description text goes here
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group"
+          >
+            <div
+              class="relative"
+            >
+              <img
+                alt="Video aspect with overlay"
+                class="w-full h-full object-cover aspect-video"
+                src="https://picsum.photos/seed/overlay2/800/450"
+              />
+              <div
+                class="absolute inset-0 bg-obsidian/80 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center"
+              >
+                <div
+                  class="absolute inset-0 bg-obsidian/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  <p
+                    class="text-white font-semibold"
+                  >
+                    Hover Overlay
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

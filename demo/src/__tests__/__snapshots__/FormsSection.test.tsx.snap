@@ -23,7 +23,7 @@ exports[`FormsSection matches snapshot 1`] = `
       class="grid grid-cols-1 gap-8 md:grid-cols-2"
     >
       <div
-        class="rounded-none p-6 bg-charcoal shadow-sm border border-gold/30 p-6 space-y-4"
+        class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-6 space-y-4"
       >
         <h3
           class="text-gold font-medium"
@@ -86,7 +86,7 @@ exports[`FormsSection matches snapshot 1`] = `
         </div>
       </div>
       <div
-        class="rounded-none p-6 bg-charcoal shadow-sm border border-gold/30 p-6 space-y-4"
+        class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-6 space-y-4"
       >
         <h3
           class="text-gold font-medium"
@@ -124,7 +124,7 @@ exports[`FormsSection matches snapshot 1`] = `
         </div>
       </div>
       <div
-        class="rounded-none p-6 bg-charcoal shadow-sm border border-gold/30 p-6 space-y-6"
+        class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-6 space-y-6"
       >
         <h3
           class="text-gold font-medium"

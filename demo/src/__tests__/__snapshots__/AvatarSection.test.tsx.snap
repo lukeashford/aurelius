@@ -1,0 +1,192 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AvatarSection matches snapshot 1`] = `
+<div>
+  <div>
+    <header
+      class="section-header"
+    >
+      <h2
+        class="text-2xl"
+      >
+        Avatar
+      </h2>
+      <p
+        class="text-silver"
+      >
+        User identity with sizes and fallback initials.
+      </p>
+    </header>
+    <div
+      class="grid gap-6 md:grid-cols-2"
+    >
+      <div>
+        <h4
+          class="mb-3 text-gold"
+        >
+          Sizes
+        </h4>
+        <div
+          class="flex flex-wrap items-end gap-4"
+        >
+          <div
+            class="flex flex-col items-center gap-2"
+          >
+            <div
+              class="relative inline-flex items-center justify-center rounded-full border-2 border-ash bg-slate text-silver font-semibold select-none overflow-hidden h-6 w-6 text-[10px]"
+            >
+              <span
+                aria-hidden="true"
+              >
+                A
+              </span>
+            </div>
+            <span
+              class="text-xs text-silver"
+            >
+              xs
+            </span>
+          </div>
+          <div
+            class="flex flex-col items-center gap-2"
+          >
+            <div
+              class="relative inline-flex items-center justify-center rounded-full border-2 border-ash bg-slate text-silver font-semibold select-none overflow-hidden h-8 w-8 text-[11px]"
+            >
+              <span
+                aria-hidden="true"
+              >
+                A
+              </span>
+            </div>
+            <span
+              class="text-xs text-silver"
+            >
+              sm
+            </span>
+          </div>
+          <div
+            class="flex flex-col items-center gap-2"
+          >
+            <div
+              class="relative inline-flex items-center justify-center rounded-full border-2 border-ash bg-slate text-silver font-semibold select-none overflow-hidden h-10 w-10 text-xs"
+            >
+              <span
+                aria-hidden="true"
+              >
+                A
+              </span>
+            </div>
+            <span
+              class="text-xs text-silver"
+            >
+              md
+            </span>
+          </div>
+          <div
+            class="flex flex-col items-center gap-2"
+          >
+            <div
+              class="relative inline-flex items-center justify-center rounded-full border-2 border-ash bg-slate text-silver font-semibold select-none overflow-hidden h-12 w-12 text-sm"
+            >
+              <span
+                aria-hidden="true"
+              >
+                A
+              </span>
+            </div>
+            <span
+              class="text-xs text-silver"
+            >
+              lg
+            </span>
+          </div>
+          <div
+            class="flex flex-col items-center gap-2"
+          >
+            <div
+              class="relative inline-flex items-center justify-center rounded-full border-2 border-ash bg-slate text-silver font-semibold select-none overflow-hidden h-16 w-16 text-base"
+            >
+              <span
+                aria-hidden="true"
+              >
+                A
+              </span>
+            </div>
+            <span
+              class="text-xs text-silver"
+            >
+              xl
+            </span>
+          </div>
+          <div
+            class="flex flex-col items-center gap-2"
+          >
+            <div
+              class="relative inline-flex items-center justify-center rounded-full border-2 border-ash bg-slate text-silver font-semibold select-none overflow-hidden h-24 w-24 text-lg"
+            >
+              <span
+                aria-hidden="true"
+              >
+                A
+              </span>
+            </div>
+            <span
+              class="text-xs text-silver"
+            >
+              2xl
+            </span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h4
+          class="mb-3 text-gold"
+        >
+          With Image & Status
+        </h4>
+        <div
+          class="flex items-center gap-4"
+        >
+          <div
+            class="relative inline-flex items-center justify-center rounded-full border-2 border-ash bg-slate text-silver font-semibold select-none overflow-hidden h-12 w-12 text-sm"
+          >
+            <img
+              alt="Profile"
+              class="h-full w-full object-cover"
+              src="https://i.postimg.cc/qvJsCQwy/2-C3-A5121-2.jpg"
+            />
+            <span
+              class="absolute bottom-0 right-0 rounded-full ring-2 ring-charcoal h-3 w-3 bg-success"
+            />
+          </div>
+          <div
+            class="relative inline-flex items-center justify-center rounded-full border-2 border-ash bg-slate text-silver font-semibold select-none overflow-hidden h-12 w-12 text-sm"
+          >
+            <span
+              aria-hidden="true"
+            >
+              MA
+            </span>
+            <span
+              class="absolute bottom-0 right-0 rounded-full ring-2 ring-charcoal h-3 w-3 bg-warning"
+            />
+          </div>
+          <div
+            class="relative inline-flex items-center justify-center rounded-full border-2 border-ash bg-slate text-silver font-semibold select-none overflow-hidden h-12 w-12 text-sm"
+          >
+            <span
+              aria-hidden="true"
+            >
+              S
+            </span>
+            <span
+              class="absolute bottom-0 right-0 rounded-full ring-2 ring-charcoal h-3 w-3 bg-zinc"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

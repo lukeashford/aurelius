@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BadgesSection matches snapshot 1`] = `
+<div>
+  <div>
+    <header
+      class="section-header"
+    >
+      <h2
+        class="text-2xl"
+      >
+        Badges
+      </h2>
+      <p
+        class="text-silver"
+      >
+        Inline status and metadata indicators.
+      </p>
+    </header>
+    <div
+      class="flex flex-wrap gap-3"
+    >
+      <span
+        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border bg-slate text-silver border-slate"
+      >
+        default
+      </span>
+      <span
+        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border bg-gold/20 text-gold border-gold/30"
+      >
+        gold
+      </span>
+      <span
+        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border bg-success/20 text-success border-success/30"
+      >
+        success
+      </span>
+      <span
+        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border bg-error/20 text-error border-error/30"
+      >
+        error
+      </span>
+      <span
+        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border bg-warning/20 text-warning border-warning/30"
+      >
+        warning
+      </span>
+      <span
+        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border bg-info/20 text-info border-info/30"
+      >
+        info
+      </span>
+    </div>
+  </div>
+</div>
+`;
