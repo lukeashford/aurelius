@@ -17,12 +17,17 @@ export {Skeleton, type SkeletonProps} from './Skeleton'
 export {Modal, type ModalProps} from './Modal'
 export {Stepper, type StepperProps, type Step, type StepStatus} from './Stepper'
 export {Message, type MessageProps, type MessageVariant} from './Message'
+export {ChatHistory, type ChatHistoryProps, type ChatHistoryItem} from './ChatHistory'
 export {StreamingCursor, type StreamingCursorProps} from './StreamingCursor'
 export {MarkdownContent, type MarkdownContentProps} from './MarkdownContent'
 export {
   BrandIcon, type BrandIconProps, type BrandIconSize, type BrandIconVariant
 } from './BrandIcon'
 export {ColorSwatch, type ColorSwatchProps} from './ColorSwatch'
-export {ImageCard, type ImageCardProps, type ImageAspectRatio} from './ImageCard'
-export {IconButton, type IconButtonProps} from './IconButton'
+export {
+  ImageCard,
+  type ImageCardProps,
+  type AspectRatio,
+  type AspectRatioPreset,
+} from './ImageCard'
 export {SectionHeading, type SectionHeadingProps, type SectionHeadingLevel} from './SectionHeading'

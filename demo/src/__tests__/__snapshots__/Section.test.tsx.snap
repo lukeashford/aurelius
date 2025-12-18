@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Section matches snapshot 1`] = `
+<div>
+  <section>
+    <header
+      class="section-header"
+    >
+      <h2
+        class="text-2xl"
+      >
+        Snapshot Title
+      </h2>
+      <p
+        class="text-silver"
+      >
+        Snapshot Subtitle
+      </p>
+    </header>
+    <div>
+      Snapshot child
+    </div>
+  </section>
+</div>
+`;

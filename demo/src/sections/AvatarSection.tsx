@@ -1,16 +1,12 @@
 import React from 'react'
 import {Avatar, type AvatarSize} from '@lukeashford/aurelius'
+import Section from './Section'
 
 const sizes: AvatarSize[] = ['xs', 'sm', 'md', 'lg', 'xl', '2xl']
 
 export default function AvatarSection() {
   return (
-      <div>
-        <header className="section-header">
-          <h2 className="text-2xl">Avatar</h2>
-          <p className="text-silver">User identity with sizes and fallback initials.</p>
-        </header>
-
+      <Section title="Avatar" subtitle="User identity with sizes and fallback initials.">
         <div className="grid gap-6 md:grid-cols-2">
           <div>
             <h4 className="mb-3 text-gold">Sizes</h4>
@@ -38,6 +34,6 @@ export default function AvatarSection() {
             </div>
           </div>
         </div>
-      </div>
+      </Section>
   )
 }

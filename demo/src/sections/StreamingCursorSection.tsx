@@ -1,75 +1,54 @@
 import React from 'react'
 import {StreamingCursor} from '@lukeashford/aurelius'
+import Section from './Section'
+
+const variants = ['line', 'block', 'underscore'] as const
+const fullText = 'The streaming cursor provides visual feedback during real-time text generation...'
 
 export default function StreamingCursorSection() {
   const [text, setText] = React.useState('')
-  const [isStreaming, setIsStreaming] = React.useState(false)
-  const fullText = 'This is an example of streaming text with a cursor animation...'
+  const [variantIndex, setVariantIndex] = React.useState(0)
 
-  const startStreaming = () => {
-    setText('')
-    setIsStreaming(true)
-    let index = 0
+  React.useEffect(() => {
+    let charIndex = 0
+    let timeout: ReturnType<typeof setTimeout>
 
-    const interval = setInterval(() => {
-      if (index < fullText.length) {
-        setText(fullText.slice(0, index + 1))
-        index++
+    const typeNextChar = () => {
+      if (charIndex < fullText.length) {
+        setText(fullText.slice(0, charIndex + 1))
+        charIndex++
+        timeout = setTimeout(typeNextChar, 40)
       } else {
-        setIsStreaming(false)
-        clearInterval(interval)
+        // Pause at end, then reset with next variant
+        timeout = setTimeout(() => {
+          setText('')
+          charIndex = 0
+          setVariantIndex((i) => (i + 1) % variants.length)
+          timeout = setTimeout(typeNextChar, 500)
+        }, 2000)
       }
-    }, 50)
-  }
+    }
+
+    timeout = setTimeout(typeNextChar, 500)
+    return () => clearTimeout(timeout)
+  }, [variantIndex])
+
+  const currentVariant = variants[variantIndex]
 
   return (
-      <div>
-        <header className="section-header">
-          <h2 className="text-2xl">Streaming Cursor</h2>
-          <p className="text-silver">Animated cursor for streaming text and real-time content.</p>
-        </header>
-
-        <div className="space-y-8">
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Basic Usage</h3>
-            <div className="bg-charcoal border border-ash p-4 rounded-none">
-              <p className="text-white">
-                Typing text<StreamingCursor/>
-              </p>
-            </div>
-          </div>
-
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Interactive Demo</h3>
-            <div className="space-y-4">
-              <div className="bg-charcoal border border-ash p-4 rounded-none min-h-[100px]">
-                <p className="text-white">
-                  {text}
-                  {isStreaming && <StreamingCursor/>}
-                </p>
-              </div>
-              <button
-                  onClick={startStreaming}
-                  disabled={isStreaming}
-                  className="px-4 py-2 bg-gold text-obsidian rounded-none disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gold-bright transition-colors"
-              >
-                {isStreaming ? 'Streaming...' : 'Start Streaming'}
-              </button>
-            </div>
-          </div>
-
-          <div>
-            <h3 className="text-lg font-semibold mb-4">In Context</h3>
-            <div className="bg-charcoal border border-ash p-4 rounded-none space-y-3">
-              <p className="text-silver text-sm">Assistant is typing...</p>
-              <p className="text-white">
-                The streaming cursor is perfect for AI chat interfaces where responses are generated
-                in real-time. It provides visual feedback that content is being actively
-                generated<StreamingCursor/>
-              </p>
-            </div>
-          </div>
+      <Section
+          title="Streaming Cursor"
+          subtitle="Animated cursor for streaming text and real-time content."
+      >
+        <div className="bg-charcoal border border-ash p-6 rounded-none">
+          <p className="text-silver text-sm mb-3">
+            variant="{currentVariant}"
+          </p>
+          <p className="text-white text-lg">
+            {text}
+            <StreamingCursor variant={currentVariant}/>
+          </p>
         </div>
-      </div>
+      </Section>
   )
 }

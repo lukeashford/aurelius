@@ -3,7 +3,6 @@ import React, {useState} from 'react'
 import ColorsSection from './sections/ColorsSection'
 import TypographySection from './sections/TypographySection'
 import ButtonsSection from './sections/ButtonsSection'
-import IconButtonSection from './sections/IconButtonSection'
 import BadgesSection from './sections/BadgesSection'
 import BrandIconSection from './sections/BrandIconSection'
 import InputsSection from './sections/InputsSection'
@@ -28,21 +27,20 @@ const nav = [
   {id: 'colors', label: 'Colors'},
   {id: 'typography', label: 'Typography'},
   {id: 'buttons', label: 'Buttons'},
-  {id: 'icon-buttons', label: 'Icon Buttons'},
   {id: 'badges', label: 'Badges'},
-  {id: 'brand-icons', label: 'Brand Icons'},
   {id: 'inputs', label: 'Inputs'},
-  {id: 'forms', label: 'Forms'},
   {id: 'cards', label: 'Cards'},
-  {id: 'image-cards', label: 'Image Cards'},
-  {id: 'avatar', label: 'Avatar'},
-  {id: 'markdown', label: 'Markdown Content'},
-  {id: 'feedback', label: 'Feedback'},
+  {id: 'forms', label: 'Forms'},
   {id: 'stepper', label: 'Stepper'},
-  {id: 'messages', label: 'Messages'},
-  {id: 'streaming', label: 'Streaming Cursor'},
   {id: 'tooltip', label: 'Tooltip'},
   {id: 'modal', label: 'Overlays'},
+  {id: 'avatar', label: 'Avatar'},
+  {id: 'brand-icons', label: 'Brand Icons'},
+  {id: 'markdown', label: 'Markdown Content'},
+  {id: 'image-cards', label: 'Image Cards'},
+  {id: 'feedback', label: 'Feedback'},
+  {id: 'streaming', label: 'Streaming Cursor'},
+  {id: 'messages', label: 'Messages'},
 ]
 
 export default function App() {
@@ -110,7 +108,7 @@ export default function App() {
           </nav>
         </aside>
 
-        <main className="max-w-screen-xl mx-auto p-6 lg:pl-64 space-y-16">
+        <main className="max-w-7xl mx-auto p-6 lg:pl-64 space-y-16">
           <section id="overview" className="space-y-4">
             <h1 className="text-3xl sm:text-4xl font-semibold">Aurelius Design</h1>
             <p className="mt-3 text-silver max-w-3xl">
@@ -135,56 +133,24 @@ export default function App() {
             <ButtonsSection/>
           </section>
 
-          <section id="icon-buttons" className="space-y-4">
-            <IconButtonSection/>
-          </section>
-
           <section id="badges" className="space-y-4">
             <BadgesSection/>
-          </section>
-
-          <section id="brand-icons" className="space-y-4">
-            <BrandIconSection/>
           </section>
 
           <section id="inputs" className="space-y-4">
             <InputsSection/>
           </section>
 
-          <section id="forms" className="space-y-4">
-            <FormsSection/>
-          </section>
-
           <section id="cards" className="space-y-4">
             <CardsSection/>
           </section>
 
-          <section id="image-cards" className="space-y-4">
-            <ImageCardSection/>
-          </section>
-
-          <section id="avatar" className="space-y-4">
-            <AvatarSection/>
-          </section>
-
-          <section id="markdown" className="space-y-4">
-            <MarkdownContentSection/>
-          </section>
-
-          <section id="feedback" className="space-y-4">
-            <FeedbackSection/>
+          <section id="forms" className="space-y-4">
+            <FormsSection/>
           </section>
 
           <section id="stepper" className="space-y-4">
             <StepperSection/>
-          </section>
-
-          <section id="messages" className="space-y-4">
-            <MessageSection/>
-          </section>
-
-          <section id="streaming" className="space-y-4">
-            <StreamingCursorSection/>
           </section>
 
           <section id="tooltip" className="space-y-4">
@@ -193,6 +159,34 @@ export default function App() {
 
           <section id="modal" className="space-y-4">
             <ModalSection/>
+          </section>
+
+          <section id="avatar" className="space-y-4">
+            <AvatarSection/>
+          </section>
+
+          <section id="brand-icons" className="space-y-4">
+            <BrandIconSection/>
+          </section>
+
+          <section id="markdown" className="space-y-4">
+            <MarkdownContentSection/>
+          </section>
+
+          <section id="image-cards" className="space-y-4">
+            <ImageCardSection/>
+          </section>
+
+          <section id="feedback" className="space-y-4">
+            <FeedbackSection/>
+          </section>
+
+          <section id="streaming" className="space-y-4">
+            <StreamingCursorSection/>
+          </section>
+
+          <section id="messages" className="space-y-4">
+            <MessageSection/>
           </section>
 
           <Footer/>

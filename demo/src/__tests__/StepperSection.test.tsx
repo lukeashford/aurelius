@@ -14,11 +14,6 @@ describe('StepperSection', () => {
     .toBeInTheDocument();
   });
 
-  it('renders states heading', () => {
-    render(<StepperSection/>);
-    expect(screen.getByRole('heading', {name: /States/i, level: 3})).toBeInTheDocument();
-  });
-
   it('renders control buttons', () => {
     render(<StepperSection/>);
     expect(screen.getByRole('button', {name: /Previous/i})).toBeInTheDocument();

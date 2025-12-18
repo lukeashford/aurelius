@@ -1,35 +1,44 @@
 import React from 'react'
+import {MarkdownContent} from './MarkdownContent'
+import {StreamingCursor} from './StreamingCursor'
 
-export type MessageVariant = 'user' | 'sent' | 'assistant' | 'received'
+export type MessageVariant = 'user' | 'assistant'
 
 export interface MessageProps extends React.HTMLAttributes<HTMLDivElement> {
   variant?: MessageVariant
+  content: string
+  isStreaming?: boolean
 }
 
 function cx(...classes: Array<string | number | false | null | undefined>) {
   return classes.filter(Boolean).join(' ')
 }
 
-export const Message = React.forwardRef<HTMLDivElement, MessageProps>(
-    ({variant = 'assistant', children, className, ...rest}, ref) => {
-      const isUser = variant === 'user' || variant === 'sent'
+const variantStyles: Record<MessageVariant, string> = {
+  user: 'bg-gold text-obsidian ml-auto',
+  assistant: 'bg-charcoal border border-ash text-white mr-auto',
+}
 
-      const variantClasses = isUser
-          ? 'bg-gold text-obsidian'
-          : 'bg-charcoal border border-ash text-white'
+export const Message = React.forwardRef<HTMLDivElement, MessageProps>(
+    ({variant = 'assistant', className, content, isStreaming, ...rest},
+        ref) => {
+      const isUser = variant === 'user'
 
       return (
           <div
               ref={ref}
               className={cx(
-                  'rounded-none px-4 py-3 max-w-4xl',
-                  variantClasses,
-                  isUser ? 'ml-auto' : 'mr-auto',
+                  'px-3 py-2 w-fit',
+                  variantStyles[variant],
                   className
               )}
               {...rest}
           >
-            {children}
+            <MarkdownContent
+                content={content}
+                className={cx('prose-sm', isUser ? 'prose-inherit' : 'prose-invert')}
+            />
+            {isStreaming && <StreamingCursor className="ml-0.5"/>}
           </div>
       )
     }

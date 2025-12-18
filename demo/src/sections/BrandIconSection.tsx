@@ -1,17 +1,16 @@
 import React from 'react'
 import {BrandIcon, type BrandIconSize, type BrandIconVariant} from '@lukeashford/aurelius'
+import Section from './Section'
 
 const variants: BrandIconVariant[] = ['solid', 'outline']
 const sizes: BrandIconSize[] = ['sm', 'md', 'lg']
 
 export default function BrandIconSection() {
   return (
-      <div>
-        <header className="section-header">
-          <h2 className="text-2xl">Brand Icons</h2>
-          <p className="text-silver">Branded icon containers with solid and outline variants.</p>
-        </header>
-
+      <Section
+          title="Brand Icons"
+          subtitle="Branded icon containers with solid and outline variants."
+      >
         <div className="overflow-x-auto">
           <table className="min-w-full text-left text-sm">
             <thead className="text-silver">
@@ -49,6 +48,6 @@ export default function BrandIconSection() {
             <BrandIcon variant="solid" size="sm">★</BrandIcon>
           </div>
         </div>
-      </div>
+      </Section>
   )
 }

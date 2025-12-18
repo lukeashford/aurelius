@@ -2,7 +2,7 @@
 
 exports[`FormsSection matches snapshot 1`] = `
 <div>
-  <div
+  <section
     class="space-y-8"
   >
     <header
@@ -332,6 +332,6 @@ exports[`FormsSection matches snapshot 1`] = `
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </div>
 `;

@@ -1,5 +1,6 @@
 import React from 'react'
 import {type Step, Stepper, type StepStatus} from '@lukeashford/aurelius'
+import Section from './Section'
 
 const steps: Step[] = [
   {id: 1, label: 'Account'},
@@ -13,12 +14,10 @@ export default function StepperSection() {
   const [status, setStatus] = React.useState<StepStatus | undefined>(undefined)
 
   return (
-      <div>
-        <header className="section-header">
-          <h2 className="text-2xl">Stepper</h2>
-          <p className="text-silver">Step indicators for multi-step processes and workflows.</p>
-        </header>
-
+      <Section
+          title="Stepper"
+          subtitle="Step indicators for multi-step processes and workflows."
+      >
         <div className="space-y-8">
           <div>
             <h3 className="text-lg font-semibold mb-4">Interactive Example</h3>
@@ -48,33 +47,7 @@ export default function StepperSection() {
               </div>
             </div>
           </div>
-
-          <div>
-            <h3 className="text-lg font-semibold mb-4">States</h3>
-            <div className="space-y-6">
-              <div>
-                <p className="text-silver text-sm mb-2">First step</p>
-                <Stepper steps={steps} currentStep={1}/>
-              </div>
-              <div>
-                <p className="text-silver text-sm mb-2">Middle step</p>
-                <Stepper steps={steps} currentStep={3}/>
-              </div>
-              <div>
-                <p className="text-silver text-sm mb-2">Last step</p>
-                <Stepper steps={steps} currentStep={4}/>
-              </div>
-              <div>
-                <p className="text-silver text-sm mb-2">Error state</p>
-                <Stepper steps={steps} currentStep={2} status="error"/>
-              </div>
-              <div>
-                <p className="text-silver text-sm mb-2">Complete state</p>
-                <Stepper steps={steps} currentStep={2} status="complete"/>
-              </div>
-            </div>
-          </div>
         </div>
-      </div>
+      </Section>
   )
 }

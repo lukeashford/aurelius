@@ -2,7 +2,7 @@
 
 exports[`ColorsSection matches snapshot 1`] = `
 <div>
-  <div>
+  <section>
     <header
       class="section-header"
     >
@@ -686,6 +686,6 @@ exports[`ColorsSection matches snapshot 1`] = `
         </div>
       </section>
     </div>
-  </div>
+  </section>
 </div>
 `;

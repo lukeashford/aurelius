@@ -1,5 +1,6 @@
 import React from 'react'
 import {Card} from '@lukeashford/aurelius'
+import Section from './Section'
 
 // Hard-coded stacks to mirror your Tailwind config
 const headingStack = '"Marcellus", serif'
@@ -112,14 +113,10 @@ const tokenCardClass =
 
 export default function TypographySection() {
   return (
-      <div>
-        <header className="section-header">
-          <h2 className="text-2xl">Typography</h2>
-          <p className="text-silver">
-            Font stacks and type scale used throughout the system.
-          </p>
-        </header>
-
+      <Section
+          title="Typography"
+          subtitle="Font stacks and type scale used throughout the system."
+      >
         {/* Top row: headings + body/mono */}
         <div className="grid gap-6 md:grid-cols-2">
           <Card className="p-6">
@@ -259,6 +256,6 @@ export default function TypographySection() {
             </div>
           </Card>
         </div>
-      </div>
+      </Section>
   )
 }

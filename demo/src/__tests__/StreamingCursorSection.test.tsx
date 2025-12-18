@@ -8,19 +8,20 @@ describe('StreamingCursorSection', () => {
     expect(screen.getByRole('heading', {name: /Streaming Cursor/i, level: 2})).toBeInTheDocument();
   });
 
-  it('renders basic usage heading', () => {
+  it('renders the section subtitle', () => {
     render(<StreamingCursorSection/>);
-    expect(screen.getByRole('heading', {name: /Basic Usage/i, level: 3})).toBeInTheDocument();
+    expect(screen.getByText(/Animated cursor for streaming text and real-time content./i))
+    .toBeInTheDocument();
   });
 
-  it('renders interactive demo heading', () => {
+  it('shows the current variant label', () => {
     render(<StreamingCursorSection/>);
-    expect(screen.getByRole('heading', {name: /Interactive Demo/i, level: 3})).toBeInTheDocument();
+    expect(screen.getByText(/variant="line"/i)).toBeInTheDocument();
   });
 
-  it('renders start streaming button', () => {
-    render(<StreamingCursorSection/>);
-    expect(screen.getByRole('button', {name: /Start Streaming/i})).toBeInTheDocument();
+  it('renders the streaming cursor element', () => {
+    const {container} = render(<StreamingCursorSection/>);
+    expect(container.querySelector('.animate-cursor-blink')).toBeInTheDocument();
   });
 
   it('matches snapshot', () => {

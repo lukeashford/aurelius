@@ -21,8 +21,8 @@ describe('MessageSection', () => {
 
   it('renders variant labels', () => {
     render(<MessageSection/>);
-    expect(screen.getByText('user')).toBeInTheDocument();
-    expect(screen.getByText('assistant')).toBeInTheDocument();
+    expect(screen.getByText('Assistant')).toBeInTheDocument();
+    expect(screen.getByText('User')).toBeInTheDocument();
   });
 
   it('matches snapshot', () => {

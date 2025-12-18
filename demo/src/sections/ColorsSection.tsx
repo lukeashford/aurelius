@@ -1,5 +1,6 @@
 import React from 'react'
 import {Card} from '@lukeashford/aurelius'
+import Section from './Section'
 
 // Explicit mapping so Tailwind JIT can see every class as a literal
 const bgClasses = {
@@ -66,14 +67,10 @@ function ColorCard({token}: { token: ColorKey }) {
 
 export default function ColorsSection() {
   return (
-      <div>
-        <header className="section-header">
-          <h2 className="text-2xl">Colors</h2>
-          <p className="text-silver">
-            Core palette organized by family. Utilities reflect Tailwind preset names.
-          </p>
-        </header>
-
+      <Section
+          title="Colors"
+          subtitle="Core palette organized by family. Utilities reflect Tailwind preset names."
+      >
         <div className="space-y-10">
           {Object.entries(families).map(([family, tokens]) => (
               <section key={family}>
@@ -86,6 +83,6 @@ export default function ColorsSection() {
               </section>
           ))}
         </div>
-      </div>
+      </Section>
   )
 }

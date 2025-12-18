@@ -1,5 +1,6 @@
 import React from 'react'
 import {Button, Card, Tooltip} from '@lukeashford/aurelius'
+import Section from './Section'
 
 export default function TooltipSection() {
   const [openId, setOpenId] = React.useState<string | null>(null)
@@ -7,12 +8,10 @@ export default function TooltipSection() {
   const toggle = (id: string) => setOpenId(prev => (prev === id ? null : id))
 
   return (
-      <div>
-        <header className="section-header">
-          <h2 className="text-2xl">Tooltip</h2>
-          <p className="text-silver">Simple controlled tooltips demonstrating positioning.</p>
-        </header>
-
+      <Section
+          title="Tooltip"
+          subtitle="Simple controlled tooltips demonstrating positioning."
+      >
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {(['top', 'right', 'bottom', 'left'] as const).map(side => (
               <Card key={side} className="p-6 flex items-center justify-center">
@@ -22,6 +21,6 @@ export default function TooltipSection() {
               </Card>
           ))}
         </div>
-      </div>
+      </Section>
   )
 }

@@ -1,52 +1,69 @@
-import React from 'react'
+// MarkdownContent.tsx
+import React, {useMemo} from 'react'
+import DOMPurify, {type Config} from 'dompurify'
 
 export interface MarkdownContentProps extends React.HTMLAttributes<HTMLDivElement> {
+  content: string
+  sanitizeConfig?: Config
 }
 
 function cx(...classes: Array<string | number | false | null | undefined>) {
   return classes.filter(Boolean).join(' ')
 }
 
+const DEFAULT_SANITIZE_CONFIG: Config = {
+  ALLOWED_TAGS: [
+    'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+    'p', 'br', 'hr',
+    'strong', 'b', 'em', 'i', 'u', 's', 'strike', 'del', 'ins',
+    'sup', 'sub', 'mark', 'small',
+    'ul', 'ol', 'li',
+    'a',
+    'code', 'pre', 'kbd', 'samp', 'var',
+    'blockquote', 'q', 'cite', 'abbr',
+    'table', 'thead', 'tbody', 'tfoot', 'tr', 'th', 'td', 'caption', 'colgroup', 'col',
+    'div', 'span', 'details', 'summary',
+  ],
+  ALLOWED_ATTR: [
+    'href', 'title', 'target', 'rel',
+    'class', 'id',
+    'colspan', 'rowspan', 'scope',
+    'open',
+  ],
+  ADD_ATTR: ['target', 'rel'],
+  ALLOWED_URI_REGEXP: /^(?:(?:https?|mailto|tel):|[^a-z]|[a-z+.-]+(?:[^a-z+.\-:]|$))/i,
+}
+
+function useDOMPurifySetup() {
+  useMemo(() => {
+    DOMPurify.addHook('afterSanitizeAttributes', (node) => {
+      if (node.tagName === 'A') {
+        node.setAttribute('target', '_blank')
+        node.setAttribute('rel', 'noopener noreferrer')
+      }
+    })
+  }, [])
+}
+
 export const MarkdownContent = React.forwardRef<HTMLDivElement, MarkdownContentProps>(
-    ({children, className, ...rest}, ref) => {
+    ({className, content, sanitizeConfig, ...rest}, ref) => {
+      useDOMPurifySetup()
+
+      const sanitizedHtml = useMemo(() => {
+        if (!content) {
+          return ''
+        }
+        const config = sanitizeConfig ?? DEFAULT_SANITIZE_CONFIG
+        return DOMPurify.sanitize(content, config)
+      }, [content, sanitizeConfig])
+
       return (
           <div
               ref={ref}
-              className={cx(
-                  'prose prose-invert max-w-none',
-                  // Headings
-                  'prose-headings:font-semibold prose-headings:tracking-tight',
-                  'prose-h1:text-gold prose-h1:text-3xl prose-h1:mb-4',
-                  'prose-h2:text-gold prose-h2:text-2xl prose-h2:mb-3',
-                  'prose-h3:text-white prose-h3:text-xl prose-h3:mb-2',
-                  'prose-h4:text-white prose-h4:text-lg prose-h4:mb-2',
-                  'prose-h5:text-white prose-h5:text-base prose-h5:mb-2',
-                  'prose-h6:text-white prose-h6:text-sm prose-h6:mb-2',
-                  // Paragraphs
-                  'prose-p:text-silver prose-p:leading-relaxed prose-p:mb-4',
-                  // Lists
-                  'prose-ul:text-silver prose-ul:list-disc prose-ul:pl-6 prose-ul:mb-4',
-                  'prose-ol:text-silver prose-ol:list-decimal prose-ol:pl-6 prose-ol:mb-4',
-                  'prose-li:mb-1',
-                  // Links
-                  'prose-a:text-gold prose-a:no-underline prose-a:hover:text-gold-light prose-a:hover:underline',
-                  // Code
-                  'prose-code:text-gold-light prose-code:bg-obsidian prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-none prose-code:font-mono prose-code:text-sm',
-                  'prose-pre:bg-obsidian prose-pre:border prose-pre:border-ash prose-pre:rounded-none prose-pre:p-4 prose-pre:overflow-x-auto',
-                  'prose-code:bg-transparent prose-code:p-0 prose-code:text-silver',
-                  // Blockquotes
-                  'prose-blockquote:border-l-4 prose-blockquote:border-gold prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-silver',
-                  // Strong and emphasis
-                  'prose-strong:text-white prose-strong:font-semibold',
-                  'prose-em:text-silver prose-em:italic',
-                  // HR
-                  'prose-hr:border-ash prose-hr:my-6',
-                  className
-              )}
+              className={cx('prose', className)}
+              dangerouslySetInnerHTML={{__html: sanitizedHtml}}
               {...rest}
-          >
-            {children}
-          </div>
+          />
       )
     }
 )

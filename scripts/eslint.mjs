@@ -2,7 +2,7 @@
 import eslintPluginBetterTailwindcss from 'eslint-plugin-better-tailwindcss';
 import poupeTailwindcss from '@poupe/eslint-plugin-tailwindcss';
 import css from '@eslint/css';
-import { tailwind4 } from 'tailwind-csstree';
+import {tailwind4} from 'tailwind-csstree';
 import tsParser from '@typescript-eslint/parser';
 
 /**
@@ -38,7 +38,7 @@ export function createAureliusESLintConfig(options = {}) {
   return [
     // Ignore generated files
     {
-      ignores: ['**/generated/**'],
+      ignores: ['**/generated/**', '**/dist/**'],
     },
 
     // JS/TS/React files: enforce allowed Tailwind classes only
@@ -73,6 +73,11 @@ export function createAureliusESLintConfig(options = {}) {
             // Tailwind pipeline, so "a&b"-style composites are fine but "c" isn't if
             // it doesn't come from Aurelius tokens.
             detectComponentClasses: true,
+            // Also check variables that store class mappings (e.g., variantClasses objects)
+            variables: [
+              ['^.*[Cc]lass(?:es|Name)?$', [{match: 'strings'}]],
+              ['^.*[Cc]lass(?:es|Name)?$', [{match: 'objectValues'}]],
+            ],
           },
         ],
 
@@ -81,6 +86,11 @@ export function createAureliusESLintConfig(options = {}) {
           'error',
           {
             restrict: ['\\[.*\\]'],
+            // Also check variables that store class mappings (e.g., variantClasses objects)
+            variables: [
+              ['^.*[Cc]lass(?:es|Name)?$', [{match: 'strings'}]],
+              ['^.*[Cc]lass(?:es|Name)?$', [{match: 'objectValues'}]],
+            ],
           },
         ],
       },

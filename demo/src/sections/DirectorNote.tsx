@@ -1,14 +1,14 @@
 import React from 'react'
 import {Button, Card} from '@lukeashford/aurelius'
+import Section from './Section'
 
 export default function DirectorNote() {
   return (
-      <div className="space-y-6">
-        <header className="section-header">
-          <h2 className="text-2xl">Director's Note</h2>
-          <p className="text-silver">A word on the philosophy and usage of this system.</p>
-        </header>
-
+      <Section
+          className="space-y-6"
+          title="Director's Note"
+          subtitle="A word on the philosophy and usage of this system."
+      >
         <Card variant="featured" className="p-8">
           <div className="space-y-4 text-silver leading-relaxed">
             <p>
@@ -41,6 +41,6 @@ export default function DirectorNote() {
             </div>
           </div>
         </Card>
-      </div>
+      </Section>
   )
 }
