@@ -67,11 +67,10 @@ Import from `@lukeashford/aurelius`:
 | Checkbox | label |
 | ColorSwatch | color, label |
 | HelperText | error |
-| IconButton | icon |
 | ImageCard | src, alt, title, subtitle, aspectRatio (${number}/${number}), overlay, mediaClassName, contentClassName |
 | Input | error, leadingIcon, trailingIcon |
 | Label | required |
-| MarkdownContent | content, contentClassName, sanitizeConfig |
+| MarkdownContent | content, sanitizeConfig |
 | Message | variant (user, assistant), content, isStreaming |
 | Modal | isOpen, title, children, className |
 | Radio | label |
@@ -120,7 +119,7 @@ border-void, border-obsidian, border-charcoal, border-graphite, border-slate, bo
 Standard Tailwind classes for size (`text-sm`, `text-lg`, etc.), weight (`font-medium`, `font-bold`), and spacing are available.
 
 ### Custom Utilities
-prose, text-gradient-gold, glow, glow-sm, glow-md, glow-lg, scroll-smooth, scrollbar-hide, backdrop-glass, focus-ring, line-clamp-2, line-clamp-3, center-absolute
+text-gradient-gold, glow, glow-sm, glow-md, glow-lg, scroll-smooth, scrollbar-hide, backdrop-glass, focus-ring, line-clamp-2, line-clamp-3, center-absolute
 
 ### Opacity modifiers
 Append `/10`, `/20`, `/30`, etc. to colors: `bg-gold/20`, `border-ash/50`
