@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import {expect, test} from '@playwright/test';
 
 /**
  * Interactive Components E2E Tests
@@ -21,19 +21,28 @@ import { test, expect } from '@playwright/test';
  * - Navigation: Hash updates, section scrolling
  */
 test.describe('Interactive Elements', () => {
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({page}) => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
   });
 
-  test.describe('Modal Interactions', () => {
-    test('opens and closes modal', async ({ page }) => {
-      // Navigate to modal section
-      await page.locator('a[href="#modal"]').click();
-      await page.waitForTimeout(500);
+  // Helper to navigate reliably to a section by hash link
+  const navigateToSection = async (page: import('@playwright/test').Page, id: string) => {
+    const link = page.locator(`a[href="#${id}"]`).first();
+    await expect(link).toBeVisible();
+    await link.scrollIntoViewIfNeeded();
+    await link.click();
+    await expect(page).toHaveURL(new RegExp(`#${id}`));
+    await expect(page.locator(`#${id}`)).toBeVisible();
+  };
 
-      // Find and click the Open Modal button
-      const openButton = page.locator('button:has-text("Open Modal")').first();
+  test.describe('Modal Interactions', () => {
+    test('opens and closes modal', async ({page}) => {
+      // Navigate to modal section
+      await navigateToSection(page, 'modal');
+
+      // Find and click the Open Modal button (exact label in demo is "Open Centered Modal")
+      const openButton = page.getByRole('button', {name: 'Open Centered Modal'}).first();
       await openButton.click();
 
       // Verify modal is visible
@@ -46,11 +55,10 @@ test.describe('Interactive Elements', () => {
       await expect(page.locator('text=Example Modal')).not.toBeVisible();
     });
 
-    test('closes modal with Confirm button', async ({ page }) => {
-      await page.locator('a[href="#modal"]').click();
-      await page.waitForTimeout(500);
+    test('closes modal with Confirm button', async ({page}) => {
+      await navigateToSection(page, 'modal');
 
-      const openButton = page.locator('button:has-text("Open Modal")').first();
+      const openButton = page.getByRole('button', {name: 'Open Centered Modal'}).first();
       await openButton.click();
 
       await expect(page.locator('text=Example Modal')).toBeVisible();
@@ -60,9 +68,8 @@ test.describe('Interactive Elements', () => {
       await expect(page.locator('text=Example Modal')).not.toBeVisible();
     });
 
-    test('modal overlay appears correctly', async ({ page }) => {
-      await page.locator('a[href="#modal"]').click();
-      await page.waitForTimeout(500);
+    test('modal overlay appears correctly', async ({page}) => {
+      await navigateToSection(page, 'modal');
 
       const openButton = page.locator('button:has-text("Open Modal")').first();
       await openButton.click();
@@ -74,12 +81,11 @@ test.describe('Interactive Elements', () => {
   });
 
   test.describe('Form Interactions', () => {
-    test.beforeEach(async ({ page }) => {
-      await page.locator('a[href="#forms"]').click();
-      await page.waitForTimeout(500);
+    test.beforeEach(async ({page}) => {
+      await navigateToSection(page, 'forms');
     });
 
-    test('checkbox interactions', async ({ page }) => {
+    test('checkbox interactions', async ({page}) => {
       // Target checkboxes specifically within the forms section
       const checkbox = page.locator('#forms input[type="checkbox"]').first();
 
@@ -92,7 +98,7 @@ test.describe('Interactive Elements', () => {
       expect(newChecked).toBe(!initialChecked);
     });
 
-    test('radio button interactions', async ({ page }) => {
+    test('radio button interactions', async ({page}) => {
       const radioButtons = page.locator('#forms input[type="radio"][name="plan"]');
       const count = await radioButtons.count();
 
@@ -104,7 +110,7 @@ test.describe('Interactive Elements', () => {
       await expect(firstRadio).toBeChecked();
     });
 
-    test('switch interactions', async ({ page }) => {
+    test('switch interactions', async ({page}) => {
       // Find switches within the forms section
       // Switches are checkboxes that come after the regular checkboxes
       const allCheckboxes = page.locator('#forms input[type="checkbox"]');
@@ -123,15 +129,15 @@ test.describe('Interactive Elements', () => {
       }
     });
 
-    test('select dropdown interactions', async ({ page }) => {
+    test('select dropdown interactions', async ({page}) => {
       const select = page.locator('#forms select').first();
       await expect(select).toBeVisible();
 
       // Select an option
-      await select.selectOption({ index: 1 });
+      await select.selectOption({index: 1});
     });
 
-    test('textarea input', async ({ page }) => {
+    test('textarea input', async ({page}) => {
       const textarea = page.locator('#forms textarea').first();
       await expect(textarea).toBeVisible();
 
@@ -141,12 +147,11 @@ test.describe('Interactive Elements', () => {
   });
 
   test.describe('Input Field Interactions', () => {
-    test.beforeEach(async ({ page }) => {
-      await page.locator('a[href="#inputs"]').click();
-      await page.waitForTimeout(500);
+    test.beforeEach(async ({page}) => {
+      await navigateToSection(page, 'inputs');
     });
 
-    test('text input interactions', async ({ page }) => {
+    test('text input interactions', async ({page}) => {
       // Inputs don't have type="text" explicitly, so use generic input selector
       const textInput = page.locator('#inputs input').first();
 
@@ -154,7 +159,7 @@ test.describe('Interactive Elements', () => {
       await expect(textInput).toHaveValue('Test input');
     });
 
-    test('input focus states', async ({ page }) => {
+    test('input focus states', async ({page}) => {
       const textInput = page.locator('#inputs input').first();
 
       await textInput.focus();
@@ -163,19 +168,18 @@ test.describe('Interactive Elements', () => {
       await expect(textInput).toBeFocused();
     });
 
-    test('disabled input cannot be edited', async ({ page }) => {
+    test('disabled input cannot be edited', async ({page}) => {
       const disabledInput = page.locator('#inputs input[disabled]').first();
       await expect(disabledInput).toBeDisabled();
     });
   });
 
   test.describe('Button Interactions', () => {
-    test.beforeEach(async ({ page }) => {
-      await page.locator('a[href="#buttons"]').click();
-      await page.waitForTimeout(500);
+    test.beforeEach(async ({page}) => {
+      await navigateToSection(page, 'buttons');
     });
 
-    test('all button variants are clickable', async ({ page }) => {
+    test('all button variants are clickable', async ({page}) => {
       const buttons = page.locator('#buttons button:not([disabled])');
       const count = await buttons.count();
 
@@ -189,7 +193,7 @@ test.describe('Interactive Elements', () => {
       }
     });
 
-    test('disabled buttons are not clickable', async ({ page }) => {
+    test('disabled buttons are not clickable', async ({page}) => {
       const disabledButtons = page.locator('#buttons button[disabled]');
       const count = await disabledButtons.count();
 
@@ -201,15 +205,14 @@ test.describe('Interactive Elements', () => {
   });
 
   test.describe('Navigation Interactions', () => {
-    test('clicking navigation updates URL hash', async ({ page }) => {
+    test('clicking navigation updates URL hash', async ({page}) => {
       const colorsLink = page.locator('a[href="#colors"]');
       await colorsLink.click();
-
-      await page.waitForTimeout(500);
-      expect(page.url()).toContain('#colors');
+      await expect(page).toHaveURL(/#colors/);
+      await expect(page.locator('#colors')).toBeVisible();
     });
 
-    test('sections can be scrolled to', async ({ page }) => {
+    test('sections can be scrolled to', async ({page}) => {
       // Scroll to colors section
       await page.locator('#colors').scrollIntoViewIfNeeded();
       await page.waitForTimeout(300);
@@ -221,12 +224,11 @@ test.describe('Interactive Elements', () => {
   });
 
   test.describe('Card Interactions', () => {
-    test.beforeEach(async ({ page }) => {
-      await page.locator('a[href="#cards"]').click();
-      await page.waitForTimeout(500);
+    test.beforeEach(async ({page}) => {
+      await navigateToSection(page, 'cards');
     });
 
-    test('interactive card shows hover effects', async ({ page }) => {
+    test('interactive card shows hover effects', async ({page}) => {
       // Find the interactive card by its heading
       const interactiveCard = page.locator('#cards').getByText('Interactive').locator('..');
 
@@ -242,30 +244,27 @@ test.describe('Interactive Elements', () => {
       await expect(interactiveCard).toBeVisible();
     });
 
-    test('all card variants are rendered', async ({ page }) => {
+    test('all card variants are rendered', async ({page}) => {
       // Verify all card variant headings are present
       const cardTitles = ['Default', 'Elevated', 'Outlined', 'Featured', 'Ghost', 'Interactive'];
 
       for (const title of cardTitles) {
-        await expect(page.locator('#cards').getByRole('heading', { name: title })).toBeVisible();
+        await expect(page.locator('#cards').getByRole('heading', {name: title})).toBeVisible();
       }
     });
   });
 
   test.describe('Image Card Interactions', () => {
-    test.beforeEach(async ({ page }) => {
-      const imageCardsLink = page.locator('a[href="#image-cards"]');
-      await imageCardsLink.scrollIntoViewIfNeeded();
-      await imageCardsLink.click({ force: true });
-      await page.waitForTimeout(500);
+    test.beforeEach(async ({page}) => {
+      await navigateToSection(page, 'image-cards');
     });
 
-    test('image cards with overlay show hover effects', async ({ page }) => {
+    test('image cards with overlay show hover effects', async ({page}) => {
       // Navigate to the "With Overlay" section
       const overlaySection = page.locator('#image-cards').getByText('With Overlay').locator('..');
 
       // Find image cards with overlays
-      const imageCards = overlaySection.locator('.relative').filter({ has: page.locator('img') });
+      const imageCards = overlaySection.locator('.relative').filter({has: page.locator('img')});
       const count = await imageCards.count();
 
       expect(count).toBeGreaterThan(0);
@@ -278,7 +277,7 @@ test.describe('Interactive Elements', () => {
       await expect(firstCard).toBeVisible();
     });
 
-    test('all image cards load successfully', async ({ page }) => {
+    test('all image cards load successfully', async ({page}) => {
       const images = page.locator('#image-cards img');
       const count = await images.count();
 
@@ -293,14 +292,13 @@ test.describe('Interactive Elements', () => {
   });
 
   test.describe('Tooltip Interactions', () => {
-    test.beforeEach(async ({ page }) => {
-      await page.locator('a[href="#tooltip"]').click();
-      await page.waitForTimeout(500);
+    test.beforeEach(async ({page}) => {
+      await navigateToSection(page, 'tooltip');
     });
 
-    test('tooltips can be toggled by clicking buttons', async ({ page }) => {
+    test('tooltips can be toggled by clicking buttons', async ({page}) => {
       const buttons = page.locator('#tooltip button');
-      const topButton = buttons.filter({ hasText: 'Hover top' });
+      const topButton = buttons.filter({hasText: 'Hover top'});
       const tooltip = page.getByText('Tooltip on top');
 
       // Click to open tooltip
@@ -319,7 +317,7 @@ test.describe('Interactive Elements', () => {
       await expect(tooltip).toHaveCSS('opacity', '0');
     });
 
-    test('all tooltip positions work', async ({ page }) => {
+    test('all tooltip positions work', async ({page}) => {
       const positions = ['top', 'right', 'bottom', 'left'];
 
       for (const position of positions) {
@@ -347,14 +345,11 @@ test.describe('Interactive Elements', () => {
   });
 
   test.describe('Stepper Interactions', () => {
-    test.beforeEach(async ({ page }) => {
-      const stepperLink = page.locator('a[href="#stepper"]');
-      await stepperLink.scrollIntoViewIfNeeded();
-      await stepperLink.click();
-      await page.waitForTimeout(500);
+    test.beforeEach(async ({page}) => {
+      await navigateToSection(page, 'stepper');
     });
 
-    test('stepper navigation buttons work', async ({ page }) => {
+    test('stepper navigation buttons work', async ({page}) => {
       const nextButton = page.locator('#stepper button:has-text("Next")');
       const prevButton = page.locator('#stepper button:has-text("Previous")');
 
@@ -373,7 +368,7 @@ test.describe('Interactive Elements', () => {
       await expect(prevButton).toBeDisabled();
     });
 
-    test('toggle error button works', async ({ page }) => {
+    test('toggle error button works', async ({page}) => {
       const toggleErrorButton = page.locator('#stepper button:has-text("Toggle Error")');
 
       await expect(toggleErrorButton).toBeVisible();
@@ -385,7 +380,7 @@ test.describe('Interactive Elements', () => {
       await page.waitForTimeout(200);
     });
 
-    test('stepper advances through all steps', async ({ page }) => {
+    test('stepper advances through all steps', async ({page}) => {
       const nextButton = page.locator('#stepper button:has-text("Next")');
 
       // Click Next 3 times to reach the last step
@@ -400,19 +395,17 @@ test.describe('Interactive Elements', () => {
   });
 
   test.describe('Streaming Cursor Interactions', () => {
-    test.beforeEach(async ({ page }) => {
-      const streamingLink = page.locator('a[href="#streaming"]');
-      await streamingLink.scrollIntoViewIfNeeded();
-      await streamingLink.click();
-      await page.waitForTimeout(500);
+    test.beforeEach(async ({page}) => {
+      await navigateToSection(page, 'streaming');
     });
 
-    test('streaming cursor animates and text appears', async ({ page }) => {
+    test('streaming cursor animates and text appears', async ({page}) => {
       // Wait for the streaming section to be visible
       await expect(page.locator('#streaming')).toBeVisible();
 
       // Find the streaming cursor element
-      const cursorElement = page.locator('#streaming .cursor, #streaming [class*="cursor"]').first();
+      const cursorElement = page.locator('#streaming .cursor, #streaming [class*="cursor"]')
+      .first();
 
       // Wait a moment for animation to start
       await page.waitForTimeout(500);
@@ -433,7 +426,7 @@ test.describe('Interactive Elements', () => {
       expect(text2).toBeTruthy();
     });
 
-    test('streaming cursor cycles through variants', async ({ page }) => {
+    test('streaming cursor cycles through variants', async ({page}) => {
       await expect(page.locator('#streaming')).toBeVisible();
 
       // Check for variant indicator
@@ -446,14 +439,11 @@ test.describe('Interactive Elements', () => {
   });
 
   test.describe('Message Streaming Interactions', () => {
-    test.beforeEach(async ({ page }) => {
-      const messagesLink = page.locator('a[href="#messages"]');
-      await messagesLink.scrollIntoViewIfNeeded();
-      await messagesLink.click();
-      await page.waitForTimeout(1000); // Give time for initial render
+    test.beforeEach(async ({page}) => {
+      await navigateToSection(page, 'messages');
     });
 
-    test('message section renders conversation', async ({ page }) => {
+    test('message section renders conversation', async ({page}) => {
       // Verify the conversation container exists
       const conversationContainer = page.locator('#messages .overflow-y-auto');
       await expect(conversationContainer).toBeVisible();
@@ -464,7 +454,7 @@ test.describe('Interactive Elements', () => {
       expect(count).toBeGreaterThan(0);
     });
 
-    test('streaming message shows cursor during streaming', async ({ page }) => {
+    test('streaming message shows cursor during streaming', async ({page}) => {
       // Wait for streaming to start
       await page.waitForTimeout(500);
 
@@ -478,11 +468,12 @@ test.describe('Interactive Elements', () => {
       await page.waitForTimeout(1000);
 
       // Verify content is being updated by checking the container has content
-      const hasContent = await conversationContainer.evaluate((el) => el.textContent && el.textContent.length > 0);
+      const hasContent = await conversationContainer.evaluate(
+          (el) => el.textContent && el.textContent.length > 0);
       expect(hasContent).toBe(true);
     });
 
-    test('conversation container scrolls during streaming', async ({ page }) => {
+    test('conversation container scrolls during streaming', async ({page}) => {
       const conversationContainer = page.locator('#messages .overflow-y-auto');
       await expect(conversationContainer).toBeVisible();
 
@@ -500,7 +491,7 @@ test.describe('Interactive Elements', () => {
       expect(newScroll).toBeGreaterThanOrEqual(initialScroll);
     });
 
-    test('streaming restarts after completion', async ({ page }) => {
+    test('streaming restarts after completion', async ({page}) => {
       const conversationContainer = page.locator('#messages .overflow-y-auto');
 
       // Wait for first streaming cycle to complete
@@ -523,8 +514,8 @@ test.describe('Interactive Elements', () => {
 });
 
 test.describe('Responsive Behavior', () => {
-  test('mobile viewport - sidebar is hidden', async ({ page }) => {
-    await page.setViewportSize({ width: 375, height: 667 });
+  test('mobile viewport - sidebar is hidden', async ({page}) => {
+    await page.setViewportSize({width: 375, height: 667});
     await page.goto('/');
     await page.waitForLoadState('networkidle');
 
@@ -536,8 +527,8 @@ test.describe('Responsive Behavior', () => {
     expect(isVisible).toBe(false);
   });
 
-  test('desktop viewport - sidebar is visible', async ({ page }) => {
-    await page.setViewportSize({ width: 1920, height: 1080 });
+  test('desktop viewport - sidebar is visible', async ({page}) => {
+    await page.setViewportSize({width: 1920, height: 1080});
     await page.goto('/');
     await page.waitForLoadState('networkidle');
 
@@ -545,11 +536,11 @@ test.describe('Responsive Behavior', () => {
     await expect(sidebar).toBeVisible();
   });
 
-  test('content is accessible on all viewports', async ({ page }) => {
+  test('content is accessible on all viewports', async ({page}) => {
     const viewports = [
-      { width: 375, height: 667 },   // mobile
-      { width: 768, height: 1024 },  // tablet
-      { width: 1920, height: 1080 }, // desktop
+      {width: 375, height: 667},   // mobile
+      {width: 768, height: 1024},  // tablet
+      {width: 1920, height: 1080}, // desktop
     ];
 
     for (const viewport of viewports) {
