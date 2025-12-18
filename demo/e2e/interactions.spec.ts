@@ -247,14 +247,16 @@ test.describe('Interactive Elements', () => {
       const cardTitles = ['Default', 'Elevated', 'Outlined', 'Featured', 'Ghost', 'Interactive'];
 
       for (const title of cardTitles) {
-        await expect(page.locator('#cards').getByText(title)).toBeVisible();
+        await expect(page.locator('#cards').getByRole('heading', { name: title })).toBeVisible();
       }
     });
   });
 
   test.describe('Image Card Interactions', () => {
     test.beforeEach(async ({ page }) => {
-      await page.locator('a[href="#image-cards"]').click();
+      const imageCardsLink = page.locator('a[href="#image-cards"]');
+      await imageCardsLink.scrollIntoViewIfNeeded();
+      await imageCardsLink.click();
       await page.waitForTimeout(500);
     });
 
@@ -338,7 +340,9 @@ test.describe('Interactive Elements', () => {
 
   test.describe('Stepper Interactions', () => {
     test.beforeEach(async ({ page }) => {
-      await page.locator('a[href="#stepper"]').click();
+      const stepperLink = page.locator('a[href="#stepper"]');
+      await stepperLink.scrollIntoViewIfNeeded();
+      await stepperLink.click();
       await page.waitForTimeout(500);
     });
 
@@ -389,7 +393,9 @@ test.describe('Interactive Elements', () => {
 
   test.describe('Streaming Cursor Interactions', () => {
     test.beforeEach(async ({ page }) => {
-      await page.locator('a[href="#streaming"]').click();
+      const streamingLink = page.locator('a[href="#streaming"]');
+      await streamingLink.scrollIntoViewIfNeeded();
+      await streamingLink.click();
       await page.waitForTimeout(500);
     });
 
@@ -433,7 +439,9 @@ test.describe('Interactive Elements', () => {
 
   test.describe('Message Streaming Interactions', () => {
     test.beforeEach(async ({ page }) => {
-      await page.locator('a[href="#messages"]').click();
+      const messagesLink = page.locator('a[href="#messages"]');
+      await messagesLink.scrollIntoViewIfNeeded();
+      await messagesLink.click();
       await page.waitForTimeout(1000); // Give time for initial render
     });
 
