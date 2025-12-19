@@ -84,7 +84,7 @@ export default function App() {
   return (
       <div className="min-h-screen bg-obsidian text-white">
         <aside
-            className="fixed left-0 top-0 h-full w-60 hidden lg:block border-r border-ash/40 bg-charcoal/50 backdrop-blur-sm">
+            className="fixed left-0 top-0 h-full w-60 hidden lg:block border-r border-ash/40 bg-charcoal/50 backdrop-blur-sm overflow-y-auto">
           <div className="p-4 border-b border-ash/40">
             <h2 className="text-xl font-semibold text-white">Aurelius Design</h2>
             <a href="https://github.com/lukeashford/aurelius"
