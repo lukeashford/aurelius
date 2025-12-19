@@ -1,14 +1,10 @@
 import React from 'react'
 import {Card} from '@lukeashford/aurelius'
+import Section from './Section'
 
 export default function CardsSection() {
   return (
-      <div>
-        <header className="section-header">
-          <h2 className="text-2xl">Cards</h2>
-          <p className="text-silver">Surface variations for content grouping.</p>
-        </header>
-
+      <Section title="Cards" subtitle="Surface variations for content grouping.">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           <Card className="p-5">
             <h4 className="mb-2">Default</h4>
@@ -40,6 +36,6 @@ export default function CardsSection() {
             <p className="text-silver">Hover to see interactive elevation/border.</p>
           </Card>
         </div>
-      </div>
+      </Section>
   )
 }

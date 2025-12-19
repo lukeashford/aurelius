@@ -60,17 +60,26 @@ Import from `@lukeashford/aurelius`:
 | Alert | variant (info, success, warning, error), title |
 | Avatar | src, alt, name, size (xs, sm, md, lg, xl, 2xl), status (online, offline, busy) |
 | Badge | variant (default, gold, success, error, warning, info) |
+| BrandIcon | size (sm, md, lg), variant (solid, outline) |
 | Button | variant (primary, important, elevated, outlined, featured, ghost, danger), size (sm, md, lg, xl), loading |
-| Card | variant (default, elevated, outlined, ghost, featured), interactive |
+| Card | variant (default, elevated, outlined, ghost, featured), interactive, selected |
+| ChatHistory | messages |
 | Checkbox | label |
+| ColorSwatch | color, label |
 | HelperText | error |
+| ImageCard | src, alt, title, subtitle, aspectRatio (${number}/${number}), overlay, mediaClassName, contentClassName |
 | Input | error, leadingIcon, trailingIcon |
 | Label | required |
+| MarkdownContent | content, sanitizeConfig |
+| Message | variant (user, assistant), content, isStreaming |
 | Modal | isOpen, title, children, className |
 | Radio | label |
+| SectionHeading | level (h2, h3) |
 | Select | error, options |
 | Skeleton | children |
 | Spinner | size (sm, md, lg) |
+| Stepper | steps, currentStep, status (complete, error) |
+| StreamingCursor | children |
 | Switch | checked, defaultChecked, label |
 | Textarea | error |
 | Tooltip | content, children, open, side (top, right, bottom, left) |
@@ -110,7 +119,7 @@ border-void, border-obsidian, border-charcoal, border-graphite, border-slate, bo
 Standard Tailwind classes for size (`text-sm`, `text-lg`, etc.), weight (`font-medium`, `font-bold`), and spacing are available.
 
 ### Custom Utilities
-text-gradient-gold, glow, glow-sm, glow-lg, scroll-smooth, scrollbar-hide, backdrop-glass, focus-ring, line-clamp-2, line-clamp-3, center-absolute
+text-gradient-gold, glow, glow-sm, glow-md, glow-lg, scroll-smooth, scrollbar-hide, backdrop-glass, focus-ring, line-clamp-2, line-clamp-3, center-absolute
 
 ### Opacity modifiers
 Append `/10`, `/20`, `/30`, etc. to colors: `bg-gold/20`, `border-ash/50`

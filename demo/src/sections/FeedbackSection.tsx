@@ -1,14 +1,14 @@
 import React from 'react'
 import {Alert, Card, Skeleton, Spinner} from '@lukeashford/aurelius'
+import Section from './Section'
 
 export default function FeedbackSection() {
   return (
-      <div className="space-y-8">
-        <header className="section-header">
-          <h2 className="text-2xl">Feedback & States</h2>
-          <p className="text-silver">Visual indicators for system status and loading states.</p>
-        </header>
-
+      <Section
+          className="space-y-8"
+          title="Feedback & States"
+          subtitle="Visual indicators for system status and loading states."
+      >
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           {/* Alerts */}
           <Card className="p-6 space-y-4 md:col-span-2">
@@ -52,6 +52,6 @@ export default function FeedbackSection() {
             </div>
           </Card>
         </div>
-      </div>
+      </Section>
   )
 }

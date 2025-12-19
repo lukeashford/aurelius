@@ -1,0 +1,94 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MarkdownContentSection matches snapshot 1`] = `
+<div>
+  <section>
+    <header
+      class="section-header"
+    >
+      <h2
+        class="text-2xl"
+      >
+        Markdown Content
+      </h2>
+      <p
+        class="text-silver"
+      >
+        Styled container for rich text content.
+      </p>
+    </header>
+    <div
+      class="space-y-8"
+    >
+      <div>
+        <div
+          class="prose"
+        >
+          
+
+          <h2>
+            Styled text example
+          </h2>
+          
+
+          <p>
+            
+  You can drop in content with 
+            <strong>
+              bold
+            </strong>
+            , 
+            <em>
+              italic
+            </em>
+            , 
+            <a
+              href="#demo"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              links
+            </a>
+            , and
+  
+            <code>
+              inline code
+            </code>
+             and it will render with consistent design-system typography.
+
+          </p>
+          
+
+          <pre>
+            <code>
+              // Code block example 
+function greet(name) { 
+   return "Hello,  
+}
+
+            </code>
+          </pre>
+          
+
+          <ul>
+            
+  
+            <li>
+              Clean spacing
+            </li>
+            
+  
+            <li>
+              Readable defaults
+            </li>
+            
+
+          </ul>
+          
+
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+`;

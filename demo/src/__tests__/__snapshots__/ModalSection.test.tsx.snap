@@ -2,7 +2,7 @@
 
 exports[`ModalSection matches snapshot when modal is closed 1`] = `
 <div>
-  <div
+  <section
     class="space-y-8"
   >
     <header
@@ -11,7 +11,7 @@ exports[`ModalSection matches snapshot when modal is closed 1`] = `
       <h2
         class="text-2xl"
       >
-        Overlays
+        Modals
       </h2>
       <p
         class="text-silver"
@@ -20,7 +20,7 @@ exports[`ModalSection matches snapshot when modal is closed 1`] = `
       </p>
     </header>
     <div
-      class="rounded-none p-6 bg-charcoal shadow-sm border border-gold/30 p-8 flex flex-col items-center justify-center gap-4"
+      class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-8 flex flex-col items-center justify-center gap-4"
     >
       <h3
         class="text-gold font-medium"
@@ -38,13 +38,13 @@ exports[`ModalSection matches snapshot when modal is closed 1`] = `
         Open Modal
       </button>
     </div>
-  </div>
+  </section>
 </div>
 `;
 
 exports[`ModalSection matches snapshot when modal is open 1`] = `
 <div>
-  <div
+  <section
     class="space-y-8"
   >
     <header
@@ -53,7 +53,7 @@ exports[`ModalSection matches snapshot when modal is open 1`] = `
       <h2
         class="text-2xl"
       >
-        Overlays
+        Modals
       </h2>
       <p
         class="text-silver"
@@ -62,7 +62,7 @@ exports[`ModalSection matches snapshot when modal is open 1`] = `
       </p>
     </header>
     <div
-      class="rounded-none p-6 bg-charcoal shadow-sm border border-gold/30 p-8 flex flex-col items-center justify-center gap-4"
+      class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-8 flex flex-col items-center justify-center gap-4"
     >
       <h3
         class="text-gold font-medium"
@@ -80,6 +80,6 @@ exports[`ModalSection matches snapshot when modal is open 1`] = `
         Open Modal
       </button>
     </div>
-  </div>
+  </section>
 </div>
 `;

@@ -1,0 +1,110 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CardsSection matches snapshot 1`] = `
+<div>
+  <section>
+    <header
+      class="section-header"
+    >
+      <h2
+        class="text-2xl"
+      >
+        Cards
+      </h2>
+      <p
+        class="text-silver"
+      >
+        Surface variations for content grouping.
+      </p>
+    </header>
+    <div
+      class="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+    >
+      <div
+        class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-5"
+      >
+        <h4
+          class="mb-2"
+        >
+          Default
+        </h4>
+        <p
+          class="text-silver"
+        >
+          Neutral surface for general content.
+        </p>
+      </div>
+      <div
+        class="rounded-none p-6 relative bg-charcoal shadow-lg border-0 p-5"
+      >
+        <h4
+          class="mb-2"
+        >
+          Elevated
+        </h4>
+        <p
+          class="text-silver"
+        >
+          Raised surface with shadow.
+        </p>
+      </div>
+      <div
+        class="rounded-none p-6 relative bg-charcoal shadow-none border border-ash p-5"
+      >
+        <h4
+          class="mb-2"
+        >
+          Outlined
+        </h4>
+        <p
+          class="text-silver"
+        >
+          Subtle outline and reduced elevation.
+        </p>
+      </div>
+      <div
+        class="rounded-none p-6 relative bg-charcoal border border-gold shadow-glow-sm p-5"
+      >
+        <h4
+          class="mb-2"
+        >
+          Featured
+        </h4>
+        <p
+          class="text-silver"
+        >
+          Highlight style for important content.
+        </p>
+      </div>
+      <div
+        class="rounded-none p-6 relative bg-transparent shadow-none border-0 p-5"
+      >
+        <h4
+          class="mb-2"
+        >
+          Ghost
+        </h4>
+        <p
+          class="text-silver"
+        >
+          Transparent background with no shadow.
+        </p>
+      </div>
+      <div
+        class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 transition-all duration-200 hover:border-gold hover:shadow-glow cursor-pointer p-5"
+      >
+        <h4
+          class="mb-2"
+        >
+          Interactive
+        </h4>
+        <p
+          class="text-silver"
+        >
+          Hover to see interactive elevation/border.
+        </p>
+      </div>
+    </div>
+  </section>
+</div>
+`;

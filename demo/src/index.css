@@ -7,6 +7,6 @@
 /* Demo-specific utilities */
 @layer components {
   .section-header {
-    @apply mb-24;
+    @apply mb-12;
   }
 }

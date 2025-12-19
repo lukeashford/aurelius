@@ -1,0 +1,401 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ImageCardSection matches snapshot 1`] = `
+<div>
+  <section>
+    <header
+      class="section-header"
+    >
+      <h2
+        class="text-2xl"
+      >
+        Image Cards
+      </h2>
+      <p
+        class="text-silver"
+      >
+        Cards with images and optional overlays. Supports preset and custom aspect ratios.
+      </p>
+    </header>
+    <div
+      class="space-y-12"
+    >
+      <div>
+        <h3
+          class="text-lg font-semibold mb-2"
+        >
+          Natural Sizing
+        </h3>
+        <p
+          class="text-silver text-sm mb-4"
+        >
+          Without an aspectRatio prop, the card wraps the image's natural dimensions.
+        </p>
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start"
+        >
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-fit"
+          >
+            <div
+              class="relative"
+            >
+              <img
+                alt="Natural aspect ratio"
+                class="block max-w-full h-auto"
+                src="https://picsum.photos/seed/natural/600/400"
+              />
+            </div>
+            <div
+              class="px-4 pt-4"
+            >
+              <h4
+                class="text-lg font-semibold leading-tight"
+              >
+                Natural Dimensions
+              </h4>
+              <p
+                class="text-sm text-silver leading-normal"
+              >
+                Image dictates the card shape
+              </p>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-fit"
+          >
+            <div
+              class="relative"
+            >
+              <img
+                alt="Tall natural aspect ratio"
+                class="block max-w-full h-auto"
+                src="https://picsum.photos/seed/tall/400/600"
+              />
+            </div>
+            <div
+              class="px-4 pt-4"
+            >
+              <h4
+                class="text-lg font-semibold leading-tight"
+              >
+                Tall Image
+              </h4>
+              <p
+                class="text-sm text-silver leading-normal"
+              >
+                Container adapts to content
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3
+          class="text-lg font-semibold mb-2"
+        >
+          Preset Ratios
+        </h3>
+        <p
+          class="text-silver text-sm mb-4"
+        >
+          Industry-standard presets: landscape (3/2), portrait (2/3), square (1/1).
+        </p>
+        <div
+          class="grid grid-cols-1 md:grid-cols-3 gap-6 items-start"
+        >
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-fit"
+          >
+            <div
+              class="relative overflow-hidden"
+            >
+              <img
+                alt="landscape aspect ratio"
+                class="block max-w-full w-full h-full object-cover"
+                src="https://picsum.photos/seed/landscape/800/800"
+              />
+            </div>
+            <div
+              class="px-4 pt-4"
+            >
+              <h4
+                class="text-lg font-semibold leading-tight"
+              >
+                Landscape
+              </h4>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-fit"
+          >
+            <div
+              class="relative overflow-hidden"
+            >
+              <img
+                alt="portrait aspect ratio"
+                class="block max-w-full w-full h-full object-cover"
+                src="https://picsum.photos/seed/portrait/800/800"
+              />
+            </div>
+            <div
+              class="px-4 pt-4"
+            >
+              <h4
+                class="text-lg font-semibold leading-tight"
+              >
+                Portrait
+              </h4>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-fit"
+          >
+            <div
+              class="relative overflow-hidden"
+            >
+              <img
+                alt="square aspect ratio"
+                class="block max-w-full w-full h-full object-cover"
+                src="https://picsum.photos/seed/square/800/800"
+              />
+            </div>
+            <div
+              class="px-4 pt-4"
+            >
+              <h4
+                class="text-lg font-semibold leading-tight"
+              >
+                Square
+              </h4>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3
+          class="text-lg font-semibold mb-2"
+        >
+          Custom Ratios
+        </h3>
+        <p
+          class="text-silver text-sm mb-4"
+        >
+          Any ratio as a string: "16/9", "4/3", "21/9", "4/5", etc.
+        </p>
+        <div
+          class="grid grid-cols-1 md:grid-cols-3 gap-6 items-start"
+        >
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-fit"
+          >
+            <div
+              class="relative overflow-hidden"
+            >
+              <img
+                alt="16/9 aspect ratio"
+                class="block max-w-full w-full h-full object-cover"
+                src="https://picsum.photos/seed/16x9/800/600"
+              />
+            </div>
+            <div
+              class="px-4 pt-4"
+            >
+              <h4
+                class="text-lg font-semibold leading-tight"
+              >
+                16/9
+              </h4>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-fit"
+          >
+            <div
+              class="relative overflow-hidden"
+            >
+              <img
+                alt="4/3 aspect ratio"
+                class="block max-w-full w-full h-full object-cover"
+                src="https://picsum.photos/seed/4x3/800/600"
+              />
+            </div>
+            <div
+              class="px-4 pt-4"
+            >
+              <h4
+                class="text-lg font-semibold leading-tight"
+              >
+                4/3
+              </h4>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-fit"
+          >
+            <div
+              class="relative overflow-hidden"
+            >
+              <img
+                alt="21/9 aspect ratio"
+                class="block max-w-full w-full h-full object-cover"
+                src="https://picsum.photos/seed/21x9/800/600"
+              />
+            </div>
+            <div
+              class="px-4 pt-4"
+            >
+              <h4
+                class="text-lg font-semibold leading-tight"
+              >
+                21/9
+              </h4>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3
+          class="text-lg font-semibold mb-2"
+        >
+          Object Fit
+        </h3>
+        <p
+          class="text-silver text-sm mb-4"
+        >
+          Controls how the image fills its container: "cover" crops to fill, "contain" shows the entire image.
+        </p>
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start"
+        >
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-fit"
+          >
+            <div
+              class="relative overflow-hidden"
+            >
+              <img
+                alt="Cover fit example"
+                class="block max-w-full w-full h-full object-cover"
+                src="https://picsum.photos/seed/cover/800/400"
+              />
+            </div>
+            <div
+              class="px-4 pt-4"
+            >
+              <h4
+                class="text-lg font-semibold leading-tight"
+              >
+                Cover (default)
+              </h4>
+              <p
+                class="text-sm text-silver leading-normal"
+              >
+                Image fills container, overflow is cropped
+              </p>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-fit"
+          >
+            <div
+              class="relative overflow-hidden"
+            >
+              <img
+                alt="Contain fit example"
+                class="block max-w-full w-full h-full object-contain"
+                src="https://picsum.photos/seed/cover/800/400"
+              />
+            </div>
+            <div
+              class="px-4 pt-4"
+            >
+              <h4
+                class="text-lg font-semibold leading-tight"
+              >
+                Contain
+              </h4>
+              <p
+                class="text-sm text-silver leading-normal"
+              >
+                Entire image visible, with letterboxing
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3
+          class="text-lg font-semibold mb-2"
+        >
+          With Overlay
+        </h3>
+        <p
+          class="text-silver text-sm mb-4"
+        >
+          Add interactive overlays that appear on hover.
+        </p>
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start"
+        >
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-fit"
+          >
+            <div
+              class="relative overflow-hidden"
+            >
+              <img
+                alt="Image with gradient overlay"
+                class="block max-w-full w-full h-full object-cover"
+                src="https://picsum.photos/seed/overlay1/800/800"
+              />
+              <div
+                class="absolute inset-0 bg-obsidian/80 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center"
+              >
+                <div
+                  class="absolute inset-0 bg-linear-to-t from-obsidian/90 to-transparent flex items-end p-4"
+                >
+                  <div>
+                    <h4
+                      class="text-white font-semibold text-lg"
+                    >
+                      Gradient Overlay
+                    </h4>
+                    <p
+                      class="text-silver text-sm"
+                    >
+                      Content anchored to bottom
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-fit"
+          >
+            <div
+              class="relative overflow-hidden"
+            >
+              <img
+                alt="Image with centered overlay"
+                class="block max-w-full w-full h-full object-cover"
+                src="https://picsum.photos/seed/overlay2/800/450"
+              />
+              <div
+                class="absolute inset-0 bg-obsidian/80 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center"
+              >
+                <p
+                  class="text-white font-semibold"
+                >
+                  Centered Hover Content
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+`;

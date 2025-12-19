@@ -1,18 +1,18 @@
 import React from 'react'
 import {Button, type ButtonSize, type ButtonVariant} from '@lukeashford/aurelius'
+import {Heart, Settings} from 'lucide-react'
+import Section from './Section'
 
-const variants: ButtonVariant[] = ['primary', 'important', 'elevated', 'outlined', 'featured', 'ghost', 'danger']
+const variants: ButtonVariant[] = ['primary', 'important', 'elevated', 'outlined', 'featured',
+  'ghost', 'danger']
 const sizes: ButtonSize[] = ['sm', 'md', 'lg', 'xl']
 
 export default function ButtonsSection() {
   return (
-      <div>
-        <header className="section-header">
-          <h2 className="text-2xl">Buttons</h2>
-          <p className="text-silver">All variants and sizes, including disabled and loading
-            states.</p>
-        </header>
-
+      <Section
+          title="Buttons"
+          subtitle="All variants and sizes, including disabled and loading states."
+      >
         <div className="overflow-x-auto">
           <table className="min-w-full text-left text-sm">
             <thead className="text-silver">
@@ -51,6 +51,23 @@ export default function ButtonsSection() {
             </tbody>
           </table>
         </div>
-      </div>
+
+        {/* Note: Using React elements as children */}
+        <div className="mt-8 border-t border-ash/50 pt-6">
+          <h3 className="text-lg font-semibold text-white mb-3">Using Icons and React Elements</h3>
+          <p className="text-silver mb-4">
+            The Button component accepts any React element as children, making it easy to include
+            icons or custom content.
+          </p>
+          <div className="flex flex-wrap gap-4">
+            <Button variant="primary">
+              <Heart className="mr-2 h-4 w-4"/> Like
+            </Button>
+            <Button variant="outlined">
+              <Settings className="mr-2 h-4 w-4"/> Settings
+            </Button>
+          </div>
+        </div>
+      </Section>
   )
 }

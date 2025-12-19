@@ -1,0 +1,691 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ColorsSection matches snapshot 1`] = `
+<div>
+  <section>
+    <header
+      class="section-header"
+    >
+      <h2
+        class="text-2xl"
+      >
+        Colors
+      </h2>
+      <p
+        class="text-silver"
+      >
+        Core palette organized by family. Utilities reflect Tailwind preset names.
+      </p>
+    </header>
+    <div
+      class="space-y-10"
+    >
+      <section>
+        <h3
+          class="mb-4 text-lg text-gold"
+        >
+          Black
+        </h3>
+        <div
+          class="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6"
+        >
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+          >
+            <div
+              class="h-16 w-full  bg-void"
+            />
+            <div
+              class="mt-2 text-sm"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                void
+              </div>
+              <div
+                class="text-silver"
+              >
+                void
+              </div>
+              <div
+                class="text-xs text-silver/80"
+              >
+                .
+                bg-void
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+          >
+            <div
+              class="h-16 w-full  bg-obsidian"
+            />
+            <div
+              class="mt-2 text-sm"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                obsidian
+              </div>
+              <div
+                class="text-silver"
+              >
+                obsidian
+              </div>
+              <div
+                class="text-xs text-silver/80"
+              >
+                .
+                bg-obsidian
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+          >
+            <div
+              class="h-16 w-full  bg-charcoal"
+            />
+            <div
+              class="mt-2 text-sm"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                charcoal
+              </div>
+              <div
+                class="text-silver"
+              >
+                charcoal
+              </div>
+              <div
+                class="text-xs text-silver/80"
+              >
+                .
+                bg-charcoal
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+          >
+            <div
+              class="h-16 w-full  bg-graphite"
+            />
+            <div
+              class="mt-2 text-sm"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                graphite
+              </div>
+              <div
+                class="text-silver"
+              >
+                graphite
+              </div>
+              <div
+                class="text-xs text-silver/80"
+              >
+                .
+                bg-graphite
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+          >
+            <div
+              class="h-16 w-full  bg-slate"
+            />
+            <div
+              class="mt-2 text-sm"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                slate
+              </div>
+              <div
+                class="text-silver"
+              >
+                slate
+              </div>
+              <div
+                class="text-xs text-silver/80"
+              >
+                .
+                bg-slate
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+          >
+            <div
+              class="h-16 w-full  bg-ash"
+            />
+            <div
+              class="mt-2 text-sm"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                ash
+              </div>
+              <div
+                class="text-silver"
+              >
+                ash
+              </div>
+              <div
+                class="text-xs text-silver/80"
+              >
+                .
+                bg-ash
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section>
+        <h3
+          class="mb-4 text-lg text-gold"
+        >
+          Gold
+        </h3>
+        <div
+          class="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6"
+        >
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+          >
+            <div
+              class="h-16 w-full  bg-gold"
+            />
+            <div
+              class="mt-2 text-sm"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                gold
+              </div>
+              <div
+                class="text-silver"
+              >
+                gold
+              </div>
+              <div
+                class="text-xs text-silver/80"
+              >
+                .
+                bg-gold
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+          >
+            <div
+              class="h-16 w-full  bg-gold-light"
+            />
+            <div
+              class="mt-2 text-sm"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                goldLight
+              </div>
+              <div
+                class="text-silver"
+              >
+                goldLight
+              </div>
+              <div
+                class="text-xs text-silver/80"
+              >
+                .
+                bg-gold-light
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+          >
+            <div
+              class="h-16 w-full  bg-gold-bright"
+            />
+            <div
+              class="mt-2 text-sm"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                goldBright
+              </div>
+              <div
+                class="text-silver"
+              >
+                goldBright
+              </div>
+              <div
+                class="text-xs text-silver/80"
+              >
+                .
+                bg-gold-bright
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+          >
+            <div
+              class="h-16 w-full  bg-gold-muted"
+            />
+            <div
+              class="mt-2 text-sm"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                goldMuted
+              </div>
+              <div
+                class="text-silver"
+              >
+                goldMuted
+              </div>
+              <div
+                class="text-xs text-silver/80"
+              >
+                .
+                bg-gold-muted
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+          >
+            <div
+              class="h-16 w-full  bg-gold-pale"
+            />
+            <div
+              class="mt-2 text-sm"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                goldPale
+              </div>
+              <div
+                class="text-silver"
+              >
+                goldPale
+              </div>
+              <div
+                class="text-xs text-silver/80"
+              >
+                .
+                bg-gold-pale
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section>
+        <h3
+          class="mb-4 text-lg text-gold"
+        >
+          Neutrals
+        </h3>
+        <div
+          class="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6"
+        >
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+          >
+            <div
+              class="h-16 w-full  bg-white"
+            />
+            <div
+              class="mt-2 text-sm"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                white
+              </div>
+              <div
+                class="text-silver"
+              >
+                white
+              </div>
+              <div
+                class="text-xs text-silver/80"
+              >
+                .
+                bg-white
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+          >
+            <div
+              class="h-16 w-full  bg-silver"
+            />
+            <div
+              class="mt-2 text-sm"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                silver
+              </div>
+              <div
+                class="text-silver"
+              >
+                silver
+              </div>
+              <div
+                class="text-xs text-silver/80"
+              >
+                .
+                bg-silver
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+          >
+            <div
+              class="h-16 w-full  bg-zinc"
+            />
+            <div
+              class="mt-2 text-sm"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                zinc
+              </div>
+              <div
+                class="text-silver"
+              >
+                zinc
+              </div>
+              <div
+                class="text-xs text-silver/80"
+              >
+                .
+                bg-zinc
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+          >
+            <div
+              class="h-16 w-full  bg-dim"
+            />
+            <div
+              class="mt-2 text-sm"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                dim
+              </div>
+              <div
+                class="text-silver"
+              >
+                dim
+              </div>
+              <div
+                class="text-xs text-silver/80"
+              >
+                .
+                bg-dim
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section>
+        <h3
+          class="mb-4 text-lg text-gold"
+        >
+          Semantic
+        </h3>
+        <div
+          class="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6"
+        >
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+          >
+            <div
+              class="h-16 w-full  bg-success"
+            />
+            <div
+              class="mt-2 text-sm"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                success
+              </div>
+              <div
+                class="text-silver"
+              >
+                success
+              </div>
+              <div
+                class="text-xs text-silver/80"
+              >
+                .
+                bg-success
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+          >
+            <div
+              class="h-16 w-full  bg-success-muted"
+            />
+            <div
+              class="mt-2 text-sm"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                successMuted
+              </div>
+              <div
+                class="text-silver"
+              >
+                successMuted
+              </div>
+              <div
+                class="text-xs text-silver/80"
+              >
+                .
+                bg-success-muted
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+          >
+            <div
+              class="h-16 w-full  bg-error"
+            />
+            <div
+              class="mt-2 text-sm"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                error
+              </div>
+              <div
+                class="text-silver"
+              >
+                error
+              </div>
+              <div
+                class="text-xs text-silver/80"
+              >
+                .
+                bg-error
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+          >
+            <div
+              class="h-16 w-full  bg-error-muted"
+            />
+            <div
+              class="mt-2 text-sm"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                errorMuted
+              </div>
+              <div
+                class="text-silver"
+              >
+                errorMuted
+              </div>
+              <div
+                class="text-xs text-silver/80"
+              >
+                .
+                bg-error-muted
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+          >
+            <div
+              class="h-16 w-full  bg-warning"
+            />
+            <div
+              class="mt-2 text-sm"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                warning
+              </div>
+              <div
+                class="text-silver"
+              >
+                warning
+              </div>
+              <div
+                class="text-xs text-silver/80"
+              >
+                .
+                bg-warning
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+          >
+            <div
+              class="h-16 w-full  bg-warning-muted"
+            />
+            <div
+              class="mt-2 text-sm"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                warningMuted
+              </div>
+              <div
+                class="text-silver"
+              >
+                warningMuted
+              </div>
+              <div
+                class="text-xs text-silver/80"
+              >
+                .
+                bg-warning-muted
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+          >
+            <div
+              class="h-16 w-full  bg-info"
+            />
+            <div
+              class="mt-2 text-sm"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                info
+              </div>
+              <div
+                class="text-silver"
+              >
+                info
+              </div>
+              <div
+                class="text-xs text-silver/80"
+              >
+                .
+                bg-info
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+          >
+            <div
+              class="h-16 w-full  bg-info-muted"
+            />
+            <div
+              class="mt-2 text-sm"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                infoMuted
+              </div>
+              <div
+                class="text-silver"
+              >
+                infoMuted
+              </div>
+              <div
+                class="text-xs text-silver/80"
+              >
+                .
+                bg-info-muted
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </section>
+</div>
+`;

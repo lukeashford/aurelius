@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StreamingCursorSection matches snapshot 1`] = `
+<div>
+  <section>
+    <header
+      class="section-header"
+    >
+      <h2
+        class="text-2xl"
+      >
+        Streaming Cursor
+      </h2>
+      <p
+        class="text-silver"
+      >
+        Animated cursor for streaming text and real-time content.
+      </p>
+    </header>
+    <div
+      class="bg-charcoal border border-ash p-6 rounded-none"
+    >
+      <p
+        class="text-silver text-sm mb-3"
+      >
+        variant="
+        line
+        "
+      </p>
+      <p
+        class="text-white text-lg"
+      >
+        <span
+          aria-hidden="true"
+          class="inline-block bg-current animate-cursor-blink w-0.5 h-cursor translate-y-cursor-offset"
+        />
+      </p>
+    </div>
+  </section>
+</div>
+`;

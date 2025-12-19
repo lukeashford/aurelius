@@ -1,0 +1,168 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BrandIconSection matches snapshot 1`] = `
+<div>
+  <section>
+    <header
+      class="section-header"
+    >
+      <h2
+        class="text-2xl"
+      >
+        Brand Icons
+      </h2>
+      <p
+        class="text-silver"
+      >
+        Branded icon containers with solid and outline variants.
+      </p>
+    </header>
+    <div
+      class="overflow-x-auto"
+    >
+      <table
+        class="min-w-full text-left text-sm"
+      >
+        <thead
+          class="text-silver"
+        >
+          <tr>
+            <th
+              class="py-2 pr-4"
+            >
+              Variant
+            </th>
+            <th
+              class="py-2 pr-4 font-medium"
+            >
+              sm
+            </th>
+            <th
+              class="py-2 pr-4 font-medium"
+            >
+              md
+            </th>
+            <th
+              class="py-2 pr-4 font-medium"
+            >
+              lg
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            class="border-t border-ash/50"
+          >
+            <td
+              class="py-3 pr-4 font-mono text-white"
+            >
+              solid
+            </td>
+            <td
+              class="py-3 pr-4"
+            >
+              <div
+                class="inline-flex items-center justify-center rounded-none font-bold select-none overflow-hidden h-8 w-8 text-sm bg-gold text-obsidian border-2 border-gold"
+              >
+                A
+              </div>
+            </td>
+            <td
+              class="py-3 pr-4"
+            >
+              <div
+                class="inline-flex items-center justify-center rounded-none font-bold select-none overflow-hidden h-12 w-12 text-base bg-gold text-obsidian border-2 border-gold"
+              >
+                A
+              </div>
+            </td>
+            <td
+              class="py-3 pr-4"
+            >
+              <div
+                class="inline-flex items-center justify-center rounded-none font-bold select-none overflow-hidden h-16 w-16 text-lg bg-gold text-obsidian border-2 border-gold"
+              >
+                A
+              </div>
+            </td>
+          </tr>
+          <tr
+            class="border-t border-ash/50"
+          >
+            <td
+              class="py-3 pr-4 font-mono text-white"
+            >
+              outline
+            </td>
+            <td
+              class="py-3 pr-4"
+            >
+              <div
+                class="inline-flex items-center justify-center rounded-none font-bold select-none overflow-hidden h-8 w-8 text-sm bg-transparent text-gold border-2 border-gold"
+              >
+                A
+              </div>
+            </td>
+            <td
+              class="py-3 pr-4"
+            >
+              <div
+                class="inline-flex items-center justify-center rounded-none font-bold select-none overflow-hidden h-12 w-12 text-base bg-transparent text-gold border-2 border-gold"
+              >
+                A
+              </div>
+            </td>
+            <td
+              class="py-3 pr-4"
+            >
+              <div
+                class="inline-flex items-center justify-center rounded-none font-bold select-none overflow-hidden h-16 w-16 text-lg bg-transparent text-gold border-2 border-gold"
+              >
+                A
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div
+      class="mt-8"
+    >
+      <h3
+        class="text-lg font-semibold mb-4"
+      >
+        Examples
+      </h3>
+      <div
+        class="flex gap-6 items-center flex-wrap"
+      >
+        <div
+          class="inline-flex items-center justify-center rounded-none font-bold select-none overflow-hidden h-16 w-16 text-lg bg-gold text-obsidian border-2 border-gold"
+        >
+          AI
+        </div>
+        <div
+          class="inline-flex items-center justify-center rounded-none font-bold select-none overflow-hidden h-16 w-16 text-lg bg-transparent text-gold border-2 border-gold"
+        >
+          JB
+        </div>
+        <div
+          class="inline-flex items-center justify-center rounded-none font-bold select-none overflow-hidden h-12 w-12 text-base bg-gold text-obsidian border-2 border-gold"
+        >
+          X
+        </div>
+        <div
+          class="inline-flex items-center justify-center rounded-none font-bold select-none overflow-hidden h-12 w-12 text-base bg-transparent text-gold border-2 border-gold"
+        >
+          ⚡
+        </div>
+        <div
+          class="inline-flex items-center justify-center rounded-none font-bold select-none overflow-hidden h-8 w-8 text-sm bg-gold text-obsidian border-2 border-gold"
+        >
+          ★
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+`;

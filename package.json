@@ -12,9 +12,6 @@
       "require": "./dist/index.js"
     },
     "./eslint": "./scripts/eslint.mjs",
-    "./styles/base.css": "./dist/styles/base.css",
-    "./styles/theme.css": "./dist/styles/theme.css",
-    "./styles/fonts.css": "./dist/styles/fonts.css",
     "./styles/*": "./dist/styles/*",
     "./llms.md": "./llms.md",
     "./package.json": "./package.json"
@@ -73,6 +70,7 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
     "@testing-library/user-event": "^14.5.2",
+    "@types/dompurify": "^3.0.5",
     "@types/jest": "^29.5.14",
     "@types/node": "^20.0.0",
     "@types/react": "^19.2.7",
@@ -110,6 +108,8 @@
   "author": "Your Name",
   "license": "MIT",
   "dependencies": {
+    "@tailwindcss/typography": "^0.5.15",
+    "dompurify": "^3.3.1",
     "lucide-react": "^0.555.0"
   }
 }

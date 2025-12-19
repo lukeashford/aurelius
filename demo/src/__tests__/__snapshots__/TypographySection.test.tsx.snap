@@ -1,0 +1,916 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TypographySection matches snapshot 1`] = `
+<div>
+  <section>
+    <header
+      class="section-header"
+    >
+      <h2
+        class="text-2xl"
+      >
+        Typography
+      </h2>
+      <p
+        class="text-silver"
+      >
+        Font stacks and type scale used throughout the system.
+      </p>
+    </header>
+    <div
+      class="grid gap-6 md:grid-cols-2"
+    >
+      <div
+        class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-6"
+      >
+        <h3
+          class="mb-2 text-gold"
+        >
+          Headings
+        </h3>
+        <div
+          class="space-y-2"
+        >
+          <h1>
+            Heading One — H1
+          </h1>
+          <h2>
+            Heading Two — H2
+          </h2>
+          <h3>
+            Heading Three — H3
+          </h3>
+          <h4>
+            Heading Four — H4
+          </h4>
+          <h5>
+            Heading Five — H5
+          </h5>
+          <h6>
+            Heading Six — H6
+          </h6>
+        </div>
+        <div
+          class="mt-4 text-sm text-silver"
+        >
+          Stack:
+           
+          <code
+            class="text-white"
+          >
+            "Marcellus", serif
+          </code>
+        </div>
+      </div>
+      <div
+        class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-6"
+      >
+        <h3
+          class="mb-2 text-gold"
+        >
+          Body & Mono
+        </h3>
+        <p
+          class="text-base text-white"
+        >
+          Body text — clear, warm, and readable. Supports semantic emphasis like 
+          <strong>
+            bold
+          </strong>
+           and
+          <em>
+             italic
+          </em>
+          .
+        </p>
+        <p
+          class="mt-2 text-silver"
+        >
+          Secondary body text with reduced contrast for supportive content.
+        </p>
+        <pre
+          class="mt-4 rounded-md bg-slate p-3 text-silver"
+        >
+          <code>
+            const greet = (name: string) =&gt; {
+  return \`Hello, \${name}!\`
+}
+          </code>
+        </pre>
+        <div
+          class="mt-4 space-y-1 text-sm text-silver"
+        >
+          <div>
+            Body Stack:
+             
+            <code
+              class="text-white"
+            >
+              "Raleway", system-ui, sans-serif
+            </code>
+          </div>
+          <div>
+            Mono Stack:
+             
+            <code
+              class="text-white"
+            >
+              "JetBrains Mono", "Fira Code", "SF Mono", monospace
+            </code>
+          </div>
+        </div>
+      </div>
+      <div
+        class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 md:col-span-2 p-6"
+      >
+        <h3
+          class="mb-2 text-gold"
+        >
+          Font Sizes
+        </h3>
+        <div
+          class="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+        >
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 rounded-md border border-slate/60 bg-void/40 p-3"
+          >
+            <div
+              class="mb-2 font-heading text-xs"
+            >
+              Aa
+            </div>
+            <div
+              class="space-y-1 text-xs text-silver"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                fontSize.xs
+              </div>
+              <div>
+                0.75rem
+                 / 
+                1rem
+              </div>
+              <div
+                class="text-silver/80"
+              >
+                .
+                text-xs
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 rounded-md border border-slate/60 bg-void/40 p-3"
+          >
+            <div
+              class="mb-2 font-heading text-sm"
+            >
+              Aa
+            </div>
+            <div
+              class="space-y-1 text-xs text-silver"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                fontSize.sm
+              </div>
+              <div>
+                0.875rem
+                 / 
+                1.25rem
+              </div>
+              <div
+                class="text-silver/80"
+              >
+                .
+                text-sm
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 rounded-md border border-slate/60 bg-void/40 p-3"
+          >
+            <div
+              class="mb-2 font-heading text-base"
+            >
+              Aa
+            </div>
+            <div
+              class="space-y-1 text-xs text-silver"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                fontSize.base
+              </div>
+              <div>
+                1rem
+                 / 
+                1.5rem
+              </div>
+              <div
+                class="text-silver/80"
+              >
+                .
+                text-base
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 rounded-md border border-slate/60 bg-void/40 p-3"
+          >
+            <div
+              class="mb-2 font-heading text-lg"
+            >
+              Aa
+            </div>
+            <div
+              class="space-y-1 text-xs text-silver"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                fontSize.lg
+              </div>
+              <div>
+                1.125rem
+                 / 
+                1.75rem
+              </div>
+              <div
+                class="text-silver/80"
+              >
+                .
+                text-lg
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 rounded-md border border-slate/60 bg-void/40 p-3"
+          >
+            <div
+              class="mb-2 font-heading text-xl"
+            >
+              Aa
+            </div>
+            <div
+              class="space-y-1 text-xs text-silver"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                fontSize.xl
+              </div>
+              <div>
+                1.25rem
+                 / 
+                1.75rem
+              </div>
+              <div
+                class="text-silver/80"
+              >
+                .
+                text-xl
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 rounded-md border border-slate/60 bg-void/40 p-3"
+          >
+            <div
+              class="mb-2 font-heading text-2xl"
+            >
+              Aa
+            </div>
+            <div
+              class="space-y-1 text-xs text-silver"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                fontSize.2xl
+              </div>
+              <div>
+                1.5rem
+                 / 
+                2rem
+              </div>
+              <div
+                class="text-silver/80"
+              >
+                .
+                text-2xl
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 rounded-md border border-slate/60 bg-void/40 p-3"
+          >
+            <div
+              class="mb-2 font-heading text-3xl"
+            >
+              Aa
+            </div>
+            <div
+              class="space-y-1 text-xs text-silver"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                fontSize.3xl
+              </div>
+              <div>
+                1.875rem
+                 / 
+                2.25rem
+              </div>
+              <div
+                class="text-silver/80"
+              >
+                .
+                text-3xl
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 rounded-md border border-slate/60 bg-void/40 p-3"
+          >
+            <div
+              class="mb-2 font-heading text-4xl"
+            >
+              Aa
+            </div>
+            <div
+              class="space-y-1 text-xs text-silver"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                fontSize.4xl
+              </div>
+              <div>
+                2.25rem
+                 / 
+                2.5rem
+              </div>
+              <div
+                class="text-silver/80"
+              >
+                .
+                text-4xl
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 rounded-md border border-slate/60 bg-void/40 p-3"
+          >
+            <div
+              class="mb-2 font-heading text-5xl"
+            >
+              Aa
+            </div>
+            <div
+              class="space-y-1 text-xs text-silver"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                fontSize.5xl
+              </div>
+              <div>
+                3rem
+                 / 
+                1
+              </div>
+              <div
+                class="text-silver/80"
+              >
+                .
+                text-5xl
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 rounded-md border border-slate/60 bg-void/40 p-3"
+          >
+            <div
+              class="mb-2 font-heading text-6xl"
+            >
+              Aa
+            </div>
+            <div
+              class="space-y-1 text-xs text-silver"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                fontSize.6xl
+              </div>
+              <div>
+                3.75rem
+                 / 
+                1
+              </div>
+              <div
+                class="text-silver/80"
+              >
+                .
+                text-6xl
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 md:col-span-2 p-6"
+      >
+        <h3
+          class="mb-4 text-gold"
+        >
+          Font Weight
+        </h3>
+        <div
+          class="grid gap-4 sm:grid-cols-2 md:grid-cols-4"
+        >
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 rounded-md border border-slate/60 bg-void/40 p-3"
+          >
+            <div
+              class="mb-2 text-base font-normal"
+            >
+              Aa — The quick brown fox
+            </div>
+            <div
+              class="space-y-1 text-xs text-silver"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                fontWeight.normal
+              </div>
+              <div>
+                Weight: 
+                400
+              </div>
+              <div
+                class="text-silver/80"
+              >
+                .
+                font-normal
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 rounded-md border border-slate/60 bg-void/40 p-3"
+          >
+            <div
+              class="mb-2 text-base font-medium"
+            >
+              Aa — The quick brown fox
+            </div>
+            <div
+              class="space-y-1 text-xs text-silver"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                fontWeight.medium
+              </div>
+              <div>
+                Weight: 
+                500
+              </div>
+              <div
+                class="text-silver/80"
+              >
+                .
+                font-medium
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 rounded-md border border-slate/60 bg-void/40 p-3"
+          >
+            <div
+              class="mb-2 text-base font-semibold"
+            >
+              Aa — The quick brown fox
+            </div>
+            <div
+              class="space-y-1 text-xs text-silver"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                fontWeight.semibold
+              </div>
+              <div>
+                Weight: 
+                600
+              </div>
+              <div
+                class="text-silver/80"
+              >
+                .
+                font-semibold
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 rounded-md border border-slate/60 bg-void/40 p-3"
+          >
+            <div
+              class="mb-2 text-base font-bold"
+            >
+              Aa — The quick brown fox
+            </div>
+            <div
+              class="space-y-1 text-xs text-silver"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                fontWeight.bold
+              </div>
+              <div>
+                Weight: 
+                700
+              </div>
+              <div
+                class="text-silver/80"
+              >
+                .
+                font-bold
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 md:col-span-2 p-6"
+      >
+        <h3
+          class="mb-4 text-gold"
+        >
+          Line Height
+        </h3>
+        <div
+          class="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+        >
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 rounded-md border border-slate/60 bg-void/40 p-3"
+          >
+            <div
+              class="mb-2 text-base leading-none"
+            >
+              Aa — The quick brown fox jumps over the lazy dog.
+            </div>
+            <div
+              class="space-y-1 text-xs text-silver"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                lineHeight.none
+              </div>
+              <div>
+                Line height: 
+                1
+              </div>
+              <div
+                class="text-silver/80"
+              >
+                .
+                leading-none
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 rounded-md border border-slate/60 bg-void/40 p-3"
+          >
+            <div
+              class="mb-2 text-base leading-tight"
+            >
+              Aa — The quick brown fox jumps over the lazy dog.
+            </div>
+            <div
+              class="space-y-1 text-xs text-silver"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                lineHeight.tight
+              </div>
+              <div>
+                Line height: 
+                1.25
+              </div>
+              <div
+                class="text-silver/80"
+              >
+                .
+                leading-tight
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 rounded-md border border-slate/60 bg-void/40 p-3"
+          >
+            <div
+              class="mb-2 text-base leading-snug"
+            >
+              Aa — The quick brown fox jumps over the lazy dog.
+            </div>
+            <div
+              class="space-y-1 text-xs text-silver"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                lineHeight.snug
+              </div>
+              <div>
+                Line height: 
+                1.375
+              </div>
+              <div
+                class="text-silver/80"
+              >
+                .
+                leading-snug
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 rounded-md border border-slate/60 bg-void/40 p-3"
+          >
+            <div
+              class="mb-2 text-base leading-normal"
+            >
+              Aa — The quick brown fox jumps over the lazy dog.
+            </div>
+            <div
+              class="space-y-1 text-xs text-silver"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                lineHeight.normal
+              </div>
+              <div>
+                Line height: 
+                1.5
+              </div>
+              <div
+                class="text-silver/80"
+              >
+                .
+                leading-normal
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 rounded-md border border-slate/60 bg-void/40 p-3"
+          >
+            <div
+              class="mb-2 text-base leading-relaxed"
+            >
+              Aa — The quick brown fox jumps over the lazy dog.
+            </div>
+            <div
+              class="space-y-1 text-xs text-silver"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                lineHeight.relaxed
+              </div>
+              <div>
+                Line height: 
+                1.625
+              </div>
+              <div
+                class="text-silver/80"
+              >
+                .
+                leading-relaxed
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 rounded-md border border-slate/60 bg-void/40 p-3"
+          >
+            <div
+              class="mb-2 text-base leading-loose"
+            >
+              Aa — The quick brown fox jumps over the lazy dog.
+            </div>
+            <div
+              class="space-y-1 text-xs text-silver"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                lineHeight.loose
+              </div>
+              <div>
+                Line height: 
+                2
+              </div>
+              <div
+                class="text-silver/80"
+              >
+                .
+                leading-loose
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 md:col-span-2 p-6"
+      >
+        <h3
+          class="mb-4 text-gold"
+        >
+          Letter Spacing
+        </h3>
+        <div
+          class="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+        >
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 rounded-md border border-slate/60 bg-void/40 p-3"
+          >
+            <div
+              class="mb-2 text-base tracking-tighter"
+            >
+              Aa — Tracking sample
+            </div>
+            <div
+              class="space-y-1 text-xs text-silver"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                letterSpacing.tighter
+              </div>
+              <div>
+                Letter spacing: 
+                -0.05em
+              </div>
+              <div
+                class="text-silver/80"
+              >
+                .
+                tracking-tighter
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 rounded-md border border-slate/60 bg-void/40 p-3"
+          >
+            <div
+              class="mb-2 text-base tracking-tight"
+            >
+              Aa — Tracking sample
+            </div>
+            <div
+              class="space-y-1 text-xs text-silver"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                letterSpacing.tight
+              </div>
+              <div>
+                Letter spacing: 
+                -0.025em
+              </div>
+              <div
+                class="text-silver/80"
+              >
+                .
+                tracking-tight
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 rounded-md border border-slate/60 bg-void/40 p-3"
+          >
+            <div
+              class="mb-2 text-base tracking-normal"
+            >
+              Aa — Tracking sample
+            </div>
+            <div
+              class="space-y-1 text-xs text-silver"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                letterSpacing.normal
+              </div>
+              <div>
+                Letter spacing: 
+                0
+              </div>
+              <div
+                class="text-silver/80"
+              >
+                .
+                tracking-normal
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 rounded-md border border-slate/60 bg-void/40 p-3"
+          >
+            <div
+              class="mb-2 text-base tracking-wide"
+            >
+              Aa — Tracking sample
+            </div>
+            <div
+              class="space-y-1 text-xs text-silver"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                letterSpacing.wide
+              </div>
+              <div>
+                Letter spacing: 
+                0.025em
+              </div>
+              <div
+                class="text-silver/80"
+              >
+                .
+                tracking-wide
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 rounded-md border border-slate/60 bg-void/40 p-3"
+          >
+            <div
+              class="mb-2 text-base tracking-wider"
+            >
+              Aa — Tracking sample
+            </div>
+            <div
+              class="space-y-1 text-xs text-silver"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                letterSpacing.wider
+              </div>
+              <div>
+                Letter spacing: 
+                0.05em
+              </div>
+              <div
+                class="text-silver/80"
+              >
+                .
+                tracking-wider
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 rounded-md border border-slate/60 bg-void/40 p-3"
+          >
+            <div
+              class="mb-2 text-base tracking-widest"
+            >
+              Aa — Tracking sample
+            </div>
+            <div
+              class="space-y-1 text-xs text-silver"
+            >
+              <div
+                class="font-mono text-white"
+              >
+                letterSpacing.widest
+              </div>
+              <div>
+                Letter spacing: 
+                0.1em
+              </div>
+              <div
+                class="text-silver/80"
+              >
+                .
+                tracking-widest
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+`;
