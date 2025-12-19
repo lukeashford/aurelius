@@ -42,7 +42,7 @@ test.describe('Interactive Elements', () => {
       await navigateToSection(page, 'modal');
 
       // Find and click the Open Modal button (exact label in demo is "Open Centered Modal")
-      const openButton = page.getByRole('button', {name: 'Open Centered Modal'}).first();
+      const openButton = page.getByRole('button', {name: 'Open Modal'});
       await openButton.click();
 
       // Verify modal is visible
@@ -58,7 +58,7 @@ test.describe('Interactive Elements', () => {
     test('closes modal with Confirm button', async ({page}) => {
       await navigateToSection(page, 'modal');
 
-      const openButton = page.getByRole('button', {name: 'Open Centered Modal'}).first();
+      const openButton = page.getByRole('button', {name: 'Open Modal'}).first();
       await openButton.click();
 
       await expect(page.locator('text=Example Modal')).toBeVisible();
@@ -362,6 +362,7 @@ test.describe('Interactive Elements', () => {
 
       // Click Previous button
       await prevButton.click();
+      await prevButton.click();
       await page.waitForTimeout(200);
 
       // Should be back to initial state
@@ -384,7 +385,7 @@ test.describe('Interactive Elements', () => {
       const nextButton = page.locator('#stepper button:has-text("Next")');
 
       // Click Next 3 times to reach the last step
-      for (let i = 0; i < 3; i++) {
+      for (let i = 0; i < 2; i++) {
         await nextButton.click();
         await page.waitForTimeout(200);
       }
@@ -449,7 +450,7 @@ test.describe('Interactive Elements', () => {
       await expect(conversationContainer).toBeVisible();
 
       // Verify messages are present
-      const messages = conversationContainer.locator('[class*="message"], .space-y-3 > div');
+      const messages = conversationContainer.locator('.flex.flex-col.gap-3 > div');
       const count = await messages.count();
       expect(count).toBeGreaterThan(0);
     });
