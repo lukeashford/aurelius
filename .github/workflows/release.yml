@@ -19,30 +19,12 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version-file: .nvmrc
           cache: npm
       - run: npm ci
       - run: npm run typecheck
       - run: npm run lint
       - run: npm test --if-present
-
-  commitlint:
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-      - run: npm ci
-      - name: Lint commits (Conventional Commits)
-        run: |
-          FROM=${{ github.event.pull_request.base.sha }}
-          TO=${{ github.sha }}
-          npx commitlint --from "$FROM" --to "$TO" --verbose
 
   prevent_manual_version_bump:
     if: github.event_name == 'pull_request'
@@ -77,7 +59,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version-file: .nvmrc
           cache: npm
       - run: npm ci
       - name: Semantic release

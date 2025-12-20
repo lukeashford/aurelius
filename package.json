@@ -24,6 +24,9 @@
   "publishConfig": {
     "access": "public"
   },
+  "engines": {
+    "node": ">=22.14.0"
+  },
   "scripts": {
     "build": "npm run typecheck && npm run lint && tsup && node scripts/generate-manifest.js",
     "dev": "tsup --watch",
