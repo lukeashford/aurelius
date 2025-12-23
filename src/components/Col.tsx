@@ -1,9 +1,9 @@
 import React from 'react'
 
-export type ColSpan = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 'auto'
+export type ColSpan = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 'auto' | 'full'
 
 export interface ColProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Column span (1-12) or 'auto' for flexible width */
+  /** Column span (1-12), 'auto' for content-based width, or 'full' for full row width */
   span?: ColSpan
   /** Column span at sm breakpoint (640px+) */
   sm?: ColSpan
@@ -22,12 +22,12 @@ function cx(...classes: (string | false | null | undefined)[]): string {
 export const Col = React.forwardRef<HTMLDivElement, ColProps>(
   ({span, sm, md, lg, xl, className, children, ...props}, ref) => {
     const classes = cx(
-      span === 'auto' ? 'col' : span && `col-${span}`,
-      sm === 'auto' ? 'sm:col' : sm && `sm:col-${sm}`,
-      md === 'auto' ? 'md:col' : md && `md:col-${md}`,
-      lg === 'auto' ? 'lg:col' : lg && `lg:col-${lg}`,
-      xl === 'auto' ? 'xl:col' : xl && `xl:col-${xl}`,
-      !span && !sm && !md && !lg && !xl && 'col',
+      span === 'auto' ? 'col-auto' : span === 'full' ? 'col-span-full' : span && `col-span-${span}`,
+      sm === 'auto' ? 'sm:col-auto' : sm === 'full' ? 'sm:col-span-full' : sm && `sm:col-span-${sm}`,
+      md === 'auto' ? 'md:col-auto' : md === 'full' ? 'md:col-span-full' : md && `md:col-span-${md}`,
+      lg === 'auto' ? 'lg:col-auto' : lg === 'full' ? 'lg:col-span-full' : lg && `lg:col-span-${lg}`,
+      xl === 'auto' ? 'xl:col-auto' : xl === 'full' ? 'xl:col-span-full' : xl && `xl:col-span-${xl}`,
+      !span && !sm && !md && !lg && !xl && 'col-span-12',
       className
     )
 

@@ -173,11 +173,16 @@ function Gallery() {
 <!-- Use CSS classes directly in any framework -->
 <div class="container">
   <div class="row">
-    <div class="col-12 md:col-6">Left column</div>
-    <div class="col-12 md:col-6">Right column</div>
+    <div class="col-span-12 md:col-span-6">Left column</div>
+    <div class="col-span-12 md:col-span-6">Right column</div>
   </div>
 </div>
 ```
+
+**How it works:**
+- `.row` creates a **CSS Grid** with 12 columns
+- Children use **Tailwind's `col-span-*`** utilities (no custom CSS needed)
+- Responsive with `sm:`, `md:`, `lg:`, `xl:` prefixes
 
 ### Container Variants
 
@@ -188,15 +193,14 @@ function Gallery() {
 - `container-xl` — Max-width 1280px
 - `container-fluid` — Full width with padding
 
-### Column Grid
+### Column Spans (Tailwind built-in)
 
-12-column responsive grid system with breakpoints:
+Use Tailwind's `col-span-*` utilities inside a `row`:
 
-- `col-{1-12}` — Base column width
-- `sm:col-{1-12}` — 640px+
-- `md:col-{1-12}` — 768px+
-- `lg:col-{1-12}` — 1024px+
-- `xl:col-{1-12}` — 1280px+
+- `col-span-{1-12}` — Base column width
+- `col-span-full` — Span all 12 columns
+- `col-auto` — Auto-sized based on content
+- Responsive: `sm:col-span-*`, `md:col-span-*`, `lg:col-span-*`, `xl:col-span-*`
 
 ### Tailwind Utilities (for advanced layouts)
 
@@ -213,11 +217,13 @@ function Gallery() {
 
 ### Migrating from Bootstrap
 
-| Bootstrap                     | Aurelius CSS                   | Aurelius React                    |
-|-------------------------------|--------------------------------|-----------------------------------|
-| `<div class="container">`     | `<div class="container">`      | `<Container>`                     |
-| `<div class="row g-4">`       | `<div class="row gap-4">`      | `<Row gutter="4">`                |
-| `<div class="col-md-6">`      | `<div class="md:col-6">`       | `<Col md={6}>`                    |
-| `<div class="col-12 col-lg-4">` | `<div class="col-12 lg:col-4">` | `<Col span={12} lg={4}>`       |
+| Bootstrap                       | Aurelius CSS                           | Aurelius React            |
+|---------------------------------|----------------------------------------|---------------------------|
+| `<div class="container">`       | `<div class="container">`              | `<Container>`             |
+| `<div class="row g-4">`         | `<div class="row">`                    | `<Row gutter="4">`        |
+| `<div class="col-md-6">`        | `<div class="md:col-span-6">`          | `<Col md={6}>`            |
+| `<div class="col-12 col-lg-4">` | `<div class="col-span-12 lg:col-span-4">` | `<Col span={12} lg={4}>` |
+
+**Key difference:** Aurelius uses **CSS Grid** (not flexbox), so column classes are `col-span-*` instead of `col-*`.
 
 ---

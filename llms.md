@@ -124,11 +124,12 @@ import { Container, Row, Col, Card } from '@lukeashford/aurelius'
 ```html
 <div class="container">
   <div class="row">
-    <div class="col-12 md:col-6">Left</div>
-    <div class="col-12 md:col-6">Right</div>
+    <div class="col-span-12 md:col-span-6">Left</div>
+    <div class="col-span-12 md:col-span-6">Right</div>
   </div>
 </div>
 ```
+Note: `.row` uses CSS Grid (12 columns). Children use Tailwind's `col-span-*` utilities.
 
 ---
 
@@ -154,7 +155,9 @@ Standard Tailwind classes for size (`text-sm`, `text-lg`, etc.), weight (`font-m
 ### Layout Classes
 **Containers:** `container`, `container-sm`, `container-md`, `container-lg`, `container-xl`, `container-fluid`
 
-**Grid:** `row`, `col`, `col-{1-12}`, `sm:col-{1-12}`, `md:col-{1-12}`, `lg:col-{1-12}`, `xl:col-{1-12}`
+**Grid:** `row` (creates 12-column CSS Grid)
+
+**Columns (Tailwind built-in):** `col-span-{1-12}`, `col-span-full`, `col-auto`, `sm:col-span-*`, `md:col-span-*`, `lg:col-span-*`, `xl:col-span-*`
 
 ### Custom Utilities
 text-gradient-gold, glow, glow-sm, glow-md, glow-lg, scroll-smooth, scrollbar-hide, backdrop-glass, focus-ring, line-clamp-2, line-clamp-3, center-absolute
