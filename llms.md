@@ -65,7 +65,9 @@ Import from `@lukeashford/aurelius`:
 | Card | variant (default, elevated, outlined, ghost, featured), interactive, selected |
 | ChatHistory | messages |
 | Checkbox | label |
+| Col | span (1-12 or 'auto'), sm, md, lg, xl (responsive column widths) |
 | ColorSwatch | color, label |
+| Container | size (sm, md, lg, xl, fluid, responsive) |
 | HelperText | error |
 | ImageCard | src, alt, title, subtitle, aspectRatio (${number}/${number}), overlay, mediaClassName, contentClassName |
 | Input | error, leadingIcon, trailingIcon |
@@ -74,6 +76,7 @@ Import from `@lukeashford/aurelius`:
 | Message | variant (user, assistant), content, isStreaming |
 | Modal | isOpen, title, children, className |
 | Radio | label |
+| Row | gutter (0, 1, 2, 3, 4, 5, 6, 8, 10, 12) |
 | SectionHeading | level (h2, h3) |
 | Select | error, options |
 | Skeleton | children |
@@ -84,8 +87,9 @@ Import from `@lukeashford/aurelius`:
 | Textarea | error |
 | Tooltip | content, children, open, side (top, right, bottom, left) |
 
-### Component usage example
+### Component usage examples
 
+**Basic components:**
 ```tsx
 import { Button, Card, Input, Badge } from '@lukeashford/aurelius'
 
@@ -95,6 +99,35 @@ import { Button, Card, Input, Badge } from '@lukeashford/aurelius'
   <Input placeholder="Enter value..." className="mt-4" />
   <Button variant="primary" className="mt-4">Submit</Button>
 </Card>
+```
+
+**Layout system (Container/Row/Col):**
+```tsx
+import { Container, Row, Col, Card } from '@lukeashford/aurelius'
+
+<Container>
+  <Row gutter="6">
+    <Col span={12} md={6} lg={4}>
+      <Card>Item 1</Card>
+    </Col>
+    <Col span={12} md={6} lg={4}>
+      <Card>Item 2</Card>
+    </Col>
+    <Col span={12} md={6} lg={4}>
+      <Card>Item 3</Card>
+    </Col>
+  </Row>
+</Container>
+```
+
+**Layout with CSS classes (framework-agnostic):**
+```html
+<div class="container">
+  <div class="row">
+    <div class="col-12 md:col-6">Left</div>
+    <div class="col-12 md:col-6">Right</div>
+  </div>
+</div>
 ```
 
 ---
@@ -117,6 +150,11 @@ border-void, border-obsidian, border-charcoal, border-graphite, border-slate, bo
 **Font families:** `font-heading` ("Marcellus", serif), `font-body` ("Raleway", system-ui, sans-serif), `font-mono` ("JetBrains Mono", "Fira Code", "SF Mono", monospace)
 
 Standard Tailwind classes for size (`text-sm`, `text-lg`, etc.), weight (`font-medium`, `font-bold`), and spacing are available.
+
+### Layout Classes
+**Containers:** `container`, `container-sm`, `container-md`, `container-lg`, `container-xl`, `container-fluid`
+
+**Grid:** `row`, `col`, `col-{1-12}`, `sm:col-{1-12}`, `md:col-{1-12}`, `lg:col-{1-12}`, `xl:col-{1-12}`
 
 ### Custom Utilities
 text-gradient-gold, glow, glow-sm, glow-md, glow-lg, scroll-smooth, scrollbar-hide, backdrop-glass, focus-ring, line-clamp-2, line-clamp-3, center-absolute

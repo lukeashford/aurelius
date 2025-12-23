@@ -137,3 +137,87 @@ function LoginForm() {
 ```
 
 ---
+
+## Layout System
+
+Aurelius provides a flexible layout system with both **CSS classes** (framework-agnostic) and **React
+components** (type-safe).
+
+### Container, Row, Col Components
+
+```tsx
+import {Container, Row, Col, Card} from '@lukeashford/aurelius'
+
+function Gallery() {
+  return (
+      <Container>
+        <Row gutter="6">
+          <Col span={12} md={6} lg={4}>
+            <Card>Item 1</Card>
+          </Col>
+          <Col span={12} md={6} lg={4}>
+            <Card>Item 2</Card>
+          </Col>
+          <Col span={12} md={6} lg={4}>
+            <Card>Item 3</Card>
+          </Col>
+        </Row>
+      </Container>
+  )
+}
+```
+
+### CSS Classes (framework-agnostic)
+
+```html
+<!-- Use CSS classes directly in any framework -->
+<div class="container">
+  <div class="row">
+    <div class="col-12 md:col-6">Left column</div>
+    <div class="col-12 md:col-6">Right column</div>
+  </div>
+</div>
+```
+
+### Container Variants
+
+- `container` — Responsive max-width (default)
+- `container-sm` — Max-width 640px
+- `container-md` — Max-width 768px
+- `container-lg` — Max-width 1024px
+- `container-xl` — Max-width 1280px
+- `container-fluid` — Full width with padding
+
+### Column Grid
+
+12-column responsive grid system with breakpoints:
+
+- `col-{1-12}` — Base column width
+- `sm:col-{1-12}` — 640px+
+- `md:col-{1-12}` — 768px+
+- `lg:col-{1-12}` — 1024px+
+- `xl:col-{1-12}` — 1280px+
+
+### Tailwind Utilities (for advanced layouts)
+
+```tsx
+// Still have full access to Tailwind's grid and flexbox utilities
+<div className="max-w-7xl mx-auto px-4">
+  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <Card>Item 1</Card>
+    <Card>Item 2</Card>
+    <Card>Item 3</Card>
+  </div>
+</div>
+```
+
+### Migrating from Bootstrap
+
+| Bootstrap                     | Aurelius CSS                   | Aurelius React                    |
+|-------------------------------|--------------------------------|-----------------------------------|
+| `<div class="container">`     | `<div class="container">`      | `<Container>`                     |
+| `<div class="row g-4">`       | `<div class="row gap-4">`      | `<Row gutter="4">`                |
+| `<div class="col-md-6">`      | `<div class="md:col-6">`       | `<Col md={6}>`                    |
+| `<div class="col-12 col-lg-4">` | `<div class="col-12 lg:col-4">` | `<Col span={12} lg={4}>`       |
+
+---
