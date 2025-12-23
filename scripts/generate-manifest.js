@@ -196,8 +196,9 @@ Import from \`@lukeashford/aurelius\`:
   }
 
   output += `
-### Component usage example
+### Component usage examples
 
+**Basic components:**
 \`\`\`tsx
 import { Button, Card, Input, Badge } from '@lukeashford/aurelius'
 
@@ -208,6 +209,36 @@ import { Button, Card, Input, Badge } from '@lukeashford/aurelius'
   <Button variant="primary" className="mt-4">Submit</Button>
 </Card>
 \`\`\`
+
+**Layout system (Container/Row/Col):**
+\`\`\`tsx
+import { Container, Row, Col, Card } from '@lukeashford/aurelius'
+
+<Container>
+  <Row gutter="6">
+    <Col span={12} md={6} lg={4}>
+      <Card>Item 1</Card>
+    </Col>
+    <Col span={12} md={6} lg={4}>
+      <Card>Item 2</Card>
+    </Col>
+    <Col span={12} md={6} lg={4}>
+      <Card>Item 3</Card>
+    </Col>
+  </Row>
+</Container>
+\`\`\`
+
+**Layout with CSS classes (framework-agnostic):**
+\`\`\`html
+<div class="container">
+  <div class="row">
+    <div class="col-span-12 md:col-span-6">Left</div>
+    <div class="col-span-12 md:col-span-6">Right</div>
+  </div>
+</div>
+\`\`\`
+Note: \`.row\` uses CSS Grid (12 columns). Children use Tailwind's \`col-span-*\` utilities.
 
 ---
 
@@ -240,6 +271,13 @@ Use ONLY these token-based classes. Arbitrary values like \`bg-[#0a0a0a]\` will 
 **Font families:** \`font-heading\` (${tokens.fonts.heading}), \`font-body\` (${tokens.fonts.body}), \`font-mono\` (${tokens.fonts.mono})
 
 Standard Tailwind classes for size (\`text-sm\`, \`text-lg\`, etc.), weight (\`font-medium\`, \`font-bold\`), and spacing are available.
+
+### Layout Classes
+**Containers:** \`container\`, \`container-sm\`, \`container-md\`, \`container-lg\`, \`container-xl\`, \`container-fluid\`
+
+**Grid:** \`row\` (creates 12-column CSS Grid)
+
+**Columns (Tailwind built-in):** \`col-span-{1-12}\`, \`col-span-full\`, \`col-auto\`, \`sm:col-span-*\`, \`md:col-span-*\`, \`lg:col-span-*\`, \`xl:col-span-*\`
 
 ### Custom Utilities
 `;

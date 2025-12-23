@@ -65,7 +65,7 @@ Import from `@lukeashford/aurelius`:
 | Card | variant (default, elevated, outlined, ghost, featured), interactive, selected |
 | ChatHistory | messages |
 | Checkbox | label |
-| Col | span (1-12 or 'auto'), sm, md, lg, xl (responsive column widths) |
+| Col | span (auto, full), sm (auto, full), md (auto, full), lg (auto, full), xl (auto, full) |
 | ColorSwatch | color, label |
 | Container | size (sm, md, lg, xl, fluid, responsive) |
 | HelperText | error |
@@ -160,7 +160,7 @@ Standard Tailwind classes for size (`text-sm`, `text-lg`, etc.), weight (`font-m
 **Columns (Tailwind built-in):** `col-span-{1-12}`, `col-span-full`, `col-auto`, `sm:col-span-*`, `md:col-span-*`, `lg:col-span-*`, `xl:col-span-*`
 
 ### Custom Utilities
-text-gradient-gold, glow, glow-sm, glow-md, glow-lg, scroll-smooth, scrollbar-hide, backdrop-glass, focus-ring, line-clamp-2, line-clamp-3, center-absolute
+text-gradient-gold, glow, glow-sm, glow-md, glow-lg, scroll-smooth, scrollbar-hide, backdrop-glass, focus-ring, line-clamp-2, line-clamp-3, center-absolute, container, container-sm, container-md, container-lg, container-xl, container-fluid, row
 
 ### Opacity modifiers
 Append `/10`, `/20`, `/30`, etc. to colors: `bg-gold/20`, `border-ash/50`
