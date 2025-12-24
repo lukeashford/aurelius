@@ -1,4 +1,5 @@
 import React from 'react'
+import { cx } from '../utils/cx'
 
 export type BrandIconSize = 'sm' | 'md' | 'lg'
 export type BrandIconVariant = 'solid' | 'outline'
@@ -6,10 +7,6 @@ export type BrandIconVariant = 'solid' | 'outline'
 export interface BrandIconProps extends React.HTMLAttributes<HTMLDivElement> {
   size?: BrandIconSize
   variant?: BrandIconVariant
-}
-
-function cx(...classes: Array<string | number | false | null | undefined>) {
-  return classes.filter(Boolean).join(' ')
 }
 
 const sizeMap: Record<BrandIconSize, string> = {

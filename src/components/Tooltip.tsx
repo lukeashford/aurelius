@@ -1,4 +1,5 @@
 import React from 'react'
+import { cx } from '../utils/cx'
 
 export type TooltipSide = 'top' | 'right' | 'bottom' | 'left'
 
@@ -7,10 +8,6 @@ export interface TooltipProps {
   children: React.ReactElement
   open?: boolean
   side?: TooltipSide
-}
-
-function cx(...classes: Array<string | number | false | null | undefined>) {
-  return classes.filter(Boolean).join(' ')
 }
 
 // Simple, controlled tooltip. Consumer handles open state.

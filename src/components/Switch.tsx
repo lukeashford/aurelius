@@ -1,14 +1,11 @@
 import React, { useCallback, useRef, useState } from 'react'
+import { cx } from '../utils/cx'
 
 export interface SwitchProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onChange'> {
   checked?: boolean
   defaultChecked?: boolean
   onCheckedChange?: (checked: boolean) => void
   label?: string
-}
-
-function cx(...classes: Array<string | number | false | null | undefined>) {
-  return classes.filter(Boolean).join(' ')
 }
 
 export const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(

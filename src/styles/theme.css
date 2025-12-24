@@ -148,7 +148,14 @@
   --shadow-inner: inset 0 2px 4px 0 rgb(var(--ink-rgb) / 0.3);
 
   /* ===== TRANSITIONS ===== */
-  /* Durations */
+  /* Durations - use --transition-duration-* for Tailwind v4 duration-* utilities */
+  --transition-duration-instant: 75ms;
+  --transition-duration-fast: 150ms;
+  --transition-duration-normal: 200ms;
+  --transition-duration-slow: 300ms;
+  --transition-duration-slower: 500ms;
+
+  /* Legacy duration aliases for CSS usage */
   --duration-instant: 75ms;
   --duration-fast: 150ms;
   --duration-normal: 200ms;
@@ -158,6 +165,9 @@
   /* Easing functions */
   --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-snap: cubic-bezier(0.5, 0, 0.1, 1);
+
+  /* ===== ASPECT RATIOS ===== */
+  --aspect-ratio-wide: 21 / 9;
 
   /* ===== ANIMATIONS ===== */
   --animate-fade-in: fade-in 200ms ease-out;
@@ -468,6 +478,10 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+@utility aspect-wide {
+  aspect-ratio: var(--aspect-ratio-wide);
 }
 
 /* ===== LAYOUT COMPONENTS ===== */

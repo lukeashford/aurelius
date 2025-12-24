@@ -1,4 +1,5 @@
 import React from 'react'
+import { cx } from '../utils/cx'
 
 export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
 export type AvatarStatus = 'online' | 'offline' | 'busy'
@@ -9,10 +10,6 @@ export interface AvatarProps extends React.HTMLAttributes<HTMLDivElement> {
   name?: string
   size?: AvatarSize
   status?: AvatarStatus
-}
-
-function cx(...classes: Array<string | number | false | null | undefined>) {
-  return classes.filter(Boolean).join(' ')
 }
 
 const sizeMap: Record<AvatarSize, string> = {

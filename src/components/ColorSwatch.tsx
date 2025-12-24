@@ -1,12 +1,9 @@
 import React from 'react'
+import { cx } from '../utils/cx'
 
 export interface ColorSwatchProps extends React.HTMLAttributes<HTMLDivElement> {
   color: string
   label?: string
-}
-
-function cx(...classes: Array<string | number | false | null | undefined>) {
-  return classes.filter(Boolean).join(' ')
 }
 
 export const ColorSwatch = React.forwardRef<HTMLDivElement, ColorSwatchProps>(

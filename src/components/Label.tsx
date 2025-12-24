@@ -1,11 +1,8 @@
 import React from 'react'
+import { cx } from '../utils/cx'
 
 export interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {
   required?: boolean
-}
-
-function cx(...classes: Array<string | number | false | null | undefined>) {
-  return classes.filter(Boolean).join(' ')
 }
 
 export const Label = React.forwardRef<HTMLLabelElement, LabelProps>(

@@ -1,5 +1,6 @@
 import React from 'react'
-import {Card, type CardProps} from './Card'
+import { Card, type CardProps } from './Card'
+import { cx } from '../utils/cx'
 
 export type AspectRatioPreset = 'landscape' | 'portrait' | 'square'
 export type AspectRatio = AspectRatioPreset | `${number}/${number}`
@@ -27,10 +28,6 @@ function resolveAspectRatio(ratio: AspectRatio): string {
     return ASPECT_RATIO_PRESETS[ratio as AspectRatioPreset]
   }
   return ratio.replace('/', ' / ')
-}
-
-function cx(...classes: (string | false | null | undefined)[]): string {
-  return classes.filter(Boolean).join(' ')
 }
 
 export const ImageCard = React.forwardRef<HTMLDivElement, ImageCardProps>(

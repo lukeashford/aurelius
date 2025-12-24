@@ -1,6 +1,6 @@
-// ChatHistory.tsx - Updated types
 import React from 'react'
-import {Message, type MessageProps, type MessageVariant} from './Message'
+import { Message, type MessageProps, type MessageVariant } from './Message'
+import { cx } from '../utils/cx'
 
 export interface ChatHistoryItem extends Omit<MessageProps, 'variant' | 'children'> {
   id?: string
@@ -9,10 +9,6 @@ export interface ChatHistoryItem extends Omit<MessageProps, 'variant' | 'childre
 
 export interface ChatHistoryProps extends React.HTMLAttributes<HTMLDivElement> {
   messages: ChatHistoryItem[]
-}
-
-function cx(...classes: Array<string | false | null | undefined>) {
-  return classes.filter(Boolean).join(' ')
 }
 
 export const ChatHistory = React.forwardRef<HTMLDivElement, ChatHistoryProps>(
