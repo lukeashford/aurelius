@@ -1,0 +1,10 @@
+## [2.3.0](https://github.com/lukeashford/aurelius/compare/v2.2.0...v2.3.0) (2025-12-24)
+
+### Features
+
+* **components:** major component library expansion with 17 new components ([6bed535](https://github.com/lukeashford/aurelius/commit/6bed535a866ef0f4761dc741f8671ce930c02f84))
+* **demo:** expand demo coverage for all new components ([4f31f24](https://github.com/lukeashford/aurelius/commit/4f31f24733361bec6f003ea2c4bbd9bf74ed722d))
+* **layout:** add Container, Row, Col components and CSS grid system ([bfe460d](https://github.com/lukeashford/aurelius/commit/bfe460da1b9c842183e4351bd64a7e071e9a97d9))
+* **layout:** enhance layout system with full Bootstrap parity ([47d4e44](https://github.com/lukeashford/aurelius/commit/47d4e448b95838efd417994e02c51fc8102f4f84))
+* **scripts:** add test command to package.json ([c110b3e](https://github.com/lukeashford/aurelius/commit/c110b3e7fb4c61b73bc8a1ebdd40ede066e40f86))
+* **styles:** add derived CSS custom props and layout tokens ([c52cab0](https://github.com/lukeashford/aurelius/commit/c52cab0516dc145d6e390ad156190c72b7cc4980))
