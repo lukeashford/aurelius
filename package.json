@@ -34,7 +34,8 @@
     "lint": "eslint src --max-warnings 0",
     "prepublishOnly": "npm run build",
     "dev:demo": "npm --prefix demo run dev",
-    "dev:all": "concurrently -k \"npm run dev\" \"npm run dev:demo\""
+    "dev:all": "concurrently -k \"npm run dev\" \"npm run dev:demo\"",
+    "test": "npm run build && npm --prefix demo run test && npm --prefix demo run test:e2e"
   },
   "peerDependencies": {
     "@eslint/css": ">=0.9.0",
