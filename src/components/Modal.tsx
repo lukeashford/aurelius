@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { X } from 'lucide-react'
+import { cx } from '../utils/cx'
 
 export interface ModalProps {
   isOpen: boolean
@@ -8,10 +9,6 @@ export interface ModalProps {
   title?: string
   children: React.ReactNode
   className?: string
-}
-
-function cx(...classes: Array<string | number | false | null | undefined>) {
-  return classes.filter(Boolean).join(' ')
 }
 
 export const Modal = ({ isOpen, onClose, title, children, className }: ModalProps) => {

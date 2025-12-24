@@ -35,7 +35,7 @@ exports[`ImageCardSection matches snapshot 1`] = `
           class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start"
         >
           <div
-            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-fit"
+            class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-fit"
           >
             <div
               class="relative"
@@ -62,7 +62,7 @@ exports[`ImageCardSection matches snapshot 1`] = `
             </div>
           </div>
           <div
-            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-fit"
+            class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-fit"
           >
             <div
               class="relative"
@@ -105,7 +105,7 @@ exports[`ImageCardSection matches snapshot 1`] = `
           class="grid grid-cols-1 md:grid-cols-3 gap-6 items-start"
         >
           <div
-            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-fit"
+            class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-fit"
           >
             <div
               class="relative overflow-hidden"
@@ -127,7 +127,7 @@ exports[`ImageCardSection matches snapshot 1`] = `
             </div>
           </div>
           <div
-            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-fit"
+            class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-fit"
           >
             <div
               class="relative overflow-hidden"
@@ -149,7 +149,7 @@ exports[`ImageCardSection matches snapshot 1`] = `
             </div>
           </div>
           <div
-            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-fit"
+            class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-fit"
           >
             <div
               class="relative overflow-hidden"
@@ -187,7 +187,7 @@ exports[`ImageCardSection matches snapshot 1`] = `
           class="grid grid-cols-1 md:grid-cols-3 gap-6 items-start"
         >
           <div
-            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-fit"
+            class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-fit"
           >
             <div
               class="relative overflow-hidden"
@@ -209,7 +209,7 @@ exports[`ImageCardSection matches snapshot 1`] = `
             </div>
           </div>
           <div
-            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-fit"
+            class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-fit"
           >
             <div
               class="relative overflow-hidden"
@@ -231,7 +231,7 @@ exports[`ImageCardSection matches snapshot 1`] = `
             </div>
           </div>
           <div
-            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-fit"
+            class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-fit"
           >
             <div
               class="relative overflow-hidden"
@@ -269,7 +269,7 @@ exports[`ImageCardSection matches snapshot 1`] = `
           class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start"
         >
           <div
-            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-fit"
+            class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-fit"
           >
             <div
               class="relative overflow-hidden"
@@ -296,7 +296,7 @@ exports[`ImageCardSection matches snapshot 1`] = `
             </div>
           </div>
           <div
-            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-fit"
+            class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-fit"
           >
             <div
               class="relative overflow-hidden"
@@ -339,7 +339,7 @@ exports[`ImageCardSection matches snapshot 1`] = `
           class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start"
         >
           <div
-            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-fit"
+            class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-fit"
           >
             <div
               class="relative overflow-hidden"
@@ -372,7 +372,7 @@ exports[`ImageCardSection matches snapshot 1`] = `
             </div>
           </div>
           <div
-            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-fit"
+            class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-fit"
           >
             <div
               class="relative overflow-hidden"

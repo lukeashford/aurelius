@@ -30,7 +30,7 @@ exports[`ColorsSection matches snapshot 1`] = `
           class="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6"
         >
           <div
-            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+            class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-3"
           >
             <div
               class="h-16 w-full  bg-void"
@@ -57,7 +57,7 @@ exports[`ColorsSection matches snapshot 1`] = `
             </div>
           </div>
           <div
-            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+            class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-3"
           >
             <div
               class="h-16 w-full  bg-obsidian"
@@ -84,7 +84,7 @@ exports[`ColorsSection matches snapshot 1`] = `
             </div>
           </div>
           <div
-            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+            class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-3"
           >
             <div
               class="h-16 w-full  bg-charcoal"
@@ -111,7 +111,7 @@ exports[`ColorsSection matches snapshot 1`] = `
             </div>
           </div>
           <div
-            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+            class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-3"
           >
             <div
               class="h-16 w-full  bg-graphite"
@@ -138,7 +138,7 @@ exports[`ColorsSection matches snapshot 1`] = `
             </div>
           </div>
           <div
-            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+            class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-3"
           >
             <div
               class="h-16 w-full  bg-slate"
@@ -165,7 +165,7 @@ exports[`ColorsSection matches snapshot 1`] = `
             </div>
           </div>
           <div
-            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+            class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-3"
           >
             <div
               class="h-16 w-full  bg-ash"
@@ -203,7 +203,7 @@ exports[`ColorsSection matches snapshot 1`] = `
           class="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6"
         >
           <div
-            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+            class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-3"
           >
             <div
               class="h-16 w-full  bg-gold"
@@ -230,7 +230,7 @@ exports[`ColorsSection matches snapshot 1`] = `
             </div>
           </div>
           <div
-            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+            class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-3"
           >
             <div
               class="h-16 w-full  bg-gold-light"
@@ -257,7 +257,7 @@ exports[`ColorsSection matches snapshot 1`] = `
             </div>
           </div>
           <div
-            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+            class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-3"
           >
             <div
               class="h-16 w-full  bg-gold-bright"
@@ -284,7 +284,7 @@ exports[`ColorsSection matches snapshot 1`] = `
             </div>
           </div>
           <div
-            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+            class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-3"
           >
             <div
               class="h-16 w-full  bg-gold-muted"
@@ -311,7 +311,7 @@ exports[`ColorsSection matches snapshot 1`] = `
             </div>
           </div>
           <div
-            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+            class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-3"
           >
             <div
               class="h-16 w-full  bg-gold-pale"
@@ -349,7 +349,7 @@ exports[`ColorsSection matches snapshot 1`] = `
           class="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6"
         >
           <div
-            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+            class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-3"
           >
             <div
               class="h-16 w-full  bg-white"
@@ -376,7 +376,7 @@ exports[`ColorsSection matches snapshot 1`] = `
             </div>
           </div>
           <div
-            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+            class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-3"
           >
             <div
               class="h-16 w-full  bg-silver"
@@ -403,7 +403,7 @@ exports[`ColorsSection matches snapshot 1`] = `
             </div>
           </div>
           <div
-            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+            class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-3"
           >
             <div
               class="h-16 w-full  bg-zinc"
@@ -430,7 +430,7 @@ exports[`ColorsSection matches snapshot 1`] = `
             </div>
           </div>
           <div
-            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+            class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-3"
           >
             <div
               class="h-16 w-full  bg-dim"
@@ -468,7 +468,7 @@ exports[`ColorsSection matches snapshot 1`] = `
           class="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6"
         >
           <div
-            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+            class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-3"
           >
             <div
               class="h-16 w-full  bg-success"
@@ -495,7 +495,7 @@ exports[`ColorsSection matches snapshot 1`] = `
             </div>
           </div>
           <div
-            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+            class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-3"
           >
             <div
               class="h-16 w-full  bg-success-muted"
@@ -522,7 +522,7 @@ exports[`ColorsSection matches snapshot 1`] = `
             </div>
           </div>
           <div
-            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+            class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-3"
           >
             <div
               class="h-16 w-full  bg-error"
@@ -549,7 +549,7 @@ exports[`ColorsSection matches snapshot 1`] = `
             </div>
           </div>
           <div
-            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+            class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-3"
           >
             <div
               class="h-16 w-full  bg-error-muted"
@@ -576,7 +576,7 @@ exports[`ColorsSection matches snapshot 1`] = `
             </div>
           </div>
           <div
-            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+            class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-3"
           >
             <div
               class="h-16 w-full  bg-warning"
@@ -603,7 +603,7 @@ exports[`ColorsSection matches snapshot 1`] = `
             </div>
           </div>
           <div
-            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+            class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-3"
           >
             <div
               class="h-16 w-full  bg-warning-muted"
@@ -630,7 +630,7 @@ exports[`ColorsSection matches snapshot 1`] = `
             </div>
           </div>
           <div
-            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+            class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-3"
           >
             <div
               class="h-16 w-full  bg-info"
@@ -657,7 +657,7 @@ exports[`ColorsSection matches snapshot 1`] = `
             </div>
           </div>
           <div
-            class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-3"
+            class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-3"
           >
             <div
               class="h-16 w-full  bg-info-muted"

@@ -1,13 +1,10 @@
 import React from 'react'
+import { cx } from '../utils/cx'
 
 export type SectionHeadingLevel = 'h2' | 'h3'
 
 export interface SectionHeadingProps extends React.HTMLAttributes<HTMLHeadingElement> {
   level?: SectionHeadingLevel
-}
-
-function cx(...classes: Array<string | number | false | null | undefined>) {
-  return classes.filter(Boolean).join(' ')
 }
 
 const levelStyles = {

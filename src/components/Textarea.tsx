@@ -1,11 +1,8 @@
 import React from 'react'
+import { cx } from '../utils/cx'
 
 export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   error?: boolean
-}
-
-function cx(...classes: Array<string | number | false | null | undefined>) {
-  return classes.filter(Boolean).join(' ')
 }
 
 export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(

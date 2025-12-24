@@ -1,15 +1,12 @@
 import React from 'react'
 import { Info, CheckCircle, AlertTriangle, XCircle } from 'lucide-react'
+import { cx } from '../utils/cx'
 
 export type AlertVariant = 'info' | 'success' | 'warning' | 'error'
 
 export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
   variant?: AlertVariant
   title?: string
-}
-
-function cx(...classes: Array<string | number | false | null | undefined>) {
-  return classes.filter(Boolean).join(' ')
 }
 
 const icons = {

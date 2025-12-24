@@ -18,6 +18,9 @@ import StreamingCursorSection from './sections/StreamingCursorSection'
 import TooltipSection from './sections/TooltipSection'
 import ModalSection from './sections/ModalSection'
 import DirectorNote from './sections/DirectorNote'
+import LayoutSection from './sections/LayoutSection'
+import NavigationSection from './sections/NavigationSection'
+import DataDisplaySection from './sections/DataDisplaySection'
 import {Footer} from './components/Footer'
 import {LegalNotice} from './components/LegalNotice'
 
@@ -26,11 +29,14 @@ const nav = [
   {id: 'director-note', label: "Director's Note"},
   {id: 'colors', label: 'Colors'},
   {id: 'typography', label: 'Typography'},
+  {id: 'layout', label: 'Layout'},
   {id: 'buttons', label: 'Buttons'},
   {id: 'badges', label: 'Badges'},
   {id: 'inputs', label: 'Inputs'},
   {id: 'cards', label: 'Cards'},
   {id: 'forms', label: 'Forms'},
+  {id: 'navigation', label: 'Navigation'},
+  {id: 'data-display', label: 'Data Display'},
   {id: 'stepper', label: 'Stepper'},
   {id: 'tooltip', label: 'Tooltip'},
   {id: 'modal', label: 'Overlays'},
@@ -129,6 +135,10 @@ export default function App() {
             <TypographySection/>
           </section>
 
+          <section id="layout" className="space-y-4">
+            <LayoutSection/>
+          </section>
+
           <section id="buttons" className="space-y-4">
             <ButtonsSection/>
           </section>
@@ -147,6 +157,14 @@ export default function App() {
 
           <section id="forms" className="space-y-4">
             <FormsSection/>
+          </section>
+
+          <section id="navigation" className="space-y-4">
+            <NavigationSection/>
+          </section>
+
+          <section id="data-display" className="space-y-4">
+            <DataDisplaySection/>
           </section>
 
           <section id="stepper" className="space-y-4">

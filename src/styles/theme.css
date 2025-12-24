@@ -13,13 +13,18 @@
   --color-slate: #2a2a2a;
   --color-ash: #3d3d3d;
 
-  /* Gold spectrum */
+  /* Core RGB helpers (reduce repeated rgba() literals) */
+  --ink-rgb: 0 0 0;
+  --gold-rgb: 201 162 39;
+  --glass-rgb: 20 20 20;
+
+  /* Gold spectrum (derived from one base where possible) */
   --color-gold: #c9a227;
-  --color-gold-light: #d4b84a;
-  --color-gold-bright: #e5c84d;
-  --color-gold-muted: #8b7355;
-  --color-gold-pale: #d4c4a8;
-  --color-gold-glow: rgba(201, 162, 39, 0.15);
+  --color-gold-light: color-mix(in oklab, var(--color-gold) 75%, white);
+  --color-gold-bright: color-mix(in oklab, var(--color-gold) 60%, white);
+  --color-gold-muted: color-mix(in oklab, var(--color-gold) 55%, #6b5a44);
+  --color-gold-pale: color-mix(in oklab, var(--color-gold) 25%, white);
+  --color-gold-glow: rgb(var(--gold-rgb) / 0.15);
 
   /* Neutrals */
   --color-white: #ffffff;
@@ -126,19 +131,31 @@
   --radius-full: 9999px;
 
   /* ===== SHADOWS ===== */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
-  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-  --shadow-glow: 0 0 20px rgba(201, 162, 39, 0.3);
-  --shadow-glow-sm: 0 0 10px rgba(201, 162, 39, 0.2);
-  --shadow-glow-md: 0 0 15px rgba(201, 162, 39, 0.3);
-  --shadow-glow-lg: 0 0 40px rgba(201, 162, 39, 0.4);
-  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.3);
+  --shadow-sm: 0 1px 2px 0 rgb(var(--ink-rgb) / 0.4);
+  --shadow-md: 0 4px 6px -1px rgb(var(--ink-rgb) / 0.4),
+  0 2px 4px -2px rgb(var(--ink-rgb) / 0.3);
+  --shadow-lg: 0 10px 15px -3px rgb(var(--ink-rgb) / 0.4),
+  0 4px 6px -4px rgb(var(--ink-rgb) / 0.3);
+  --shadow-xl: 0 20px 25px -5px rgb(var(--ink-rgb) / 0.4),
+  0 8px 10px -6px rgb(var(--ink-rgb) / 0.3);
+  --shadow-2xl: 0 25px 50px -12px rgb(var(--ink-rgb) / 0.5);
+
+  --shadow-glow: 0 0 20px rgb(var(--gold-rgb) / 0.3);
+  --shadow-glow-sm: 0 0 10px rgb(var(--gold-rgb) / 0.2);
+  --shadow-glow-md: 0 0 15px rgb(var(--gold-rgb) / 0.3);
+  --shadow-glow-lg: 0 0 40px rgb(var(--gold-rgb) / 0.4);
+
+  --shadow-inner: inset 0 2px 4px 0 rgb(var(--ink-rgb) / 0.3);
 
   /* ===== TRANSITIONS ===== */
-  /* Durations */
+  /* Durations - use --transition-duration-* for Tailwind v4 duration-* utilities */
+  --transition-duration-instant: 75ms;
+  --transition-duration-fast: 150ms;
+  --transition-duration-normal: 200ms;
+  --transition-duration-slow: 300ms;
+  --transition-duration-slower: 500ms;
+
+  /* Legacy duration aliases for CSS usage */
   --duration-instant: 75ms;
   --duration-fast: 150ms;
   --duration-normal: 200ms;
@@ -149,6 +166,9 @@
   --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-snap: cubic-bezier(0.5, 0, 0.1, 1);
 
+  /* ===== ASPECT RATIOS ===== */
+  --aspect-ratio-wide: 21 / 9;
+
   /* ===== ANIMATIONS ===== */
   --animate-fade-in: fade-in 200ms ease-out;
   --animate-fade-out: fade-out 150ms ease-in;
@@ -156,6 +176,13 @@
   --animate-slide-out-right: slide-out-right 200ms ease-in;
   --animate-pulse-glow: pulse-glow 2s ease-in-out infinite;
   --animate-cursor-blink: cursor-blink 1s steps(1) infinite;
+
+  /* ===== LAYOUT TOKENS ===== */
+  --container-sm: 640px;
+  --container-md: 768px;
+  --container-lg: 1024px;
+  --container-xl: 1280px;
+  --container-2xl: 1536px;
 }
 
 @keyframes fade-in {
@@ -199,19 +226,22 @@
 }
 
 @keyframes pulse-glow {
-  0%, 100% {
-    box-shadow: 0 0 20px rgba(201, 162, 39, 0.3);
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgb(var(--gold-rgb) / 0.3);
   }
   50% {
-    box-shadow: 0 0 30px rgba(201, 162, 39, 0.5);
+    box-shadow: 0 0 30px rgb(var(--gold-rgb) / 0.5);
   }
 }
 
 @keyframes cursor-blink {
-  0%, 50% {
+  0%,
+  50% {
     opacity: 1;
   }
-  51%, 100% {
+  51%,
+  100% {
     opacity: 0;
   }
 }
@@ -237,11 +267,14 @@
     width: 100%;
   }
 
-  table, th, td {
+  table,
+  th,
+  td {
     border: 1px solid var(--color-gold-muted);
   }
 
-  th, td {
+  th,
+  td {
     padding: 0.5rem 0.75rem;
   }
 
@@ -273,14 +306,20 @@
   }
 
   /* Headings */
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: var(--font-heading);
     font-weight: 600;
     letter-spacing: -0.025em;
     color: var(--color-white);
   }
 
-  h1, h2 {
+  h1,
+  h2 {
     color: var(--color-gold);
   }
 
@@ -315,7 +354,10 @@
   }
 
   /* Code */
-  code, pre, kbd, samp {
+  code,
+  pre,
+  kbd,
+  samp {
     font-family: var(--font-mono);
     font-size: 0.875em;
   }
@@ -365,7 +407,12 @@
 
 /* ===== UTILITY CLASSES ===== */
 @utility text-gradient-gold {
-  background: linear-gradient(to right, var(--color-gold), var(--color-gold-light), var(--color-gold));
+  background: linear-gradient(
+      to right,
+      var(--color-gold),
+      var(--color-gold-light),
+      var(--color-gold)
+  );
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -402,12 +449,12 @@
 
 @utility backdrop-glass {
   backdrop-filter: blur(12px);
-  background-color: rgba(20, 20, 20, 0.8);
+  background-color: rgb(var(--glass-rgb) / 0.8);
 }
 
 @utility focus-ring {
   &:focus-visible {
-    outline: 2px solid #c9a227;
+    outline: 2px solid var(--color-gold);
     outline-offset: 2px;
   }
 }
@@ -431,4 +478,79 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+@utility aspect-wide {
+  aspect-ratio: var(--aspect-ratio-wide);
+}
+
+/* ===== LAYOUT COMPONENTS ===== */
+/* Container - Responsive max-width wrapper with horizontal padding */
+@utility container {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: var(--spacing-4);
+
+  @media (min-width: 640px) {
+    max-width: var(--container-sm);
+  }
+
+  @media (min-width: 768px) {
+    max-width: var(--container-md);
+  }
+
+  @media (min-width: 1024px) {
+    max-width: var(--container-lg);
+  }
+
+  @media (min-width: 1280px) {
+    max-width: var(--container-xl);
+  }
+
+  @media (min-width: 1536px) {
+    max-width: var(--container-2xl);
+  }
+}
+
+/* Container size variants */
+@utility container-sm {
+  width: 100%;
+  max-width: var(--container-sm);
+  margin-inline: auto;
+  padding-inline: var(--spacing-4);
+}
+
+@utility container-md {
+  width: 100%;
+  max-width: var(--container-md);
+  margin-inline: auto;
+  padding-inline: var(--spacing-4);
+}
+
+@utility container-lg {
+  width: 100%;
+  max-width: var(--container-lg);
+  margin-inline: auto;
+  padding-inline: var(--spacing-4);
+}
+
+@utility container-xl {
+  width: 100%;
+  max-width: var(--container-xl);
+  margin-inline: auto;
+  padding-inline: var(--spacing-4);
+}
+
+@utility container-fluid {
+  width: 100%;
+  padding-inline: var(--spacing-4);
+}
+
+/* Row - CSS Grid-based 12-column layout
+ * Uses CSS Grid instead of flexbox for cleaner, modern layout.
+ * Children use Tailwind's col-span-* utilities (e.g., col-span-6, md:col-span-4).
+ */
+@utility row {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
 }

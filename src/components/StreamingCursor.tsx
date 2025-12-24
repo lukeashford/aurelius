@@ -1,11 +1,8 @@
 import React from 'react'
+import { cx } from '../utils/cx'
 
 export interface StreamingCursorProps extends React.HTMLAttributes<HTMLSpanElement> {
   variant?: 'block' | 'line' | 'underscore'
-}
-
-function cx(...classes: Array<string | number | false | null | undefined>) {
-  return classes.filter(Boolean).join(' ')
 }
 
 export const StreamingCursor = React.forwardRef<HTMLSpanElement, StreamingCursorProps>(

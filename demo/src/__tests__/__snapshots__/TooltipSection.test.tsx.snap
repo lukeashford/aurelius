@@ -21,7 +21,7 @@ exports[`TooltipSection matches snapshot 1`] = `
       class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
     >
       <div
-        class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-6 flex items-center justify-center"
+        class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-6 flex items-center justify-center"
       >
         <span
           class="relative inline-block"
@@ -41,7 +41,7 @@ exports[`TooltipSection matches snapshot 1`] = `
         </span>
       </div>
       <div
-        class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-6 flex items-center justify-center"
+        class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-6 flex items-center justify-center"
       >
         <span
           class="relative inline-block"
@@ -61,7 +61,7 @@ exports[`TooltipSection matches snapshot 1`] = `
         </span>
       </div>
       <div
-        class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-6 flex items-center justify-center"
+        class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-6 flex items-center justify-center"
       >
         <span
           class="relative inline-block"
@@ -81,7 +81,7 @@ exports[`TooltipSection matches snapshot 1`] = `
         </span>
       </div>
       <div
-        class="rounded-none p-6 relative bg-charcoal shadow-sm border border-gold/30 p-6 flex items-center justify-center"
+        class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-6 flex items-center justify-center"
       >
         <span
           class="relative inline-block"

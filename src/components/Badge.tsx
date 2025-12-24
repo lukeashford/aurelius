@@ -1,13 +1,10 @@
 import React from 'react'
+import { cx } from '../utils/cx'
 
 export type BadgeVariant = 'default' | 'gold' | 'success' | 'error' | 'warning' | 'info'
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   variant?: BadgeVariant
-}
-
-function cx(...classes: Array<string | number | false | null | undefined>) {
-  return classes.filter(Boolean).join(' ')
 }
 
 export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(

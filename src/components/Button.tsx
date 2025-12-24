@@ -1,13 +1,14 @@
 import React from 'react'
+import { cx } from '../utils/cx'
 
 export type ButtonVariant =
-    | 'primary'
-    | 'important'
-    | 'elevated'
-    | 'outlined'
-    | 'featured'
-    | 'ghost'
-    | 'danger'
+  | 'primary'
+  | 'important'
+  | 'elevated'
+  | 'outlined'
+  | 'featured'
+  | 'ghost'
+  | 'danger'
 
 export type ButtonSize = 'sm' | 'md' | 'lg' | 'xl'
 
@@ -15,10 +16,6 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   variant?: ButtonVariant
   size?: ButtonSize
   loading?: boolean
-}
-
-function cx(...classes: Array<string | number | false | null | undefined>) {
-  return classes.filter(Boolean).join(' ')
 }
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -65,8 +62,8 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
         featured:
             'bg-charcoal text-white border border-gold ' +
-            'shadow-[0_0_10px_rgba(201,162,39,0.2)] ' +
-            'hover:shadow-[0_0_15px_rgba(201,162,39,0.4)] hover:text-gold-light ' +
+            'glow-sm ' +
+            'hover:glow-md hover:text-gold-light ' +
             'active:bg-white/5 ' +
             'focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 ' +
             'focus-visible:ring-offset-obsidian',

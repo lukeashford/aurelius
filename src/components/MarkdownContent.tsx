@@ -1,14 +1,10 @@
-// MarkdownContent.tsx
-import React, {useMemo} from 'react'
-import DOMPurify, {type Config} from 'dompurify'
+import React, { useMemo } from 'react'
+import DOMPurify, { type Config } from 'dompurify'
+import { cx } from '../utils/cx'
 
 export interface MarkdownContentProps extends React.HTMLAttributes<HTMLDivElement> {
   content: string
   sanitizeConfig?: Config
-}
-
-function cx(...classes: Array<string | number | false | null | undefined>) {
-  return classes.filter(Boolean).join(' ')
 }
 
 const DEFAULT_SANITIZE_CONFIG: Config = {

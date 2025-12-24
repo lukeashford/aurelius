@@ -6,7 +6,7 @@
 
 ```bash
 npm install @lukeashford/aurelius
-npm install -D eslint @typescript-eslint/parser eslint-plugin-better-tailwindcss @poupe/eslint-plugin-tailwindcss @eslint/css tailwind-csstree
+npm install -D tailwindcss postcss @tailwindcss/postcss eslint @typescript-eslint/parser eslint-plugin-better-tailwindcss @poupe/eslint-plugin-tailwindcss @eslint/css tailwind-csstree
 ```
 
 ### 2. Import the design system
@@ -57,31 +57,51 @@ Import from `@lukeashford/aurelius`:
 
 | Component | Props |
 |-----------|-------|
+| Accordion | defaultValue, value |
 | Alert | variant (info, success, warning, error), title |
 | Avatar | src, alt, name, size (xs, sm, md, lg, xl, 2xl), status (online, offline, busy) |
 | Badge | variant (default, gold, success, error, warning, info) |
 | BrandIcon | size (sm, md, lg), variant (solid, outline) |
+| Breadcrumb | separator |
 | Button | variant (primary, important, elevated, outlined, featured, ghost, danger), size (sm, md, lg, xl), loading |
-| Card | variant (default, elevated, outlined, ghost, featured), interactive, selected |
+| Card | variant (default, elevated, outlined, ghost, featured), interactive, selected, noPadding |
 | ChatHistory | messages |
 | Checkbox | label |
+| Col | children |
 | ColorSwatch | color, label |
+| Container | size (sm, md, lg, xl, fluid, responsive) |
+| Dialog | description, confirmText, cancelText, isLoading |
+| Divider | orientation (horizontal, vertical), variant (solid, dashed, dotted), label |
+| Drawer | isOpen, position (left, right, top, bottom), title, children, className |
 | HelperText | error |
 | ImageCard | src, alt, title, subtitle, aspectRatio (${number}/${number}), overlay, mediaClassName, contentClassName |
 | Input | error, leadingIcon, trailingIcon |
+| InputGroup | children |
 | Label | required |
+| List | ordered |
 | MarkdownContent | content, sanitizeConfig |
+| Menu | children, open |
 | Message | variant (user, assistant), content, isStreaming |
 | Modal | isOpen, title, children, className |
+| Navbar | fixed, bordered |
+| Pagination | page, totalPages, siblingCount, showEdges |
+| Popover | children, trigger, position (top, bottom, left, right), align (start, center, end), open, closeOnClickOutside |
+| Progress | value, max, size (sm, md, lg), variant (default, success, warning, error), showValue, indeterminate |
 | Radio | label |
+| Row | gutter, gutterX, gutterY, justify (start, center, end, between, around, evenly), align (start, center, end, stretch, baseline) |
 | SectionHeading | level (h2, h3) |
 | Select | error, options |
 | Skeleton | children |
+| Slider | value, defaultValue, min, max, step, disabled, showTooltip |
 | Spinner | size (sm, md, lg) |
+| Stack | direction (horizontal, vertical), align (start, center, end, stretch, baseline), justify (start, center, end, between, around, evenly), gap, wrap |
 | Stepper | steps, currentStep, status (complete, error) |
 | StreamingCursor | children |
 | Switch | checked, defaultChecked, label |
+| Table | responsive |
+| Tabs | defaultValue, value |
 | Textarea | error |
+| Toast | children, position (top-right, top-left, bottom-right, bottom-left, top-center, bottom-center), defaultDuration |
 | Tooltip | content, children, open, side (top, right, bottom, left) |
 
 ### Component usage example
@@ -118,8 +138,15 @@ border-void, border-obsidian, border-charcoal, border-graphite, border-slate, bo
 
 Standard Tailwind classes for size (`text-sm`, `text-lg`, etc.), weight (`font-medium`, `font-bold`), and spacing are available.
 
+### Layout Classes
+**Containers:** `container`, `container-sm`, `container-md`, `container-lg`, `container-xl`, `container-fluid`
+
+**Grid:** `row` (creates 12-column CSS Grid)
+
+**Columns (Tailwind built-in):** `col-span-{1-12}`, `col-span-full`, `col-auto`, `sm:col-span-*`, `md:col-span-*`, `lg:col-span-*`, `xl:col-span-*`
+
 ### Custom Utilities
-text-gradient-gold, glow, glow-sm, glow-md, glow-lg, scroll-smooth, scrollbar-hide, backdrop-glass, focus-ring, line-clamp-2, line-clamp-3, center-absolute
+text-gradient-gold, glow, glow-sm, glow-md, glow-lg, scroll-smooth, scrollbar-hide, backdrop-glass, focus-ring, line-clamp-2, line-clamp-3, center-absolute, aspect-wide, container, container-sm, container-md, container-lg, container-xl, container-fluid, row
 
 ### Opacity modifiers
 Append `/10`, `/20`, `/30`, etc. to colors: `bg-gold/20`, `border-ash/50`

@@ -1,6 +1,7 @@
 import React from 'react'
-import {MarkdownContent} from './MarkdownContent'
-import {StreamingCursor} from './StreamingCursor'
+import { MarkdownContent } from './MarkdownContent'
+import { StreamingCursor } from './StreamingCursor'
+import { cx } from '../utils/cx'
 
 export type MessageVariant = 'user' | 'assistant'
 
@@ -8,10 +9,6 @@ export interface MessageProps extends React.HTMLAttributes<HTMLDivElement> {
   variant?: MessageVariant
   content: string
   isStreaming?: boolean
-}
-
-function cx(...classes: Array<string | number | false | null | undefined>) {
-  return classes.filter(Boolean).join(' ')
 }
 
 const variantStyles: Record<MessageVariant, string> = {

@@ -73,7 +73,7 @@ function generateManifest() {
 
 \`\`\`bash
 npm install @lukeashford/aurelius
-npm install -D eslint @typescript-eslint/parser eslint-plugin-better-tailwindcss @poupe/eslint-plugin-tailwindcss @eslint/css tailwind-csstree
+npm install -D tailwindcss postcss @tailwindcss/postcss eslint @typescript-eslint/parser eslint-plugin-better-tailwindcss @poupe/eslint-plugin-tailwindcss @eslint/css tailwind-csstree
 \`\`\`
 
 ### 2. Import the design system
@@ -240,6 +240,13 @@ Use ONLY these token-based classes. Arbitrary values like \`bg-[#0a0a0a]\` will 
 **Font families:** \`font-heading\` (${tokens.fonts.heading}), \`font-body\` (${tokens.fonts.body}), \`font-mono\` (${tokens.fonts.mono})
 
 Standard Tailwind classes for size (\`text-sm\`, \`text-lg\`, etc.), weight (\`font-medium\`, \`font-bold\`), and spacing are available.
+
+### Layout Classes
+**Containers:** \`container\`, \`container-sm\`, \`container-md\`, \`container-lg\`, \`container-xl\`, \`container-fluid\`
+
+**Grid:** \`row\` (creates 12-column CSS Grid)
+
+**Columns (Tailwind built-in):** \`col-span-{1-12}\`, \`col-span-full\`, \`col-auto\`, \`sm:col-span-*\`, \`md:col-span-*\`, \`lg:col-span-*\`, \`xl:col-span-*\`
 
 ### Custom Utilities
 `;

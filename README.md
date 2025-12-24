@@ -56,7 +56,7 @@ while staying within design system constraints.
 
 ```bash
 npm install @lukeashford/aurelius
-npm install -D eslint @typescript-eslint/parser eslint-plugin-better-tailwindcss @poupe/eslint-plugin-tailwindcss @eslint/css tailwind-csstree
+npm install -D tailwindcss postcss @tailwindcss/postcss eslint @typescript-eslint/parser eslint-plugin-better-tailwindcss @poupe/eslint-plugin-tailwindcss @eslint/css tailwind-csstree
 ```
 
 ### 2. Import the design system
@@ -135,5 +135,3 @@ function LoginForm() {
   )
 }
 ```
-
----
