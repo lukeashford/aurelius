@@ -64,7 +64,7 @@ test.describe('Interactive Elements', () => {
       await expect(page.locator('text=Example Modal')).toBeVisible();
 
       // Close with Confirm button
-      await page.locator('button:has-text("Confirm")').click();
+      await page.getByRole('dialog').getByRole('button', {name: 'Confirm'}).click();
       await expect(page.locator('text=Example Modal')).not.toBeVisible();
     });
 
