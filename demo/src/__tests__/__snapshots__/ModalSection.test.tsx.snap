@@ -11,7 +11,7 @@ exports[`ModalSection matches snapshot when modal is closed 1`] = `
       <h2
         class="text-2xl"
       >
-        Modals
+        Overlays
       </h2>
       <p
         class="text-silver"
@@ -20,23 +20,181 @@ exports[`ModalSection matches snapshot when modal is closed 1`] = `
       </p>
     </header>
     <div
-      class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-8 flex flex-col items-center justify-center gap-4"
+      class="grid grid-cols-1 gap-8 md:grid-cols-2"
     >
-      <h3
-        class="text-gold font-medium"
+      <div
+        class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-6 space-y-4"
       >
-        Modal Dialog
-      </h3>
-      <p
-        class="text-silver text-center max-w-md"
+        <h3
+          class="text-gold font-medium"
+        >
+          Modal
+        </h3>
+        <p
+          class="text-sm text-silver"
+        >
+          Modals are used for critical information or focused tasks.
+        </p>
+        <button
+          class="inline-flex items-center justify-center font-semibold tracking-wide transition-all duration-fast rounded-none disabled:opacity-50 disabled:cursor-not-allowed bg-charcoal text-white border border-gold/30 hover:border-gold hover:shadow-glow hover:text-gold-light active:bg-white/5 focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-obsidian h-10 px-4 text-sm"
+        >
+          Open Modal
+        </button>
+      </div>
+      <div
+        class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-6 space-y-4"
       >
-        Modals are used for critical information or focused tasks that require user attention.
-      </p>
-      <button
-        class="inline-flex items-center justify-center font-semibold tracking-wide transition-all duration-fast rounded-none disabled:opacity-50 disabled:cursor-not-allowed bg-charcoal text-white border border-gold/30 hover:border-gold hover:shadow-glow hover:text-gold-light active:bg-white/5 focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-obsidian h-10 px-4 text-sm"
+        <h3
+          class="text-gold font-medium"
+        >
+          Drawer
+        </h3>
+        <p
+          class="text-sm text-silver"
+        >
+          Slide-out panels from edges of the screen.
+        </p>
+        <div
+          class="flex gap-3"
+        >
+          <button
+            class="inline-flex items-center justify-center font-semibold tracking-wide transition-all duration-fast rounded-none disabled:opacity-50 disabled:cursor-not-allowed bg-charcoal text-white border border-gold/30 hover:border-gold hover:shadow-glow hover:text-gold-light active:bg-white/5 focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-obsidian h-8 px-3 text-sm"
+          >
+            Open Left
+          </button>
+          <button
+            class="inline-flex items-center justify-center font-semibold tracking-wide transition-all duration-fast rounded-none disabled:opacity-50 disabled:cursor-not-allowed bg-charcoal text-white border border-gold/30 hover:border-gold hover:shadow-glow hover:text-gold-light active:bg-white/5 focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-obsidian h-8 px-3 text-sm"
+          >
+            Open Right
+          </button>
+        </div>
+      </div>
+      <div
+        class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-6 space-y-4"
       >
-        Open Modal
-      </button>
+        <h3
+          class="text-gold font-medium"
+        >
+          Popover
+        </h3>
+        <p
+          class="text-sm text-silver"
+        >
+          Rich content tooltips with click trigger.
+        </p>
+        <div
+          class="flex gap-4 flex-wrap"
+        >
+          <div
+            class="relative inline-block"
+          >
+            <button
+              aria-controls="_r_i_-popover"
+              aria-expanded="false"
+              aria-haspopup="dialog"
+              class="inline-flex items-center justify-center font-semibold tracking-wide transition-all duration-fast rounded-none disabled:opacity-50 disabled:cursor-not-allowed bg-transparent text-white border border-ash hover:border-white hover:text-white active:bg-white/5 focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-obsidian h-8 px-3 text-sm"
+              id="_r_i_-trigger"
+            >
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-info h-4 w-4 mr-2"
+                fill="none"
+                height="24"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="10"
+                />
+                <path
+                  d="M12 16v-4"
+                />
+                <path
+                  d="M12 8h.01"
+                />
+              </svg>
+              More Info
+            </button>
+          </div>
+          <div
+            class="relative inline-block"
+          >
+            <button
+              aria-controls="_r_j_-popover"
+              aria-expanded="false"
+              aria-haspopup="dialog"
+              class="inline-flex items-center justify-center font-semibold tracking-wide transition-all duration-fast rounded-none disabled:opacity-50 disabled:cursor-not-allowed bg-transparent text-gold border-0 hover:text-gold-light active:text-gold-bright focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-obsidian h-8 px-3 text-sm"
+              id="_r_j_-trigger"
+            >
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-circle-question-mark h-4 w-4"
+                fill="none"
+                height="24"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="10"
+                />
+                <path
+                  d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"
+                />
+                <path
+                  d="M12 17h.01"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-6 space-y-4"
+      >
+        <h3
+          class="text-gold font-medium"
+        >
+          Dialog Variants
+        </h3>
+        <p
+          class="text-sm text-silver"
+        >
+          Pre-built dialog patterns for common use cases.
+        </p>
+        <div
+          class="flex flex-wrap gap-3"
+        >
+          <button
+            class="inline-flex items-center justify-center font-semibold tracking-wide transition-all duration-fast rounded-none disabled:opacity-50 disabled:cursor-not-allowed bg-charcoal text-white border border-gold/30 hover:border-gold hover:shadow-glow hover:text-gold-light active:bg-white/5 focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-obsidian h-8 px-3 text-sm"
+          >
+            Confirm
+          </button>
+          <button
+            class="inline-flex items-center justify-center font-semibold tracking-wide transition-all duration-fast rounded-none disabled:opacity-50 disabled:cursor-not-allowed bg-charcoal text-white border border-gold/30 hover:border-gold hover:shadow-glow hover:text-gold-light active:bg-white/5 focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-obsidian h-8 px-3 text-sm"
+          >
+            Alert
+          </button>
+          <button
+            class="inline-flex items-center justify-center font-semibold tracking-wide transition-all duration-fast rounded-none disabled:opacity-50 disabled:cursor-not-allowed bg-charcoal text-white border border-gold/30 hover:border-gold hover:shadow-glow hover:text-gold-light active:bg-white/5 focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-obsidian h-8 px-3 text-sm"
+          >
+            Prompt
+          </button>
+        </div>
+      </div>
     </div>
   </section>
 </div>
@@ -53,7 +211,7 @@ exports[`ModalSection matches snapshot when modal is open 1`] = `
       <h2
         class="text-2xl"
       >
-        Modals
+        Overlays
       </h2>
       <p
         class="text-silver"
@@ -62,23 +220,181 @@ exports[`ModalSection matches snapshot when modal is open 1`] = `
       </p>
     </header>
     <div
-      class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-8 flex flex-col items-center justify-center gap-4"
+      class="grid grid-cols-1 gap-8 md:grid-cols-2"
     >
-      <h3
-        class="text-gold font-medium"
+      <div
+        class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-6 space-y-4"
       >
-        Modal Dialog
-      </h3>
-      <p
-        class="text-silver text-center max-w-md"
+        <h3
+          class="text-gold font-medium"
+        >
+          Modal
+        </h3>
+        <p
+          class="text-sm text-silver"
+        >
+          Modals are used for critical information or focused tasks.
+        </p>
+        <button
+          class="inline-flex items-center justify-center font-semibold tracking-wide transition-all duration-fast rounded-none disabled:opacity-50 disabled:cursor-not-allowed bg-charcoal text-white border border-gold/30 hover:border-gold hover:shadow-glow hover:text-gold-light active:bg-white/5 focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-obsidian h-10 px-4 text-sm"
+        >
+          Open Modal
+        </button>
+      </div>
+      <div
+        class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-6 space-y-4"
       >
-        Modals are used for critical information or focused tasks that require user attention.
-      </p>
-      <button
-        class="inline-flex items-center justify-center font-semibold tracking-wide transition-all duration-fast rounded-none disabled:opacity-50 disabled:cursor-not-allowed bg-charcoal text-white border border-gold/30 hover:border-gold hover:shadow-glow hover:text-gold-light active:bg-white/5 focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-obsidian h-10 px-4 text-sm"
+        <h3
+          class="text-gold font-medium"
+        >
+          Drawer
+        </h3>
+        <p
+          class="text-sm text-silver"
+        >
+          Slide-out panels from edges of the screen.
+        </p>
+        <div
+          class="flex gap-3"
+        >
+          <button
+            class="inline-flex items-center justify-center font-semibold tracking-wide transition-all duration-fast rounded-none disabled:opacity-50 disabled:cursor-not-allowed bg-charcoal text-white border border-gold/30 hover:border-gold hover:shadow-glow hover:text-gold-light active:bg-white/5 focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-obsidian h-8 px-3 text-sm"
+          >
+            Open Left
+          </button>
+          <button
+            class="inline-flex items-center justify-center font-semibold tracking-wide transition-all duration-fast rounded-none disabled:opacity-50 disabled:cursor-not-allowed bg-charcoal text-white border border-gold/30 hover:border-gold hover:shadow-glow hover:text-gold-light active:bg-white/5 focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-obsidian h-8 px-3 text-sm"
+          >
+            Open Right
+          </button>
+        </div>
+      </div>
+      <div
+        class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-6 space-y-4"
       >
-        Open Modal
-      </button>
+        <h3
+          class="text-gold font-medium"
+        >
+          Popover
+        </h3>
+        <p
+          class="text-sm text-silver"
+        >
+          Rich content tooltips with click trigger.
+        </p>
+        <div
+          class="flex gap-4 flex-wrap"
+        >
+          <div
+            class="relative inline-block"
+          >
+            <button
+              aria-controls="_r_k_-popover"
+              aria-expanded="false"
+              aria-haspopup="dialog"
+              class="inline-flex items-center justify-center font-semibold tracking-wide transition-all duration-fast rounded-none disabled:opacity-50 disabled:cursor-not-allowed bg-transparent text-white border border-ash hover:border-white hover:text-white active:bg-white/5 focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-obsidian h-8 px-3 text-sm"
+              id="_r_k_-trigger"
+            >
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-info h-4 w-4 mr-2"
+                fill="none"
+                height="24"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="10"
+                />
+                <path
+                  d="M12 16v-4"
+                />
+                <path
+                  d="M12 8h.01"
+                />
+              </svg>
+              More Info
+            </button>
+          </div>
+          <div
+            class="relative inline-block"
+          >
+            <button
+              aria-controls="_r_l_-popover"
+              aria-expanded="false"
+              aria-haspopup="dialog"
+              class="inline-flex items-center justify-center font-semibold tracking-wide transition-all duration-fast rounded-none disabled:opacity-50 disabled:cursor-not-allowed bg-transparent text-gold border-0 hover:text-gold-light active:text-gold-bright focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-obsidian h-8 px-3 text-sm"
+              id="_r_l_-trigger"
+            >
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-circle-question-mark h-4 w-4"
+                fill="none"
+                height="24"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="10"
+                />
+                <path
+                  d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"
+                />
+                <path
+                  d="M12 17h.01"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-6 space-y-4"
+      >
+        <h3
+          class="text-gold font-medium"
+        >
+          Dialog Variants
+        </h3>
+        <p
+          class="text-sm text-silver"
+        >
+          Pre-built dialog patterns for common use cases.
+        </p>
+        <div
+          class="flex flex-wrap gap-3"
+        >
+          <button
+            class="inline-flex items-center justify-center font-semibold tracking-wide transition-all duration-fast rounded-none disabled:opacity-50 disabled:cursor-not-allowed bg-charcoal text-white border border-gold/30 hover:border-gold hover:shadow-glow hover:text-gold-light active:bg-white/5 focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-obsidian h-8 px-3 text-sm"
+          >
+            Confirm
+          </button>
+          <button
+            class="inline-flex items-center justify-center font-semibold tracking-wide transition-all duration-fast rounded-none disabled:opacity-50 disabled:cursor-not-allowed bg-charcoal text-white border border-gold/30 hover:border-gold hover:shadow-glow hover:text-gold-light active:bg-white/5 focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-obsidian h-8 px-3 text-sm"
+          >
+            Alert
+          </button>
+          <button
+            class="inline-flex items-center justify-center font-semibold tracking-wide transition-all duration-fast rounded-none disabled:opacity-50 disabled:cursor-not-allowed bg-charcoal text-white border border-gold/30 hover:border-gold hover:shadow-glow hover:text-gold-light active:bg-white/5 focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-obsidian h-8 px-3 text-sm"
+          >
+            Prompt
+          </button>
+        </div>
+      </div>
     </div>
   </section>
 </div>

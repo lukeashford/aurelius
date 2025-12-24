@@ -5,7 +5,7 @@ import ModalSection from '../sections/ModalSection';
 describe('ModalSection', () => {
   it('renders the section header', () => {
     render(<ModalSection/>);
-    expect(screen.getByRole('heading', {name: /Modals/i})).toBeInTheDocument();
+    expect(screen.getByRole('heading', {name: /Overlays/i})).toBeInTheDocument();
     expect(screen.getByText(/Components that overlay the main content/i)).toBeInTheDocument();
   });
 
@@ -28,7 +28,7 @@ describe('ModalSection', () => {
 
     // Modal should now be visible
     expect(screen.getByText('Example Modal')).toBeInTheDocument();
-    expect(screen.getByText(/This is an example of the modal component/i)).toBeInTheDocument();
+    expect(screen.getByText(/This modal overlays the page content/i)).toBeInTheDocument();
   });
 
   it('closes modal when Cancel button is clicked', () => {
@@ -55,9 +55,13 @@ describe('ModalSection', () => {
     fireEvent.click(openButton);
     expect(screen.getByText('Example Modal')).toBeInTheDocument();
 
-    // Close modal
-    const confirmButton = screen.getByRole('button', {name: /Confirm/i});
-    fireEvent.click(confirmButton);
+    // Close modal - use getAllByRole since there are multiple Confirm buttons
+    const confirmButtons = screen.getAllByRole('button', {name: /^Confirm$/i});
+    // The modal's Confirm button is rendered in the dialog
+    const modalConfirmButton = confirmButtons.find(btn =>
+      btn.closest('[role="dialog"]')
+    );
+    fireEvent.click(modalConfirmButton!);
 
     // Modal should be closed
     expect(screen.queryByText('Example Modal')).not.toBeInTheDocument();
@@ -70,9 +74,27 @@ describe('ModalSection', () => {
     const openButton = screen.getByRole('button', {name: /Open Modal/i});
     fireEvent.click(openButton);
 
-    // Check for action buttons
+    // Check for action buttons inside the modal
     expect(screen.getByRole('button', {name: /Cancel/i})).toBeInTheDocument();
-    expect(screen.getByRole('button', {name: /Confirm/i})).toBeInTheDocument();
+    // Use getAllByRole since there are multiple Confirm buttons
+    const confirmButtons = screen.getAllByRole('button', {name: /^Confirm$/i});
+    expect(confirmButtons.length).toBeGreaterThan(0);
+  });
+
+  it('renders drawer buttons', () => {
+    render(<ModalSection/>);
+    expect(screen.getByRole('button', {name: /Open Left/i})).toBeInTheDocument();
+    expect(screen.getByRole('button', {name: /Open Right/i})).toBeInTheDocument();
+  });
+
+  it('renders dialog variant buttons', () => {
+    render(<ModalSection/>);
+    // These are the buttons to trigger the dialog variants
+    const buttons = screen.getAllByRole('button');
+    const buttonNames = buttons.map(b => b.textContent);
+    expect(buttonNames).toContain('Confirm');
+    expect(buttonNames).toContain('Alert');
+    expect(buttonNames).toContain('Prompt');
   });
 
   it('matches snapshot when modal is closed', () => {
