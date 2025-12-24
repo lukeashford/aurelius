@@ -6,7 +6,7 @@
 
 ```bash
 npm install @lukeashford/aurelius
-npm install -D eslint @typescript-eslint/parser eslint-plugin-better-tailwindcss @poupe/eslint-plugin-tailwindcss @eslint/css tailwind-csstree
+npm install -D tailwindcss postcss @tailwindcss/postcss eslint @typescript-eslint/parser eslint-plugin-better-tailwindcss @poupe/eslint-plugin-tailwindcss @eslint/css tailwind-csstree
 ```
 
 ### 2. Import the design system
@@ -65,7 +65,7 @@ Import from `@lukeashford/aurelius`:
 | Card | variant (default, elevated, outlined, ghost, featured), interactive, selected |
 | ChatHistory | messages |
 | Checkbox | label |
-| Col | span (auto, full), sm (auto, full), md (auto, full), lg (auto, full), xl (auto, full) |
+| Col | span (auto, full), offset, order (first, last, none), xs (auto, full), sm (auto, full), md (auto, full), lg (auto, full), xl (auto, full), xxl (auto, full), xsOffset, smOffset, mdOffset, lgOffset, xlOffset, xxlOffset, xsOrder (first, last, none), smOrder (first, last, none), mdOrder (first, last, none), lgOrder (first, last, none), xlOrder (first, last, none), xxlOrder (first, last, none) |
 | ColorSwatch | color, label |
 | Container | size (sm, md, lg, xl, fluid, responsive) |
 | HelperText | error |
@@ -76,7 +76,7 @@ Import from `@lukeashford/aurelius`:
 | Message | variant (user, assistant), content, isStreaming |
 | Modal | isOpen, title, children, className |
 | Radio | label |
-| Row | gutter (0, 1, 2, 3, 4, 5, 6, 8, 10, 12) |
+| Row | gutter (0, 1, 2, 3, 4, 5, 6, 8, 10, 12), gutterX (0, 1, 2, 3, 4, 5, 6, 8, 10, 12), gutterY (0, 1, 2, 3, 4, 5, 6, 8, 10, 12), justify (start, center, end, between, around, evenly), align (start, center, end, stretch, baseline) |
 | SectionHeading | level (h2, h3) |
 | Select | error, options |
 | Skeleton | children |
@@ -87,9 +87,8 @@ Import from `@lukeashford/aurelius`:
 | Textarea | error |
 | Tooltip | content, children, open, side (top, right, bottom, left) |
 
-### Component usage examples
+### Component usage example
 
-**Basic components:**
 ```tsx
 import { Button, Card, Input, Badge } from '@lukeashford/aurelius'
 
@@ -100,36 +99,6 @@ import { Button, Card, Input, Badge } from '@lukeashford/aurelius'
   <Button variant="primary" className="mt-4">Submit</Button>
 </Card>
 ```
-
-**Layout system (Container/Row/Col):**
-```tsx
-import { Container, Row, Col, Card } from '@lukeashford/aurelius'
-
-<Container>
-  <Row gutter="6">
-    <Col span={12} md={6} lg={4}>
-      <Card>Item 1</Card>
-    </Col>
-    <Col span={12} md={6} lg={4}>
-      <Card>Item 2</Card>
-    </Col>
-    <Col span={12} md={6} lg={4}>
-      <Card>Item 3</Card>
-    </Col>
-  </Row>
-</Container>
-```
-
-**Layout with CSS classes (framework-agnostic):**
-```html
-<div class="container">
-  <div class="row">
-    <div class="col-span-12 md:col-span-6">Left</div>
-    <div class="col-span-12 md:col-span-6">Right</div>
-  </div>
-</div>
-```
-Note: `.row` uses CSS Grid (12 columns). Children use Tailwind's `col-span-*` utilities.
 
 ---
 
