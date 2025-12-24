@@ -28,7 +28,37 @@ jobs:
       - run: npm ci
       - run: npm run typecheck
       - run: npm run lint
-      - run: npm test --if-present
+      - run: npm run build
+
+      - name: Pack root package
+        id: pack
+        run: echo "tarball=$(npm pack)" >> $GITHUB_OUTPUT
+
+      - name: Install demo dependencies
+        working-directory: ./demo
+        run: npm ci
+
+      - name: Install packed aurelius tarball in demo
+        working-directory: ./demo
+        run: npm install ../${{ steps.pack.outputs.tarball }} --legacy-peer-deps --no-save
+
+      - name: Run demo unit tests
+        working-directory: ./demo
+        run: npm test -- --ci --coverage --maxWorkers=2
+
+      - name: Build demo
+        working-directory: ./demo
+        run: npm run build
+
+      - name: Install Playwright Browsers
+        working-directory: ./demo
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Playwright tests
+        working-directory: ./demo
+        env:
+          CI: true
+        run: npm run test:e2e
 
   prevent_manual_version_bump:
     if: github.event_name == 'pull_request'
