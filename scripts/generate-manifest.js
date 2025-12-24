@@ -73,7 +73,7 @@ function generateManifest() {
 
 \`\`\`bash
 npm install @lukeashford/aurelius
-npm install -D eslint @typescript-eslint/parser eslint-plugin-better-tailwindcss @poupe/eslint-plugin-tailwindcss @eslint/css tailwind-csstree
+npm install -D tailwindcss postcss @tailwindcss/postcss eslint @typescript-eslint/parser eslint-plugin-better-tailwindcss @poupe/eslint-plugin-tailwindcss @eslint/css tailwind-csstree
 \`\`\`
 
 ### 2. Import the design system
@@ -196,9 +196,8 @@ Import from \`@lukeashford/aurelius\`:
   }
 
   output += `
-### Component usage examples
+### Component usage example
 
-**Basic components:**
 \`\`\`tsx
 import { Button, Card, Input, Badge } from '@lukeashford/aurelius'
 
@@ -209,36 +208,6 @@ import { Button, Card, Input, Badge } from '@lukeashford/aurelius'
   <Button variant="primary" className="mt-4">Submit</Button>
 </Card>
 \`\`\`
-
-**Layout system (Container/Row/Col):**
-\`\`\`tsx
-import { Container, Row, Col, Card } from '@lukeashford/aurelius'
-
-<Container>
-  <Row gutter="6">
-    <Col span={12} md={6} lg={4}>
-      <Card>Item 1</Card>
-    </Col>
-    <Col span={12} md={6} lg={4}>
-      <Card>Item 2</Card>
-    </Col>
-    <Col span={12} md={6} lg={4}>
-      <Card>Item 3</Card>
-    </Col>
-  </Row>
-</Container>
-\`\`\`
-
-**Layout with CSS classes (framework-agnostic):**
-\`\`\`html
-<div class="container">
-  <div class="row">
-    <div class="col-span-12 md:col-span-6">Left</div>
-    <div class="col-span-12 md:col-span-6">Right</div>
-  </div>
-</div>
-\`\`\`
-Note: \`.row\` uses CSS Grid (12 columns). Children use Tailwind's \`col-span-*\` utilities.
 
 ---
 
