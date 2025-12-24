@@ -149,8 +149,10 @@ export {
 export {
   Breadcrumb,
   BreadcrumbItem,
+  BreadcrumbLink,
   type BreadcrumbProps,
   type BreadcrumbItemProps,
+  type BreadcrumbLinkProps,
 } from './Breadcrumb'
 export { Pagination, type PaginationProps } from './Pagination'
 export { Stepper, type StepperProps, type Step, type StepStatus } from './Stepper'

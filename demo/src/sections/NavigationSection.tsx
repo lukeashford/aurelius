@@ -17,8 +17,8 @@ import {
   MenuLabel,
   Breadcrumb,
   BreadcrumbItem,
+  BreadcrumbLink,
   Pagination,
-  Button,
 } from '@lukeashford/aurelius'
 import { Settings, User, LogOut, ChevronDown } from 'lucide-react'
 import Section from './Section'
@@ -115,9 +115,9 @@ export default function NavigationSection() {
           <h3 className="text-gold font-medium">Breadcrumb</h3>
           <div className="space-y-4">
             <Breadcrumb>
-              <BreadcrumbItem href="#">Home</BreadcrumbItem>
-              <BreadcrumbItem href="#">Products</BreadcrumbItem>
-              <BreadcrumbItem href="#">Category</BreadcrumbItem>
+              <BreadcrumbLink href="#">Home</BreadcrumbLink>
+              <BreadcrumbLink href="#">Products</BreadcrumbLink>
+              <BreadcrumbLink href="#">Category</BreadcrumbLink>
               <BreadcrumbItem current>Current Page</BreadcrumbItem>
             </Breadcrumb>
           </div>
@@ -128,7 +128,7 @@ export default function NavigationSection() {
           <h3 className="text-gold font-medium">Pagination</h3>
           <div className="space-y-4">
             <Pagination
-              currentPage={currentPage}
+              page={currentPage}
               totalPages={10}
               onPageChange={setCurrentPage}
             />
