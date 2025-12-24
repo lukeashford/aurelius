@@ -600,16 +600,19 @@ test.describe('Navigation Components', () => {
       await menuTrigger.click();
       await page.waitForTimeout(200);
 
+      const menu = page.locator('#navigation [role="menu"]');
+      await expect(menu).toBeVisible();
+
       // Verify menu content is visible
-      await expect(page.locator('text=My Account')).toBeVisible();
-      await expect(page.locator('text=Profile')).toBeVisible();
+      await expect(menu.getByText('My Account')).toBeVisible();
+      await expect(menu.getByRole('menuitem', {name: 'Profile'})).toBeVisible();
 
       // Click trigger again to close
       await menuTrigger.click();
       await page.waitForTimeout(200);
 
       // Menu should be closed
-      await expect(page.locator('text=My Account')).not.toBeVisible();
+      await expect(menu).not.toBeVisible();
     });
 
     test('menu items are clickable', async ({page}) => {
@@ -659,7 +662,8 @@ test.describe('Navigation Components', () => {
     });
 
     test('current page has aria-current', async ({page}) => {
-      const page1Button = page.locator('#navigation nav[role="navigation"] button[aria-current="page"]');
+      const page1Button = page.locator(
+          '#navigation nav[role="navigation"] button[aria-current="page"]');
       await expect(page1Button).toBeVisible();
       await expect(page1Button).toHaveText('1');
     });
