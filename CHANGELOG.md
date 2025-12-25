@@ -1,3 +1,10 @@
+## [2.5.0](https://github.com/lukeashford/aurelius/compare/v2.4.0...v2.5.0) (2025-12-25)
+
+### Features
+
+* **docs:** add lint script setup instructions to readme ([eb5a77e](https://github.com/lukeashford/aurelius/commit/eb5a77e11a0e241aa8476f98c63251ffa246ab2d))
+* **docs:** add lint script setup instructions to readme ([#15](https://github.com/lukeashford/aurelius/issues/15)) ([5cd7d84](https://github.com/lukeashford/aurelius/commit/5cd7d841543a9464480df79f1a8a8cb69d619bc9))
+
 ## [2.4.0](https://github.com/lukeashford/aurelius/compare/v2.3.0...v2.4.0) (2025-12-25)
 
 ### Features
