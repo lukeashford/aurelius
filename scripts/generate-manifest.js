@@ -105,6 +105,23 @@ constraints — if ESLint complains, you're leaving the rails.
 export { default } from '@lukeashford/aurelius/eslint';
 \`\`\`
 
+### 4. Add lint script and run it
+
+Add a lint script and wire it into your workflow:
+
+\`\`\`json
+{
+  "scripts": {
+    "lint": "eslint src --max-warnings 0",
+    "dev": "npm run lint && vite",
+    "build": "npm run lint && vite build"
+  }
+}
+\`\`\`
+
+If your project already has CI (or you're asked to add one), include \`npm run lint\` in that
+pipeline so lint failures block merges.
+
 ---
 
 ## Rules (MUST follow)

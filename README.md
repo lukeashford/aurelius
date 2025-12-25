@@ -108,6 +108,8 @@ export default createAureliusESLintConfig({
 
 ### 4. Update package.json scripts
 
+Add a lint script and wire it into your workflow:
+
 ```json
 {
   "scripts": {
@@ -117,6 +119,9 @@ export default createAureliusESLintConfig({
   }
 }
 ```
+
+If your project already has CI (or you're asked to add one), include `npm run lint` in that
+pipeline so lint failures block merges.
 
 ### 5. Use components
 
