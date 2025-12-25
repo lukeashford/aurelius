@@ -19,7 +19,7 @@
   --glass-rgb: 20 20 20;
 
   /* Gold spectrum (derived from one base where possible) */
-  --color-gold: #c9a227;
+  --color-gold: #fecb6b;
   --color-gold-light: color-mix(in oklab, var(--color-gold) 75%, white);
   --color-gold-bright: color-mix(in oklab, var(--color-gold) 60%, white);
   --color-gold-muted: color-mix(in oklab, var(--color-gold) 55%, #6b5a44);
