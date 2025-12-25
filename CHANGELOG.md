@@ -1,3 +1,10 @@
+## [2.4.0](https://github.com/lukeashford/aurelius/compare/v2.3.0...v2.4.0) (2025-12-25)
+
+### Features
+
+* **styles:** update gold color for improved palette consistency ([ee4102b](https://github.com/lukeashford/aurelius/commit/ee4102b36a76241a92efafaa195e34f429ae084e))
+* **styles:** update gold color for improved palette consistency ([#14](https://github.com/lukeashford/aurelius/issues/14)) ([c3ae445](https://github.com/lukeashford/aurelius/commit/c3ae445352a19e668abfafdf24e21d4dc43e8e1e))
+
 ## [2.3.0](https://github.com/lukeashford/aurelius/compare/v2.2.0...v2.3.0) (2025-12-24)
 
 ### Features
