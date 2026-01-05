@@ -30,9 +30,7 @@ function useMenuContext() {
 // Main Menu container
 export interface MenuProps {
   children: React.ReactNode
-  /** Controlled open state */
   open?: boolean
-  /** Callback when open state changes */
   onOpenChange?: (open: boolean) => void
 }
 
@@ -70,7 +68,6 @@ Menu.displayName = 'Menu'
 
 // MenuTrigger - button that opens the menu
 export interface MenuTriggerProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  /** Render as a different element (using render props) */
   asChild?: boolean
 }
 
@@ -109,9 +106,7 @@ MenuTrigger.displayName = 'MenuTrigger'
 
 // MenuContent - the dropdown menu
 export interface MenuContentProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Alignment of the menu */
   align?: 'start' | 'center' | 'end'
-  /** Side of the trigger to render on */
   side?: 'top' | 'bottom'
 }
 
@@ -194,9 +189,7 @@ MenuContent.displayName = 'MenuContent'
 
 // MenuItem - individual menu option
 export interface MenuItemProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  /** Icon to display before the label */
   icon?: React.ReactNode
-  /** Show destructive styling */
   destructive?: boolean
 }
 

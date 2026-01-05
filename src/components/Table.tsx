@@ -3,7 +3,6 @@ import { cx } from '../utils/cx'
 
 // Table container
 export interface TableProps extends React.TableHTMLAttributes<HTMLTableElement> {
-  /** Make the table horizontally scrollable */
   responsive?: boolean
 }
 
@@ -82,9 +81,7 @@ TableFooter.displayName = 'TableFooter'
 
 // Table row
 export interface TableRowProps extends React.HTMLAttributes<HTMLTableRowElement> {
-  /** Highlight row on hover */
   hoverable?: boolean
-  /** Show selected state */
   selected?: boolean
 }
 
@@ -109,9 +106,7 @@ TableRow.displayName = 'TableRow'
 
 // Table header cell
 export interface TableHeadProps extends React.ThHTMLAttributes<HTMLTableCellElement> {
-  /** Enable sorting indicator */
   sortable?: boolean
-  /** Current sort direction */
   sortDirection?: 'asc' | 'desc' | null
 }
 

@@ -4,7 +4,6 @@ import { cx } from '../utils/cx'
 export type ContainerSize = 'sm' | 'md' | 'lg' | 'xl' | 'fluid' | 'responsive'
 
 export interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Container size variant */
   size?: ContainerSize
 }
 

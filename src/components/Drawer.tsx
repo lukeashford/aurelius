@@ -6,19 +6,12 @@ import { cx } from '../utils/cx'
 export type DrawerPosition = 'left' | 'right' | 'top' | 'bottom'
 
 export interface DrawerProps {
-  /** Whether the drawer is open */
   isOpen: boolean
-  /** Callback when the drawer should close */
   onClose: () => void
-  /** Position of the drawer */
   position?: DrawerPosition
-  /** Title for the drawer header */
   title?: string
-  /** Width/height of the drawer (depending on position) */
   size?: 'sm' | 'md' | 'lg' | 'xl' | 'full'
-  /** Content */
   children: React.ReactNode
-  /** Additional class name for the drawer panel */
   className?: string
 }
 

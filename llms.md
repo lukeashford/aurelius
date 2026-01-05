@@ -38,6 +38,23 @@ constraints — if ESLint complains, you're leaving the rails.
 export { default } from '@lukeashford/aurelius/eslint';
 ```
 
+### 4. Add lint script and run it
+
+Add a lint script and wire it into your workflow:
+
+```json
+{
+  "scripts": {
+    "lint": "eslint src --max-warnings 0",
+    "dev": "npm run lint && vite",
+    "build": "npm run lint && vite build"
+  }
+}
+```
+
+If your project already has CI (or you're asked to add one), include `npm run lint` in that
+pipeline so lint failures block merges.
+
 ---
 
 ## Rules (MUST follow)
@@ -67,7 +84,7 @@ Import from `@lukeashford/aurelius`:
 | Card | variant (default, elevated, outlined, ghost, featured), interactive, selected, noPadding |
 | ChatHistory | messages |
 | Checkbox | label |
-| Col | children |
+| Col | span (auto, full), offset, order (first, last, none) |
 | ColorSwatch | color, label |
 | Container | size (sm, md, lg, xl, fluid, responsive) |
 | Dialog | description, confirmText, cancelText, isLoading |
@@ -103,6 +120,35 @@ Import from `@lukeashford/aurelius`:
 | Textarea | error |
 | Toast | children, position (top-right, top-left, bottom-right, bottom-left, top-center, bottom-center), defaultDuration |
 | Tooltip | content, children, open, side (top, right, bottom, left) |
+
+### Component Notes
+
+**Accordion**
+- **type**: Allow multiple items to be open at once
+- **defaultValue**: Default expanded item(s)
+- **value**: Controlled expanded item(s)
+- **onValueChange**: Callback when expanded items change
+
+**ChatHistory**
+- **messages**: Array of chat messages. Each item requires: content (string), variant ('user' | 'assistant'). Optional: id, isStreaming.
+
+**Popover**
+- **trigger**: The trigger element
+- **position**: Position relative to trigger
+- **align**: Alignment along the position axis
+- **open**: Controlled open state
+- **onOpenChange**: Callback when open state changes
+- **closeOnClickOutside**: Close when clicking outside
+
+**Stepper**
+- **steps**: Array of steps. Each requires: id (string | number), label (string).
+- **currentStep**: ID of the current step (must match a step.id from the steps array).
+
+**Tabs**
+- **defaultValue**: The id of the initially active tab
+- **value**: Controlled active tab value
+- **onValueChange**: Callback when active tab changes
+
 
 ### Component usage example
 

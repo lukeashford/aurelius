@@ -8,6 +8,7 @@ export interface ChatHistoryItem extends Omit<MessageProps, 'variant' | 'childre
 }
 
 export interface ChatHistoryProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** Array of chat messages. Each item requires: content (string), variant ('user' | 'assistant'). Optional: id, isStreaming. */
   messages: ChatHistoryItem[]
 }
 

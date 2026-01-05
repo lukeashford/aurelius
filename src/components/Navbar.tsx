@@ -3,9 +3,7 @@ import { cx } from '../utils/cx'
 
 // Main Navbar container
 export interface NavbarProps extends React.HTMLAttributes<HTMLElement> {
-  /** Fixed to top of viewport */
   fixed?: boolean
-  /** Add border at bottom */
   bordered?: boolean
 }
 
@@ -51,7 +49,6 @@ NavbarBrand.displayName = 'NavbarBrand'
 
 // NavbarContent - center or end content area
 export interface NavbarContentProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Position of the content */
   position?: 'start' | 'center' | 'end'
 }
 
@@ -83,7 +80,6 @@ NavbarContent.displayName = 'NavbarContent'
 
 // NavbarItem - individual navigation item
 export interface NavbarItemProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Active state */
   active?: boolean
 }
 
@@ -108,7 +104,6 @@ NavbarItem.displayName = 'NavbarItem'
 
 // NavbarLink - navigation link
 export interface NavbarLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
-  /** Active state */
   active?: boolean
 }
 

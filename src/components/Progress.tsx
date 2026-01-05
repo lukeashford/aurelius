@@ -5,19 +5,12 @@ export type ProgressSize = 'sm' | 'md' | 'lg'
 export type ProgressVariant = 'default' | 'success' | 'warning' | 'error'
 
 export interface ProgressProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Current value (0-100) */
   value?: number
-  /** Maximum value (defaults to 100) */
   max?: number
-  /** Size variant */
   size?: ProgressSize
-  /** Color variant */
   variant?: ProgressVariant
-  /** Whether to show the value label */
   showValue?: boolean
-  /** Custom label format function */
   formatValue?: (value: number, max: number) => string
-  /** Whether the progress is indeterminate */
   indeterminate?: boolean
 }
 

@@ -1,6 +1,6 @@
 import React from 'react'
-import { Check } from 'lucide-react'
-import { cx } from '../utils/cx'
+import {Check} from 'lucide-react'
+import {cx} from '../utils/cx'
 
 export type StepStatus = 'complete' | 'error'
 
@@ -10,7 +10,9 @@ export interface Step {
 }
 
 export interface StepperProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** Array of steps. Each requires: id (string | number), label (string). */
   steps: Step[]
+  /** ID of the current step (must match a step.id from the steps array). */
   currentStep: string | number
   status?: StepStatus
 }

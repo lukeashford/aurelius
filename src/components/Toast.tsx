@@ -46,9 +46,7 @@ export function useToast() {
 // ToastProvider - wrap your app with this
 export interface ToastProviderProps {
   children: React.ReactNode
-  /** Position of toasts on screen */
   position?: ToastPosition
-  /** Default duration for toasts (ms) */
   defaultDuration?: number
 }
 

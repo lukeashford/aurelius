@@ -6,15 +6,10 @@ export type RowJustify = 'start' | 'center' | 'end' | 'between' | 'around' | 'ev
 export type RowAlign = 'start' | 'center' | 'end' | 'stretch' | 'baseline'
 
 export interface RowProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Gap between columns (both directions). Use gutterX/gutterY for independent control. */
   gutter?: RowGutter
-  /** Horizontal gap between columns */
   gutterX?: RowGutter
-  /** Vertical gap between rows */
   gutterY?: RowGutter
-  /** Horizontal alignment of columns */
   justify?: RowJustify
-  /** Vertical alignment of columns */
   align?: RowAlign
 }
 
