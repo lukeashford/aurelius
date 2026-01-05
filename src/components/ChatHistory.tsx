@@ -1,6 +1,6 @@
 import React from 'react'
-import { Message, type MessageProps, type MessageVariant } from './Message'
-import { cx } from '../utils/cx'
+import {Message, type MessageProps, type MessageVariant} from './Message'
+import {cx} from '../utils/cx'
 
 export interface ChatHistoryItem extends Omit<MessageProps, 'variant' | 'children'> {
   id?: string
@@ -16,7 +16,10 @@ export const ChatHistory = React.forwardRef<HTMLDivElement, ChatHistoryProps>(
       return (
           <div
               ref={ref}
-              className={cx('flex flex-col gap-3 w-full', className)}
+              className={cx(
+                  'flex flex-col gap-3 justify-end w-full h-96 bg-charcoal/50 border border-ash/40 p-4 overflow-y-auto',
+                  className
+              )}
               {...rest}
           >
             {messages.map(({id, variant, className: messageClassName, ...messageProps}, index) => (

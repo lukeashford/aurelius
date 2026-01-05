@@ -120,12 +120,10 @@ export default function MessageSection() {
 
           <div>
             <h3 className="text-lg font-semibold mb-4">Conversation Example</h3>
-            <div
+            <ChatHistory
                 ref={scrollRef}
-                className="bg-charcoal/50 border border-ash/40 p-4 h-96 overflow-y-auto flex flex-col"
-            >
-              <ChatHistory messages={conversation} className="mt-auto"/>
-            </div>
+                messages={conversation}
+            />
           </div>
         </div>
       </Section>
