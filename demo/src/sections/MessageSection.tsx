@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {
   ChatHistory,
   type ChatHistoryItem,
@@ -24,23 +24,6 @@ export default function MessageSection() {
   const [streamedContent, setStreamedContent] = useState('')
   const [isStreaming, setIsStreaming] = useState(false)
   const [cycleKey, setCycleKey] = useState(0)
-  const scrollRef = useRef<HTMLDivElement>(null)
-
-  // Smooth scroll container to bottom when content changes
-  useEffect(() => {
-    if (scrollRef.current) {
-      const el = scrollRef.current
-
-      if (typeof el.scrollTo === 'function') {
-        el.scrollTo({
-          top: el.scrollHeight,
-          behavior: 'smooth'
-        })
-      } else {
-        el.scrollTop = el.scrollHeight
-      }
-    }
-  }, [streamedContent])
 
   // Start streaming on mount and when cycleKey changes
   useEffect(() => {
@@ -121,7 +104,6 @@ export default function MessageSection() {
           <div>
             <h3 className="text-lg font-semibold mb-4">Conversation Example</h3>
             <ChatHistory
-                ref={scrollRef}
                 messages={conversation}
             />
           </div>
