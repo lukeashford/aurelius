@@ -74,49 +74,45 @@ exports[`MessageSection matches snapshot 1`] = `
           Conversation Example
         </h3>
         <div
-          class="bg-charcoal/50 border border-ash/40 p-4 h-96 overflow-y-auto flex flex-col"
+          class="flex flex-col gap-3 justify-end w-full h-96 bg-charcoal/50 border border-ash/40 p-4 overflow-y-auto"
         >
           <div
-            class="flex flex-col gap-3 w-full mt-auto"
+            class="px-3 py-2 w-fit bg-gold text-obsidian ml-auto"
           >
             <div
-              class="px-3 py-2 w-fit bg-gold text-obsidian ml-auto"
+              class="prose prose-sm prose-inherit"
             >
-              <div
-                class="prose prose-sm prose-inherit"
-              >
-                Hello! Can you help me understand how to use this component?
-              </div>
+              Hello! Can you help me understand how to use this component?
             </div>
+          </div>
+          <div
+            class="px-3 py-2 w-fit bg-charcoal border border-ash text-white mr-auto"
+          >
             <div
-              class="px-3 py-2 w-fit bg-charcoal border border-ash text-white mr-auto"
+              class="prose prose-sm prose-invert"
             >
-              <div
-                class="prose prose-sm prose-invert"
-              >
-                Of course! The Message component is designed for chat interfaces. It supports different variants for user and assistant messages, and automatically aligns them appropriately.
-              </div>
+              Of course! The Message component is designed for chat interfaces. It supports different variants for user and assistant messages, and automatically aligns them appropriately.
             </div>
+          </div>
+          <div
+            class="px-3 py-2 w-fit bg-gold text-obsidian ml-auto"
+          >
             <div
-              class="px-3 py-2 w-fit bg-gold text-obsidian ml-auto"
+              class="prose prose-sm prose-inherit"
             >
-              <div
-                class="prose prose-sm prose-inherit"
-              >
-                That's great! What about longer messages with multiple paragraphs?
-              </div>
+              That's great! What about longer messages with multiple paragraphs?
             </div>
+          </div>
+          <div
+            class="px-3 py-2 w-fit bg-charcoal border border-ash text-white mr-auto"
+          >
             <div
-              class="px-3 py-2 w-fit bg-charcoal border border-ash text-white mr-auto"
-            >
-              <div
-                class="prose prose-sm prose-invert"
-              />
-              <span
-                aria-hidden="true"
-                class="inline-block bg-current animate-cursor-blink w-0.5 h-cursor translate-y-cursor-offset ml-0.5"
-              />
-            </div>
+              class="prose prose-sm prose-invert"
+            />
+            <span
+              aria-hidden="true"
+              class="inline-block bg-current animate-cursor-blink w-0.5 h-cursor translate-y-cursor-offset ml-0.5"
+            />
           </div>
         </div>
       </div>

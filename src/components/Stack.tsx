@@ -7,17 +7,11 @@ export type StackJustify = 'start' | 'center' | 'end' | 'between' | 'around' | '
 export type StackGap = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12
 
 export interface StackProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Stack direction */
   direction?: StackDirection
-  /** Alignment of items on the cross axis */
   align?: StackAlign
-  /** Justification of items on the main axis */
   justify?: StackJustify
-  /** Gap between items */
   gap?: StackGap
-  /** Whether items should wrap */
   wrap?: boolean
-  /** Render as a different element */
   as?: 'div' | 'section' | 'article' | 'nav' | 'aside' | 'header' | 'footer' | 'main'
 }
 

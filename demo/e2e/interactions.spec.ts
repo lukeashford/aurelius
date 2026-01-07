@@ -450,7 +450,7 @@ test.describe('Interactive Elements', () => {
       await expect(conversationContainer).toBeVisible();
 
       // Verify messages are present
-      const messages = conversationContainer.locator('.flex.flex-col.gap-3 > div');
+      const messages = conversationContainer.locator(':scope > div');
       const count = await messages.count();
       expect(count).toBeGreaterThan(0);
     });

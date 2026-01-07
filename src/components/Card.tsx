@@ -5,13 +5,9 @@ import { cx } from '../utils/cx'
 export type CardVariant = 'default' | 'elevated' | 'outlined' | 'ghost' | 'featured'
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Visual style variant */
   variant?: CardVariant
-  /** Enables hover effects and cursor pointer */
   interactive?: boolean
-  /** Shows selected state with checkmark */
   selected?: boolean
-  /** Remove default padding (useful with compound components) */
   noPadding?: boolean
 }
 
@@ -65,11 +61,8 @@ CardBase.displayName = 'Card'
 
 // Card.Header - header section with title and optional actions
 export interface CardHeaderProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
-  /** Card title */
   title?: React.ReactNode
-  /** Subtitle or description */
   subtitle?: React.ReactNode
-  /** Action elements (buttons, icons, etc.) */
   action?: React.ReactNode
 }
 
@@ -120,7 +113,6 @@ CardBody.displayName = 'CardBody'
 
 // Card.Footer - footer section, typically for actions
 export interface CardFooterProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Align content */
   align?: 'start' | 'center' | 'end' | 'between'
 }
 
@@ -153,13 +145,9 @@ CardFooter.displayName = 'CardFooter'
 
 // Card.Media - image or media section
 export interface CardMediaProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Image source */
   src?: string
-  /** Alt text for image */
   alt?: string
-  /** Aspect ratio */
   aspect?: 'video' | 'square' | 'wide'
-  /** Position in card */
   position?: 'top' | 'bottom'
 }
 

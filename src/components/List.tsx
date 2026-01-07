@@ -3,9 +3,7 @@ import { cx } from '../utils/cx'
 
 // List container
 export interface ListProps extends React.HTMLAttributes<HTMLUListElement> {
-  /** Visual style variant */
   variant?: 'default' | 'bordered' | 'divided'
-  /** Ordered list (numbered) */
   ordered?: boolean
 }
 
@@ -34,15 +32,10 @@ List.displayName = 'List'
 
 // ListItem
 export interface ListItemProps extends React.LiHTMLAttributes<HTMLLIElement> {
-  /** Icon or avatar on the left */
   leading?: React.ReactNode
-  /** Action element on the right */
   trailing?: React.ReactNode
-  /** Make the item interactive (clickable) */
   interactive?: boolean
-  /** Selected state */
   selected?: boolean
-  /** Disabled state */
   disabled?: boolean
 }
 
@@ -92,9 +85,7 @@ ListItem.displayName = 'ListItem'
 
 // ListItemText - for structured text content
 export interface ListItemTextProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Primary text */
   primary: React.ReactNode
-  /** Secondary text */
   secondary?: React.ReactNode
 }
 

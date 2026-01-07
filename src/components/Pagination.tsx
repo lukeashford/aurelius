@@ -3,15 +3,10 @@ import { ChevronLeft, ChevronRight, MoreHorizontal } from 'lucide-react'
 import { cx } from '../utils/cx'
 
 export interface PaginationProps extends React.HTMLAttributes<HTMLElement> {
-  /** Current page (1-indexed) */
   page: number
-  /** Total number of pages */
   totalPages: number
-  /** Callback when page changes */
   onPageChange: (page: number) => void
-  /** Number of sibling pages to show */
   siblingCount?: number
-  /** Show first/last page buttons */
   showEdges?: boolean
 }
 

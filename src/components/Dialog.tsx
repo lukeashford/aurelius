@@ -5,19 +5,12 @@ import { cx } from '../utils/cx'
 
 // ConfirmDialog - for confirmation actions
 export interface ConfirmDialogProps extends Omit<ModalProps, 'children'> {
-  /** Description text */
   description?: React.ReactNode
-  /** Text for the confirm button */
   confirmText?: string
-  /** Text for the cancel button */
   cancelText?: string
-  /** Callback when confirmed */
   onConfirm: () => void | Promise<void>
-  /** Callback when cancelled */
   onCancel?: () => void
-  /** Variant of the confirm button */
   confirmVariant?: 'primary' | 'important' | 'danger'
-  /** Whether the confirm action is loading */
   isLoading?: boolean
 }
 
@@ -68,11 +61,8 @@ ConfirmDialog.displayName = 'ConfirmDialog'
 
 // AlertDialog - for important alerts
 export interface AlertDialogProps extends Omit<ModalProps, 'children'> {
-  /** Description text */
   description?: React.ReactNode
-  /** Text for the acknowledge button */
   acknowledgeText?: string
-  /** Variant based on alert type */
   variant?: 'default' | 'warning' | 'error'
 }
 
@@ -108,21 +98,13 @@ AlertDialog.displayName = 'AlertDialog'
 
 // PromptDialog - for user input
 export interface PromptDialogProps extends Omit<ModalProps, 'children'> {
-  /** Description text */
   description?: React.ReactNode
-  /** Placeholder for the input */
   placeholder?: string
-  /** Default value for the input */
   defaultValue?: string
-  /** Text for the submit button */
   submitText?: string
-  /** Text for the cancel button */
   cancelText?: string
-  /** Callback with the input value when submitted */
   onSubmit: (value: string) => void | Promise<void>
-  /** Callback when cancelled */
   onCancel?: () => void
-  /** Whether the submit action is loading */
   isLoading?: boolean
 }
 

@@ -145,6 +145,8 @@ Import from \`@lukeashford/aurelius\`:
 
   // Generate components table
   const componentsDir = path.join(ROOT, 'src/components');
+  const componentNotes = {}; // Store JSDoc notes for components
+
   if (fs.existsSync(componentsDir)) {
     const files = fs
     .readdirSync(componentsDir)
@@ -173,42 +175,93 @@ Import from \`@lukeashford/aurelius\`:
         }
       }
 
-      // Extract props from interface
+      // Extract props from interface with JSDoc
       const propsMatch = content.match(/interface\s+\w*Props[^{]*{([^}]+)}/s);
       const propsWithVariants = [];
+      const propDocs = [];
 
       if (propsMatch) {
         const propsBlock = propsMatch[1];
-        const propLines = propsBlock
-        .split('\n')
-        .map((line) => line.trim())
-        .filter(
-            (line) =>
-                line &&
-                !line.startsWith('//') &&
-                !line.startsWith('/*') &&
-                !line.startsWith('*')
-        );
+        const lines = propsBlock.split('\n');
 
-        propLines.forEach((line) => {
-          // Match prop name and its type
-          const propMatch = line.match(/^(\w+)\??:\s*(\w+)/);
-          if (propMatch) {
-            const propName = propMatch[1];
-            const propType = propMatch[2];
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i].trim();
 
-            // Check if the prop type is one of our exported type aliases
-            if (typeAliases[propType]) {
-              propsWithVariants.push(`${propName} (${typeAliases[propType].join(', ')})`);
-            } else {
-              propsWithVariants.push(propName);
+          // Check if this line is a JSDoc comment
+          if (line.startsWith('/**')) {
+            // Extract JSDoc content (may span multiple lines)
+            let docComment = '';
+            let j = i;
+            while (j < lines.length) {
+              const docLine = lines[j].trim();
+              if (docLine.includes('*/')) {
+                // Extract text between /** and */
+                const match = propsBlock.substring(
+                    propsBlock.indexOf('/**', propsBlock.split('\n').slice(0, i).join('\n').length),
+                    propsBlock.indexOf('*/', propsBlock.split('\n').slice(0, j).join('\n').length)
+                    + 2
+                ).match(/\/\*\*\s*(.+?)\s*\*\//s);
+                if (match) {
+                  docComment = match[1].replace(/\n\s*\*\s*/g, ' ').trim();
+                }
+                break;
+              }
+              j++;
+            }
+
+            // Get the next non-empty line which should be the prop definition
+            for (let k = j + 1; k < lines.length; k++) {
+              const propLine = lines[k].trim();
+              if (propLine && !propLine.startsWith('//') && !propLine.startsWith('/*')) {
+                const propMatch = propLine.match(/^(\w+)\??:/);
+                if (propMatch && docComment) {
+                  propDocs.push(`**${propMatch[1]}**: ${docComment}`);
+                }
+                break;
+              }
             }
           }
-        });
+
+          // Extract prop name and type (skip comment lines)
+          if (line && !line.startsWith('//') && !line.startsWith('/*') && !line.startsWith('*')) {
+            const propMatch = line.match(/^(\w+)\??:\s*(\w+)/);
+            if (propMatch) {
+              const propName = propMatch[1];
+              const propType = propMatch[2];
+
+              // Check if the prop type is one of our exported type aliases
+              if (typeAliases[propType]) {
+                propsWithVariants.push(`${propName} (${typeAliases[propType].join(', ')})`);
+              } else {
+                propsWithVariants.push(propName);
+              }
+            }
+          }
+        }
       }
 
       const propsStr = propsWithVariants.length > 0 ? propsWithVariants.join(', ') : 'children';
       output += `| ${name} | ${propsStr} |\n`;
+
+      // Store notes if any JSDoc was found
+      if (propDocs.length > 0) {
+        componentNotes[name] = propDocs;
+      }
+    });
+  }
+
+  // Add component notes section if any components have JSDoc
+  if (Object.keys(componentNotes).length > 0) {
+    output += `
+### Component Notes
+
+`;
+    Object.entries(componentNotes).forEach(([componentName, notes]) => {
+      output += `**${componentName}**\n`;
+      notes.forEach(note => {
+        output += `- ${note}\n`;
+      });
+      output += '\n';
     });
   }
 

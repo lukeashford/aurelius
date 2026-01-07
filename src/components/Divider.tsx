@@ -5,13 +5,9 @@ export type DividerOrientation = 'horizontal' | 'vertical'
 export type DividerVariant = 'solid' | 'dashed' | 'dotted'
 
 export interface DividerProps extends React.HTMLAttributes<HTMLHRElement> {
-  /** Orientation of the divider */
   orientation?: DividerOrientation
-  /** Visual style variant */
   variant?: DividerVariant
-  /** Optional label to show in the center */
   label?: React.ReactNode
-  /** Color variant */
   color?: 'default' | 'gold' | 'muted'
 }
 

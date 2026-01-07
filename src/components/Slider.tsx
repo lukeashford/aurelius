@@ -2,27 +2,16 @@ import React, { useState, useRef, useCallback } from 'react'
 import { cx } from '../utils/cx'
 
 export interface SliderProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
-  /** Current value */
   value?: number
-  /** Default value for uncontrolled mode */
   defaultValue?: number
-  /** Minimum value */
   min?: number
-  /** Maximum value */
   max?: number
-  /** Step increment */
   step?: number
-  /** Callback when value changes */
   onChange?: (value: number) => void
-  /** Callback when dragging ends */
   onChangeEnd?: (value: number) => void
-  /** Whether the slider is disabled */
   disabled?: boolean
-  /** Show value tooltip while dragging */
   showTooltip?: boolean
-  /** Format the displayed value */
   formatValue?: (value: number) => string
-  /** Size variant */
   size?: 'sm' | 'md' | 'lg'
 }
 
