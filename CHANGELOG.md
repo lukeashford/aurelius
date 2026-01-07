@@ -1,3 +1,14 @@
+## [2.6.0](https://github.com/lukeashford/aurelius/compare/v2.5.0...v2.6.0) (2026-01-07)
+
+### Features
+
+* **ui:** rm ChatHistory styling div ([0829504](https://github.com/lukeashford/aurelius/commit/08295046521be25b549258a63e05c9add96255d6))
+
+### Bug Fixes
+
+* **components:** replace utility functions with class mapping objects ([10d860e](https://github.com/lukeashford/aurelius/commit/10d860edc71c21fa7b564b0964cdb10db6b6f2f3))
+* **tests:** update message section snapshot and adjust message styling ([3607976](https://github.com/lukeashford/aurelius/commit/36079761ca45d15bf2e965a24e6b35a2d8058e6e))
+
 ## [2.5.0](https://github.com/lukeashford/aurelius/compare/v2.4.0...v2.5.0) (2025-12-25)
 
 ### Features
