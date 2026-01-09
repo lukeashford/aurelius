@@ -1,6 +1,6 @@
 import React from 'react'
-import { Card, type CardProps } from './Card'
-import { cx } from '../utils/cx'
+import {Card, type CardProps} from './Card'
+import {cx} from '../utils'
 
 export type AspectRatioPreset = 'landscape' | 'portrait' | 'square'
 export type AspectRatio = AspectRatioPreset | `${number}/${number}`
@@ -84,7 +84,7 @@ export const ImageCard = React.forwardRef<HTMLDivElement, ImageCardProps>(
 
             {/* Content section */}
             {(title || subtitle || children) && (
-                <div className={cx('px-4 pt-4', contentClassName)}>
+                <div className={cx('px-4 py-4', contentClassName)}>
                   {title && <h4 className="text-lg font-semibold leading-tight">{title}</h4>}
                   {subtitle && <p className="text-sm text-silver leading-normal">{subtitle}</p>}
                   {children}

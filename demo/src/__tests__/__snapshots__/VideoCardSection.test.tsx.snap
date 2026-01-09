@@ -83,113 +83,13 @@ exports[`VideoCardSection matches snapshot 1`] = `
               <h4
                 class="text-lg font-semibold leading-tight"
               >
-                With Custom Aspect Ratio
+                With Custom Aspect Ratio and Thumbnail
               </h4>
               <p
                 class="text-sm text-silver leading-normal mt-1"
               >
                 Cinema 21:9 aspect ratio
               </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div>
-        <h3
-          class="text-lg font-semibold mb-2"
-        >
-          Compound Card Media
-        </h3>
-        <p
-          class="text-silver text-sm mb-4"
-        >
-          Using Card.Media with isVideo prop for granular control over card layout.
-        </p>
-        <div
-          class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start"
-        >
-          <div
-            class="rounded-none relative bg-charcoal shadow-sm border border-gold/30"
-          >
-            <div
-              class="overflow-hidden relative aspect-video border-b border-ash"
-            >
-              <div
-                class="absolute top-0 left-0"
-                data-src="https://youtu.be/Oe6I6fAhNDw"
-                data-testid="mock-react-player"
-                height="100%"
-                width="100%"
-              />
-            </div>
-            <div
-              class="px-6 py-4"
-            >
-              <h4
-                class="text-lg font-semibold"
-              >
-                Media in Compound Card
-              </h4>
-              <p
-                class="text-silver text-sm mt-1"
-              >
-                Card.Media now supports video via the isVideo prop.
-              </p>
-            </div>
-            <div
-              class="px-6 py-4 border-t border-ash flex items-center gap-3 justify-end"
-            >
-              <button
-                class="text-gold text-sm font-medium"
-              >
-                Watch Later
-              </button>
-            </div>
-          </div>
-          <div
-            class="rounded-none relative bg-charcoal shadow-sm border border-gold/30"
-          >
-            <div
-              class="px-6 py-4 border-b border-ash"
-            >
-              <div
-                class="flex items-start justify-between gap-4"
-              >
-                <div
-                  class="flex-1 min-w-0"
-                >
-                  <h3
-                    class="text-lg font-semibold text-white m-0"
-                  >
-                    Alternative Layout
-                  </h3>
-                  <p
-                    class="text-sm text-silver mt-1 m-0"
-                  >
-                    Video at the bottom
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div
-              class="px-6 py-4"
-            >
-              <p
-                class="text-silver text-sm"
-              >
-                You can position the video anywhere in the compound card structure.
-              </p>
-            </div>
-            <div
-              class="overflow-hidden relative aspect-wide border-t border-ash"
-            >
-              <div
-                class="absolute top-0 left-0"
-                data-src="https://youtu.be/Oe6I6fAhNDw"
-                data-testid="mock-react-player"
-                height="100%"
-                width="100%"
-              />
             </div>
           </div>
         </div>

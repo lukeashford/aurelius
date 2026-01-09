@@ -8,7 +8,6 @@ describe('VideoCardSection', () => {
 
     expect(screen.getByText('Video Cards')).toBeInTheDocument()
     expect(screen.getByText('Standalone Video Card')).toBeInTheDocument()
-    expect(screen.getByText('Compound Card Media')).toBeInTheDocument()
 
     // Check for mock players
     const mockPlayers = screen.getAllByTestId('mock-react-player')
