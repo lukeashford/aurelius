@@ -1,14 +1,39 @@
 import '@testing-library/jest-dom';
+import React from 'react';
+
+// Mock react-player
+jest.mock('react-player', () => {
+  return {
+    __esModule: true,
+    default: (props: any) => {
+      // Filter out props that are not valid for a div or use a custom tag
+      const {src, playing, controls, light, volume, muted, loop, ...rest} = props;
+      return React.createElement('div', {
+        'data-testid': 'mock-react-player',
+        'data-src': src,
+        ...rest
+      });
+    },
+  };
+});
 
 // Mock IntersectionObserver
 global.IntersectionObserver = class IntersectionObserver {
-  constructor() {}
-  disconnect() {}
-  observe() {}
+  constructor() {
+  }
+
+  disconnect() {
+  }
+
+  observe() {
+  }
+
   takeRecords() {
     return [];
   }
-  unobserve() {}
+
+  unobserve() {
+  }
 } as any;
 
 // Mock window.matchMedia

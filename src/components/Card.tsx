@@ -1,6 +1,7 @@
 import React from 'react'
-import { Check } from 'lucide-react'
-import { cx } from '../utils/cx'
+import ReactPlayer from 'react-player'
+import {Check} from 'lucide-react'
+import {cx} from '../utils'
 
 export type CardVariant = 'default' | 'elevated' | 'outlined' | 'ghost' | 'featured'
 
@@ -20,41 +21,42 @@ const VARIANT_STYLES: Record<CardVariant, string> = {
 }
 
 const CardBase = React.forwardRef<HTMLDivElement, CardProps>(
-  (
-    {
-      variant = 'default',
-      interactive = false,
-      selected = false,
-      noPadding = false,
-      className,
-      children,
-      ...props
-    },
-    ref
-  ) => {
-    return (
-      <div
-        ref={ref}
-        className={cx(
-          'rounded-none relative',
-          !noPadding && 'p-6',
-          VARIANT_STYLES[variant],
-          interactive &&
-            'transition-all duration-200 hover:border-gold hover:shadow-glow cursor-pointer',
-          selected && 'border-gold shadow-glow-md',
-          className
-        )}
-        {...props}
-      >
-        {children}
-        {selected && (
-          <div className="absolute top-3 right-3 flex items-center justify-center h-6 w-6 rounded-full bg-gold text-obsidian">
-            <Check className="h-4 w-4" />
+    (
+        {
+          variant = 'default',
+          interactive = false,
+          selected = false,
+          noPadding = false,
+          className,
+          children,
+          ...props
+        },
+        ref
+    ) => {
+      return (
+          <div
+              ref={ref}
+              className={cx(
+                  'rounded-none relative',
+                  !noPadding && 'p-6',
+                  VARIANT_STYLES[variant],
+                  interactive &&
+                  'transition-all duration-200 hover:border-gold hover:shadow-glow cursor-pointer',
+                  selected && 'border-gold shadow-glow-md',
+                  className
+              )}
+              {...props}
+          >
+            {children}
+            {selected && (
+                <div
+                    className="absolute top-3 right-3 flex items-center justify-center h-6 w-6 rounded-full bg-gold text-obsidian">
+                  <Check className="h-4 w-4"/>
+                </div>
+            )}
           </div>
-        )}
-      </div>
-    )
-  }
+      )
+    }
 )
 
 CardBase.displayName = 'Card'
@@ -67,46 +69,47 @@ export interface CardHeaderProps extends Omit<React.HTMLAttributes<HTMLDivElemen
 }
 
 const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
-  ({ title, subtitle, action, className, children, ...props }, ref) => {
-    return (
-      <div
-        ref={ref}
-        className={cx('px-6 py-4 border-b border-ash', className)}
-        {...props}
-      >
-        {(title || subtitle || action) ? (
-          <div className="flex items-start justify-between gap-4">
-            <div className="flex-1 min-w-0">
-              {title && (
-                <h3 className="text-lg font-semibold text-white m-0">{title}</h3>
-              )}
-              {subtitle && (
-                <p className="text-sm text-silver mt-1 m-0">{subtitle}</p>
-              )}
-            </div>
-            {action && <div className="shrink-0">{action}</div>}
+    ({title, subtitle, action, className, children, ...props}, ref) => {
+      return (
+          <div
+              ref={ref}
+              className={cx('px-6 py-4 border-b border-ash', className)}
+              {...props}
+          >
+            {(title || subtitle || action) ? (
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex-1 min-w-0">
+                    {title && (
+                        <h3 className="text-lg font-semibold text-white m-0">{title}</h3>
+                    )}
+                    {subtitle && (
+                        <p className="text-sm text-silver mt-1 m-0">{subtitle}</p>
+                    )}
+                  </div>
+                  {action && <div className="shrink-0">{action}</div>}
+                </div>
+            ) : (
+                children
+            )}
           </div>
-        ) : (
-          children
-        )}
-      </div>
-    )
-  }
+      )
+    }
 )
 
 CardHeader.displayName = 'CardHeader'
 
 // Card.Body - main content area
-export interface CardBodyProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface CardBodyProps extends React.HTMLAttributes<HTMLDivElement> {
+}
 
 const CardBody = React.forwardRef<HTMLDivElement, CardBodyProps>(
-  ({ className, children, ...props }, ref) => {
-    return (
-      <div ref={ref} className={cx('px-6 py-4', className)} {...props}>
-        {children}
-      </div>
-    )
-  }
+    ({className, children, ...props}, ref) => {
+      return (
+          <div ref={ref} className={cx('px-6 py-4', className)} {...props}>
+            {children}
+          </div>
+      )
+    }
 )
 
 CardBody.displayName = 'CardBody'
@@ -117,28 +120,28 @@ export interface CardFooterProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const CardFooter = React.forwardRef<HTMLDivElement, CardFooterProps>(
-  ({ align = 'end', className, children, ...props }, ref) => {
-    const alignClass = {
-      start: 'justify-start',
-      center: 'justify-center',
-      end: 'justify-end',
-      between: 'justify-between',
-    }[align]
+    ({align = 'end', className, children, ...props}, ref) => {
+      const alignClass = {
+        start: 'justify-start',
+        center: 'justify-center',
+        end: 'justify-end',
+        between: 'justify-between',
+      }[align]
 
-    return (
-      <div
-        ref={ref}
-        className={cx(
-          'px-6 py-4 border-t border-ash flex items-center gap-3',
-          alignClass,
-          className
-        )}
-        {...props}
-      >
-        {children}
-      </div>
-    )
-  }
+      return (
+          <div
+              ref={ref}
+              className={cx(
+                  'px-6 py-4 border-t border-ash flex items-center gap-3',
+                  alignClass,
+                  className
+              )}
+              {...props}
+          >
+            {children}
+          </div>
+      )
+    }
 )
 
 CardFooter.displayName = 'CardFooter'
@@ -149,36 +152,56 @@ export interface CardMediaProps extends React.HTMLAttributes<HTMLDivElement> {
   alt?: string
   aspect?: 'video' | 'square' | 'wide'
   position?: 'top' | 'bottom'
+  isVideo?: boolean
 }
 
 const CardMedia = React.forwardRef<HTMLDivElement, CardMediaProps>(
-  ({ src, alt = '', aspect = 'video', position = 'top', className, children, ...props }, ref) => {
-    const aspectClass = {
-      video: 'aspect-video',
-      square: 'aspect-square',
-      wide: 'aspect-wide',
-    }[aspect]
+    ({
+      src,
+      alt = '',
+      aspect = 'video',
+      position = 'top',
+      isVideo = false,
+      className,
+      children,
+      ...props
+    }, ref) => {
+      const aspectClass = {
+        video: 'aspect-video',
+        square: 'aspect-square',
+        wide: 'aspect-wide',
+      }[aspect]
 
-    return (
-      <div
-        ref={ref}
-        className={cx(
-          'overflow-hidden',
-          aspectClass,
-          position === 'top' && 'border-b border-ash',
-          position === 'bottom' && 'border-t border-ash',
-          className
-        )}
-        {...props}
-      >
-        {src ? (
-          <img src={src} alt={alt} className="w-full h-full object-cover" />
-        ) : (
-          children
-        )}
-      </div>
-    )
-  }
+      return (
+          <div
+              ref={ref}
+              className={cx(
+                  'overflow-hidden relative',
+                  aspectClass,
+                  position === 'top' && 'border-b border-ash',
+                  position === 'bottom' && 'border-t border-ash',
+                  className
+              )}
+              {...props}
+          >
+            {src ? (
+                isVideo ? (
+                    <ReactPlayer
+                        src={src}
+                        width="100%"
+                        height="100%"
+                        className="absolute top-0 left-0"
+                        controls
+                    />
+                ) : (
+                    <img src={src} alt={alt} className="w-full h-full object-cover"/>
+                )
+            ) : (
+                children
+            )}
+          </div>
+      )
+    }
 )
 
 CardMedia.displayName = 'CardMedia'

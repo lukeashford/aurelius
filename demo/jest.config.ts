@@ -1,4 +1,4 @@
-import type { Config } from 'jest';
+import type {Config} from 'jest';
 
 const config: Config = {
   preset: 'ts-jest',
@@ -21,7 +21,7 @@ const config: Config = {
     }],
   },
   transformIgnorePatterns: [
-    'node_modules/(?!(@lukeashford/aurelius|lucide-react)/)',
+    'node_modules/(?!(@lukeashford/aurelius|lucide-react|react-player)/)',
   ],
   moduleDirectories: ['node_modules', '<rootDir>/node_modules', '<rootDir>/../node_modules'],
   collectCoverageFrom: [
