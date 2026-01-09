@@ -1,0 +1,100 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VideoCardSection matches snapshot 1`] = `
+<DocumentFragment>
+  <section>
+    <header
+      class="section-header"
+    >
+      <h2
+        class="text-2xl"
+      >
+        Video Cards
+      </h2>
+      <p
+        class="text-silver"
+      >
+        Cards with embedded video players using ReactPlayer. Supports YouTube, Vimeo, and more.
+      </p>
+    </header>
+    <div
+      class="space-y-12"
+    >
+      <div>
+        <h3
+          class="text-lg font-semibold mb-2"
+        >
+          Standalone Video Card
+        </h3>
+        <p
+          class="text-silver text-sm mb-4"
+        >
+          A dedicated component for video content with built-in layout and typography.
+        </p>
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start"
+        >
+          <div
+            class="rounded-none relative bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-full"
+          >
+            <div
+              class="relative bg-black overflow-hidden"
+            >
+              <div
+                class="absolute top-0 left-0"
+                data-src="https://youtu.be/Oe6I6fAhNDw"
+                data-testid="mock-react-player"
+                height="100%"
+                width="100%"
+              />
+            </div>
+            <div
+              class="px-4 py-4"
+            >
+              <h4
+                class="text-lg font-semibold leading-tight"
+              >
+                Aurelius Video Showcase
+              </h4>
+              <p
+                class="text-sm text-silver leading-normal mt-1"
+              >
+                Demonstrating video support in cards
+              </p>
+            </div>
+          </div>
+          <div
+            class="rounded-none relative bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-full"
+          >
+            <div
+              class="relative bg-black overflow-hidden"
+            >
+              <div
+                class="absolute top-0 left-0"
+                data-src="https://youtu.be/Oe6I6fAhNDw"
+                data-testid="mock-react-player"
+                height="100%"
+                width="100%"
+              />
+            </div>
+            <div
+              class="px-4 py-4"
+            >
+              <h4
+                class="text-lg font-semibold leading-tight"
+              >
+                With Custom Aspect Ratio and Thumbnail
+              </h4>
+              <p
+                class="text-sm text-silver leading-normal mt-1"
+              >
+                Cinema 21:9 aspect ratio
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</DocumentFragment>
+`;

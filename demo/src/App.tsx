@@ -23,6 +23,7 @@ import NavigationSection from './sections/NavigationSection'
 import DataDisplaySection from './sections/DataDisplaySection'
 import {Footer} from './components/Footer'
 import {LegalNotice} from './components/LegalNotice'
+import VideoCardSection from "./sections/VideoCardSection";
 
 const nav = [
   {id: 'overview', label: 'Overview'},
@@ -33,7 +34,6 @@ const nav = [
   {id: 'buttons', label: 'Buttons'},
   {id: 'badges', label: 'Badges'},
   {id: 'inputs', label: 'Inputs'},
-  {id: 'cards', label: 'Cards'},
   {id: 'forms', label: 'Forms'},
   {id: 'navigation', label: 'Navigation'},
   {id: 'data-display', label: 'Data Display'},
@@ -43,7 +43,9 @@ const nav = [
   {id: 'avatar', label: 'Avatar'},
   {id: 'brand-icons', label: 'Brand Icons'},
   {id: 'markdown', label: 'Markdown Content'},
+  {id: 'cards', label: 'Cards'},
   {id: 'image-cards', label: 'Image Cards'},
+  {id: 'video-cards', label: 'Video Cards'},
   {id: 'feedback', label: 'Feedback'},
   {id: 'streaming', label: 'Streaming Cursor'},
   {id: 'messages', label: 'Messages'},
@@ -151,10 +153,6 @@ export default function App() {
             <InputsSection/>
           </section>
 
-          <section id="cards" className="space-y-4">
-            <CardsSection/>
-          </section>
-
           <section id="forms" className="space-y-4">
             <FormsSection/>
           </section>
@@ -191,8 +189,16 @@ export default function App() {
             <MarkdownContentSection/>
           </section>
 
+          <section id="cards" className="space-y-4">
+            <CardsSection/>
+          </section>
+
           <section id="image-cards" className="space-y-4">
             <ImageCardSection/>
+          </section>
+
+          <section id="video-cards" className="space-y-4">
+            <VideoCardSection/>
           </section>
 
           <section id="feedback" className="space-y-4">
