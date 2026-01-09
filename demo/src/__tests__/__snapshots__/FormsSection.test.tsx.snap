@@ -23,7 +23,7 @@ exports[`FormsSection matches snapshot 1`] = `
       class="grid grid-cols-1 gap-8 md:grid-cols-2"
     >
       <div
-        class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-6 space-y-4 md:col-span-2"
+        class="rounded-none relative bg-charcoal shadow-sm border border-gold/30 p-6 space-y-4 md:col-span-2"
       >
         <h3
           class="text-gold font-medium"
@@ -288,7 +288,7 @@ exports[`FormsSection matches snapshot 1`] = `
         </div>
       </div>
       <div
-        class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-6 space-y-4 md:col-span-2"
+        class="rounded-none relative bg-charcoal shadow-sm border border-gold/30 p-6 space-y-4 md:col-span-2"
       >
         <h3
           class="text-gold font-medium"
@@ -448,7 +448,7 @@ exports[`FormsSection matches snapshot 1`] = `
         </div>
       </div>
       <div
-        class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-6 space-y-4"
+        class="rounded-none relative bg-charcoal shadow-sm border border-gold/30 p-6 space-y-4"
       >
         <h3
           class="text-gold font-medium"
@@ -494,7 +494,7 @@ exports[`FormsSection matches snapshot 1`] = `
             Error State
           </label>
           <select
-            class="appearance-none bg-graphite border border-ash rounded-none text-white px-3 py-2 pr-8 focus:border-gold focus:ring-1 focus:ring-gold focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed border-error focus:border-error focus:ring-error"
+            class="appearance-none bg-graphite border rounded-none text-white px-3 py-2 pr-8 focus:ring-1 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed border-error focus:border-error focus:ring-error"
             style="background-repeat: no-repeat; background-size: 1.5em 1.5em;"
           >
             <option
@@ -511,7 +511,7 @@ exports[`FormsSection matches snapshot 1`] = `
         </div>
       </div>
       <div
-        class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-6 space-y-4"
+        class="rounded-none relative bg-charcoal shadow-sm border border-gold/30 p-6 space-y-4"
       >
         <h3
           class="text-gold font-medium"
@@ -537,7 +537,7 @@ exports[`FormsSection matches snapshot 1`] = `
             Error State
           </label>
           <textarea
-            class="w-full px-3 py-2 bg-graphite border border-ash rounded-none text-white placeholder:text-zinc min-h-[80px] transition-all duration-fast focus:border-gold focus:ring-1 focus:ring-gold focus:outline-none disabled:bg-slate disabled:text-dim disabled:cursor-not-allowed border-error focus:border-error focus:ring-error"
+            class="w-full px-3 py-2 bg-graphite border rounded-none text-white placeholder:text-zinc min-h-[80px] transition-all duration-fast focus:ring-1 focus:outline-none disabled:bg-slate disabled:text-dim disabled:cursor-not-allowed border-error focus:border-error focus:ring-error"
             placeholder="Invalid input..."
             rows="3"
           />
@@ -549,7 +549,7 @@ exports[`FormsSection matches snapshot 1`] = `
         </div>
       </div>
       <div
-        class="rounded-none relative p-6 bg-charcoal shadow-sm border border-gold/30 p-6 space-y-6"
+        class="rounded-none relative bg-charcoal shadow-sm border border-gold/30 p-6 space-y-6"
       >
         <h3
           class="text-gold font-medium"

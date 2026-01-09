@@ -82,7 +82,7 @@ exports[`InputsSection matches snapshot 1`] = `
           class="relative"
         >
           <input
-            class="w-full h-10 px-3 bg-graphite border border-ash rounded-none text-white placeholder:text-zinc transition-all duration-fast focus:border-gold focus:ring-1 focus:ring-gold focus:outline-none disabled:bg-slate disabled:text-dim disabled:cursor-not-allowed border-error focus:border-error focus:ring-error"
+            class="w-full h-10 px-3 bg-graphite border rounded-none text-white placeholder:text-zinc transition-all duration-fast focus:ring-1 focus:outline-none disabled:bg-slate disabled:text-dim disabled:cursor-not-allowed border-error focus:border-error focus:ring-error"
             placeholder="Invalid value"
           />
         </div>
