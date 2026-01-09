@@ -1,3 +1,10 @@
+## [2.7.0](https://github.com/lukeashford/aurelius/compare/v2.6.0...v2.7.0) (2026-01-09)
+
+### Features
+
+* **styles:** add twMerge ([87e23aa](https://github.com/lukeashford/aurelius/commit/87e23aa05393d82655907af314f18be4c827fb4e))
+* **styles:** add twMerge ([#17](https://github.com/lukeashford/aurelius/issues/17)) ([1198a99](https://github.com/lukeashford/aurelius/commit/1198a99e341c749dbd2744fdf27213bc85012efd))
+
 ## [2.6.0](https://github.com/lukeashford/aurelius/compare/v2.5.0...v2.6.0) (2026-01-07)
 
 ### Features
