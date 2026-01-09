@@ -1,3 +1,14 @@
+## [2.8.0](https://github.com/lukeashford/aurelius/compare/v2.7.0...v2.8.0) (2026-01-09)
+
+### Features
+
+* **docs:** document VideoCard props in llms.md ([09a2f86](https://github.com/lukeashford/aurelius/commit/09a2f86770d3c0388ecd75eb9b0d5306c28b3df8))
+* **video-cards:** add video card section with react-player integration ([82ea1e1](https://github.com/lukeashford/aurelius/commit/82ea1e168db8c0f74a55ba1764a324a78fd47678))
+
+### Bug Fixes
+
+* **cards:** image card bottom pad ([3249f77](https://github.com/lukeashford/aurelius/commit/3249f77693001ca80039a10f1032f8dc81107281))
+
 ## [2.7.0](https://github.com/lukeashford/aurelius/compare/v2.6.0...v2.7.0) (2026-01-09)
 
 ### Features
