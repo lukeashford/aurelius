@@ -163,6 +163,35 @@ export {ChatHistory, type ChatHistoryProps, type ChatHistoryItem} from './ChatHi
 export {StreamingCursor, type StreamingCursorProps} from './StreamingCursor'
 export {MarkdownContent, type MarkdownContentProps} from './MarkdownContent'
 
+// Chat Interface (Production-grade chat experience)
+export {
+  ChatInterface,
+  ChatView,
+  ChatInput,
+  ConversationSidebar,
+  CollapsedSidebarToggle,
+  ArtifactsPanel,
+  ArtifactsPanelToggle,
+  useScrollAnchor,
+  useArtifactParser,
+  type ChatInterfaceProps,
+  type ChatMessage,
+  type ChatViewProps,
+  type ChatViewItem,
+  type ChatInputProps,
+  type ChatInputPosition,
+  type ConversationSidebarProps,
+  type Conversation,
+  type CollapsedSidebarToggleProps,
+  type ArtifactsPanelProps,
+  type ArtifactsPanelToggleProps,
+  type UseScrollAnchorOptions,
+  type UseScrollAnchorReturn,
+  type Artifact,
+  type ArtifactType,
+  type UseArtifactParserReturn,
+} from './chat'
+
 // Brand
 export {
   BrandIcon,

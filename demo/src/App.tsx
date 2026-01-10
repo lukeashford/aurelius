@@ -21,8 +21,10 @@ import DirectorNote from './sections/DirectorNote'
 import LayoutSection from './sections/LayoutSection'
 import NavigationSection from './sections/NavigationSection'
 import DataDisplaySection from './sections/DataDisplaySection'
+import ChatInterfaceSection from './sections/ChatInterfaceSection'
 import {Footer} from './components/Footer'
 import {LegalNotice} from './components/LegalNotice'
+import ChatDemo from './components/ChatDemo'
 import VideoCardSection from "./sections/VideoCardSection";
 
 const nav = [
@@ -49,15 +51,28 @@ const nav = [
   {id: 'feedback', label: 'Feedback'},
   {id: 'streaming', label: 'Streaming Cursor'},
   {id: 'messages', label: 'Messages'},
+  {id: 'chat-interface', label: 'Chat Interface'},
 ]
 
 export default function App() {
   const [active, setActive] = useState('overview')
-  const [view, setView] = useState(window.location.hash === '#legal' ? 'legal' : 'main')
+  const [view, setView] = useState(() => {
+    const hash = window.location.hash
+    if (hash === '#legal') return 'legal'
+    if (hash === '#chat-demo') return 'chat-demo'
+    return 'main'
+  })
 
   React.useEffect(() => {
     const handleHashChange = () => {
-      setView(window.location.hash === '#legal' ? 'legal' : 'main')
+      const hash = window.location.hash
+      if (hash === '#legal') {
+        setView('legal')
+      } else if (hash === '#chat-demo') {
+        setView('chat-demo')
+      } else {
+        setView('main')
+      }
     }
     window.addEventListener('hashchange', handleHashChange)
     return () => window.removeEventListener('hashchange', handleHashChange)
@@ -65,6 +80,8 @@ export default function App() {
 
   // IntersectionObserver to set active nav link
   React.useEffect(() => {
+    if (view !== 'main') return // Only observe in main view
+
     const observer = new IntersectionObserver(
         entries => {
           entries.forEach(entry => {
@@ -83,7 +100,11 @@ export default function App() {
       }
     })
     return () => observer.disconnect()
-  }, [])
+  }, [view])
+
+  if (view === 'chat-demo') {
+    return <ChatDemo />
+  }
 
   if (view === 'legal') {
     return <LegalNotice/>
@@ -211,6 +232,10 @@ export default function App() {
 
           <section id="messages" className="space-y-4">
             <MessageSection/>
+          </section>
+
+          <section id="chat-interface" className="space-y-4">
+            <ChatInterfaceSection/>
           </section>
 
           <Footer/>
