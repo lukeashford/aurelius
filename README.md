@@ -55,11 +55,30 @@ while staying within design system constraints.
 ### 1. Install
 
 ```bash
+# For Vite projects (Recommended)
 npm install @lukeashford/aurelius
-npm install -D tailwindcss postcss @tailwindcss/postcss eslint @typescript-eslint/parser eslint-plugin-better-tailwindcss @poupe/eslint-plugin-tailwindcss @eslint/css tailwind-csstree
+npm install -D tailwindcss @tailwindcss/vite eslint @typescript-eslint/parser eslint-plugin-better-tailwindcss @poupe/eslint-plugin-tailwindcss @eslint/css tailwind-csstree
+
+# For other projects
+# npm install -D tailwindcss @tailwindcss/postcss postcss ...
 ```
 
-### 2. Import the design system
+### 2. Configure (Vite)
+
+If you are using Vite, add the Tailwind CSS plugin to your `vite.config.ts`:
+
+```typescript
+import {defineConfig} from 'vite'
+import tailwindcss from '@tailwindcss/vite'
+
+export default defineConfig({
+  plugins: [
+    tailwindcss(),
+  ],
+})
+```
+
+### 3. Import the design system
 
 Create or update your `index.css`:
 
@@ -78,7 +97,7 @@ Then import it in your entry file:
 import './index.css'
 ```
 
-### 3. Configure ESLint (simplest form)
+### 4. Configure ESLint (simplest form)
 
 Aurelius ships with a default ESLint config you can re-export in one line. It enforces design system
 constraints — if ESLint complains, you're leaving the rails.
@@ -106,7 +125,7 @@ export default createAureliusESLintConfig({
 - **CSS files:** Tailwind v4 CSS best practices, valid `@apply` directives, no arbitrary value
   overuse, and proper theme token usage
 
-### 4. Update package.json scripts
+### 5. Update package.json scripts
 
 Add a lint script and wire it into your workflow:
 
@@ -123,7 +142,7 @@ Add a lint script and wire it into your workflow:
 If your project already has CI (or you're asked to add one), include `npm run lint` in that
 pipeline so lint failures block merges.
 
-### 5. Use components
+### 6. Use components
 
 ```tsx
 import {Button, Card, Input} from '@lukeashford/aurelius'
