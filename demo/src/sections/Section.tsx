@@ -8,7 +8,7 @@ export interface SectionProps extends Omit<HTMLAttributes<HTMLElement>, 'title'>
 export default function Section({title, subtitle, children, className, ...rest}: SectionProps) {
   return (
       <section className={className} {...rest}>
-        <header className="section-header">
+        <header className="mb-12">
           <h2 className="text-2xl">{title}</h2>
           <p className="text-silver">{subtitle}</p>
         </header>

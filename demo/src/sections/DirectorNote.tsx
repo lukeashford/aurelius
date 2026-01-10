@@ -27,7 +27,7 @@ export default function DirectorNote() {
             </p>
             <p>
               By using the prompt from the README, your agent accesses <code
-                className="text-gold bg-charcoal px-1 rounded">dist/llms.md</code>—a file
+                className="text-gold bg-charcoal px-1">dist/llms.md</code>—a file
               specifically designed to give the agent all the context it needs to implement these
               components
               correctly. If you really need to see the code, you can check the source of this demo

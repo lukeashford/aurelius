@@ -6,7 +6,7 @@ exports[`FormsSection matches snapshot 1`] = `
     class="space-y-8"
   >
     <header
-      class="section-header"
+      class="mb-12"
     >
       <h2
         class="text-2xl"
@@ -568,7 +568,7 @@ exports[`FormsSection matches snapshot 1`] = `
             class="flex items-center"
           >
             <input
-              class="appearance-none h-4 w-4 border border-ash rounded-sm bg-graphite checked:bg-gold checked:border-gold focus:ring-1 focus:ring-gold focus:ring-offset-1 focus:ring-offset-obsidian transition duration-200 ease-in-out cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              class="appearance-none h-4 w-4 border border-ash bg-graphite checked:bg-gold checked:border-gold focus:ring-1 focus:ring-gold focus:ring-offset-1 focus:ring-offset-obsidian transition duration-200 ease-in-out cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               id="3llllllll"
               style="background-position: center; background-size: contain; background-repeat: no-repeat;"
               type="checkbox"
@@ -585,7 +585,7 @@ exports[`FormsSection matches snapshot 1`] = `
           >
             <input
               checked=""
-              class="appearance-none h-4 w-4 border border-ash rounded-sm bg-graphite checked:bg-gold checked:border-gold focus:ring-1 focus:ring-gold focus:ring-offset-1 focus:ring-offset-obsidian transition duration-200 ease-in-out cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              class="appearance-none h-4 w-4 border border-ash bg-graphite checked:bg-gold checked:border-gold focus:ring-1 focus:ring-gold focus:ring-offset-1 focus:ring-offset-obsidian transition duration-200 ease-in-out cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               id="777777777"
               style="background-position: center; background-size: contain; background-repeat: no-repeat;"
               type="checkbox"
@@ -601,7 +601,7 @@ exports[`FormsSection matches snapshot 1`] = `
             class="flex items-center"
           >
             <input
-              class="appearance-none h-4 w-4 border border-ash rounded-sm bg-graphite checked:bg-gold checked:border-gold focus:ring-1 focus:ring-gold focus:ring-offset-1 focus:ring-offset-obsidian transition duration-200 ease-in-out cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              class="appearance-none h-4 w-4 border border-ash bg-graphite checked:bg-gold checked:border-gold focus:ring-1 focus:ring-gold focus:ring-offset-1 focus:ring-offset-obsidian transition duration-200 ease-in-out cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               disabled=""
               id="assssssss"
               style="background-position: center; background-size: contain; background-repeat: no-repeat;"

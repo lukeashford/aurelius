@@ -13,12 +13,6 @@ describe('MessageSection', () => {
     expect(screen.getByRole('heading', {name: /Variants/i, level: 3})).toBeInTheDocument();
   });
 
-  it('renders conversation example heading', () => {
-    render(<MessageSection/>);
-    expect(screen.getByRole('heading', {name: /Conversation Example/i, level: 3}))
-    .toBeInTheDocument();
-  });
-
   it('renders variant labels', () => {
     render(<MessageSection/>);
     expect(screen.getByText('Assistant')).toBeInTheDocument();

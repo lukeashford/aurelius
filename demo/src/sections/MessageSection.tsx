@@ -1,7 +1,5 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import {
-  ChatHistory,
-  type ChatHistoryItem,
   Message,
   type MessageVariant
 } from '@lukeashford/aurelius'
@@ -12,74 +10,7 @@ const variants: Array<{ variant: MessageVariant, label: string }> = [
   {variant: 'user', label: 'User'}
 ]
 
-const styledStreamingResponse = `<p>Longer messages work <strong>perfectly fine</strong>. Here's what you can do:</p>
-<ul>
-<li><em>Multiple paragraphs</em> are fully supported</li>
-<li>The component <strong>expands</strong> to fit content</li>
-<li>Maximum width ensures <em>readability</em></li>
-</ul>
-<p>You can include <strong>any styled content</strong> you need!</p>`
-
 export default function MessageSection() {
-  const [streamedContent, setStreamedContent] = useState('')
-  const [isStreaming, setIsStreaming] = useState(false)
-  const [cycleKey, setCycleKey] = useState(0)
-
-  // Start streaming on mount and when cycleKey changes
-  useEffect(() => {
-    let currentIndex = 0
-    setStreamedContent('')
-    setIsStreaming(true)
-
-    const streamInterval = setInterval(() => {
-      if (currentIndex < styledStreamingResponse.length) {
-        setStreamedContent(styledStreamingResponse.slice(0, currentIndex + 1))
-        currentIndex++
-      } else {
-        setIsStreaming(false)
-        clearInterval(streamInterval)
-      }
-    }, 20)
-
-    return () => clearInterval(streamInterval)
-  }, [cycleKey])
-
-  // Separate effect for restarting after pause
-  useEffect(() => {
-    if (!isStreaming && streamedContent.length > 0) {
-      const restartTimeout = setTimeout(() => {
-        setCycleKey(k => k + 1)
-      }, 3000)
-
-      return () => clearTimeout(restartTimeout)
-    }
-  }, [isStreaming, streamedContent.length])
-
-  const conversation: ChatHistoryItem[] = [
-    {
-      id: 'user-1',
-      variant: 'user',
-      content: 'Hello! Can you help me understand how to use this component?'
-    },
-    {
-      id: 'assistant-1',
-      variant: 'assistant',
-      content:
-          'Of course! The Message component is designed for chat interfaces. It supports different variants for user and assistant messages, and automatically aligns them appropriately.'
-    },
-    {
-      id: 'user-2',
-      variant: 'user',
-      content: "That's great! What about longer messages with multiple paragraphs?"
-    },
-    {
-      id: 'assistant-2',
-      variant: 'assistant',
-      content: streamedContent,
-      isStreaming
-    },
-  ]
-
   return (
       <Section
           title="Messages"
@@ -99,13 +30,6 @@ export default function MessageSection() {
                   </div>
               ))}
             </div>
-          </div>
-
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Conversation Example</h3>
-            <ChatHistory
-                messages={conversation}
-            />
           </div>
         </div>
       </Section>

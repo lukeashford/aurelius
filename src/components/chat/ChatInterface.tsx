@@ -96,18 +96,35 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
       return -1
     }, [messages])
 
-    // Get the current streaming content (last assistant message if streaming)
-    const currentStreamingContent = useMemo(() => {
-      if (!isStreaming || messages.length === 0) return ''
+    // Get all assistant message contents for artifact parsing
+    const allAssistantContent = useMemo(() => {
+      return messages
+        .filter((msg) => msg.variant === 'assistant')
+        .map((msg) => msg.content)
+        .join('\n\n')
+    }, [messages])
+
+    // Parse artifacts from all assistant messages
+    const {cleanContent: parsedCleanContent, artifacts, hasPendingArtifact} = useArtifactParser(allAssistantContent)
+
+    // Get clean content for just the currently streaming message (if any)
+    const currentStreamingCleanContent = useMemo(() => {
+      if (!isStreaming || messages.length === 0) return null
       const lastMessage = messages[messages.length - 1]
       if (lastMessage.variant === 'assistant') {
-        return lastMessage.content
+        // Strip artifact syntax from the streaming message
+        const content = lastMessage.content
+        // Remove complete artifacts
+        let clean = content.replace(/:::artifact\{[^}]+\}(?:[^:]*?)?:::/gs, '')
+        // Remove incomplete artifacts (still streaming)
+        const startMatch = clean.match(/:::artifact\{/)
+        if (startMatch && startMatch.index !== undefined) {
+          clean = clean.substring(0, startMatch.index)
+        }
+        return clean.trim()
       }
-      return ''
+      return null
     }, [messages, isStreaming])
-
-    // Parse artifacts from the current streaming content
-    const {cleanContent, artifacts, hasPendingArtifact} = useArtifactParser(currentStreamingContent)
 
     // Auto-open artifacts panel when artifacts are found (including pending)
     React.useEffect(() => {
@@ -116,24 +133,33 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
       }
     }, [artifacts.length, hasPendingArtifact, artifactsPanelOpen])
 
-    // Build the messages array with cleaned content for the streaming message
+    // Build the messages array with cleaned content (artifact syntax stripped)
     const displayMessages: ChatViewItem[] = useMemo(() => {
       return messages.map((msg, idx) => {
-        // If this is the streaming assistant message, use cleaned content
-        if (
-          isStreaming &&
-          idx === messages.length - 1 &&
-          msg.variant === 'assistant' &&
-          cleanContent !== msg.content
-        ) {
-          return {
-            ...msg,
-            content: cleanContent || msg.content,
+        if (msg.variant === 'assistant') {
+          // For the currently streaming message, use the streaming-specific clean content
+          if (isStreaming && idx === messages.length - 1 && currentStreamingCleanContent !== null) {
+            return {
+              ...msg,
+              content: currentStreamingCleanContent,
+            }
+          }
+          // For completed assistant messages, strip artifact syntax
+          const content = msg.content
+          let clean = content.replace(/:::artifact\{[^}]+\}(?:[^:]*?)?:::/gs, '')
+          // Also strip any incomplete artifact syntax (shouldn't happen for completed messages)
+          const startMatch = clean.match(/:::artifact\{/)
+          if (startMatch && startMatch.index !== undefined) {
+            clean = clean.substring(0, startMatch.index)
+          }
+          const trimmed = clean.trim()
+          if (trimmed !== content) {
+            return {...msg, content: trimmed}
           }
         }
         return msg
       })
-    }, [messages, isStreaming, cleanContent])
+    }, [messages, isStreaming, currentStreamingCleanContent])
 
     // All artifacts from all assistant messages (for now, just current streaming)
     const allArtifacts: Artifact[] = useMemo(() => {
@@ -227,7 +253,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
           artifacts={allArtifacts}
           isOpen={artifactsPanelOpen}
           onClose={toggleArtifactsPanel}
-          isLoading={isStreaming && allArtifacts.length > 0}
+          isLoading={isStreaming && hasPendingArtifact}
         />
       </div>
     )

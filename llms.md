@@ -106,7 +106,6 @@ Import from `@lukeashford/aurelius`:
 | Breadcrumb | separator |
 | Button | variant (primary, important, elevated, outlined, featured, ghost, danger), size (sm, md, lg, xl), loading |
 | Card | variant (default, elevated, outlined, ghost, featured), interactive, selected, noPadding |
-| ChatHistory | messages |
 | Checkbox | label |
 | Col | span (auto, full), offset, order (first, last, none) |
 | ColorSwatch | color, label |
@@ -153,9 +152,6 @@ Import from `@lukeashford/aurelius`:
 - **defaultValue**: Default expanded item(s)
 - **value**: Controlled expanded item(s)
 - **onValueChange**: Callback when expanded items change
-
-**ChatHistory**
-- **messages**: Array of chat messages. Each item requires: content (string), variant ('user' | 'assistant'). Optional: id, isStreaming.
 
 **Popover**
 - **trigger**: The trigger element

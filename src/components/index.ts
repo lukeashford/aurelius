@@ -159,7 +159,6 @@ export {Stepper, type StepperProps, type Step, type StepStatus} from './Stepper'
 
 // Chat/AI
 export {Message, type MessageProps, type MessageVariant} from './Message'
-export {ChatHistory, type ChatHistoryProps, type ChatHistoryItem} from './ChatHistory'
 export {StreamingCursor, type StreamingCursorProps} from './StreamingCursor'
 export {MarkdownContent, type MarkdownContentProps} from './MarkdownContent'
 

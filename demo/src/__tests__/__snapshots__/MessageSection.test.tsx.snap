@@ -4,7 +4,7 @@ exports[`MessageSection matches snapshot 1`] = `
 <div>
   <section>
     <header
-      class="section-header"
+      class="mb-12"
     >
       <h2
         class="text-2xl"
@@ -64,55 +64,6 @@ exports[`MessageSection matches snapshot 1`] = `
                 This is the user message variant. It demonstrates the styling for this variant.
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-      <div>
-        <h3
-          class="text-lg font-semibold mb-4"
-        >
-          Conversation Example
-        </h3>
-        <div
-          class="flex flex-col gap-3 justify-end w-full h-96 bg-charcoal/50 border border-ash/40 p-4 overflow-y-auto"
-        >
-          <div
-            class="px-3 py-2 w-fit bg-gold text-obsidian ml-auto"
-          >
-            <div
-              class="prose prose-sm prose-inherit"
-            >
-              Hello! Can you help me understand how to use this component?
-            </div>
-          </div>
-          <div
-            class="px-3 py-2 w-fit bg-charcoal border border-ash text-white mr-auto"
-          >
-            <div
-              class="prose prose-sm prose-invert"
-            >
-              Of course! The Message component is designed for chat interfaces. It supports different variants for user and assistant messages, and automatically aligns them appropriately.
-            </div>
-          </div>
-          <div
-            class="px-3 py-2 w-fit bg-gold text-obsidian ml-auto"
-          >
-            <div
-              class="prose prose-sm prose-inherit"
-            >
-              That's great! What about longer messages with multiple paragraphs?
-            </div>
-          </div>
-          <div
-            class="px-3 py-2 w-fit bg-charcoal border border-ash text-white mr-auto"
-          >
-            <div
-              class="prose prose-sm prose-invert"
-            />
-            <span
-              aria-hidden="true"
-              class="inline-block bg-current animate-cursor-blink w-0.5 h-cursor translate-y-cursor-offset ml-0.5"
-            />
           </div>
         </div>
       </div>

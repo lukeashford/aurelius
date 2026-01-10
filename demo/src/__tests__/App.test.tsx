@@ -17,6 +17,7 @@ describe('App', () => {
 
     const navItems = [
       'Overview',
+      'Chat Demo',
       "Director's Note",
       'Colors',
       'Typography',
@@ -41,6 +42,7 @@ describe('App', () => {
 
     // Check that all section IDs are present
     expect(document.getElementById('overview')).toBeInTheDocument();
+    expect(document.getElementById('chat-demo-link')).toBeInTheDocument();
     expect(document.getElementById('director-note')).toBeInTheDocument();
     expect(document.getElementById('colors')).toBeInTheDocument();
     expect(document.getElementById('typography')).toBeInTheDocument();
@@ -72,9 +74,10 @@ describe('App', () => {
 
   it('renders expected number of sections', () => {
     const {container} = render(<App/>);
-    const sections = container.querySelectorAll('.section-header');
+    // Count section elements with space-y-4 class (all demo sections have this)
+    const sections = container.querySelectorAll('main > section');
 
-    // Should have all the main sections rendered
+    // Should have all the main sections rendered (24 sections in nav minus chat-interface)
     expect(sections.length).toBeGreaterThanOrEqual(12);
   });
 

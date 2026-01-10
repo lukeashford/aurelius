@@ -29,6 +29,7 @@ import VideoCardSection from "./sections/VideoCardSection";
 
 const nav = [
   {id: 'overview', label: 'Overview'},
+  {id: 'chat-demo-link', label: 'Chat Demo'},
   {id: 'director-note', label: "Director's Note"},
   {id: 'colors', label: 'Colors'},
   {id: 'typography', label: 'Typography'},
@@ -51,7 +52,6 @@ const nav = [
   {id: 'feedback', label: 'Feedback'},
   {id: 'streaming', label: 'Streaming Cursor'},
   {id: 'messages', label: 'Messages'},
-  {id: 'chat-interface', label: 'Chat Interface'},
 ]
 
 export default function App() {
@@ -126,7 +126,7 @@ export default function App() {
           <nav className="p-3 space-y-1">
             {nav.map(n => (
                 <a key={n.id} href={`#${n.id}`}
-                   className={`block px-3 py-2 rounded-md transition-colors ${
+                   className={`block px-3 py-2 transition-colors ${
                        active === n.id
                            ? 'text-white bg-ash/30'
                            : 'text-silver hover:text-white hover:bg-ash/30'
@@ -144,6 +144,10 @@ export default function App() {
               A cohesive visual language for creative technologists — combining technical
               sophistication with artistic sensibility.
             </p>
+          </section>
+
+          <section id="chat-demo-link" className="space-y-4">
+            <ChatInterfaceSection/>
           </section>
 
           <section id="director-note" className="space-y-4">
@@ -232,10 +236,6 @@ export default function App() {
 
           <section id="messages" className="space-y-4">
             <MessageSection/>
-          </section>
-
-          <section id="chat-interface" className="space-y-4">
-            <ChatInterfaceSection/>
           </section>
 
           <Footer/>
