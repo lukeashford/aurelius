@@ -174,7 +174,6 @@
   --animate-fade-out: fade-out 150ms ease-in;
   --animate-slide-in-right: slide-in-right 300ms var(--ease-smooth);
   --animate-slide-out-right: slide-out-right 200ms ease-in;
-  --animate-pulse: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   --animate-pulse-glow: pulse-glow 2s ease-in-out infinite;
   --animate-cursor-blink: cursor-blink 1s steps(1) infinite;
 
@@ -184,16 +183,6 @@
   --container-lg: 1024px;
   --container-xl: 1280px;
   --container-2xl: 1536px;
-}
-
-@keyframes pulse {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
 }
 
 @keyframes fade-in {

@@ -31,7 +31,7 @@
     "build": "npm run typecheck && npm run lint && tsup && node scripts/generate-manifest.js",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint src --max-warnings 0",
+    "lint": "eslint src --max-warnings 0 && npm --prefix demo run lint",
     "prepublishOnly": "npm run build",
     "dev:demo": "npm --prefix demo run dev",
     "dev:all": "concurrently -k \"npm run dev\" \"npm run dev:demo\"",

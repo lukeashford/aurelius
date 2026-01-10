@@ -45,8 +45,8 @@ describe('Slider', () => {
   })
 
   it('applies custom className', () => {
-    const { container } = render(<Slider className="custom-slider" />)
-    expect(container.firstChild).toHaveClass('custom-slider')
+    const { container } = render(<Slider className="w-48" />)
+    expect(container.firstChild).toHaveClass('w-48')
   })
 
   it('calls onChange when value changes', () => {

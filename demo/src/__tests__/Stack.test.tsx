@@ -77,8 +77,8 @@ describe('Stack', () => {
   })
 
   it('merges custom className', () => {
-    const { container } = render(<Stack className="custom-class">Content</Stack>)
-    expect(container.firstChild).toHaveClass('flex', 'custom-class')
+    const { container } = render(<Stack className="p-4">Content</Stack>)
+    expect(container.firstChild).toHaveClass('flex', 'p-4')
   })
 
   it('forwards ref', () => {

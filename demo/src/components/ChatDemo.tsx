@@ -81,10 +81,42 @@ export default function ChatDemo() {
   const [activeConversationId, setActiveConversationId] = useState('1')
   const responseIndexRef = useRef(0)
 
-  // Simulate streaming a response character by character
+  // Simulate streaming a response word by word (or by special tokens like :::)
   const streamResponse = useCallback((response: string, onComplete: () => void) => {
-    let currentIndex = 0
     const messageId = `assistant-${Date.now()}`
+
+    // Split into tokens: words, whitespace, and special artifact delimiters
+    // This ensures artifact syntax streams as coherent units
+    const tokens: string[] = []
+    let remaining = response
+    while (remaining.length > 0) {
+      // Match artifact delimiters as single tokens
+      const artifactMatch = remaining.match(/^:::artifact\{[^}]*\}:::/)
+      if (artifactMatch) {
+        tokens.push(artifactMatch[0])
+        remaining = remaining.slice(artifactMatch[0].length)
+        continue
+      }
+      // Match words (including HTML tags as units)
+      const wordMatch = remaining.match(/^(<[^>]+>|[^\s<]+)/)
+      if (wordMatch) {
+        tokens.push(wordMatch[0])
+        remaining = remaining.slice(wordMatch[0].length)
+        continue
+      }
+      // Match whitespace
+      const spaceMatch = remaining.match(/^\s+/)
+      if (spaceMatch) {
+        tokens.push(spaceMatch[0])
+        remaining = remaining.slice(spaceMatch[0].length)
+        continue
+      }
+      // Fallback: single character
+      tokens.push(remaining[0])
+      remaining = remaining.slice(1)
+    }
+
+    let currentTokenIndex = 0
 
     // Add empty assistant message
     setMessages((prev) => [
@@ -93,14 +125,14 @@ export default function ChatDemo() {
     ])
 
     const interval = setInterval(() => {
-      if (currentIndex < response.length) {
-        const chunk = response.slice(0, currentIndex + 1)
+      if (currentTokenIndex < tokens.length) {
+        const chunk = tokens.slice(0, currentTokenIndex + 1).join('')
         setMessages((prev) =>
           prev.map((msg) =>
             msg.id === messageId ? {...msg, content: chunk} : msg
           )
         )
-        currentIndex++
+        currentTokenIndex++
       } else {
         clearInterval(interval)
         setMessages((prev) =>
@@ -110,7 +142,7 @@ export default function ChatDemo() {
         )
         onComplete()
       }
-    }, 15) // Fast streaming for demo
+    }, 30) // Slightly slower interval since we're streaming larger chunks
 
     return () => clearInterval(interval)
   }, [])

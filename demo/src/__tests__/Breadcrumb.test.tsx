@@ -78,10 +78,10 @@ describe('Breadcrumb', () => {
 
   it('applies custom className', () => {
     const { container } = render(
-      <Breadcrumb className="custom-breadcrumb">
+      <Breadcrumb className="mt-4">
         <BreadcrumbItem>Home</BreadcrumbItem>
       </Breadcrumb>
     )
-    expect(container.querySelector('.custom-breadcrumb')).toBeInTheDocument()
+    expect(container.querySelector('.mt-4')).toBeInTheDocument()
   })
 })

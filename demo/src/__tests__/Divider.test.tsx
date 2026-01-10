@@ -46,8 +46,8 @@ describe('Divider', () => {
   })
 
   it('merges custom className', () => {
-    const { container } = render(<Divider className="custom-class" />)
-    expect(container.firstChild).toHaveClass('custom-class')
+    const { container } = render(<Divider className="my-4" />)
+    expect(container.firstChild).toHaveClass('my-4')
   })
 
   it('forwards ref', () => {

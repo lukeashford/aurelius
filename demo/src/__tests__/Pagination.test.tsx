@@ -74,8 +74,8 @@ describe('Pagination', () => {
 
   it('applies custom className', () => {
     const { container } = render(
-      <Pagination {...defaultProps} className="custom-pagination" />
+      <Pagination {...defaultProps} className="mt-6" />
     )
-    expect(container.querySelector('.custom-pagination')).toBeInTheDocument()
+    expect(container.querySelector('.mt-6')).toBeInTheDocument()
   })
 })

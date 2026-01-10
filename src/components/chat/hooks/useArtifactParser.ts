@@ -59,10 +59,20 @@ function parseAttributes(attrString: string): Record<string, string> {
   return attrs
 }
 
-let artifactIdCounter = 0
-
-function generateArtifactId(): string {
-  return `artifact-${++artifactIdCounter}`
+/**
+ * Generate a stable ID for an artifact based on its content.
+ * This ensures React can properly reconcile artifacts during streaming
+ * without constantly remounting components.
+ */
+function generateStableArtifactId(type: string, identifier: string): string {
+  const str = `${type}:${identifier}`
+  let hash = 0
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i)
+    hash = ((hash << 5) - hash) + char
+    hash = hash & hash // Convert to 32-bit integer
+  }
+  return `artifact-${Math.abs(hash).toString(36)}`
 }
 
 /**
@@ -89,12 +99,17 @@ export function useArtifactParser(content: string): UseArtifactParserReturn {
     let workingContent = content
 
     // First, extract all complete artifacts
+    let artifactIndex = 0
     workingContent = workingContent.replace(COMPLETE_ARTIFACT_REGEX, (_, attrString, innerContent) => {
       const attrs = parseAttributes(attrString)
       const type = (attrs.type || 'text') as ArtifactType
 
+      // Generate stable ID based on content (src for media, content for text)
+      const identifier = attrs.src || attrs.content || innerContent || `idx-${artifactIndex++}`
+      const id = generateStableArtifactId(type, identifier)
+
       const artifact: Artifact = {
-        id: generateArtifactId(),
+        id,
         type,
         title: attrs.title,
         subtitle: attrs.subtitle,
@@ -122,9 +137,10 @@ export function useArtifactParser(content: string): UseArtifactParserReturn {
       workingContent = workingContent.substring(0, startMatch.index)
       hasPendingArtifact = true
 
-      // Add a pending artifact placeholder
+      // Add a pending artifact placeholder with stable ID
+      // (there can only be one pending artifact at a time)
       artifacts.push({
-        id: generateArtifactId(),
+        id: 'artifact-pending',
         type: 'image', // Default to image for skeleton
         isPending: true,
       })
