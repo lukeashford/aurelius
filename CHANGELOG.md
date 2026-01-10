@@ -1,3 +1,10 @@
+## [2.9.0](https://github.com/lukeashford/aurelius/compare/v2.8.0...v2.9.0) (2026-01-10)
+
+### Features
+
+* **docs:** update setup instructions with vite-specific config ([5e1be8b](https://github.com/lukeashford/aurelius/commit/5e1be8b58dccb3f25ecacf3b21b56a600707c2eb))
+* **docs:** update setup instructions with vite-specific config ([#19](https://github.com/lukeashford/aurelius/issues/19)) ([ca25924](https://github.com/lukeashford/aurelius/commit/ca2592406ce3a0c8b4bc453bd123b4331be18fb7))
+
 ## [2.8.0](https://github.com/lukeashford/aurelius/compare/v2.7.0...v2.8.0) (2026-01-09)
 
 ### Features
