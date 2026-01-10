@@ -34,6 +34,9 @@ export interface ConversationSidebarProps extends React.HTMLAttributes<HTMLDivEl
 
 /**
  * ConversationSidebar displays a collapsible list of past conversations.
+ *
+ * When collapsed, shows a thin strip with hamburger toggle.
+ * The hamburger is integrated into the sidebar itself, not requiring parent to render it.
  */
 export const ConversationSidebar = React.forwardRef<HTMLDivElement, ConversationSidebarProps>(
   (
@@ -48,13 +51,51 @@ export const ConversationSidebar = React.forwardRef<HTMLDivElement, Conversation
     },
     ref
   ) => {
+    // Collapsed state: thin strip with hamburger
+    if (isCollapsed) {
+      return (
+        <div
+          ref={ref}
+          className={cx(
+            'h-full bg-charcoal/80 border-r border-ash/40 flex flex-col items-center py-3',
+            'w-12 flex-shrink-0',
+            className
+          )}
+          {...rest}
+        >
+          <button
+            onClick={onToggleCollapse}
+            className={cx(
+              'p-2',
+              'text-silver hover:text-white hover:bg-ash/20',
+              'transition-colors duration-150'
+            )}
+            aria-label="Expand sidebar"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              className="w-5 h-5"
+            >
+              <path
+                fillRule="evenodd"
+                d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10zm0 5.25a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75a.75.75 0 01-.75-.75z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </button>
+        </div>
+      )
+    }
+
+    // Expanded state: full sidebar
     return (
       <div
         ref={ref}
         className={cx(
           'h-full bg-charcoal/80 border-r border-ash/40 flex flex-col',
-          'transition-all duration-300 ease-out',
-          isCollapsed ? 'w-0 overflow-hidden' : 'w-64',
+          'w-64 flex-shrink-0',
           className
         )}
         {...rest}
@@ -64,7 +105,7 @@ export const ConversationSidebar = React.forwardRef<HTMLDivElement, Conversation
           <button
             onClick={onNewChat}
             className={cx(
-              'w-full px-3 py-2 rounded-md',
+              'w-full px-3 py-2',
               'bg-gold/10 hover:bg-gold/20 text-gold',
               'border border-gold/30',
               'flex items-center gap-2',
@@ -94,7 +135,7 @@ export const ConversationSidebar = React.forwardRef<HTMLDivElement, Conversation
                   key={conversation.id}
                   onClick={() => onSelectConversation?.(conversation.id)}
                   className={cx(
-                    'w-full px-3 py-2 rounded-md text-left',
+                    'w-full px-3 py-2 text-left',
                     'transition-colors duration-150',
                     conversation.isActive
                       ? 'bg-ash/40 text-white'
@@ -120,7 +161,7 @@ export const ConversationSidebar = React.forwardRef<HTMLDivElement, Conversation
         <div className="p-3 border-t border-ash/40 flex-shrink-0">
           <button
             onClick={onToggleCollapse}
-            className="w-full px-3 py-1.5 rounded-md text-silver hover:text-white hover:bg-ash/20 transition-colors duration-150 flex items-center gap-2 text-sm"
+            className="w-full px-3 py-1.5 text-silver hover:text-white hover:bg-ash/20 transition-colors duration-150 flex items-center gap-2 text-sm"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -145,7 +186,7 @@ export const ConversationSidebar = React.forwardRef<HTMLDivElement, Conversation
 ConversationSidebar.displayName = 'ConversationSidebar'
 
 /**
- * Collapsed sidebar toggle button
+ * Collapsed sidebar toggle button (for external use if needed)
  */
 export interface CollapsedSidebarToggleProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   onExpand?: () => void
@@ -160,7 +201,7 @@ export const CollapsedSidebarToggle = React.forwardRef<
       ref={ref}
       onClick={onExpand}
       className={cx(
-        'p-2 rounded-md',
+        'p-2',
         'bg-charcoal/80 border border-ash/40',
         'text-silver hover:text-white hover:bg-ash/20',
         'transition-colors duration-150',

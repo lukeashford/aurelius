@@ -14,28 +14,35 @@ export interface Artifact {
   // Common metadata
   title?: string
   subtitle?: string
+  // Whether this artifact is still being parsed (incomplete)
+  isPending?: boolean
 }
 
 export interface UseArtifactParserReturn {
   /**
-   * Content with artifact blocks stripped out
+   * Content with artifact blocks stripped out (including incomplete ones)
    */
   cleanContent: string
   /**
    * Parsed artifacts array
    */
   artifacts: Artifact[]
+  /**
+   * Whether there's an incomplete artifact currently being streamed
+   */
+  hasPendingArtifact: boolean
 }
 
 /**
- * Regex to match artifact blocks in markdown content.
+ * Regex to match complete artifact blocks.
  * Matches: :::artifact{type="image" src="..." alt="..." title="..." subtitle="..."}:::
- * Also matches multi-line for text content:
- * :::artifact{type="text" title="..."}
- * content here
- * :::
  */
-const ARTIFACT_REGEX = /:::artifact\{([^}]+)\}(?:([^:]*?))?:::/gs
+const COMPLETE_ARTIFACT_REGEX = /:::artifact\{([^}]+)\}(?:([^:]*?))?:::/gs
+
+/**
+ * Regex to detect start of an artifact block (even if incomplete)
+ */
+const ARTIFACT_START_REGEX = /:::artifact\{/
 
 /**
  * Parse attribute string like: type="image" src="https://..." alt="Chart"
@@ -61,7 +68,11 @@ function generateArtifactId(): string {
 /**
  * Hook to parse :::artifact{...}::: blocks from streaming content.
  *
- * Returns clean content (with artifacts stripped) and an array of parsed artifacts.
+ * Key streaming behavior:
+ * - As soon as :::artifact{ is detected, everything from that point is stripped
+ * - This prevents artifact syntax from showing in the message during streaming
+ * - Complete artifacts are parsed and returned
+ * - Incomplete artifacts trigger hasPendingArtifact flag for loading states
  *
  * Supported artifact types:
  * - text: Rendered with MarkdownContent (content attribute)
@@ -71,13 +82,14 @@ function generateArtifactId(): string {
 export function useArtifactParser(content: string): UseArtifactParserReturn {
   return useMemo(() => {
     if (!content) {
-      return {cleanContent: '', artifacts: []}
+      return {cleanContent: '', artifacts: [], hasPendingArtifact: false}
     }
 
     const artifacts: Artifact[] = []
+    let workingContent = content
 
-    // Replace artifact blocks with empty string and collect artifacts
-    const cleanContent = content.replace(ARTIFACT_REGEX, (_, attrString, innerContent) => {
+    // First, extract all complete artifacts
+    workingContent = workingContent.replace(COMPLETE_ARTIFACT_REGEX, (_, attrString, innerContent) => {
       const attrs = parseAttributes(attrString)
       const type = (attrs.type || 'text') as ArtifactType
 
@@ -98,11 +110,31 @@ export function useArtifactParser(content: string): UseArtifactParserReturn {
       }
 
       artifacts.push(artifact)
-
       return ''
-    }).trim()
+    })
 
-    return {cleanContent, artifacts}
+    // Check for incomplete artifact at the end (still streaming)
+    const startMatch = workingContent.match(ARTIFACT_START_REGEX)
+    let hasPendingArtifact = false
+
+    if (startMatch && startMatch.index !== undefined) {
+      // Strip from the start of the incomplete artifact to the end
+      workingContent = workingContent.substring(0, startMatch.index)
+      hasPendingArtifact = true
+
+      // Add a pending artifact placeholder
+      artifacts.push({
+        id: generateArtifactId(),
+        type: 'image', // Default to image for skeleton
+        isPending: true,
+      })
+    }
+
+    return {
+      cleanContent: workingContent.trim(),
+      artifacts,
+      hasPendingArtifact,
+    }
   }, [content])
 }
 

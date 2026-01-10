@@ -31,9 +31,9 @@ export interface ArtifactsPanelProps extends React.HTMLAttributes<HTMLDivElement
 function ArtifactSkeleton({type}: {type: Artifact['type']}) {
   if (type === 'image') {
     return (
-      <div className="rounded-lg overflow-hidden">
+      <div className="overflow-hidden">
         <Skeleton className="w-full h-48" />
-        <div className="p-4 bg-charcoal border border-ash/40 border-t-0 rounded-b-lg">
+        <div className="p-4 bg-charcoal border border-ash/40 border-t-0">
           <Skeleton className="h-5 w-3/4 mb-2" />
           <Skeleton className="h-4 w-1/2" />
         </div>
@@ -43,9 +43,9 @@ function ArtifactSkeleton({type}: {type: Artifact['type']}) {
 
   if (type === 'video') {
     return (
-      <div className="rounded-lg overflow-hidden">
+      <div className="overflow-hidden">
         <Skeleton className="w-full aspect-video" />
-        <div className="p-4 bg-charcoal border border-ash/40 border-t-0 rounded-b-lg">
+        <div className="p-4 bg-charcoal border border-ash/40 border-t-0">
           <Skeleton className="h-5 w-3/4 mb-2" />
           <Skeleton className="h-4 w-1/2" />
         </div>
@@ -55,7 +55,7 @@ function ArtifactSkeleton({type}: {type: Artifact['type']}) {
 
   // Text artifact skeleton
   return (
-    <div className="p-4 bg-charcoal border border-ash/40 rounded-lg space-y-2">
+    <div className="p-4 bg-charcoal border border-ash/40 space-y-2">
       <Skeleton className="h-5 w-1/2" />
       <Skeleton className="h-4 w-full" />
       <Skeleton className="h-4 w-full" />
@@ -75,7 +75,8 @@ function ArtifactRenderer({artifact, isLoading}: {artifact: Artifact; isLoading?
     setImageLoaded(false)
   }, [artifact.src])
 
-  if (isLoading) {
+  // Show skeleton for pending artifacts or when loading
+  if (isLoading || artifact.isPending) {
     return <ArtifactSkeleton type={artifact.type} />
   }
 
@@ -113,7 +114,7 @@ function ArtifactRenderer({artifact, isLoading}: {artifact: Artifact; isLoading?
 
     case 'text':
       return (
-        <div className="p-4 bg-charcoal border border-ash/40 rounded-lg">
+        <div className="p-4 bg-charcoal border border-ash/40">
           {artifact.title && (
             <h4 className="text-lg font-semibold text-white mb-2">{artifact.title}</h4>
           )}
@@ -156,7 +157,7 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
           <h3 className="text-lg font-semibold text-white">Artifacts</h3>
           <button
             onClick={onClose}
-            className="p-1 rounded-md text-silver hover:text-white hover:bg-ash/20 transition-colors duration-150"
+            className="p-1 text-silver hover:text-white hover:bg-ash/20 transition-colors duration-150"
             aria-label="Close artifacts panel"
           >
             <svg
@@ -210,7 +211,7 @@ export const ArtifactsPanelToggle = React.forwardRef<
       ref={ref}
       onClick={onExpand}
       className={cx(
-        'p-2 rounded-md',
+        'p-2',
         'bg-charcoal/80 border border-ash/40',
         'text-silver hover:text-white hover:bg-ash/20',
         'transition-colors duration-150',

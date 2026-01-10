@@ -107,7 +107,7 @@ export const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
         {/* Input container */}
         <div
           className={cx(
-            'relative w-full bg-charcoal border border-ash/60 rounded-lg',
+            'relative w-full bg-charcoal border border-ash/60',
             'focus-within:border-gold/60 focus-within:ring-1 focus-within:ring-gold/20',
             'transition-colors duration-200',
             isCentered && 'max-w-2xl'
@@ -135,7 +135,7 @@ export const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
             onClick={handleSubmit}
             disabled={!value.trim() || disabled}
             className={cx(
-              'absolute right-2 bottom-2 p-2 rounded-md',
+              'absolute right-2 bottom-2 p-2',
               'transition-colors duration-200',
               value.trim() && !disabled
                 ? 'text-gold hover:bg-gold/10'

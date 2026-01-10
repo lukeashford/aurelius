@@ -33,7 +33,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
           id={inputId}
           ref={setRef}
           className={cx(
-            'appearance-none h-4 w-4 border border-ash rounded-sm bg-graphite',
+            'appearance-none h-4 w-4 border border-ash bg-graphite',
             'checked:bg-gold checked:border-gold',
             'focus:ring-1 focus:ring-gold focus:ring-offset-1 focus:ring-offset-obsidian',
             'transition duration-200 ease-in-out cursor-pointer',

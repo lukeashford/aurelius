@@ -8,7 +8,7 @@ export const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>(
     return (
       <div
         ref={ref}
-        className={cx('animate-pulse bg-ash rounded-sm', className)}
+        className={cx('animate-pulse bg-ash', className)}
         {...rest}
       />
     )

@@ -48,6 +48,24 @@ const ADDITIONAL_RESPONSES = [
 <p>Each artifact can have a title and subtitle for context. The panel supports scrolling when content overflows.</p>`,
 ]
 
+// Mock conversation history with pre-filled messages
+const MOCK_CONVERSATION_MESSAGES: Record<string, ChatMessage[]> = {
+  '2': [
+    {id: 'prev-user-1', variant: 'user', content: 'How should I structure my components?'},
+    {id: 'prev-assistant-1', variant: 'assistant', content: '<p>For component architecture, I recommend:</p><ul><li><strong>Atomic design</strong> — Start with small, reusable atoms</li><li><strong>Composition</strong> — Build complex UIs from simple parts</li><li><strong>Single responsibility</strong> — Each component does one thing well</li></ul>'},
+  ],
+  '3': [
+    {id: 'design-user-1', variant: 'user', content: 'Can you review the current design?'},
+    {id: 'design-assistant-1', variant: 'assistant', content: '<p>Looking at the UI, I notice a few things:</p><ol><li>The color palette is cohesive and professional</li><li>Typography hierarchy is clear</li><li>Spacing follows a consistent rhythm</li></ol><p>Overall, it looks great!</p>'},
+  ],
+  '4': [
+    {id: 'bug-user-1', variant: 'user', content: 'There seems to be an issue with the layout'},
+    {id: 'bug-assistant-1', variant: 'assistant', content: '<p>Let me investigate. The issue seems to be related to flexbox overflow behavior. Try adding <code>min-width: 0</code> to the flex child that\'s overflowing.</p>'},
+    {id: 'bug-user-2', variant: 'user', content: 'That worked, thanks!'},
+    {id: 'bug-assistant-2', variant: 'assistant', content: '<p>Glad I could help! This is a common gotcha with flexbox. The default min-width is auto, which can cause unexpected overflow.</p>'},
+  ],
+}
+
 // Mock conversation history
 const MOCK_CONVERSATIONS: Conversation[] = [
   {id: '1', title: 'Current Chat', preview: 'Interactive demo session', timestamp: 'Now', isActive: true},
@@ -60,6 +78,7 @@ export default function ChatDemo() {
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [isStreaming, setIsStreaming] = useState(false)
   const [conversations, setConversations] = useState(MOCK_CONVERSATIONS)
+  const [activeConversationId, setActiveConversationId] = useState('1')
   const responseIndexRef = useRef(0)
 
   // Simulate streaming a response character by character
@@ -134,12 +153,14 @@ export default function ChatDemo() {
   )
 
   const handleNewChat = useCallback(() => {
+    const newId = `chat-${Date.now()}`
     setMessages([])
     responseIndexRef.current = 0
+    setActiveConversationId(newId)
 
     // Add new chat to conversations
     const newChat: Conversation = {
-      id: `chat-${Date.now()}`,
+      id: newId,
       title: 'New Chat',
       preview: 'Start typing...',
       timestamp: 'Now',
@@ -152,11 +173,20 @@ export default function ChatDemo() {
   }, [])
 
   const handleSelectConversation = useCallback((id: string) => {
+    if (id === activeConversationId) return
+
+    setActiveConversationId(id)
+    responseIndexRef.current = 0
+
+    // Load mock messages for the selected conversation
+    const mockMessages = MOCK_CONVERSATION_MESSAGES[id] || []
+    setMessages(mockMessages)
+
+    // Update conversations to mark the selected one as active
     setConversations((prev) =>
       prev.map((c) => ({...c, isActive: c.id === id}))
     )
-    // In a real app, this would load the conversation's messages
-  }, [])
+  }, [activeConversationId])
 
   const handleBack = useCallback(() => {
     window.location.hash = ''

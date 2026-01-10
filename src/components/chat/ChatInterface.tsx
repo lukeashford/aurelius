@@ -2,7 +2,7 @@ import React, {useState, useCallback, useMemo} from 'react'
 import {cx} from '../../utils/cx'
 import {ChatView, type ChatViewItem} from './ChatView'
 import {ChatInput} from './ChatInput'
-import {ConversationSidebar, CollapsedSidebarToggle, type Conversation} from './ConversationSidebar'
+import {ConversationSidebar, type Conversation} from './ConversationSidebar'
 import {ArtifactsPanel, ArtifactsPanelToggle} from './ArtifactsPanel'
 import {useArtifactParser, type Artifact} from './hooks/useArtifactParser'
 
@@ -107,14 +107,14 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
     }, [messages, isStreaming])
 
     // Parse artifacts from the current streaming content
-    const {cleanContent, artifacts} = useArtifactParser(currentStreamingContent)
+    const {cleanContent, artifacts, hasPendingArtifact} = useArtifactParser(currentStreamingContent)
 
-    // Auto-open artifacts panel when artifacts are found
+    // Auto-open artifacts panel when artifacts are found (including pending)
     React.useEffect(() => {
-      if (artifacts.length > 0 && !artifactsPanelOpen) {
+      if ((artifacts.length > 0 || hasPendingArtifact) && !artifactsPanelOpen) {
         setArtifactsPanelOpen(true)
       }
-    }, [artifacts.length, artifactsPanelOpen])
+    }, [artifacts.length, hasPendingArtifact, artifactsPanelOpen])
 
     // Build the messages array with cleaned content for the streaming message
     const displayMessages: ChatViewItem[] = useMemo(() => {
@@ -176,13 +176,6 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
 
         {/* Main content area */}
         <div className="flex-1 flex flex-col min-w-0 relative">
-          {/* Collapsed sidebar toggle */}
-          {sidebarCollapsed && (
-            <div className="absolute top-4 left-4 z-10">
-              <CollapsedSidebarToggle onExpand={toggleSidebar} />
-            </div>
-          )}
-
           {/* Collapsed artifacts panel toggle */}
           {!artifactsPanelOpen && allArtifacts.length > 0 && (
             <div className="absolute top-4 right-4 z-10">
