@@ -1,13 +1,13 @@
-import React, {useState, useCallback, useRef, useEffect} from 'react'
+import React, {useCallback, useEffect, useRef, useState} from 'react'
 import {
+  addMessageToTree,
+  type Attachment,
   ChatInterface,
   type Conversation,
   type ConversationTree,
-  type Attachment,
   createEmptyTree,
-  addMessageToTree,
-  updateNodeContent,
   generateId,
+  updateNodeContent,
 } from '@lukeashford/aurelius'
 
 // Mock response content for the first message (no artifacts)
@@ -125,8 +125,20 @@ function createBranchingDemoTree(): ConversationTree {
 
 // Mock conversation history
 const MOCK_CONVERSATIONS: Conversation[] = [
-  {id: '1', title: 'Interactive Demo', preview: 'Try all features...', timestamp: 'Now', isActive: true},
-  {id: 'branching', title: 'Branching Demo', preview: 'Explore alternate paths...', timestamp: 'Pinned', isActive: false},
+  {
+    id: '1',
+    title: 'Interactive Demo',
+    preview: 'Try all features...',
+    timestamp: 'Now',
+    isActive: true
+  },
+  {
+    id: 'branching',
+    title: 'Branching Demo',
+    preview: 'Explore alternate paths...',
+    timestamp: 'Pinned',
+    isActive: false
+  },
 ]
 
 export default function ChatDemo() {
@@ -140,7 +152,30 @@ export default function ChatDemo() {
   const currentMessageIdRef = useRef<string | null>(null)
 
   // Track attachments for mock upload simulation
-  const [, setAttachments] = useState<Attachment[]>([])
+  const [attachments, setAttachments] = useState<Attachment[]>([])
+
+  const handleAttachmentsChange = useCallback((newAttachments: Attachment[]) => {
+    setAttachments(newAttachments)
+
+    // Simulate upload for any new pending attachments
+    newAttachments.forEach((attachment) => {
+      if (attachment.status === 'pending') {
+        // Step 1: Pending -> Uploading after 1s
+        setTimeout(() => {
+          setAttachments((prev) =>
+              prev.map((a) => (a.id === attachment.id ? {...a, status: 'uploading' as const} : a))
+          )
+
+          // Step 2: Uploading -> Complete after another 1s
+          setTimeout(() => {
+            setAttachments((prev) =>
+                prev.map((a) => (a.id === attachment.id ? {...a, status: 'complete' as const} : a))
+            )
+          }, 1000)
+        }, 1000)
+      }
+    })
+  }, [])
 
   // Cleanup interval on unmount
   useEffect(() => {
@@ -236,68 +271,67 @@ export default function ChatDemo() {
 
   // Handle message submission
   const handleSubmit = useCallback(
-    (message: string, attachments?: Attachment[]) => {
-      if (isStreaming) return
-
-      // Simulate attachment upload
-      if (attachments && attachments.length > 0) {
-        setAttachments(attachments.map(a => ({...a, status: 'uploading' as const})))
-        setTimeout(() => {
-          setAttachments(attachments.map(a => ({...a, status: 'complete' as const})))
-        }, 2000)
-      }
-
-      // Add user message to tree
-      const userMessageId = generateId()
-      setConversationTree((prev) => {
-        const parentId = prev.activeLeafId
-        return addMessageToTree(prev, {
-          id: userMessageId,
-          role: 'user',
-          content: message,
-          parentId,
-        }, parentId)
-      })
-
-      setIsStreaming(true)
-      setIsThinking(true)
-
-      // Simulate thinking delay (1-2s)
-      const thinkingDelay = 1000 + Math.random() * 1000
-      setTimeout(() => {
-        setIsThinking(false)
-
-        let response: string
-        let slow = false
-
-        // Check for specific demo triggers
-        const lowerMessage = message.toLowerCase()
-        if (lowerMessage.includes('slow') || lowerMessage.includes('stop')) {
-          response = SLOW_RESPONSE
-          slow = true
-        } else if (responseIndexRef.current === 0) {
-          response = FIRST_RESPONSE
-        } else if (responseIndexRef.current === 1) {
-          response = SECOND_RESPONSE
-        } else {
-          const additionalIndex = (responseIndexRef.current - 2) % ADDITIONAL_RESPONSES.length
-          response = ADDITIONAL_RESPONSES[additionalIndex]
+      (message: string, _attachments?: Attachment[]) => {
+        if (isStreaming) {
+          return
         }
 
-        responseIndexRef.current++
+        // Clear attachments after submission
+        setAttachments([])
 
-        streamResponse(response, () => {
-          setIsStreaming(false)
-        }, slow)
-      }, thinkingDelay)
-    },
-    [isStreaming, streamResponse]
+        // Add user message to tree
+        const userMessageId = generateId()
+        setConversationTree((prev) => {
+          const parentId = prev.activeLeafId
+          return addMessageToTree(prev, {
+            id: userMessageId,
+            role: 'user',
+            content: message,
+            parentId,
+          }, parentId)
+        })
+
+        setIsStreaming(true)
+        setIsThinking(true)
+
+        // Simulate thinking delay (1-2s)
+        const thinkingDelay = 1000 + Math.random() * 1000
+        setTimeout(() => {
+          setIsThinking(false)
+
+          let response: string
+          let slow = false
+
+          // Check for specific demo triggers
+          const lowerMessage = message.toLowerCase()
+          if (lowerMessage.includes('slow') || lowerMessage.includes('stop')) {
+            response = SLOW_RESPONSE
+            slow = true
+          } else if (responseIndexRef.current === 0) {
+            response = FIRST_RESPONSE
+          } else if (responseIndexRef.current === 1) {
+            response = SECOND_RESPONSE
+          } else {
+            const additionalIndex = (responseIndexRef.current - 2) % ADDITIONAL_RESPONSES.length
+            response = ADDITIONAL_RESPONSES[additionalIndex]
+          }
+
+          responseIndexRef.current++
+
+          streamResponse(response, () => {
+            setIsStreaming(false)
+          }, slow)
+        }, thinkingDelay)
+      },
+      [isStreaming, streamResponse]
   )
 
   // Handle edit message (creates a branch)
   const handleEditMessage = useCallback((messageId: string, newContent: string) => {
     const node = conversationTree.nodes[messageId]
-    if (!node || node.role !== 'user') return
+    if (!node || node.role !== 'user') {
+      return
+    }
 
     // Add the edited message as a new branch from the same parent
     const newMessageId = generateId()
@@ -327,7 +361,9 @@ export default function ChatDemo() {
   // Handle retry message (creates a branch)
   const handleRetryMessage = useCallback((messageId: string) => {
     const node = conversationTree.nodes[messageId]
-    if (!node || node.role !== 'assistant') return
+    if (!node || node.role !== 'assistant') {
+      return
+    }
 
     const parentId = node.parentId
 
@@ -394,13 +430,15 @@ export default function ChatDemo() {
     }
 
     setConversations((prev) =>
-      [newChat, ...prev.map((c) => ({...c, isActive: false}))].slice(0, 5)
+        [newChat, ...prev.map((c) => ({...c, isActive: false}))].slice(0, 5)
     )
   }, [])
 
   // Handle conversation selection
   const handleSelectConversation = useCallback((id: string) => {
-    if (id === activeConversationId) return
+    if (id === activeConversationId) {
+      return
+    }
 
     setActiveConversationId(id)
     responseIndexRef.current = 0
@@ -413,7 +451,7 @@ export default function ChatDemo() {
     }
 
     setConversations((prev) =>
-      prev.map((c) => ({...c, isActive: c.id === id}))
+        prev.map((c) => ({...c, isActive: c.id === id}))
     )
   }, [activeConversationId])
 
@@ -427,62 +465,66 @@ export default function ChatDemo() {
       return 'This conversation has branches — look for the ← 1/2 → indicators to explore alternate paths'
     }
     return (
-      <span>
+        <span>
         Type anything to start. Try <em>&quot;show me something slow&quot;</em> to test the Stop button, or attach a file!
       </span>
     )
   }
 
   return (
-    <div className="h-screen w-screen flex flex-col bg-obsidian">
-      {/* Header */}
-      <header className="flex-shrink-0 h-14 px-4 flex items-center justify-between border-b border-ash/40 bg-charcoal/50">
-        <div className="flex items-center gap-4">
-          <button
-            onClick={handleBack}
-            className="flex items-center gap-2 text-silver hover:text-white transition-colors"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
-              <path
-                fillRule="evenodd"
-                d="M17 10a.75.75 0 01-.75.75H5.612l4.158 3.96a.75.75 0 11-1.04 1.08l-5.5-5.25a.75.75 0 010-1.08l5.5-5.25a.75.75 0 111.04 1.08L5.612 9.25H16.25A.75.75 0 0117 10z"
-                clipRule="evenodd"
-              />
-            </svg>
-            <span className="text-sm">Back to Docs</span>
-          </button>
-          <div className="h-6 w-px bg-ash/40" />
-          <h1 className="text-lg font-semibold text-white">Chat Interface Demo</h1>
-        </div>
-        <div className="flex items-center gap-4">
-          <p className="text-sm text-silver hidden md:block">
-            {activeConversationId === 'branching'
-              ? 'Explore the branching demo — use ← → to navigate alternate paths'
-              : 'Hover messages for actions • Drag files to attach • Type "slow" to test Stop'}
-          </p>
-        </div>
-      </header>
+      <div className="h-screen w-screen flex flex-col bg-obsidian">
+        {/* Header */}
+        <header
+            className="flex-shrink-0 h-14 px-4 flex items-center justify-between border-b border-ash/40 bg-charcoal/50">
+          <div className="flex items-center gap-4">
+            <button
+                onClick={handleBack}
+                className="flex items-center gap-2 text-silver hover:text-white transition-colors"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                   className="w-5 h-5">
+                <path
+                    fillRule="evenodd"
+                    d="M17 10a.75.75 0 01-.75.75H5.612l4.158 3.96a.75.75 0 11-1.04 1.08l-5.5-5.25a.75.75 0 010-1.08l5.5-5.25a.75.75 0 111.04 1.08L5.612 9.25H16.25A.75.75 0 0117 10z"
+                    clipRule="evenodd"
+                />
+              </svg>
+              <span className="text-sm">Back to Docs</span>
+            </button>
+            <div className="h-6 w-px bg-ash/40"/>
+            <h1 className="text-lg font-semibold text-white">Chat Interface Demo</h1>
+          </div>
+          <div className="flex items-center gap-4">
+            <p className="text-sm text-silver hidden md:block">
+              {activeConversationId === 'branching'
+                  ? 'Explore the branching demo — use ← → to navigate alternate paths'
+                  : 'Hover messages for actions • Drag files to attach • Type "slow" to test Stop'}
+            </p>
+          </div>
+        </header>
 
-      {/* Chat Interface */}
-      <div className="flex-1 overflow-hidden">
-        <ChatInterface
-          conversationTree={conversationTree}
-          onTreeChange={setConversationTree}
-          conversations={conversations}
-          onMessageSubmit={handleSubmit}
-          onEditMessage={handleEditMessage}
-          onRetryMessage={handleRetryMessage}
-          onStop={handleStop}
-          onSelectConversation={handleSelectConversation}
-          onNewChat={handleNewChat}
-          isStreaming={isStreaming}
-          isThinking={isThinking}
-          placeholder="Send a message..."
-          emptyStateHelper={getEmptyStateHelper()}
-          showAttachmentButton={true}
-          enableMessageActions={true}
-        />
+        {/* Chat Interface */}
+        <div className="flex-1 overflow-hidden">
+          <ChatInterface
+              conversationTree={conversationTree}
+              onTreeChange={setConversationTree}
+              conversations={conversations}
+              onMessageSubmit={handleSubmit}
+              onEditMessage={handleEditMessage}
+              onRetryMessage={handleRetryMessage}
+              onStop={handleStop}
+              onSelectConversation={handleSelectConversation}
+              onNewChat={handleNewChat}
+              isStreaming={isStreaming}
+              isThinking={isThinking}
+              attachments={attachments}
+              onAttachmentsChange={handleAttachmentsChange}
+              placeholder="Send a message..."
+              emptyStateHelper={getEmptyStateHelper()}
+              showAttachmentButton={true}
+              enableMessageActions={true}
+          />
+        </div>
       </div>
-    </div>
   )
 }
