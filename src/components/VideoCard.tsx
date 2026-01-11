@@ -64,7 +64,7 @@ export const VideoCard = React.forwardRef<HTMLDivElement, VideoCardProps>(
             {/* Media container */}
             <div
                 className={cx(
-                    'relative bg-black overflow-hidden',
+                    'relative bg-void overflow-hidden',
                     mediaClassName
                 )}
                 style={{aspectRatio: resolveAspectRatio(aspectRatio)}}
