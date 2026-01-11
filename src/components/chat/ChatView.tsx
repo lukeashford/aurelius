@@ -94,7 +94,7 @@ export const ChatView = React.forwardRef<HTMLDivElement, ChatViewProps>(
         )}
         {...rest}
       >
-        {messages.map(({id, variant, className: messageClassName, branchInfo, actions, ...messageProps}, index) => {
+        {messages.map(({id, variant, className: messageClassName, branchInfo, actions, isStreaming: _nodeIsStreaming, ...messageProps}, index) => {
           const isAnchor = index === latestUserIdx
           const isLastMessage = index === messages.length - 1
           const showStreaming = isLastMessage && isStreaming && variant === 'assistant'
