@@ -26,6 +26,44 @@ export interface ArtifactsPanelProps extends React.HTMLAttributes<HTMLDivElement
 }
 
 /**
+ * Layers/documents icon for expanding collapsed artifacts panel
+ */
+function LayersIcon({className}: {className?: string}) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 20 20"
+      fill="currentColor"
+      className={className}
+    >
+      <path d="M3.196 12.87l-.825.483a.75.75 0 000 1.294l7.25 4.25a.75.75 0 00.758 0l7.25-4.25a.75.75 0 000-1.294l-.825-.484-5.666 3.322a2.25 2.25 0 01-2.276 0L3.196 12.87z" />
+      <path d="M3.196 8.87l-.825.483a.75.75 0 000 1.294l7.25 4.25a.75.75 0 00.758 0l7.25-4.25a.75.75 0 000-1.294l-.825-.484-5.666 3.322a2.25 2.25 0 01-2.276 0L3.196 8.87z" />
+      <path d="M10.38 1.103a.75.75 0 00-.76 0l-7.25 4.25a.75.75 0 000 1.294l7.25 4.25a.75.75 0 00.76 0l7.25-4.25a.75.75 0 000-1.294l-7.25-4.25z" />
+    </svg>
+  )
+}
+
+/**
+ * Chevron right icon for collapsing expanded artifacts panel
+ */
+function ChevronRightIcon({className}: {className?: string}) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 20 20"
+      fill="currentColor"
+      className={className}
+    >
+      <path
+        fillRule="evenodd"
+        d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+        clipRule="evenodd"
+      />
+    </svg>
+  )
+}
+
+/**
  * Render a skeleton placeholder for an artifact
  */
 function ArtifactSkeleton({type}: {type: Artifact['type']}) {
@@ -69,22 +107,34 @@ function ArtifactSkeleton({type}: {type: Artifact['type']}) {
  */
 function ArtifactRenderer({artifact, isLoading}: {artifact: Artifact; isLoading?: boolean}) {
   const [imageLoaded, setImageLoaded] = useState(false)
+  const [minDelayPassed, setMinDelayPassed] = useState(false)
 
-  // Reset image loaded state when artifact changes
+  // Reset states when artifact changes and start minimum delay timer
   useEffect(() => {
     setImageLoaded(false)
-  }, [artifact.src])
+    setMinDelayPassed(false)
+
+    // Minimum skeleton display time (800ms) before revealing image
+    const timer = setTimeout(() => {
+      setMinDelayPassed(true)
+    }, 800)
+
+    return () => clearTimeout(timer)
+  }, [artifact.src, artifact.id])
 
   // Show skeleton for pending artifacts or when loading
   if (isLoading || artifact.isPending) {
     return <ArtifactSkeleton type={artifact.type} />
   }
 
+  // Only show the actual content when both image is loaded AND minimum delay has passed
+  const showContent = imageLoaded && minDelayPassed
+
   switch (artifact.type) {
     case 'image':
       return (
         <div className="relative">
-          {!imageLoaded && <ArtifactSkeleton type="image" />}
+          {!showContent && <ArtifactSkeleton type="image" />}
           <ImageCard
             src={artifact.src || ''}
             alt={artifact.alt || 'Artifact image'}
@@ -93,7 +143,7 @@ function ArtifactRenderer({artifact, isLoading}: {artifact: Artifact; isLoading?
             aspectRatio="landscape"
             className={cx(
               'w-full transition-opacity duration-300',
-              imageLoaded ? 'opacity-100' : 'opacity-0 absolute inset-0'
+              showContent ? 'opacity-100' : 'opacity-0 absolute inset-0'
             )}
             onLoad={() => setImageLoaded(true)}
           />
@@ -133,41 +183,68 @@ function ArtifactRenderer({artifact, isLoading}: {artifact: Artifact; isLoading?
 /**
  * ArtifactsPanel displays rich content artifacts in a slide-in panel.
  *
- * Behaviors:
- * - Hidden by default (zero width)
- * - Slides in from right when artifacts are present
- * - Shows skeleton placeholders while loading
- * - Stacks multiple artifacts vertically with scroll
+ * When collapsed, shows a thin strip with layers icon at top.
+ * When expanded, shows chevron at top-right to collapse.
  */
 export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelProps>(
   ({artifacts, isOpen = false, onClose, isLoading = false, className, ...rest}, ref) => {
+    // Collapsed state: thin strip with layers icon at top
+    if (!isOpen) {
+      return (
+        <div
+          ref={ref}
+          className={cx(
+            'h-full bg-charcoal/80 border-l border-ash/40 flex flex-col items-center py-3',
+            'w-12 flex-shrink-0',
+            className
+          )}
+          {...rest}
+        >
+          <button
+            onClick={onClose}
+            className={cx(
+              'p-2',
+              'text-silver hover:text-white hover:bg-ash/20',
+              'transition-colors duration-150',
+              'relative'
+            )}
+            aria-label="Expand artifacts panel"
+          >
+            <LayersIcon className="w-5 h-5" />
+            {artifacts.length > 0 && (
+              <span className="absolute -top-1 -right-1 w-4 h-4 bg-gold text-obsidian text-xs font-medium flex items-center justify-center rounded-full">
+                {artifacts.length}
+              </span>
+            )}
+          </button>
+        </div>
+      )
+    }
+
+    // Expanded state: full panel with chevron collapse button
     return (
       <div
         ref={ref}
         className={cx(
           'h-full bg-charcoal/50 border-l border-ash/40 flex flex-col',
-          'transition-all duration-300 ease-out',
-          isOpen ? 'w-96' : 'w-0 overflow-hidden',
+          'w-96 flex-shrink-0',
           className
         )}
         {...rest}
       >
-        {/* Header */}
+        {/* Header with title and collapse chevron */}
         <div className="flex items-center justify-between p-4 border-b border-ash/40 flex-shrink-0">
           <h3 className="text-lg font-semibold text-white">Artifacts</h3>
           <button
             onClick={onClose}
-            className="p-1 text-silver hover:text-white hover:bg-ash/20 transition-colors duration-150"
-            aria-label="Close artifacts panel"
+            className={cx(
+              'p-1.5',
+              'text-silver hover:text-white hover:bg-ash/20',
+              'transition-colors duration-150'
+            )}
+            aria-label="Collapse artifacts panel"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              className="w-5 h-5"
-            >
-              <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
-            </svg>
+            <ChevronRightIcon className="w-5 h-5" />
           </button>
         </div>
 
@@ -216,25 +293,17 @@ export const ArtifactsPanelToggle = React.forwardRef<
         'text-silver hover:text-white hover:bg-ash/20',
         'transition-colors duration-150',
         'flex items-center gap-2',
+        'relative',
         className
       )}
       aria-label="Expand artifacts panel"
       {...rest}
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-        className="w-5 h-5"
-      >
-        <path
-          fillRule="evenodd"
-          d="M4.25 2A2.25 2.25 0 002 4.25v11.5A2.25 2.25 0 004.25 18h11.5A2.25 2.25 0 0018 15.75V4.25A2.25 2.25 0 0015.75 2H4.25zM5 6a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zm1 3a1 1 0 100 2h5a1 1 0 100-2H6z"
-          clipRule="evenodd"
-        />
-      </svg>
+      <LayersIcon className="w-5 h-5" />
       {artifactCount > 0 && (
-        <span className="text-xs font-medium text-gold">{artifactCount}</span>
+        <span className="absolute -top-1 -right-1 w-4 h-4 bg-gold text-obsidian text-xs font-medium flex items-center justify-center rounded-full">
+          {artifactCount}
+        </span>
       )}
     </button>
   )

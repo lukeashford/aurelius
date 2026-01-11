@@ -33,10 +33,50 @@ export interface ConversationSidebarProps extends React.HTMLAttributes<HTMLDivEl
 }
 
 /**
+ * History icon for expanding collapsed sidebar
+ */
+function HistoryIcon({className}: {className?: string}) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 20 20"
+      fill="currentColor"
+      className={className}
+    >
+      <path
+        fillRule="evenodd"
+        d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z"
+        clipRule="evenodd"
+      />
+    </svg>
+  )
+}
+
+/**
+ * Chevron left icon for collapsing expanded sidebar
+ */
+function ChevronLeftIcon({className}: {className?: string}) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 20 20"
+      fill="currentColor"
+      className={className}
+    >
+      <path
+        fillRule="evenodd"
+        d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
+        clipRule="evenodd"
+      />
+    </svg>
+  )
+}
+
+/**
  * ConversationSidebar displays a collapsible list of past conversations.
  *
- * When collapsed, shows a thin strip with hamburger toggle.
- * The hamburger is integrated into the sidebar itself, not requiring parent to render it.
+ * When collapsed, shows a thin strip with history icon at top.
+ * When expanded, shows chevron at top-left to collapse.
  */
 export const ConversationSidebar = React.forwardRef<HTMLDivElement, ConversationSidebarProps>(
   (
@@ -51,7 +91,7 @@ export const ConversationSidebar = React.forwardRef<HTMLDivElement, Conversation
     },
     ref
   ) => {
-    // Collapsed state: thin strip with hamburger
+    // Collapsed state: thin strip with history icon at top
     if (isCollapsed) {
       return (
         <div
@@ -72,24 +112,13 @@ export const ConversationSidebar = React.forwardRef<HTMLDivElement, Conversation
             )}
             aria-label="Expand sidebar"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              className="w-5 h-5"
-            >
-              <path
-                fillRule="evenodd"
-                d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10zm0 5.25a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75a.75.75 0 01-.75-.75z"
-                clipRule="evenodd"
-              />
-            </svg>
+            <HistoryIcon className="w-5 h-5" />
           </button>
         </div>
       )
     }
 
-    // Expanded state: full sidebar
+    // Expanded state: full sidebar with chevron collapse button in header
     return (
       <div
         ref={ref}
@@ -100,15 +129,26 @@ export const ConversationSidebar = React.forwardRef<HTMLDivElement, Conversation
         )}
         {...rest}
       >
-        {/* Header with New Chat button */}
-        <div className="p-3 border-b border-ash/40 flex-shrink-0">
+        {/* Header with collapse chevron and New Chat button */}
+        <div className="p-3 border-b border-ash/40 flex-shrink-0 flex items-center gap-2">
+          <button
+            onClick={onToggleCollapse}
+            className={cx(
+              'p-1.5',
+              'text-silver hover:text-white hover:bg-ash/20',
+              'transition-colors duration-150'
+            )}
+            aria-label="Collapse sidebar"
+          >
+            <ChevronLeftIcon className="w-5 h-5" />
+          </button>
           <button
             onClick={onNewChat}
             className={cx(
-              'w-full px-3 py-2',
+              'flex-1 px-3 py-2',
               'bg-gold/10 hover:bg-gold/20 text-gold',
               'border border-gold/30',
-              'flex items-center gap-2',
+              'flex items-center justify-center gap-2',
               'transition-colors duration-200'
             )}
           >
@@ -156,28 +196,6 @@ export const ConversationSidebar = React.forwardRef<HTMLDivElement, Conversation
             </div>
           )}
         </div>
-
-        {/* Collapse toggle */}
-        <div className="p-3 border-t border-ash/40 flex-shrink-0">
-          <button
-            onClick={onToggleCollapse}
-            className="w-full px-3 py-1.5 text-silver hover:text-white hover:bg-ash/20 transition-colors duration-150 flex items-center gap-2 text-sm"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              className="w-4 h-4"
-            >
-              <path
-                fillRule="evenodd"
-                d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
-                clipRule="evenodd"
-              />
-            </svg>
-            <span>Collapse</span>
-          </button>
-        </div>
       </div>
     )
   }
@@ -210,18 +228,7 @@ export const CollapsedSidebarToggle = React.forwardRef<
       aria-label="Expand sidebar"
       {...rest}
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-        className="w-5 h-5"
-      >
-        <path
-          fillRule="evenodd"
-          d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10zm0 5.25a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75a.75.75 0 01-.75-.75z"
-          clipRule="evenodd"
-        />
-      </svg>
+      <HistoryIcon className="w-5 h-5" />
     </button>
   )
 })

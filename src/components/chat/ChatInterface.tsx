@@ -3,7 +3,7 @@ import {cx} from '../../utils/cx'
 import {ChatView, type ChatViewItem} from './ChatView'
 import {ChatInput} from './ChatInput'
 import {ConversationSidebar, type Conversation} from './ConversationSidebar'
-import {ArtifactsPanel, ArtifactsPanelToggle} from './ArtifactsPanel'
+import {ArtifactsPanel} from './ArtifactsPanel'
 import {useArtifactParser, type Artifact} from './hooks/useArtifactParser'
 
 export interface ChatMessage {
@@ -161,10 +161,8 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
       })
     }, [messages, isStreaming, currentStreamingCleanContent])
 
-    // All artifacts from all assistant messages (for now, just current streaming)
+    // All artifacts parsed from all assistant messages via useArtifactParser
     const allArtifacts: Artifact[] = useMemo(() => {
-      // In a real implementation, you'd collect artifacts from all messages
-      // For demo purposes, we just use the current streaming artifacts
       return artifacts
     }, [artifacts])
 
@@ -202,16 +200,6 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
 
         {/* Main content area */}
         <div className="flex-1 flex flex-col min-w-0 relative">
-          {/* Collapsed artifacts panel toggle */}
-          {!artifactsPanelOpen && allArtifacts.length > 0 && (
-            <div className="absolute top-4 right-4 z-10">
-              <ArtifactsPanelToggle
-                artifactCount={allArtifacts.length}
-                onExpand={toggleArtifactsPanel}
-              />
-            </div>
-          )}
-
           {/* Empty state with centered input */}
           {isEmpty ? (
             <div className="flex-1 flex items-center justify-center p-4">
