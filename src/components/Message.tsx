@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import {MarkdownContent} from './MarkdownContent'
 import {StreamingCursor} from './StreamingCursor'
 import {cx} from '../utils/cx'
@@ -77,7 +77,7 @@ const ActionButton: React.FC<{
     disabled={disabled}
     className={cx(
       'p-1.5 text-silver/60 hover:text-silver transition-colors duration-150',
-      'hover:bg-white/5 ',
+      'hover:bg-white/5',
       'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent',
       className
     )}
@@ -158,9 +158,22 @@ export const Message = React.forwardRef<HTMLDivElement, MessageProps>(
     const [copied, setCopied] = useState(false)
     const [isEditing, setIsEditing] = useState(false)
     const [editValue, setEditValue] = useState(content)
+    const textareaRef = useRef<HTMLTextAreaElement>(null)
 
     const showBranchNav = branchInfo && branchInfo.total > 1
     const showActions = actions && !hideActions && !isStreaming
+
+    // Auto-resize textarea when editing
+    useEffect(() => {
+      if (isEditing && textareaRef.current) {
+        const textarea = textareaRef.current
+        textarea.style.height = 'auto'
+        textarea.style.height = `${textarea.scrollHeight}px`
+        textarea.focus()
+        // Move cursor to end
+        textarea.setSelectionRange(textarea.value.length, textarea.value.length)
+      }
+    }, [isEditing])
 
     const handleCopy = async () => {
       try {
@@ -207,6 +220,14 @@ export const Message = React.forwardRef<HTMLDivElement, MessageProps>(
       }
     }
 
+    const handleEditChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      setEditValue(e.target.value)
+      // Auto-resize
+      const textarea = e.target
+      textarea.style.height = 'auto'
+      textarea.style.height = `${textarea.scrollHeight}px`
+    }
+
     return (
       <div
         ref={ref}
@@ -217,106 +238,55 @@ export const Message = React.forwardRef<HTMLDivElement, MessageProps>(
         )}
         {...rest}
       >
-        {/* Branch navigator - above the message */}
-        {showBranchNav && (
-          <div className={cx(
-            'flex items-center gap-0.5 text-silver/70 mb-1',
-            isUser ? 'mr-1' : 'ml-1'
-          )}>
-            <GitBranchIcon />
-            <button
-              type="button"
-              onClick={branchInfo.onPrevious}
-              disabled={branchInfo.current <= 1}
-              className={cx(
-                'p-0.5 hover:text-white hover:bg-white/10  transition-colors',
-                'disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-silver/70'
-              )}
-              aria-label="Previous branch"
-            >
-              <ChevronLeftIcon />
-            </button>
-            <span className="text-xs tabular-nums min-w-6 text-center">
-              {branchInfo.current}/{branchInfo.total}
-            </span>
-            <button
-              type="button"
-              onClick={branchInfo.onNext}
-              disabled={branchInfo.current >= branchInfo.total}
-              className={cx(
-                'p-0.5 hover:text-white hover:bg-white/10  transition-colors',
-                'disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-silver/70'
-              )}
-              aria-label="Next branch"
-            >
-              <ChevronRightIcon />
-            </button>
-          </div>
-        )}
-
-        {/* Message bubble */}
-        <div
-          className={cx(
-            'px-3 py-2 w-fit max-w-11/12',
-            variantStyles[variant],
-            showBranchNav && 'relative'
-          )}
-        >
-          {/* Branch point indicator line */}
-          {showBranchNav && (
-            <div
-              className={cx(
-                'absolute top-0 w-0.5 h-2 bg-gold/40',
-                isUser ? 'right-3' : 'left-3',
-                '-translate-y-full'
-              )}
-            />
-          )}
-
-          <MarkdownContent
-            content={content}
-            className={cx('prose-sm', isUser ? 'prose-inherit' : 'prose-invert')}
-          />
-          {isStreaming && <StreamingCursor className="ml-0.5" />}
-        </div>
-
-        {/* Edit mode for user messages */}
-        {isUser && isEditing && (
-          <div className="mt-2 w-full max-w-11/12">
-            <div className="relative bg-charcoal border border-ash/60 focus-within:border-gold/60 focus-within:ring-1 focus-within:ring-gold/20">
+        {/* Message bubble OR Edit input (replaces message when editing) */}
+        {isUser && isEditing ? (
+          <div className="w-full max-w-11/12">
+            <div className="relative bg-gold">
               <textarea
+                ref={textareaRef}
                 value={editValue}
-                onChange={(e) => setEditValue(e.target.value)}
+                onChange={handleEditChange}
                 onKeyDown={handleEditKeyDown}
-                className="w-full bg-transparent text-white px-3 py-2 pr-20 resize-none outline-none min-h-16 text-sm"
-                autoFocus
-                rows={2}
+                className="w-full bg-transparent text-obsidian px-3 py-2 pr-20 resize-none outline-none min-h-10 text-sm"
+                rows={1}
               />
-              <div className="absolute right-2 bottom-2 flex gap-1">
-                <ActionButton
+              <div className="absolute right-1 top-1/2 -translate-y-1/2 flex gap-0.5">
+                <button
+                  type="button"
                   onClick={handleCancelEdit}
-                  label="Cancel edit"
-                  className="text-silver/60 hover:text-error"
+                  className="p-1.5 text-obsidian/60 hover:text-obsidian transition-colors"
+                  aria-label="Cancel edit"
                 >
                   <XIcon />
-                </ActionButton>
-                <ActionButton
+                </button>
+                <button
+                  type="button"
                   onClick={handleSubmitEdit}
-                  label="Submit edit"
-                  className="text-silver/60 hover:text-gold"
                   disabled={!editValue.trim() || editValue.trim() === content}
+                  className="p-1.5 text-obsidian/60 hover:text-obsidian transition-colors disabled:opacity-30"
+                  aria-label="Submit edit"
                 >
                   <SendIcon />
-                </ActionButton>
+                </button>
               </div>
             </div>
-            <p className="text-xs text-silver/50 mt-1 text-right">
-              Press Enter to submit, Esc to cancel. This will create a new branch.
-            </p>
+          </div>
+        ) : (
+          <div
+            className={cx(
+              'px-3 py-2 w-fit max-w-11/12',
+              variantStyles[variant]
+            )}
+          >
+            <MarkdownContent
+              content={content}
+              className={cx('prose-sm', isUser ? 'prose-inherit' : 'prose-invert')}
+            />
+            {isStreaming && <StreamingCursor className="ml-0.5" />}
           </div>
         )}
 
-        {/* Action buttons - below the message */}
+        {/* Action bar - below the message, includes branch nav on the right */}
         {showActions && !isEditing && (
           <div className={cx(
             'flex items-center gap-0.5 mt-1',
@@ -341,6 +311,43 @@ export const Message = React.forwardRef<HTMLDivElement, MessageProps>(
               <ActionButton onClick={actions.onRetry} label="Regenerate response">
                 <RetryIcon />
               </ActionButton>
+            )}
+
+            {/* Branch navigator - to the right of action buttons */}
+            {showBranchNav && (
+              <>
+                <div className="w-px h-4 bg-ash/40 mx-1" />
+                <div className="flex items-center gap-0.5 text-silver/70">
+                  <GitBranchIcon />
+                  <button
+                    type="button"
+                    onClick={branchInfo.onPrevious}
+                    disabled={branchInfo.current <= 1}
+                    className={cx(
+                      'p-0.5 hover:text-white hover:bg-white/10 transition-colors',
+                      'disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-silver/70'
+                    )}
+                    aria-label="Previous branch"
+                  >
+                    <ChevronLeftIcon />
+                  </button>
+                  <span className="text-xs tabular-nums min-w-6 text-center">
+                    {branchInfo.current}/{branchInfo.total}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={branchInfo.onNext}
+                    disabled={branchInfo.current >= branchInfo.total}
+                    className={cx(
+                      'p-0.5 hover:text-white hover:bg-white/10 transition-colors',
+                      'disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-silver/70'
+                    )}
+                    aria-label="Next branch"
+                  >
+                    <ChevronRightIcon />
+                  </button>
+                </div>
+              </>
             )}
           </div>
         )}

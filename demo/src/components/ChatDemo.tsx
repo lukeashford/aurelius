@@ -329,15 +329,24 @@ export default function ChatDemo() {
     const node = conversationTree.nodes[messageId]
     if (!node || node.role !== 'assistant') return
 
-    // Add a new assistant response as a sibling
+    const parentId = node.parentId
+
+    // Immediately switch to parent (hides the old assistant message)
+    // and show thinking indicator
+    setConversationTree((prev) => ({
+      ...prev,
+      activeLeafId: parentId,
+    }))
     setIsStreaming(true)
     setIsThinking(true)
 
+    // After thinking delay, add the new message and stream
     setTimeout(() => {
       setIsThinking(false)
       const newMessageId = generateId()
+      currentMessageIdRef.current = newMessageId
+
       setConversationTree((prev) => {
-        const parentId = node.parentId
         return addMessageToTree(prev, {
           id: newMessageId,
           role: 'assistant',
@@ -361,6 +370,7 @@ export default function ChatDemo() {
           setTimeout(streamIt, 30)
         } else {
           setConversationTree((prev) => updateNodeContent(prev, newMessageId, response, false))
+          currentMessageIdRef.current = null
           setIsStreaming(false)
         }
       }
