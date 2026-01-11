@@ -1,8 +1,8 @@
-import React, {useState, useCallback, useRef, useEffect} from 'react'
-import {cx} from '../../utils/cx'
-import {Paperclip, Square, Send} from 'lucide-react'
-import {AttachmentPreview, type AttachmentItem} from '../AttachmentPreview'
-import {generateId, createPreviewUrl, isImageFile} from './types'
+import React, {useCallback, useEffect, useRef, useState} from 'react'
+import {cx} from '../../utils'
+import {Paperclip, Send, Square} from 'lucide-react'
+import {type AttachmentItem, AttachmentPreview} from '../AttachmentPreview'
+import {createPreviewUrl, generateId, isImageFile} from './types'
 
 export type ChatInputPosition = 'centered' | 'bottom'
 
@@ -69,295 +69,298 @@ export interface ChatInputProps extends Omit<React.HTMLAttributes<HTMLDivElement
 }
 
 export const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
-  (
-    {
-      position = 'bottom',
-      placeholder = 'Send a message...',
-      helperText,
-      onSubmit,
-      disabled = false,
-      animate = true,
-      isStreaming = false,
-      onStop,
-      attachments: controlledAttachments,
-      onAttachmentsChange,
-      showAttachmentButton = true,
-      acceptedFileTypes,
-      className,
-      ...rest
-    },
-    ref
-  ) => {
-    const [value, setValue] = useState('')
-    const [localAttachments, setLocalAttachments] = useState<Attachment[]>([])
-    const [isDragOver, setIsDragOver] = useState(false)
-    const textareaRef = useRef<HTMLTextAreaElement>(null)
-    const fileInputRef = useRef<HTMLInputElement>(null)
+    (
+        {
+          position = 'bottom',
+          placeholder = 'Send a message...',
+          helperText,
+          onSubmit,
+          disabled = false,
+          animate = true,
+          isStreaming = false,
+          onStop,
+          attachments: controlledAttachments,
+          onAttachmentsChange,
+          showAttachmentButton = true,
+          acceptedFileTypes,
+          className,
+          ...rest
+        },
+        ref
+    ) => {
+      const [value, setValue] = useState('')
+      const [localAttachments, setLocalAttachments] = useState<Attachment[]>([])
+      const [isDragOver, setIsDragOver] = useState(false)
+      const textareaRef = useRef<HTMLTextAreaElement>(null)
+      const fileInputRef = useRef<HTMLInputElement>(null)
 
-    // Determine if using controlled or uncontrolled attachments
-    const attachments = controlledAttachments ?? localAttachments
-    const setAttachments = useCallback(
-      (newAttachments: Attachment[] | ((prev: Attachment[]) => Attachment[])) => {
-        if (onAttachmentsChange) {
-          if (typeof newAttachments === 'function') {
-            onAttachmentsChange(newAttachments(attachments))
-          } else {
-            onAttachmentsChange(newAttachments)
-          }
-        } else {
-          setLocalAttachments(newAttachments)
+      // Determine if using controlled or uncontrolled attachments
+      const attachments = controlledAttachments ?? localAttachments
+      const setAttachments = useCallback(
+          (newAttachments: Attachment[] | ((prev: Attachment[]) => Attachment[])) => {
+            if (onAttachmentsChange) {
+              if (typeof newAttachments === 'function') {
+                onAttachmentsChange(newAttachments(attachments))
+              } else {
+                onAttachmentsChange(newAttachments)
+              }
+            } else {
+              setLocalAttachments(newAttachments)
+            }
+          },
+          [attachments, onAttachmentsChange]
+      )
+
+      const handleSubmit = useCallback(() => {
+        const trimmed = value.trim()
+        if (!trimmed || disabled || isStreaming) {
+          return
         }
-      },
-      [attachments, onAttachmentsChange]
-    )
 
-    const handleSubmit = useCallback(() => {
-      const trimmed = value.trim()
-      if (!trimmed || disabled || isStreaming) return
+        onSubmit?.(trimmed, attachments.length > 0 ? attachments : undefined)
+        setValue('')
+        setAttachments([])
 
-      onSubmit?.(trimmed, attachments.length > 0 ? attachments : undefined)
-      setValue('')
-      setAttachments([])
-
-      // Reset textarea height
-      if (textareaRef.current) {
-        textareaRef.current.style.height = 'auto'
-      }
-    }, [value, disabled, isStreaming, onSubmit, attachments, setAttachments])
-
-    const handleKeyDown = useCallback(
-      (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-          e.preventDefault()
-          handleSubmit()
+        // Reset textarea height
+        if (textareaRef.current) {
+          textareaRef.current.style.height = 'auto'
         }
-      },
-      [handleSubmit]
-    )
+      }, [value, disabled, isStreaming, onSubmit, attachments, setAttachments])
 
-    const handleChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      setValue(e.target.value)
+      const handleKeyDown = useCallback(
+          (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault()
+              handleSubmit()
+            }
+          },
+          [handleSubmit]
+      )
 
-      // Auto-resize textarea
-      const textarea = e.target
-      textarea.style.height = 'auto'
-      textarea.style.height = `${Math.min(textarea.scrollHeight, 200)}px`
-    }, [])
+      const handleChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setValue(e.target.value)
 
-    // Focus input when it becomes enabled
-    useEffect(() => {
-      if (!disabled && !isStreaming && textareaRef.current) {
-        textareaRef.current.focus()
-      }
-    }, [disabled, isStreaming])
+        // Auto-resize textarea
+        const textarea = e.target
+        textarea.style.height = 'auto'
+        textarea.style.height = `${Math.min(textarea.scrollHeight, 200)}px`
+      }, [])
 
-    // File handling
-    const addFiles = useCallback(
-      (files: FileList | File[]) => {
-        const newAttachments: Attachment[] = Array.from(files).map((file) => ({
-          id: generateId(),
-          file,
-          previewUrl: isImageFile(file) ? createPreviewUrl(file) : undefined,
-          status: 'pending' as const,
-        }))
-        setAttachments((prev) => [...prev, ...newAttachments])
-      },
-      [setAttachments]
-    )
-
-    const handleFileSelect = useCallback(
-      (e: React.ChangeEvent<HTMLInputElement>) => {
-        const files = e.target.files
-        if (files && files.length > 0) {
-          addFiles(files)
+      // Focus input when it becomes enabled
+      useEffect(() => {
+        if (!disabled && !isStreaming && textareaRef.current) {
+          textareaRef.current.focus()
         }
-        // Reset input so the same file can be selected again
-        e.target.value = ''
-      },
-      [addFiles]
-    )
+      }, [disabled, isStreaming])
 
-    const handleRemoveAttachment = useCallback(
-      (id: string) => {
-        setAttachments((prev) => {
-          const attachment = prev.find((a) => a.id === id)
-          if (attachment?.previewUrl) {
-            URL.revokeObjectURL(attachment.previewUrl)
-          }
-          return prev.filter((a) => a.id !== id)
-        })
-      },
-      [setAttachments]
-    )
+      // File handling
+      const addFiles = useCallback(
+          (files: FileList | File[]) => {
+            const newAttachments: Attachment[] = Array.from(files).map((file) => ({
+              id: generateId(),
+              file,
+              previewUrl: isImageFile(file) ? createPreviewUrl(file) : undefined,
+              status: 'pending' as const,
+            }))
+            setAttachments((prev) => [...prev, ...newAttachments])
+          },
+          [setAttachments]
+      )
 
-    // Drag and drop handlers
-    const handleDragEnter = useCallback((e: React.DragEvent) => {
-      e.preventDefault()
-      e.stopPropagation()
-      setIsDragOver(true)
-    }, [])
+      const handleFileSelect = useCallback(
+          (e: React.ChangeEvent<HTMLInputElement>) => {
+            const files = e.target.files
+            if (files && files.length > 0) {
+              addFiles(files)
+            }
+            // Reset input so the same file can be selected again
+            e.target.value = ''
+          },
+          [addFiles]
+      )
 
-    const handleDragLeave = useCallback((e: React.DragEvent) => {
-      e.preventDefault()
-      e.stopPropagation()
-      // Only set to false if we're leaving the container entirely
-      if (!e.currentTarget.contains(e.relatedTarget as Node)) {
-        setIsDragOver(false)
-      }
-    }, [])
+      const handleRemoveAttachment = useCallback(
+          (id: string) => {
+            setAttachments((prev) => {
+              const attachment = prev.find((a) => a.id === id)
+              if (attachment?.previewUrl) {
+                URL.revokeObjectURL(attachment.previewUrl)
+              }
+              return prev.filter((a) => a.id !== id)
+            })
+          },
+          [setAttachments]
+      )
 
-    const handleDragOver = useCallback((e: React.DragEvent) => {
-      e.preventDefault()
-      e.stopPropagation()
-    }, [])
-
-    const handleDrop = useCallback(
-      (e: React.DragEvent) => {
+      // Drag and drop handlers
+      const handleDragEnter = useCallback((e: React.DragEvent) => {
         e.preventDefault()
         e.stopPropagation()
-        setIsDragOver(false)
+        setIsDragOver(true)
+      }, [])
 
-        const files = e.dataTransfer.files
-        if (files && files.length > 0) {
-          addFiles(files)
+      const handleDragLeave = useCallback((e: React.DragEvent) => {
+        e.preventDefault()
+        e.stopPropagation()
+        // Only set to false if we're leaving the container entirely
+        if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+          setIsDragOver(false)
         }
-      },
-      [addFiles]
-    )
+      }, [])
 
-    const isCentered = position === 'centered'
-    const hasAttachments = attachments.length > 0
-    const canSubmit = value.trim() && !disabled && !isStreaming
+      const handleDragOver = useCallback((e: React.DragEvent) => {
+        e.preventDefault()
+        e.stopPropagation()
+      }, [])
 
-    return (
-      <div
-        ref={ref}
-        className={cx(
-          'w-full',
-          isCentered && 'flex flex-col items-center justify-center',
-          animate && 'transition-all duration-300 ease-out',
-          className
-        )}
-        {...rest}
-      >
-        {/* Helper text for centered mode */}
-        {isCentered && helperText && (
-          <p className="text-silver text-sm mb-4 text-center">{helperText}</p>
-        )}
+      const handleDrop = useCallback(
+          (e: React.DragEvent) => {
+            e.preventDefault()
+            e.stopPropagation()
+            setIsDragOver(false)
 
-        {/* Input container */}
-        <div
-          className={cx(
-            'relative w-full bg-charcoal border',
-            isDragOver ? 'border-gold ring-1 ring-gold/30' : 'border-ash/60',
-            'focus-within:border-gold/60 focus-within:ring-1 focus-within:ring-gold/20',
-            'transition-colors duration-200',
-            isCentered && 'max-w-2xl'
-          )}
-          onDragEnter={showAttachmentButton ? handleDragEnter : undefined}
-          onDragLeave={showAttachmentButton ? handleDragLeave : undefined}
-          onDragOver={showAttachmentButton ? handleDragOver : undefined}
-          onDrop={showAttachmentButton ? handleDrop : undefined}
-        >
-          {/* Attachments preview */}
-          {hasAttachments && (
-            <div className="px-3 pt-3 pb-1">
-              <AttachmentPreview
-                attachments={attachments as AttachmentItem[]}
-                onRemove={handleRemoveAttachment}
-                removable={!isStreaming}
-              />
-            </div>
-          )}
+            const files = e.dataTransfer.files
+            if (files && files.length > 0) {
+              addFiles(files)
+            }
+          },
+          [addFiles]
+      )
 
-          {/* Drag overlay */}
-          {isDragOver && (
-            <div className="absolute inset-0 bg-gold/10 flex items-center justify-center z-10 pointer-events-none">
-              <span className="text-gold text-sm font-medium">Drop files here</span>
-            </div>
-          )}
+      const isCentered = position === 'centered'
+      const hasAttachments = attachments.length > 0
+      const canSubmit = value.trim() && !disabled && !isStreaming
 
-          {/* Textarea row */}
-          <div className="flex items-end">
-            {/* Attachment button */}
-            {showAttachmentButton && (
-              <>
-                <button
-                  type="button"
-                  onClick={() => fileInputRef.current?.click()}
-                  disabled={disabled || isStreaming}
-                  className={cx(
-                    'p-3 text-silver/60 hover:text-silver transition-colors',
-                    'disabled:opacity-50 disabled:cursor-not-allowed'
-                  )}
-                  aria-label="Attach file"
-                >
-                  <Paperclip className="w-5 h-5" />
-                </button>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  multiple
-                  accept={acceptedFileTypes}
-                  onChange={handleFileSelect}
-                  className="hidden"
-                  aria-hidden="true"
-                />
-              </>
-            )}
-
-            <textarea
-              ref={textareaRef}
-              value={value}
-              onChange={handleChange}
-              onKeyDown={handleKeyDown}
-              placeholder={placeholder}
-              disabled={disabled || isStreaming}
-              rows={1}
+      return (
+          <div
+              ref={ref}
               className={cx(
-                'flex-1 bg-transparent text-white placeholder:text-silver/60',
-                'py-3 pr-12 resize-none outline-none min-h-12',
-                !showAttachmentButton && 'pl-4',
-                (disabled || isStreaming) && 'opacity-50 cursor-not-allowed'
+                  'w-full',
+                  isCentered && 'flex flex-col items-center justify-center',
+                  animate && 'transition-all duration-300 ease-out',
+                  className
               )}
-              style={{maxHeight: 200}}
-            />
-
-            {/* Submit or Stop button */}
-            {isStreaming ? (
-              <button
-                type="button"
-                onClick={onStop}
-                className={cx(
-                  'absolute right-2 bottom-2 p-2',
-                  'text-error hover:bg-error/10 transition-colors duration-200'
-                )}
-                aria-label="Stop generation"
-              >
-                <Square className="w-5 h-5 fill-current" />
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={handleSubmit}
-                disabled={!canSubmit}
-                className={cx(
-                  'absolute right-2 bottom-2 p-2',
-                  'transition-colors duration-200',
-                  canSubmit
-                    ? 'text-gold hover:bg-gold/10'
-                    : 'text-silver/40 cursor-not-allowed'
-                )}
-                aria-label="Send message"
-              >
-                <Send className="w-5 h-5" />
-              </button>
+              {...rest}
+          >
+            {/* Helper text for centered mode */}
+            {isCentered && helperText && (
+                <p className="text-silver text-sm mb-4 text-center">{helperText}</p>
             )}
+
+            {/* Input container */}
+            <div
+                className={cx(
+                    'relative w-full bg-charcoal border',
+                    isDragOver ? 'border-gold ring-1 ring-gold/30' : 'border-ash/60',
+                    'focus-within:border-gold/60 focus-within:ring-1 focus-within:ring-gold/20',
+                    'transition-colors duration-200',
+                    isCentered && 'max-w-lg'
+                )}
+                onDragEnter={showAttachmentButton ? handleDragEnter : undefined}
+                onDragLeave={showAttachmentButton ? handleDragLeave : undefined}
+                onDragOver={showAttachmentButton ? handleDragOver : undefined}
+                onDrop={showAttachmentButton ? handleDrop : undefined}
+            >
+              {/* Attachments preview */}
+              {hasAttachments && (
+                  <div className="px-3 pt-3 pb-1">
+                    <AttachmentPreview
+                        attachments={attachments as AttachmentItem[]}
+                        onRemove={handleRemoveAttachment}
+                        removable={!isStreaming}
+                    />
+                  </div>
+              )}
+
+              {/* Drag overlay */}
+              {isDragOver && (
+                  <div
+                      className="absolute inset-0 bg-gold/10 flex items-center justify-center z-10 pointer-events-none">
+                    <span className="text-gold text-sm font-medium">Drop files here</span>
+                  </div>
+              )}
+
+              {/* Textarea row */}
+              <div className="flex items-end">
+                {/* Attachment button */}
+                {showAttachmentButton && (
+                    <>
+                      <button
+                          type="button"
+                          onClick={() => fileInputRef.current?.click()}
+                          disabled={disabled || isStreaming}
+                          className={cx(
+                              'p-3 text-silver/60 hover:text-silver transition-colors',
+                              'disabled:opacity-50 disabled:cursor-not-allowed'
+                          )}
+                          aria-label="Attach file"
+                      >
+                        <Paperclip className="w-5 h-5"/>
+                      </button>
+                      <input
+                          ref={fileInputRef}
+                          type="file"
+                          multiple
+                          accept={acceptedFileTypes}
+                          onChange={handleFileSelect}
+                          className="hidden"
+                          aria-hidden="true"
+                      />
+                    </>
+                )}
+
+                <textarea
+                    ref={textareaRef}
+                    value={value}
+                    onChange={handleChange}
+                    onKeyDown={handleKeyDown}
+                    placeholder={placeholder}
+                    disabled={disabled || isStreaming}
+                    rows={1}
+                    className={cx(
+                        'flex-1 bg-transparent text-white placeholder:text-silver/60',
+                        'py-3 pr-12 resize-none outline-none min-h-12',
+                        !showAttachmentButton && 'pl-4',
+                        (disabled || isStreaming) && 'opacity-50 cursor-not-allowed'
+                    )}
+                    style={{maxHeight: 200}}
+                />
+
+                {/* Submit or Stop button */}
+                {isStreaming ? (
+                    <button
+                        type="button"
+                        onClick={onStop}
+                        className={cx(
+                            'absolute right-2 bottom-2 p-2',
+                            'text-error hover:bg-error/10 transition-colors duration-200'
+                        )}
+                        aria-label="Stop generation"
+                    >
+                      <Square className="w-5 h-5 fill-current"/>
+                    </button>
+                ) : (
+                    <button
+                        type="button"
+                        onClick={handleSubmit}
+                        disabled={!canSubmit}
+                        className={cx(
+                            'absolute right-2 bottom-2 p-2',
+                            'transition-colors duration-200',
+                            canSubmit
+                                ? 'text-gold hover:bg-gold/10'
+                                : 'text-silver/40 cursor-not-allowed'
+                        )}
+                        aria-label="Send message"
+                    >
+                      <Send className="w-5 h-5"/>
+                    </button>
+                )}
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    )
-  }
+      )
+    }
 )
 
 ChatInput.displayName = 'ChatInput'

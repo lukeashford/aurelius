@@ -1,10 +1,10 @@
 import React, {useCallback, useMemo, useState} from 'react'
-import {cx} from '../../utils/cx'
+import {cx} from '../../utils'
 import {ChatView, type ChatViewItem} from './ChatView'
 import {type Attachment, ChatInput} from './ChatInput'
 import {type Conversation, ConversationSidebar} from './ConversationSidebar'
 import {ArtifactsPanel} from './ArtifactsPanel'
-import {type Artifact, useArtifactParser} from './hooks/useArtifactParser'
+import {type Artifact, useArtifactParser} from './hooks'
 import {type ConversationTree, getActivePathMessages, getSiblingInfo, switchBranch,} from './types'
 
 export interface ChatMessage {
@@ -190,7 +190,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
           // Strip artifact syntax from the streaming message
           const content = lastMessage.content
           // Remove complete artifacts
-          let clean = content.replace(/:::artifact\{[^}]+\}(?:[^:]*?)?:::/gs, '')
+          let clean = content.replace(/:::artifact\{[^}]+}(?:[^:]*?)?:::/gs, '')
           // Remove incomplete artifacts (still streaming)
           const startMatch = clean.match(/:::artifact\{/)
           if (startMatch && startMatch.index !== undefined) {
@@ -232,7 +232,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
               cleanContent = currentStreamingCleanContent
             } else {
               // For completed assistant messages, strip artifact syntax
-              let clean = msg.content.replace(/:::artifact\{[^}]+\}(?:[^:]*?)?:::/gs, '')
+              let clean = msg.content.replace(/:::artifact\{[^}]+}(?:[^:]*?)?:::/gs, '')
               const startMatch = clean.match(/:::artifact\{/)
               if (startMatch && startMatch.index !== undefined) {
                 clean = clean.substring(0, startMatch.index)
@@ -317,49 +317,61 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
 
             {/* Main content area */}
             <div className="flex-1 flex flex-col min-w-0 relative">
-              {/* Empty state with centered input */}
-              {isEmpty ? (
-                  <div className="flex-1 flex items-center justify-center p-4">
-                    {emptyState || (
-                        <ChatInput
-                            position="centered"
-                            placeholder={placeholder}
-                            helperText={emptyStateHelper}
-                            onSubmit={handleSubmit}
-                            disabled={isStreaming}
-                            showAttachmentButton={showAttachmentButton}
-                            attachments={propsAttachments}
-                            onAttachmentsChange={onAttachmentsChange}
-                        />
-                    )}
-                  </div>
-              ) : (
-                  <>
-                    {/* Messages */}
-                    <ChatView
-                        messages={displayMessages}
-                        latestUserMessageIndex={latestUserMessageIndex}
-                        isStreaming={isStreaming}
-                        isThinking={isThinking}
-                        className="flex-1"
-                    />
+              <div className={cx(
+                  "flex-1 flex flex-col min-h-0 relative transition-all duration-500",
+                  isEmpty ? "justify-center" : "justify-start"
+              )}>
+                {/* Top spacer for centering in empty state */}
+                <div className={cx(
+                    "transition-all duration-500 ease-in-out",
+                    isEmpty ? "flex-[1_1_0%]" : "flex-[0_0_0%]"
+                )}/>
 
-                    {/* Input at bottom */}
-                    <div className="flex-shrink-0 p-4 border-t border-ash/40 bg-obsidian">
+                {/* Messages Area */}
+                <div className={cx(
+                    "transition-all duration-500 ease-in-out overflow-hidden flex flex-col",
+                    isEmpty ? "flex-[0_0_0%] opacity-0" : "flex-[1_1_0%] opacity-100"
+                )}>
+                  <ChatView
+                      messages={displayMessages}
+                      latestUserMessageIndex={latestUserMessageIndex}
+                      isStreaming={isStreaming}
+                      isThinking={isThinking}
+                      className="flex-1"
+                  />
+                </div>
+
+                {/* Input Area */}
+                <div className={cx(
+                    "transition-all duration-500 ease-in-out z-10 w-full",
+                    isEmpty ? "p-4" : "shrink-0 p-4 border-t border-ash/40 bg-obsidian"
+                )}>
+                  {isEmpty && emptyState ? (
+                      <div className="flex justify-center">
+                        {emptyState}
+                      </div>
+                  ) : (
                       <ChatInput
-                          position="bottom"
+                          position={isEmpty ? "centered" : "bottom"}
                           placeholder={placeholder}
+                          helperText={isEmpty ? emptyStateHelper : undefined}
                           onSubmit={handleSubmit}
-                          disabled={isStreaming && !onStop}
+                          disabled={isEmpty ? isStreaming : (isStreaming && !onStop)}
                           isStreaming={isStreaming}
                           onStop={onStop}
                           showAttachmentButton={showAttachmentButton}
                           attachments={propsAttachments}
                           onAttachmentsChange={onAttachmentsChange}
                       />
-                    </div>
-                  </>
-              )}
+                  )}
+                </div>
+
+                {/* Bottom spacer for centering in empty state */}
+                <div className={cx(
+                    "transition-all duration-500 ease-in-out",
+                    isEmpty ? "flex-[1_1_0%]" : "flex-[0_0_0%]"
+                )}/>
+              </div>
             </div>
 
             {/* Artifacts panel */}
@@ -375,5 +387,3 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
 )
 
 ChatInterface.displayName = 'ChatInterface'
-
-export default ChatInterface
