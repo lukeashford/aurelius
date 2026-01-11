@@ -5,6 +5,9 @@
 
 @theme {
   /* ===== COLORS ===== */
+  /* Clears all default colors */
+  --color-*: initial;
+  
   /* Black spectrum */
   --color-void: #000000;
   --color-obsidian: #0a0a0a;
