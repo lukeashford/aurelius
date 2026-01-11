@@ -7,6 +7,14 @@ const THINKING_PHRASES = [
   'Traversing the manifold of possibilities...',
   'Genuflecting before the oracle...',
   'Distilling quintessence...',
+  'Communing with the machine spirits...',
+  'Unfolding higher dimensions...',
+  'Perturbing the probability matrix...',
+  'Invoking the categorical imperative...',
+  'Reticulating splines...',
+  'Brewing a fresh batch of tokens...',
+  'Consulting my inner monologue...',
+  'Summoning the muse...',
 ]
 
 export interface ThinkingIndicatorProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -36,7 +44,8 @@ export const ThinkingIndicator = React.forwardRef<HTMLDivElement, ThinkingIndica
     },
     ref
   ) => {
-    const [currentIndex, setCurrentIndex] = useState(0)
+    // Start at a random phrase each time
+    const [currentIndex, setCurrentIndex] = useState(() => Math.floor(Math.random() * phrases.length))
     const [isTransitioning, setIsTransitioning] = useState(false)
 
     useEffect(() => {

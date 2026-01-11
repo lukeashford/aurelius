@@ -89,7 +89,7 @@ export const ChatView = React.forwardRef<HTMLDivElement, ChatViewProps>(
         onScroll={onScroll}
         className={cx(
           'flex flex-col gap-3 w-full h-full overflow-y-auto scroll-smooth',
-          'px-4 py-6',
+          'px-4 py-6 overscroll-contain',
           className
         )}
         {...rest}
@@ -124,6 +124,14 @@ export const ChatView = React.forwardRef<HTMLDivElement, ChatViewProps>(
         {showThinking && (
           <ThinkingIndicator isVisible />
         )}
+
+        {/* Bottom spacer to allow anchor message to scroll to top */}
+        {/* Height is ~100vh minus buffer for natural scroll boundaries */}
+        <div
+          className="flex-shrink-0 pointer-events-none"
+          style={{minHeight: 'calc(100vh - 200px)'}}
+          aria-hidden="true"
+        />
       </div>
     )
   }
