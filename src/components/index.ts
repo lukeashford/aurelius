@@ -50,6 +50,8 @@ export {
   type ListItemTextProps,
   type ListSubheaderProps,
 } from './List'
+export {FileChip, type FileChipProps, type FileChipStatus} from './FileChip'
+export {AttachmentPreview, type AttachmentPreviewProps, type AttachmentItem} from './AttachmentPreview'
 
 // Forms
 export {Label, type LabelProps} from './Label'
@@ -158,7 +160,7 @@ export {Pagination, type PaginationProps} from './Pagination'
 export {Stepper, type StepperProps, type Step, type StepStatus} from './Stepper'
 
 // Chat/AI
-export {Message, type MessageProps, type MessageVariant} from './Message'
+export {Message, type MessageProps, type MessageVariant, type MessageBranchInfo, type MessageActionsConfig} from './Message'
 export {StreamingCursor, type StreamingCursorProps} from './StreamingCursor'
 export {MarkdownContent, type MarkdownContentProps} from './MarkdownContent'
 
@@ -171,24 +173,49 @@ export {
   CollapsedSidebarToggle,
   ArtifactsPanel,
   ArtifactsPanelToggle,
+  MessageActions,
+  ThinkingIndicator,
+  BranchNavigator,
   useScrollAnchor,
   useArtifactParser,
+  // Types
   type ChatInterfaceProps,
   type ChatMessage,
   type ChatViewProps,
   type ChatViewItem,
   type ChatInputProps,
   type ChatInputPosition,
+  type Attachment,
+  type AttachmentStatus,
   type ConversationSidebarProps,
   type Conversation,
   type CollapsedSidebarToggleProps,
   type ArtifactsPanelProps,
   type ArtifactsPanelToggleProps,
+  type MessageActionsProps,
+  type MessageActionsVariant,
+  type ThinkingIndicatorProps,
+  type BranchNavigatorProps,
+  type MessageNode,
+  type ConversationTree,
   type UseScrollAnchorOptions,
   type UseScrollAnchorReturn,
   type Artifact,
   type ArtifactType,
   type UseArtifactParserReturn,
+  // Utility functions
+  createEmptyTree,
+  addMessageToTree,
+  getActivePathMessages,
+  getSiblingInfo,
+  switchBranch,
+  updateNodeContent,
+  messagesToTree,
+  isBranchPoint,
+  generateId,
+  isImageFile,
+  createPreviewUrl,
+  revokePreviewUrl,
 } from './chat'
 
 // Brand

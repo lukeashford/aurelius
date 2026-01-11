@@ -1,11 +1,20 @@
 import React, {useEffect} from 'react'
-import {Message, type MessageProps, type MessageVariant} from '../Message'
+import {Message, type MessageProps, type MessageVariant, type MessageBranchInfo, type MessageActionsConfig} from '../Message'
 import {cx} from '../../utils/cx'
 import {useScrollAnchor} from './hooks/useScrollAnchor'
+import {ThinkingIndicator} from './ThinkingIndicator'
 
 export interface ChatViewItem extends Omit<MessageProps, 'variant' | 'children'> {
   id?: string
   variant?: MessageVariant
+  /**
+   * Branch navigation info for this message
+   */
+  branchInfo?: MessageBranchInfo
+  /**
+   * Actions configuration for this message
+   */
+  actions?: MessageActionsConfig
 }
 
 export interface ChatViewProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -23,6 +32,10 @@ export interface ChatViewProps extends React.HTMLAttributes<HTMLDivElement> {
    */
   isStreaming?: boolean
   /**
+   * Whether to show the thinking indicator (between user message and response)
+   */
+  isThinking?: boolean
+  /**
    * Callback when the user scrolls manually
    */
   onScroll?: (e: React.UIEvent<HTMLDivElement>) => void
@@ -37,7 +50,7 @@ export interface ChatViewProps extends React.HTMLAttributes<HTMLDivElement> {
  * - Smooth transitions and animations
  */
 export const ChatView = React.forwardRef<HTMLDivElement, ChatViewProps>(
-  ({messages, latestUserMessageIndex, isStreaming, onScroll, className, ...rest}, ref) => {
+  ({messages, latestUserMessageIndex, isStreaming, isThinking, onScroll, className, ...rest}, ref) => {
     const {containerRef, anchorRef, scrollToAnchor} = useScrollAnchor({
       behavior: 'smooth',
       block: 'start',
@@ -58,6 +71,10 @@ export const ChatView = React.forwardRef<HTMLDivElement, ChatViewProps>(
         return found
       }, -1)
 
+    // Determine if we should show thinking indicator
+    // Show when isThinking is true AND there are messages AND the last message is from user
+    const showThinking = isThinking && messages.length > 0 && messages[messages.length - 1]?.variant === 'user'
+
     return (
       <div
         ref={(node) => {
@@ -77,10 +94,12 @@ export const ChatView = React.forwardRef<HTMLDivElement, ChatViewProps>(
         )}
         {...rest}
       >
-        {messages.map(({id, variant, className: messageClassName, ...messageProps}, index) => {
+        {messages.map(({id, variant, className: messageClassName, branchInfo, actions, ...messageProps}, index) => {
           const isAnchor = index === latestUserIdx
           const isLastMessage = index === messages.length - 1
           const showStreaming = isLastMessage && isStreaming && variant === 'assistant'
+          // Hide actions during streaming
+          const hideActions = isStreaming
 
           return (
             <div
@@ -92,11 +111,19 @@ export const ChatView = React.forwardRef<HTMLDivElement, ChatViewProps>(
                 variant={variant}
                 isStreaming={showStreaming}
                 className={messageClassName}
+                branchInfo={branchInfo}
+                actions={actions}
+                hideActions={hideActions}
                 {...messageProps}
               />
             </div>
           )
         })}
+
+        {/* Thinking indicator */}
+        {showThinking && (
+          <ThinkingIndicator isVisible />
+        )}
       </div>
     )
   }

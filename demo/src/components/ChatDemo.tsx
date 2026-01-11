@@ -1,8 +1,13 @@
-import React, {useState, useCallback, useRef} from 'react'
+import React, {useState, useCallback, useRef, useEffect} from 'react'
 import {
   ChatInterface,
-  type ChatMessage,
   type Conversation,
+  type ConversationTree,
+  type Attachment,
+  createEmptyTree,
+  addMessageToTree,
+  updateNodeContent,
+  generateId,
 } from '@lukeashford/aurelius'
 
 // Mock response content for the first message (no artifacts)
@@ -11,9 +16,10 @@ const FIRST_RESPONSE = `<p>Thanks for your message! I'm here to demonstrate the 
 <ul>
 <li><strong>Smart scrolling</strong> — Your message anchors to the top, my response streams below</li>
 <li><strong>Collapsible sidebar</strong> — Click the collapse button on the left</li>
-<li><strong>Artifacts panel</strong> — Will appear when I send rich content</li>
+<li><strong>Message actions</strong> — Hover over messages to copy, edit, or retry</li>
+<li><strong>File attachments</strong> — Click the paperclip or drag files to attach</li>
 </ul>
-<p>Send another message to see the <em>artifacts panel</em> in action!</p>`
+<p>Try editing this response or sending another message!</p>`
 
 // Mock response content for the second message (with artifacts)
 const SECOND_RESPONSE = `<p>Great! Now I'll show you the artifacts panel with some rich content.</p>
@@ -23,6 +29,16 @@ const SECOND_RESPONSE = `<p>Great! Now I'll show you the artifacts panel with so
 :::artifact{type="image" src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800" alt="Code visualization" title="Component Architecture" subtitle="A visual guide to structuring your React components"}:::
 
 <p>You can collapse or expand the artifacts panel at any time. Try sending more messages to see how the interface responds!</p>`
+
+// Slow response for stop demo
+const SLOW_RESPONSE = `<p>This is a deliberately slow response to demonstrate the Stop button.</p>
+<p>Watch the input area — you'll see a red Stop button appear instead of the Send button while I'm generating.</p>
+<p>Click it to stop generation at any point. The partial response will be kept.</p>
+<p>This is useful when you want to interrupt a long response or if you realize you asked the wrong question.</p>
+<p>The streaming will continue... slowly... so you have time to stop it.</p>
+<p>Still going...</p>
+<p>And going...</p>
+<p>You can stop me anytime!</p>`
 
 // Additional responses
 const ADDITIONAL_RESPONSES = [
@@ -48,128 +64,222 @@ const ADDITIONAL_RESPONSES = [
 <p>Each artifact can have a title and subtitle for context. The panel supports scrolling when content overflows.</p>`,
 ]
 
-// Mock conversation history with pre-filled messages
-const MOCK_CONVERSATION_MESSAGES: Record<string, ChatMessage[]> = {
-  '2': [
-    {id: 'prev-user-1', variant: 'user', content: 'How should I structure my components?'},
-    {id: 'prev-assistant-1', variant: 'assistant', content: '<p>For component architecture, I recommend:</p><ul><li><strong>Atomic design</strong> — Start with small, reusable atoms</li><li><strong>Composition</strong> — Build complex UIs from simple parts</li><li><strong>Single responsibility</strong> — Each component does one thing well</li></ul>'},
-  ],
-  '3': [
-    {id: 'design-user-1', variant: 'user', content: 'Can you review the current design?'},
-    {id: 'design-assistant-1', variant: 'assistant', content: '<p>Looking at the UI, I notice a few things:</p><ol><li>The color palette is cohesive and professional</li><li>Typography hierarchy is clear</li><li>Spacing follows a consistent rhythm</li></ol><p>Overall, it looks great!</p>'},
-  ],
-  '4': [
-    {id: 'bug-user-1', variant: 'user', content: 'There seems to be an issue with the layout'},
-    {id: 'bug-assistant-1', variant: 'assistant', content: '<p>Let me investigate. The issue seems to be related to flexbox overflow behavior. Try adding <code>min-width: 0</code> to the flex child that\'s overflowing.</p>'},
-    {id: 'bug-user-2', variant: 'user', content: 'That worked, thanks!'},
-    {id: 'bug-assistant-2', variant: 'assistant', content: '<p>Glad I could help! This is a common gotcha with flexbox. The default min-width is auto, which can cause unexpected overflow.</p>'},
-  ],
+// Create a pre-populated conversation tree with branches
+function createBranchingDemoTree(): ConversationTree {
+  let tree = createEmptyTree()
+
+  // Root user message
+  tree = addMessageToTree(tree, {
+    id: 'branch-user-1',
+    role: 'user',
+    content: 'What programming language should I learn first?',
+    parentId: null,
+  }, null)
+
+  // First assistant response
+  tree = addMessageToTree(tree, {
+    id: 'branch-assistant-1a',
+    role: 'assistant',
+    content: '<p>I recommend starting with <strong>Python</strong>! It has:</p><ul><li>Clean, readable syntax</li><li>Huge ecosystem of libraries</li><li>Great for beginners and professionals alike</li></ul>',
+    parentId: 'branch-user-1',
+  }, 'branch-user-1')
+
+  // Add a second branch (alternative response) - this creates a sibling
+  const node1a = tree.nodes['branch-assistant-1a']
+  tree = {
+    ...tree,
+    nodes: {
+      ...tree.nodes,
+      'branch-assistant-1b': {
+        id: 'branch-assistant-1b',
+        role: 'assistant',
+        content: '<p>I\'d suggest <strong>JavaScript</strong> as your first language:</p><ul><li>Runs everywhere (browser, server, mobile)</li><li>Immediate visual feedback</li><li>Essential for web development</li></ul>',
+        parentId: 'branch-user-1',
+        children: [],
+        branchIndex: 1,
+      },
+      'branch-user-1': {
+        ...tree.nodes['branch-user-1'],
+        children: ['branch-assistant-1a', 'branch-assistant-1b'],
+      },
+    },
+  }
+
+  // Continue the Python branch
+  tree = addMessageToTree(tree, {
+    id: 'branch-user-2',
+    role: 'user',
+    content: 'What should I build first with Python?',
+    parentId: 'branch-assistant-1a',
+  }, 'branch-assistant-1a')
+
+  tree = addMessageToTree(tree, {
+    id: 'branch-assistant-2',
+    role: 'assistant',
+    content: '<p>Here are some great first projects:</p><ol><li><strong>Calculator</strong> — Practice basic logic</li><li><strong>Todo app</strong> — Learn data structures</li><li><strong>Web scraper</strong> — Explore libraries</li></ol><p>Start small and build up!</p>',
+    parentId: 'branch-user-2',
+  }, 'branch-user-2')
+
+  return tree
 }
 
 // Mock conversation history
 const MOCK_CONVERSATIONS: Conversation[] = [
-  {id: '1', title: 'Current Chat', preview: 'Interactive demo session', timestamp: 'Now', isActive: true},
-  {id: '2', title: 'Previous Discussion', preview: 'Component architecture...', timestamp: 'Yesterday'},
-  {id: '3', title: 'Design Review', preview: 'Looking at the UI...', timestamp: '2 days ago'},
-  {id: '4', title: 'Bug Investigation', preview: 'The issue seems to be...', timestamp: 'Last week'},
+  {id: '1', title: 'Interactive Demo', preview: 'Try all features...', timestamp: 'Now', isActive: true},
+  {id: 'branching', title: 'Branching Demo', preview: 'Explore alternate paths...', timestamp: 'Pinned', isActive: false},
 ]
 
 export default function ChatDemo() {
-  const [messages, setMessages] = useState<ChatMessage[]>([])
+  const [conversationTree, setConversationTree] = useState<ConversationTree>(createEmptyTree())
   const [isStreaming, setIsStreaming] = useState(false)
+  const [isThinking, setIsThinking] = useState(false)
   const [conversations, setConversations] = useState(MOCK_CONVERSATIONS)
   const [activeConversationId, setActiveConversationId] = useState('1')
   const responseIndexRef = useRef(0)
+  const streamIntervalRef = useRef<NodeJS.Timeout | null>(null)
+  const currentMessageIdRef = useRef<string | null>(null)
 
-  // Simulate streaming a response word by word (or by special tokens like :::)
-  const streamResponse = useCallback((response: string, onComplete: () => void) => {
-    const messageId = `assistant-${Date.now()}`
+  // Track attachments for mock upload simulation
+  const [, setAttachments] = useState<Attachment[]>([])
 
-    // Split into tokens: words, whitespace, and special artifact delimiters
-    // This ensures artifact syntax streams as coherent units
+  // Cleanup interval on unmount
+  useEffect(() => {
+    return () => {
+      if (streamIntervalRef.current) {
+        clearInterval(streamIntervalRef.current)
+      }
+    }
+  }, [])
+
+  // Simulate streaming a response
+  const streamResponse = useCallback((response: string, onComplete: () => void, slow = false) => {
+    const messageId = generateId()
+    currentMessageIdRef.current = messageId
+
+    // Split into tokens
     const tokens: string[] = []
     let remaining = response
     while (remaining.length > 0) {
-      // Match artifact delimiters as single tokens
       const artifactMatch = remaining.match(/^:::artifact\{[^}]*\}:::/)
       if (artifactMatch) {
         tokens.push(artifactMatch[0])
         remaining = remaining.slice(artifactMatch[0].length)
         continue
       }
-      // Match words (including HTML tags as units)
       const wordMatch = remaining.match(/^(<[^>]+>|[^\s<]+)/)
       if (wordMatch) {
         tokens.push(wordMatch[0])
         remaining = remaining.slice(wordMatch[0].length)
         continue
       }
-      // Match whitespace
       const spaceMatch = remaining.match(/^\s+/)
       if (spaceMatch) {
         tokens.push(spaceMatch[0])
         remaining = remaining.slice(spaceMatch[0].length)
         continue
       }
-      // Fallback: single character
       tokens.push(remaining[0])
       remaining = remaining.slice(1)
     }
 
     let currentTokenIndex = 0
 
-    // Add empty assistant message
-    setMessages((prev) => [
-      ...prev,
-      {id: messageId, variant: 'assistant', content: '', isStreaming: true},
-    ])
+    // Add empty assistant message to tree
+    setConversationTree((prev) => {
+      const parentId = prev.activeLeafId
+      return addMessageToTree(prev, {
+        id: messageId,
+        role: 'assistant',
+        content: '',
+        parentId,
+        isStreaming: true,
+      }, parentId)
+    })
 
-    const interval = setInterval(() => {
+    const interval = slow ? 150 : 30 // Slower for stop demo
+    streamIntervalRef.current = setInterval(() => {
       if (currentTokenIndex < tokens.length) {
         const chunk = tokens.slice(0, currentTokenIndex + 1).join('')
-        setMessages((prev) =>
-          prev.map((msg) =>
-            msg.id === messageId ? {...msg, content: chunk} : msg
-          )
-        )
+        setConversationTree((prev) => updateNodeContent(prev, messageId, chunk, true))
         currentTokenIndex++
       } else {
-        clearInterval(interval)
-        setMessages((prev) =>
-          prev.map((msg) =>
-            msg.id === messageId ? {...msg, isStreaming: false} : msg
-          )
-        )
+        if (streamIntervalRef.current) {
+          clearInterval(streamIntervalRef.current)
+          streamIntervalRef.current = null
+        }
+        setConversationTree((prev) => updateNodeContent(prev, messageId, tokens.join(''), false))
+        currentMessageIdRef.current = null
         onComplete()
       }
-    }, 30) // Slightly slower interval since we're streaming larger chunks
-
-    return () => clearInterval(interval)
+    }, interval)
   }, [])
 
+  // Handle stop generation
+  const handleStop = useCallback(() => {
+    if (streamIntervalRef.current) {
+      clearInterval(streamIntervalRef.current)
+      streamIntervalRef.current = null
+    }
+    if (currentMessageIdRef.current) {
+      setConversationTree((prev) => {
+        const node = prev.nodes[currentMessageIdRef.current!]
+        if (node) {
+          return updateNodeContent(prev, currentMessageIdRef.current!, node.content, false)
+        }
+        return prev
+      })
+      currentMessageIdRef.current = null
+    }
+    setIsStreaming(false)
+    setIsThinking(false)
+  }, [])
+
+  // Handle message submission
   const handleSubmit = useCallback(
-    (message: string) => {
+    (message: string, attachments?: Attachment[]) => {
       if (isStreaming) return
 
-      // Add user message
-      const userMessage: ChatMessage = {
-        id: `user-${Date.now()}`,
-        variant: 'user',
-        content: message,
+      // Simulate attachment upload
+      if (attachments && attachments.length > 0) {
+        setAttachments(attachments.map(a => ({...a, status: 'uploading' as const})))
+        setTimeout(() => {
+          setAttachments(attachments.map(a => ({...a, status: 'complete' as const})))
+        }, 2000)
       }
-      setMessages((prev) => [...prev, userMessage])
+
+      // Add user message to tree
+      const userMessageId = generateId()
+      setConversationTree((prev) => {
+        const parentId = prev.activeLeafId
+        return addMessageToTree(prev, {
+          id: userMessageId,
+          role: 'user',
+          content: message,
+          parentId,
+        }, parentId)
+      })
+
       setIsStreaming(true)
+      setIsThinking(true)
 
-      // Small delay before starting response
+      // Simulate thinking delay (1-2s)
+      const thinkingDelay = 1000 + Math.random() * 1000
       setTimeout(() => {
-        let response: string
+        setIsThinking(false)
 
-        if (responseIndexRef.current === 0) {
+        let response: string
+        let slow = false
+
+        // Check for specific demo triggers
+        const lowerMessage = message.toLowerCase()
+        if (lowerMessage.includes('slow') || lowerMessage.includes('stop')) {
+          response = SLOW_RESPONSE
+          slow = true
+        } else if (responseIndexRef.current === 0) {
           response = FIRST_RESPONSE
         } else if (responseIndexRef.current === 1) {
           response = SECOND_RESPONSE
         } else {
-          // Cycle through additional responses
           const additionalIndex = (responseIndexRef.current - 2) % ADDITIONAL_RESPONSES.length
           response = ADDITIONAL_RESPONSES[additionalIndex]
         }
@@ -178,19 +288,93 @@ export default function ChatDemo() {
 
         streamResponse(response, () => {
           setIsStreaming(false)
-        })
-      }, 300)
+        }, slow)
+      }, thinkingDelay)
     },
     [isStreaming, streamResponse]
   )
 
+  // Handle edit message (creates a branch)
+  const handleEditMessage = useCallback((messageId: string, newContent: string) => {
+    const node = conversationTree.nodes[messageId]
+    if (!node || node.role !== 'user') return
+
+    // Add the edited message as a new branch from the same parent
+    const newMessageId = generateId()
+    setConversationTree((prev) => {
+      const parentId = node.parentId
+      return addMessageToTree(prev, {
+        id: newMessageId,
+        role: 'user',
+        content: newContent,
+        parentId,
+      }, parentId)
+    })
+
+    // Trigger a new response
+    setIsStreaming(true)
+    setIsThinking(true)
+
+    setTimeout(() => {
+      setIsThinking(false)
+      const response = '<p>I see you\'ve edited your message! This created a new branch in the conversation. You can use the branch navigator (← 1/2 →) above messages to switch between different paths.</p>'
+      streamResponse(response, () => {
+        setIsStreaming(false)
+      })
+    }, 1500)
+  }, [conversationTree, streamResponse])
+
+  // Handle retry message (creates a branch)
+  const handleRetryMessage = useCallback((messageId: string) => {
+    const node = conversationTree.nodes[messageId]
+    if (!node || node.role !== 'assistant') return
+
+    // Add a new assistant response as a sibling
+    setIsStreaming(true)
+    setIsThinking(true)
+
+    setTimeout(() => {
+      setIsThinking(false)
+      const newMessageId = generateId()
+      setConversationTree((prev) => {
+        const parentId = node.parentId
+        return addMessageToTree(prev, {
+          id: newMessageId,
+          role: 'assistant',
+          content: '',
+          parentId,
+          isStreaming: true,
+        }, parentId)
+      })
+
+      const response = '<p>Here\'s an alternative response! When you retry, it creates a new branch. You can navigate between different responses using the branch indicator above.</p><p>This is great for exploring different conversation paths or getting a fresh perspective on a topic.</p>'
+
+      // Stream the response
+      const tokens = response.split(/(\s+)/).filter(Boolean)
+      let currentIndex = 0
+
+      const streamIt = () => {
+        if (currentIndex < tokens.length) {
+          const chunk = tokens.slice(0, currentIndex + 1).join('')
+          setConversationTree((prev) => updateNodeContent(prev, newMessageId, chunk, true))
+          currentIndex++
+          setTimeout(streamIt, 30)
+        } else {
+          setConversationTree((prev) => updateNodeContent(prev, newMessageId, response, false))
+          setIsStreaming(false)
+        }
+      }
+      streamIt()
+    }, 1500)
+  }, [conversationTree])
+
+  // Handle new chat
   const handleNewChat = useCallback(() => {
     const newId = `chat-${Date.now()}`
-    setMessages([])
+    setConversationTree(createEmptyTree())
     responseIndexRef.current = 0
     setActiveConversationId(newId)
 
-    // Add new chat to conversations
     const newChat: Conversation = {
       id: newId,
       title: 'New Chat',
@@ -204,17 +388,20 @@ export default function ChatDemo() {
     )
   }, [])
 
+  // Handle conversation selection
   const handleSelectConversation = useCallback((id: string) => {
     if (id === activeConversationId) return
 
     setActiveConversationId(id)
     responseIndexRef.current = 0
 
-    // Load mock messages for the selected conversation
-    const mockMessages = MOCK_CONVERSATION_MESSAGES[id] || []
-    setMessages(mockMessages)
+    if (id === 'branching') {
+      // Load the branching demo
+      setConversationTree(createBranchingDemoTree())
+    } else {
+      setConversationTree(createEmptyTree())
+    }
 
-    // Update conversations to mark the selected one as active
     setConversations((prev) =>
       prev.map((c) => ({...c, isActive: c.id === id}))
     )
@@ -223,6 +410,18 @@ export default function ChatDemo() {
   const handleBack = useCallback(() => {
     window.location.hash = ''
   }, [])
+
+  // Determine empty state helper based on conversation
+  const getEmptyStateHelper = () => {
+    if (activeConversationId === 'branching') {
+      return 'This conversation has branches — look for the ← 1/2 → indicators to explore alternate paths'
+    }
+    return (
+      <span>
+        Type anything to start. Try <em>&quot;show me something slow&quot;</em> to test the Stop button, or attach a file!
+      </span>
+    )
+  }
 
   return (
     <div className="h-screen w-screen flex flex-col bg-obsidian">
@@ -245,22 +444,33 @@ export default function ChatDemo() {
           <div className="h-6 w-px bg-ash/40" />
           <h1 className="text-lg font-semibold text-white">Chat Interface Demo</h1>
         </div>
-        <p className="text-sm text-silver hidden sm:block">
-          Type anything to interact with the mock assistant
-        </p>
+        <div className="flex items-center gap-4">
+          <p className="text-sm text-silver hidden md:block">
+            {activeConversationId === 'branching'
+              ? 'Explore the branching demo — use ← → to navigate alternate paths'
+              : 'Hover messages for actions • Drag files to attach • Type "slow" to test Stop'}
+          </p>
+        </div>
       </header>
 
       {/* Chat Interface */}
       <div className="flex-1 overflow-hidden">
         <ChatInterface
-          messages={messages}
+          conversationTree={conversationTree}
+          onTreeChange={setConversationTree}
           conversations={conversations}
           onMessageSubmit={handleSubmit}
+          onEditMessage={handleEditMessage}
+          onRetryMessage={handleRetryMessage}
+          onStop={handleStop}
           onSelectConversation={handleSelectConversation}
           onNewChat={handleNewChat}
           isStreaming={isStreaming}
+          isThinking={isThinking}
           placeholder="Send a message..."
-          emptyStateHelper="Type anything to see a sample response"
+          emptyStateHelper={getEmptyStateHelper()}
+          showAttachmentButton={true}
+          enableMessageActions={true}
         />
       </div>
     </div>

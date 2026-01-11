@@ -100,6 +100,7 @@ Import from `@lukeashford/aurelius`:
 |-----------|-------|
 | Accordion | defaultValue, value |
 | Alert | variant (info, success, warning, error), title |
+| AttachmentPreview | attachments, removable, maxVisible |
 | Avatar | src, alt, name, size (xs, sm, md, lg, xl, 2xl), status (online, offline, busy) |
 | Badge | variant (default, gold, success, error, warning, info) |
 | BrandIcon | size (sm, md, lg), variant (solid, outline) |
@@ -113,6 +114,7 @@ Import from `@lukeashford/aurelius`:
 | Dialog | description, confirmText, cancelText, isLoading |
 | Divider | orientation (horizontal, vertical), variant (solid, dashed, dotted), label |
 | Drawer | isOpen, position (left, right, top, bottom), title, children, className |
+| FileChip | name, size, type, status (pending, uploading, complete, error), previewUrl, removable, error |
 | HelperText | error |
 | ImageCard | src, alt, title, subtitle, aspectRatio (${number}/${number}), overlay, mediaClassName, contentClassName |
 | Input | error, leadingIcon, trailingIcon |
@@ -121,7 +123,7 @@ Import from `@lukeashford/aurelius`:
 | List | ordered |
 | MarkdownContent | content, sanitizeConfig |
 | Menu | children, open |
-| Message | variant (user, assistant), content, isStreaming |
+| Message | variant (user, assistant), content, isStreaming, branchInfo, actions, hideActions |
 | Modal | isOpen, title, children, className |
 | Navbar | fixed, bordered |
 | Pagination | page, totalPages, siblingCount, showEdges |
@@ -152,6 +154,27 @@ Import from `@lukeashford/aurelius`:
 - **defaultValue**: Default expanded item(s)
 - **value**: Controlled expanded item(s)
 - **onValueChange**: Callback when expanded items change
+
+**AttachmentPreview**
+- **attachments**: * Array of attachments to display
+- **onRemove**: * Called when an attachment should be removed
+- **removable**: * Whether attachments are removable
+- **maxVisible**: * Maximum number of attachments to show before collapsing Set to 0 or undefined to show all
+
+**FileChip**
+- **name**: * File name to display
+- **size**: * File size in bytes (optional, will be formatted)
+- **type**: * MIME type for icon selection
+- **status**: * Upload/processing status
+- **previewUrl**: * Preview image URL (for images)
+- **onRemove**: * Called when the remove button is clicked
+- **removable**: * Whether the chip is removable
+- **error**: * Error message to display (when status is 'error')
+
+**Message**
+- **branchInfo**: * Branch navigation info (shows branch indicator if provided and total > 1)
+- **actions**: * Actions configuration (shows action bar if provided)
+- **hideActions**: * Whether to hide actions (e.g., during streaming)
 
 **Popover**
 - **trigger**: The trigger element
