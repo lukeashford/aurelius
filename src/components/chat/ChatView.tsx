@@ -57,7 +57,7 @@ export const ChatView = React.forwardRef<HTMLDivElement, ChatViewProps>(
       block: 'start',
     })
 
-    const {contentRef, spacerHeight} = useAdaptiveSpacer({
+    const {contentRef, spacerRef, spacerHeight} = useAdaptiveSpacer({
       containerRef,
       anchorRef,
     })
@@ -136,6 +136,7 @@ export const ChatView = React.forwardRef<HTMLDivElement, ChatViewProps>(
 
         {/* Adaptive bottom spacer - fills remaining space exactly */}
         <div
+          ref={spacerRef}
           className="flex-shrink-0 pointer-events-none"
           style={{height: spacerHeight}}
           aria-hidden="true"

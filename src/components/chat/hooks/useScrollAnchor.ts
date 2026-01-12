@@ -54,9 +54,13 @@ export function useScrollAnchor(
     const el = anchorRef.current
     if (!el) return
 
-    // Small delay to ensure DOM has updated
+    // Double rAF to ensure layout updates (e.g., adaptive spacer) have been applied.
+    // First frame: other rAF callbacks (like spacer recalculation) run
+    // Second frame: scroll happens with correct layout
     requestAnimationFrame(() => {
-      el.scrollIntoView({behavior, block})
+      requestAnimationFrame(() => {
+        el.scrollIntoView({behavior, block})
+      })
     })
   }, [behavior, block])
 

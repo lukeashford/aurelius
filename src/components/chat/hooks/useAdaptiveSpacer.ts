@@ -27,6 +27,10 @@ export interface UseAdaptiveSpacerReturn {
    */
   contentRef: React.RefObject<HTMLDivElement | null>
   /**
+   * Ref to attach to the spacer element for imperative height updates
+   */
+  spacerRef: React.RefObject<HTMLDivElement | null>
+  /**
    * Calculated spacer height in pixels
    */
   spacerHeight: number
@@ -57,6 +61,7 @@ export function useAdaptiveSpacer(
   const internalContainerRef = useRef<HTMLDivElement>(null)
   const containerRef = externalContainerRef ?? internalContainerRef
   const contentRef = useRef<HTMLDivElement>(null)
+  const spacerRef = useRef<HTMLDivElement>(null)
   const [spacerHeight, setSpacerHeight] = useState(0)
 
   const recalculate = useCallback(() => {
@@ -86,6 +91,14 @@ export function useAdaptiveSpacer(
     }
 
     const newSpacerHeight = Math.max(minHeight, availableHeight - heightFromAnchorToBottom)
+
+    // Update DOM imperatively for immediate effect (before React commits state)
+    // This ensures scrollToAnchor sees the correct spacer height
+    if (spacerRef.current) {
+      spacerRef.current.style.height = `${newSpacerHeight}px`
+    }
+
+    // Also update state for React reconciliation
     setSpacerHeight(newSpacerHeight)
   }, [minHeight, anchorRef])
 
@@ -126,6 +139,7 @@ export function useAdaptiveSpacer(
   return {
     containerRef,
     contentRef,
+    spacerRef,
     spacerHeight,
     recalculate,
   }
