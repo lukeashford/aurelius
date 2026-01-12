@@ -240,7 +240,7 @@ Standard Tailwind classes for size (`text-sm`, `text-lg`, etc.), weight (`font-m
 **Columns (Tailwind built-in):** `col-span-{1-12}`, `col-span-full`, `col-auto`, `sm:col-span-*`, `md:col-span-*`, `lg:col-span-*`, `xl:col-span-*`
 
 ### Custom Utilities
-text-gradient-gold, glow, glow-sm, glow-md, glow-lg, font-heading, font-body, scroll-smooth, scrollbar-hide, backdrop-glass, focus-ring, line-clamp-2, line-clamp-3, center-absolute, aspect-wide, container, container-sm, container-md, container-lg, container-xl, container-fluid, row
+text-gradient-gold, glow, glow-sm, glow-md, glow-lg, flex-zero, font-heading, font-body, scroll-smooth, scrollbar-hide, backdrop-glass, focus-ring, line-clamp-2, line-clamp-3, center-absolute, aspect-wide, container, container-sm, container-md, container-lg, container-xl, container-fluid, row
 
 ### Opacity modifiers
 Append `/10`, `/20`, `/30`, etc. to colors: `bg-gold/20`, `border-ash/50`
