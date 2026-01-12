@@ -1,3 +1,40 @@
+## [2.10.0](https://github.com/lukeashford/aurelius/compare/v2.9.0...v2.10.0) (2026-01-12)
+
+### Features
+
+* **build:** add demo linting and refactor lint scripts ([b71c30c](https://github.com/lukeashford/aurelius/commit/b71c30ce5600f97f099c8df60d8260f7c2f87243))
+* **chat-demo:** improve attachment haptics ([b87cada](https://github.com/lukeashford/aurelius/commit/b87cadaa53f3583188beba250647c2785a536ef1))
+* **chat-demo:** revise helper text for message actions guidance ([a57bff8](https://github.com/lukeashford/aurelius/commit/a57bff81cf697fcd508eefddb46b412efb54ccdd))
+* **chat-input:** update layout for responsiveness and animation effects ([b6493ad](https://github.com/lukeashford/aurelius/commit/b6493adea43c206b0c9265c8b458966bcba3724a))
+* **chat-interface:** enhance section with aurelius components and styling adjustments ([c124662](https://github.com/lukeashford/aurelius/commit/c12466205c0174bc4a666844a588c413d8d02897))
+* **chat:** add message actions, branching, attachments, and thinking indicator ([b9269cc](https://github.com/lukeashford/aurelius/commit/b9269cc39e272a34ca44c9a7769537b0b2117650))
+* **chat:** add production-grade chat interface components ([a16ceb1](https://github.com/lukeashford/aurelius/commit/a16ceb1fb0b9ccd24be221b3d8eefb6cc4cade22)), closes [#chat-demo](https://github.com/lukeashford/aurelius/issues/chat-demo)
+* **chat:** implement adaptive spacer for precise viewport fill ([3013a5b](https://github.com/lukeashford/aurelius/commit/3013a5bbc72c34baea5978e568b26a83f32ca120))
+* **chat:** improve panel UX with symmetric toggle behavior ([d0f9261](https://github.com/lukeashford/aurelius/commit/d0f92615228c97850e1d48f547119d6e136c42a0))
+* **chat:** improve scroll anchoring and thinking indicator variety ([0b84f30](https://github.com/lukeashford/aurelius/commit/0b84f3089e3ecd6a7e77b0d4a3fda6e5a1a64015))
+* **styles:** adjust fonts for same size ([e90243d](https://github.com/lukeashford/aurelius/commit/e90243d4cbaa0e72e77f960219b8dfdeacc3b668))
+* **styles:** reset default color variables in theme ([7f737bf](https://github.com/lukeashford/aurelius/commit/7f737bfb96f149d357df675f975ad9e16d74fed8))
+
+### Bug Fixes
+
+* add flex-zero utility for proper collapse behavior ([4457564](https://github.com/lukeashford/aurelius/commit/445756443971579644360b00848acbae43ebe326))
+* **artifacts:** persist artifacts after streaming ends and fix demo page issues ([f91c40a](https://github.com/lukeashford/aurelius/commit/f91c40ab14738411bfd6db6d99db6e9762a850a1))
+* **artifacts:** use stable IDs and improve demo streaming ([98dc23e](https://github.com/lukeashford/aurelius/commit/98dc23e0273a16e946b04b0cf37ebc4b29496027))
+* **chat-view:** show actions on all non-streaming messages ([c5e6cb4](https://github.com/lukeashford/aurelius/commit/c5e6cb407453fac6d31de805b917de6010c69c34))
+* **chat:** add position relative to content wrapper for reliable offsetTop ([aaf4a53](https://github.com/lukeashford/aurelius/commit/aaf4a53a7c18bc41dedc1ca8bfe0b2a3e4dacf49))
+* **chat:** address UI feedback and enforce square corners ([acc8141](https://github.com/lukeashford/aurelius/commit/acc81416aa723b1d58272b45d23ec6fb608cbef8))
+* **chat:** calculate spacer based on anchor position ([ad5279c](https://github.com/lukeashford/aurelius/commit/ad5279c97f60601eef056688521f324700cf8a36))
+* **chat:** ensure spacer updates before scroll for subsequent messages ([821b66e](https://github.com/lukeashford/aurelius/commit/821b66e06eb6f523c0eb456c5aa0f17b69fa61cc))
+* **chat:** improve message actions and edit UX ([4f281ee](https://github.com/lukeashford/aurelius/commit/4f281eed9aa42ad6bcdd57b18e7e2caf8f6bc362))
+* **chat:** inject streaming cursor inside markdown content ([cb624a2](https://github.com/lukeashford/aurelius/commit/cb624a20c24edfc7e61e9fbf72aea63a057e663a))
+* **chat:** prevent cursor pulsing after Stop by not spreading node isStreaming ([d2d4472](https://github.com/lukeashford/aurelius/commit/d2d44724b12d102cb26ae7043f5cd5f041a4960f))
+* **chat:** use offsetTop for stable anchor measurement ([e8f8336](https://github.com/lukeashford/aurelius/commit/e8f8336b2a2375d2d005c2143afb9cd7db6b2c7b))
+* **ci:** use lint:core in release workflow to match test workflow ([13f88e5](https://github.com/lukeashford/aurelius/commit/13f88e5807f54590d9c9d5b3d3c8c06bd9df58ad))
+* **ci:** use lint:core in release workflow to match test workflow ([#21](https://github.com/lukeashford/aurelius/issues/21)) ([1d097e4](https://github.com/lukeashford/aurelius/commit/1d097e4ccd6a3b6dcec27bc3c4840855c5ccb9b3))
+* **e2e:** adjust to new features ([34b048c](https://github.com/lukeashford/aurelius/commit/34b048ca908d8aba548bc71fda24d049b9906cb7))
+* resolve linting errors and update snapshots for new features ([954e771](https://github.com/lukeashford/aurelius/commit/954e771c8ab122e309aa1566f9256557f718540b))
+* **video-cards:** lint error ([3997d28](https://github.com/lukeashford/aurelius/commit/3997d28e74ee98edb6efffe491dfd7de73a02e55))
+
 ## [2.9.0](https://github.com/lukeashford/aurelius/compare/v2.8.0...v2.9.0) (2026-01-10)
 
 ### Features
