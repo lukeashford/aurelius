@@ -28,7 +28,6 @@ export default function ChatInterfaceSection() {
             <div className="text-silver leading-relaxed">
               <p>
                 See how the system comes to life in a fully-featured AI interface.
-                <p></p>
                 By harmonizing our typography, components, and signature color palette, we have
                 orchestrated a flagship interactive experience.
               </p>

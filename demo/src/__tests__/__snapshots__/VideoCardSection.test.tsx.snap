@@ -38,7 +38,7 @@ exports[`VideoCardSection matches snapshot 1`] = `
             class="rounded-none relative bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-full"
           >
             <div
-              class="relative bg-black overflow-hidden"
+              class="relative bg-obsidian overflow-hidden"
             >
               <div
                 class="absolute top-0 left-0"
@@ -67,7 +67,7 @@ exports[`VideoCardSection matches snapshot 1`] = `
             class="rounded-none relative bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-full"
           >
             <div
-              class="relative bg-black overflow-hidden"
+              class="relative bg-obsidian overflow-hidden"
             >
               <div
                 class="absolute top-0 left-0"

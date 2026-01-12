@@ -121,7 +121,7 @@ Import from `@lukeashford/aurelius`:
 | InputGroup | children |
 | Label | required |
 | List | ordered |
-| MarkdownContent | content, sanitizeConfig |
+| MarkdownContent | content, sanitizeConfig, isStreaming, cursorClassName |
 | Menu | children, open |
 | Message | variant (user, assistant), content, isStreaming, branchInfo, actions, hideActions |
 | Modal | isOpen, title, children, className |
@@ -170,6 +170,10 @@ Import from `@lukeashford/aurelius`:
 - **onRemove**: * Called when the remove button is clicked
 - **removable**: * Whether the chip is removable
 - **error**: * Error message to display (when status is 'error')
+
+**MarkdownContent**
+- **isStreaming**: * When true, injects a streaming cursor at the end of the content
+- **cursorClassName**: * Additional classes for the streaming cursor
 
 **Message**
 - **branchInfo**: * Branch navigation info (shows branch indicator if provided and total > 1)
@@ -236,7 +240,7 @@ Standard Tailwind classes for size (`text-sm`, `text-lg`, etc.), weight (`font-m
 **Columns (Tailwind built-in):** `col-span-{1-12}`, `col-span-full`, `col-auto`, `sm:col-span-*`, `md:col-span-*`, `lg:col-span-*`, `xl:col-span-*`
 
 ### Custom Utilities
-text-gradient-gold, glow, glow-sm, glow-md, glow-lg, scroll-smooth, scrollbar-hide, backdrop-glass, focus-ring, line-clamp-2, line-clamp-3, center-absolute, aspect-wide, container, container-sm, container-md, container-lg, container-xl, container-fluid, row
+text-gradient-gold, glow, glow-sm, glow-md, glow-lg, font-heading, font-body, scroll-smooth, scrollbar-hide, backdrop-glass, focus-ring, line-clamp-2, line-clamp-3, center-absolute, aspect-wide, container, container-sm, container-md, container-lg, container-xl, container-fluid, row
 
 ### Opacity modifiers
 Append `/10`, `/20`, `/30`, etc. to colors: `bg-gold/20`, `border-ash/50`
