@@ -101,7 +101,7 @@ export const ChatView = React.forwardRef<HTMLDivElement, ChatViewProps>(
         {...rest}
       >
         {/* Content wrapper for adaptive spacer measurement */}
-        <div ref={contentRef} className="flex flex-col gap-3">
+        <div ref={contentRef} className="relative flex flex-col gap-3">
           {messages.map(({id, variant, className: messageClassName, branchInfo, actions, isStreaming: _nodeIsStreaming, ...messageProps}, index) => {
             const isAnchor = index === latestUserIdx
             const isLastMessage = index === messages.length - 1

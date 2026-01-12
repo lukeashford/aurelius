@@ -77,8 +77,8 @@ export function useAdaptiveSpacer(
 
     if (anchor && content.contains(anchor)) {
       // Anchor's position from the top of content (the "zero" point)
-      // Subtract content's offsetTop to get position relative to content
-      const anchorTop = anchor.offsetTop - content.offsetTop
+      // Content wrapper has position:relative, so offsetTop is relative to it
+      const anchorTop = anchor.offsetTop
       heightFromAnchorToBottom = content.scrollHeight - anchorTop
     } else {
       // No anchor, use total content height
