@@ -1,6 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react'
 import {MarkdownContent} from './MarkdownContent'
-import {StreamingCursor} from './StreamingCursor'
 import {cx} from '../utils/cx'
 
 export type MessageVariant = 'user' | 'assistant'
@@ -281,8 +280,9 @@ export const Message = React.forwardRef<HTMLDivElement, MessageProps>(
             <MarkdownContent
               content={content}
               className={cx('prose-sm', isUser ? 'prose-inherit' : 'prose-invert')}
+              isStreaming={isStreaming}
+              cursorClassName="ml-0.5"
             />
-            {isStreaming && <StreamingCursor className="ml-0.5" />}
           </div>
         )}
 
