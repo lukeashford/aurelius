@@ -10,6 +10,11 @@ export interface UseAdaptiveSpacerOptions {
    * Useful when sharing the container ref with other hooks (e.g., useScrollAnchor).
    */
   containerRef?: React.RefObject<HTMLDivElement | null>
+  /**
+   * Ref to the anchor element (e.g., latest user message).
+   * When provided, spacer is calculated to allow anchor to scroll to top.
+   */
+  anchorRef?: React.RefObject<HTMLDivElement | null>
 }
 
 export interface UseAdaptiveSpacerReturn {
@@ -32,20 +37,22 @@ export interface UseAdaptiveSpacerReturn {
 }
 
 /**
- * Hook that calculates the exact spacer height needed to fill remaining viewport space.
+ * Hook that calculates the exact spacer height needed to fill remaining viewport space
+ * while allowing the anchor element to scroll to the top.
  *
  * The spacer height is calculated as:
- * spacerHeight = max(minHeight, containerHeight - contentHeight)
+ * spacerHeight = containerHeight - padding - heightFromAnchorToBottom
  *
  * This ensures:
- * - When content is small, spacer fills the remaining space (no scrollbar)
- * - As content grows, spacer shrinks
- * - When content exceeds container, spacer becomes minHeight (usually 0)
+ * - The anchor message can scroll to the top of the viewport
+ * - Below the anchor, content + spacer fills exactly the remaining space
+ * - As content below anchor grows, spacer shrinks
+ * - When content exceeds available space, spacer becomes 0
  */
 export function useAdaptiveSpacer(
   options: UseAdaptiveSpacerOptions = {}
 ): UseAdaptiveSpacerReturn {
-  const {minHeight = 0, containerRef: externalContainerRef} = options
+  const {minHeight = 0, containerRef: externalContainerRef, anchorRef} = options
 
   const internalContainerRef = useRef<HTMLDivElement>(null)
   const containerRef = externalContainerRef ?? internalContainerRef
@@ -57,12 +64,32 @@ export function useAdaptiveSpacer(
     const content = contentRef.current
     if (!container || !content) return
 
-    const containerHeight = container.clientHeight
-    const contentHeight = content.scrollHeight
+    // Get container's computed padding
+    const style = getComputedStyle(container)
+    const paddingTop = parseFloat(style.paddingTop) || 0
+    const paddingBottom = parseFloat(style.paddingBottom) || 0
+    const availableHeight = container.clientHeight - paddingTop - paddingBottom
 
-    const newSpacerHeight = Math.max(minHeight, containerHeight - contentHeight)
+    // Calculate height from anchor to bottom of content
+    let heightFromAnchorToBottom: number
+    const anchor = anchorRef?.current
+
+    if (anchor && content.contains(anchor)) {
+      // Get anchor's position relative to content wrapper
+      const anchorRect = anchor.getBoundingClientRect()
+      const contentRect = content.getBoundingClientRect()
+      const anchorOffsetInContent = anchorRect.top - contentRect.top
+
+      // Height from anchor start to content bottom
+      heightFromAnchorToBottom = content.scrollHeight - anchorOffsetInContent
+    } else {
+      // No anchor, use total content height
+      heightFromAnchorToBottom = content.scrollHeight
+    }
+
+    const newSpacerHeight = Math.max(minHeight, availableHeight - heightFromAnchorToBottom)
     setSpacerHeight(newSpacerHeight)
-  }, [minHeight])
+  }, [minHeight, anchorRef])
 
   useEffect(() => {
     const container = containerRef.current

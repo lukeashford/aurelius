@@ -59,6 +59,7 @@ export const ChatView = React.forwardRef<HTMLDivElement, ChatViewProps>(
 
     const {contentRef, spacerHeight} = useAdaptiveSpacer({
       containerRef,
+      anchorRef,
     })
 
     // Scroll to anchor when latest user message index changes
