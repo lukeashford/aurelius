@@ -437,6 +437,11 @@
   box-shadow: var(--shadow-glow-lg);
 }
 
+/* Flex utility for collapsing to zero size (0 0 0%) - use with flex-1 for expand/collapse animations */
+@utility flex-zero {
+  flex: 0 0 0%;
+}
+
 @utility font-heading {
   font-family: var(--font-heading);
   font-size-adjust: 0.5;

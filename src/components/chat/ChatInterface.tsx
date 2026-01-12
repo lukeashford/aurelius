@@ -324,13 +324,13 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
                 {/* Top spacer for centering in empty state */}
                 <div className={cx(
                     "transition-all duration-500 ease-in-out",
-                    isEmpty ? "flex-1" : "flex-none"
+                    isEmpty ? "flex-1" : "flex-zero"
                 )}/>
 
                 {/* Messages Area */}
                 <div className={cx(
                     "transition-all duration-500 ease-in-out overflow-hidden flex flex-col",
-                    isEmpty ? "flex-none opacity-0" : "flex-1 opacity-100"
+                    isEmpty ? "flex-zero opacity-0" : "flex-1 opacity-100"
                 )}>
                   <ChatView
                       messages={displayMessages}
@@ -369,7 +369,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
                 {/* Bottom spacer for centering in empty state */}
                 <div className={cx(
                     "transition-all duration-500 ease-in-out",
-                    isEmpty ? "flex-1" : "flex-none"
+                    isEmpty ? "flex-1" : "flex-zero"
                 )}/>
               </div>
             </div>
