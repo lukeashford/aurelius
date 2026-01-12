@@ -498,7 +498,7 @@ export default function ChatDemo() {
             <p className="text-sm text-silver hidden md:block">
               {activeConversationId === 'branching'
                   ? 'Explore the branching demo — use ← → to navigate alternate paths'
-                  : 'Hover messages for actions • Drag files to attach • Type "slow" to test Stop'}
+                  : 'Try actions below messages • Drag files to attach • Type "slow" to test Stop'}
             </p>
           </div>
         </header>
