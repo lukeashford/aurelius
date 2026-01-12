@@ -1,6 +1,12 @@
 import React, {useEffect} from 'react'
-import {Message, type MessageProps, type MessageVariant, type MessageBranchInfo, type MessageActionsConfig} from '../Message'
-import {cx} from '../../utils/cx'
+import {
+  Message,
+  type MessageActionsConfig,
+  type MessageBranchInfo,
+  type MessageProps,
+  type MessageVariant
+} from '../Message'
+import {cx} from '../../utils'
 import {useScrollAnchor} from './hooks/useScrollAnchor'
 import {useAdaptiveSpacer} from './hooks/useAdaptiveSpacer'
 import {ThinkingIndicator} from './ThinkingIndicator'
@@ -51,99 +57,110 @@ export interface ChatViewProps extends React.HTMLAttributes<HTMLDivElement> {
  * - Smooth transitions and animations
  */
 export const ChatView = React.forwardRef<HTMLDivElement, ChatViewProps>(
-  ({messages, latestUserMessageIndex, isStreaming, isThinking, onScroll, className, ...rest}, ref) => {
-    const {containerRef, anchorRef, scrollToAnchor} = useScrollAnchor({
-      behavior: 'smooth',
-      block: 'start',
-    })
+    ({messages, latestUserMessageIndex, isStreaming, isThinking, onScroll, className, ...rest},
+        ref) => {
+      const {containerRef, anchorRef, scrollToAnchor} = useScrollAnchor({
+        behavior: 'smooth',
+        block: 'start',
+      })
 
-    const {contentRef, spacerRef, spacerHeight} = useAdaptiveSpacer({
-      containerRef,
-      anchorRef,
-    })
+      const {contentRef, spacerRef, spacerHeight} = useAdaptiveSpacer({
+        containerRef,
+        anchorRef,
+      })
 
-    // Scroll to anchor when latest user message index changes
-    useEffect(() => {
-      if (latestUserMessageIndex !== undefined && latestUserMessageIndex >= 0) {
-        scrollToAnchor()
-      }
-    }, [latestUserMessageIndex, scrollToAnchor])
+      // Scroll to anchor when latest user message index changes
+      useEffect(() => {
+        if (latestUserMessageIndex !== undefined && latestUserMessageIndex >= 0) {
+          scrollToAnchor()
+        }
+      }, [latestUserMessageIndex, scrollToAnchor])
 
-    // Find the latest user message for anchoring
-    const latestUserIdx =
-      latestUserMessageIndex ??
-      messages.reduceRight((found, msg, idx) => {
-        if (found === -1 && msg.variant === 'user') return idx
-        return found
-      }, -1)
+      // Find the latest user message for anchoring
+      const latestUserIdx =
+          latestUserMessageIndex ??
+          messages.reduceRight((found, msg, idx) => {
+            if (found === -1 && msg.variant === 'user') {
+              return idx
+            }
+            return found
+          }, -1)
 
-    // Determine if we should show thinking indicator
-    // Show when isThinking is true AND there are messages AND the last message is from user
-    const showThinking = isThinking && messages.length > 0 && messages[messages.length - 1]?.variant === 'user'
+      // Determine if we should show thinking indicator
+      // Show when isThinking is true AND there are messages AND the last message is from user
+      const showThinking = isThinking && messages.length > 0 && messages[messages.length
+      - 1]?.variant === 'user'
 
-    return (
-      <div
-        ref={(node) => {
-          // Handle both refs
-          ;(containerRef as React.MutableRefObject<HTMLDivElement | null>).current = node
-          if (typeof ref === 'function') {
-            ref(node)
-          } else if (ref) {
-            ref.current = node
-          }
-        }}
-        onScroll={onScroll}
-        className={cx(
-          'flex flex-col w-full h-full overflow-y-auto scroll-smooth',
-          'px-4 py-6 overscroll-contain',
-          className
-        )}
-        {...rest}
-      >
-        {/* Content wrapper for adaptive spacer measurement */}
-        <div ref={contentRef} className="relative flex flex-col gap-3">
-          {messages.map(({id, variant, className: messageClassName, branchInfo, actions, isStreaming: _nodeIsStreaming, ...messageProps}, index) => {
-            const isAnchor = index === latestUserIdx
-            const isLastMessage = index === messages.length - 1
-            const showStreaming = isLastMessage && isStreaming && variant === 'assistant'
-            // Hide actions during streaming
-            const hideActions = isStreaming
+      return (
+          <div
+              ref={(node) => {
+                // Handle both refs
+                ;(containerRef as React.MutableRefObject<HTMLDivElement | null>).current = node
+                if (typeof ref === 'function') {
+                  ref(node)
+                } else if (ref) {
+                  ref.current = node
+                }
+              }}
+              onScroll={onScroll}
+              className={cx(
+                  'flex flex-col w-full h-full overflow-y-auto scroll-smooth',
+                  'px-4 py-6 overscroll-contain',
+                  className
+              )}
+              {...rest}
+          >
+            {/* Content wrapper for adaptive spacer measurement */}
+            <div ref={contentRef} className="relative flex flex-col gap-3">
+              {messages.map(({
+                id,
+                variant,
+                className: messageClassName,
+                branchInfo,
+                actions,
+                isStreaming: nodeIsStreaming,
+                ...messageProps
+              }, index) => {
+                const isAnchor = index === latestUserIdx
+                const isLastMessage = index === messages.length - 1
+                const showStreaming = isLastMessage && isStreaming && variant === 'assistant'
+                const isMessageStreaming = showStreaming || !!nodeIsStreaming
+                // Hide actions during streaming
+                return (
+                    <div
+                        key={id ?? `msg-${index}`}
+                        ref={isAnchor ? anchorRef : undefined}
+                        className={isAnchor ? 'scroll-mt-4' : undefined}
+                    >
+                      <Message
+                          variant={variant}
+                          isStreaming={isMessageStreaming}
+                          className={messageClassName}
+                          branchInfo={branchInfo}
+                          actions={actions}
+                          hideActions={isMessageStreaming}
+                          {...messageProps}
+                      />
+                    </div>
+                )
+              })}
 
-            return (
-              <div
-                key={id ?? `msg-${index}`}
-                ref={isAnchor ? anchorRef : undefined}
-                className={isAnchor ? 'scroll-mt-4' : undefined}
-              >
-                <Message
-                  variant={variant}
-                  isStreaming={showStreaming}
-                  className={messageClassName}
-                  branchInfo={branchInfo}
-                  actions={actions}
-                  hideActions={hideActions}
-                  {...messageProps}
-                />
-              </div>
-            )
-          })}
+              {/* Thinking indicator */}
+              {showThinking && (
+                  <ThinkingIndicator isVisible/>
+              )}
+            </div>
 
-          {/* Thinking indicator */}
-          {showThinking && (
-            <ThinkingIndicator isVisible />
-          )}
-        </div>
-
-        {/* Adaptive bottom spacer - fills remaining space exactly */}
-        <div
-          ref={spacerRef}
-          className="flex-shrink-0 pointer-events-none"
-          style={{height: spacerHeight}}
-          aria-hidden="true"
-        />
-      </div>
-    )
-  }
+            {/* Adaptive bottom spacer - fills remaining space exactly */}
+            <div
+                ref={spacerRef}
+                className="shrink-0 pointer-events-none"
+                style={{height: spacerHeight}}
+                aria-hidden="true"
+            />
+          </div>
+      )
+    }
 )
 
 ChatView.displayName = 'ChatView'
