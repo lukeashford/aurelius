@@ -2,6 +2,7 @@ import React, {useEffect} from 'react'
 import {Message, type MessageProps, type MessageVariant, type MessageBranchInfo, type MessageActionsConfig} from '../Message'
 import {cx} from '../../utils/cx'
 import {useScrollAnchor} from './hooks/useScrollAnchor'
+import {useAdaptiveSpacer} from './hooks/useAdaptiveSpacer'
 import {ThinkingIndicator} from './ThinkingIndicator'
 
 export interface ChatViewItem extends Omit<MessageProps, 'variant' | 'children'> {
@@ -56,6 +57,10 @@ export const ChatView = React.forwardRef<HTMLDivElement, ChatViewProps>(
       block: 'start',
     })
 
+    const {contentRef, spacerHeight} = useAdaptiveSpacer({
+      containerRef,
+    })
+
     // Scroll to anchor when latest user message index changes
     useEffect(() => {
       if (latestUserMessageIndex !== undefined && latestUserMessageIndex >= 0) {
@@ -88,48 +93,50 @@ export const ChatView = React.forwardRef<HTMLDivElement, ChatViewProps>(
         }}
         onScroll={onScroll}
         className={cx(
-          'flex flex-col gap-3 w-full h-full overflow-y-auto scroll-smooth',
+          'flex flex-col w-full h-full overflow-y-auto scroll-smooth',
           'px-4 py-6 overscroll-contain',
           className
         )}
         {...rest}
       >
-        {messages.map(({id, variant, className: messageClassName, branchInfo, actions, isStreaming: _nodeIsStreaming, ...messageProps}, index) => {
-          const isAnchor = index === latestUserIdx
-          const isLastMessage = index === messages.length - 1
-          const showStreaming = isLastMessage && isStreaming && variant === 'assistant'
-          // Hide actions during streaming
-          const hideActions = isStreaming
+        {/* Content wrapper for adaptive spacer measurement */}
+        <div ref={contentRef} className="flex flex-col gap-3">
+          {messages.map(({id, variant, className: messageClassName, branchInfo, actions, isStreaming: _nodeIsStreaming, ...messageProps}, index) => {
+            const isAnchor = index === latestUserIdx
+            const isLastMessage = index === messages.length - 1
+            const showStreaming = isLastMessage && isStreaming && variant === 'assistant'
+            // Hide actions during streaming
+            const hideActions = isStreaming
 
-          return (
-            <div
-              key={id ?? `msg-${index}`}
-              ref={isAnchor ? anchorRef : undefined}
-              className={isAnchor ? 'scroll-mt-4' : undefined}
-            >
-              <Message
-                variant={variant}
-                isStreaming={showStreaming}
-                className={messageClassName}
-                branchInfo={branchInfo}
-                actions={actions}
-                hideActions={hideActions}
-                {...messageProps}
-              />
-            </div>
-          )
-        })}
+            return (
+              <div
+                key={id ?? `msg-${index}`}
+                ref={isAnchor ? anchorRef : undefined}
+                className={isAnchor ? 'scroll-mt-4' : undefined}
+              >
+                <Message
+                  variant={variant}
+                  isStreaming={showStreaming}
+                  className={messageClassName}
+                  branchInfo={branchInfo}
+                  actions={actions}
+                  hideActions={hideActions}
+                  {...messageProps}
+                />
+              </div>
+            )
+          })}
 
-        {/* Thinking indicator */}
-        {showThinking && (
-          <ThinkingIndicator isVisible />
-        )}
+          {/* Thinking indicator */}
+          {showThinking && (
+            <ThinkingIndicator isVisible />
+          )}
+        </div>
 
-        {/* Bottom spacer to allow anchor message to scroll to top */}
-        {/* Height is ~100vh minus buffer for natural scroll boundaries */}
+        {/* Adaptive bottom spacer - fills remaining space exactly */}
         <div
           className="flex-shrink-0 pointer-events-none"
-          style={{minHeight: 'calc(100vh - 200px)'}}
+          style={{height: spacerHeight}}
           aria-hidden="true"
         />
       </div>

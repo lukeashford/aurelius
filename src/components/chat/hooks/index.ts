@@ -5,3 +5,4 @@ export {
   type ArtifactType,
   type UseArtifactParserReturn,
 } from './useArtifactParser'
+export {useAdaptiveSpacer, type UseAdaptiveSpacerOptions, type UseAdaptiveSpacerReturn} from './useAdaptiveSpacer'
