@@ -109,7 +109,7 @@ const letterSpacings = [
 ]
 
 const tokenCardClass =
-    'rounded-md border border-slate/60 bg-void/40 p-3'
+    'border border-slate/60 bg-void/40 p-3'
 
 export default function TypographySection() {
   return (
@@ -147,7 +147,7 @@ export default function TypographySection() {
             <p className="mt-2 text-silver">
               Secondary body text with reduced contrast for supportive content.
             </p>
-            <pre className="mt-4 rounded-md bg-slate p-3 text-silver">
+            <pre className="mt-4 bg-slate p-3 text-silver">
             <code>{`const greet = (name: string) => {
   return \`Hello, \${name}!\`
 }`}</code>

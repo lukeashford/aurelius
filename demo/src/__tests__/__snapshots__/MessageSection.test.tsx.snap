@@ -4,7 +4,7 @@ exports[`MessageSection matches snapshot 1`] = `
 <div>
   <section>
     <header
-      class="section-header"
+      class="mb-12"
     >
       <h2
         class="text-2xl"
@@ -38,12 +38,16 @@ exports[`MessageSection matches snapshot 1`] = `
               Assistant
             </label>
             <div
-              class="px-3 py-2 w-fit bg-charcoal border border-ash text-white mr-auto"
+              class="flex flex-col items-start"
             >
               <div
-                class="prose prose-sm prose-invert"
+                class="px-3 py-2 w-fit max-w-11/12 bg-charcoal border border-ash text-white mr-auto"
               >
-                This is the assistant message variant. It demonstrates the styling for this variant.
+                <div
+                  class="prose prose-sm prose-invert"
+                >
+                  This is the assistant message variant. It demonstrates the styling for this variant.
+                </div>
               </div>
             </div>
           </div>
@@ -56,12 +60,16 @@ exports[`MessageSection matches snapshot 1`] = `
               User
             </label>
             <div
-              class="px-3 py-2 w-fit bg-gold text-obsidian ml-auto"
+              class="flex flex-col items-end"
             >
               <div
-                class="prose prose-sm prose-inherit"
+                class="px-3 py-2 w-fit max-w-11/12 bg-gold text-obsidian ml-auto"
               >
-                This is the user message variant. It demonstrates the styling for this variant.
+                <div
+                  class="prose prose-sm prose-inherit"
+                >
+                  This is the user message variant. It demonstrates the styling for this variant.
+                </div>
               </div>
             </div>
           </div>
@@ -71,48 +79,361 @@ exports[`MessageSection matches snapshot 1`] = `
         <h3
           class="text-lg font-semibold mb-4"
         >
-          Conversation Example
+          With Actions
         </h3>
+        <p
+          class="text-sm text-silver mb-4"
+        >
+          Messages can have action buttons for copy, edit (user), and retry (assistant).
+        </p>
         <div
-          class="flex flex-col gap-3 justify-end w-full h-96 bg-charcoal/50 border border-ash/40 p-4 overflow-y-auto"
+          class="space-y-4"
         >
           <div
-            class="px-3 py-2 w-fit bg-gold text-obsidian ml-auto"
+            class="flex flex-col items-end"
           >
             <div
-              class="prose prose-sm prose-inherit"
+              class="px-3 py-2 w-fit max-w-11/12 bg-gold text-obsidian ml-auto"
             >
-              Hello! Can you help me understand how to use this component?
+              <div
+                class="prose prose-sm prose-inherit"
+              >
+                This user message has actions. Try the copy and edit buttons below.
+              </div>
+            </div>
+            <div
+              class="flex items-center gap-0.5 mt-1 mr-1"
+            >
+              <button
+                aria-label="Copy message"
+                class="p-1.5 text-silver/60 hover:text-silver transition-colors duration-150 hover:bg-white/5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+                type="button"
+              >
+                <svg
+                  class="w-3.5 h-3.5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect
+                    height="14"
+                    rx="2"
+                    ry="2"
+                    width="14"
+                    x="8"
+                    y="8"
+                  />
+                  <path
+                    d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"
+                  />
+                </svg>
+              </button>
+              <button
+                aria-label="Edit message"
+                class="p-1.5 text-silver/60 hover:text-silver transition-colors duration-150 hover:bg-white/5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+                type="button"
+              >
+                <svg
+                  class="w-3.5 h-3.5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"
+                  />
+                  <path
+                    d="m15 5 4 4"
+                  />
+                </svg>
+              </button>
             </div>
           </div>
           <div
-            class="px-3 py-2 w-fit bg-charcoal border border-ash text-white mr-auto"
+            class="flex flex-col items-start"
+          >
+            <div
+              class="px-3 py-2 w-fit max-w-11/12 bg-charcoal border border-ash text-white mr-auto"
+            >
+              <div
+                class="prose prose-sm prose-invert"
+              >
+                This assistant message has actions. You can copy or retry this response.
+              </div>
+            </div>
+            <div
+              class="flex items-center gap-0.5 mt-1 ml-1"
+            >
+              <button
+                aria-label="Copy message"
+                class="p-1.5 text-silver/60 hover:text-silver transition-colors duration-150 hover:bg-white/5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+                type="button"
+              >
+                <svg
+                  class="w-3.5 h-3.5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect
+                    height="14"
+                    rx="2"
+                    ry="2"
+                    width="14"
+                    x="8"
+                    y="8"
+                  />
+                  <path
+                    d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"
+                  />
+                </svg>
+              </button>
+              <button
+                aria-label="Regenerate response"
+                class="p-1.5 text-silver/60 hover:text-silver transition-colors duration-150 hover:bg-white/5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+                type="button"
+              >
+                <svg
+                  class="w-3.5 h-3.5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"
+                  />
+                  <path
+                    d="M21 3v5h-5"
+                  />
+                  <path
+                    d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"
+                  />
+                  <path
+                    d="M8 16H3v5"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3
+          class="text-lg font-semibold mb-4"
+        >
+          With Branch Navigation
+        </h3>
+        <p
+          class="text-sm text-silver mb-4"
+        >
+          When a message has multiple branches (from edits or retries), a branch navigator appears.
+        </p>
+        <div
+          class="space-y-4"
+        >
+          <div
+            class="flex flex-col items-start"
+          >
+            <div
+              class="px-3 py-2 w-fit max-w-11/12 bg-charcoal border border-ash text-white mr-auto"
+            >
+              <div
+                class="prose prose-sm prose-invert"
+              >
+                This message is part of a branched conversation. Use the navigator to switch between alternate responses.
+              </div>
+            </div>
+            <div
+              class="flex items-center gap-0.5 mt-1 ml-1"
+            >
+              <button
+                aria-label="Copy message"
+                class="p-1.5 text-silver/60 hover:text-silver transition-colors duration-150 hover:bg-white/5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+                type="button"
+              >
+                <svg
+                  class="w-3.5 h-3.5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect
+                    height="14"
+                    rx="2"
+                    ry="2"
+                    width="14"
+                    x="8"
+                    y="8"
+                  />
+                  <path
+                    d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"
+                  />
+                </svg>
+              </button>
+              <button
+                aria-label="Regenerate response"
+                class="p-1.5 text-silver/60 hover:text-silver transition-colors duration-150 hover:bg-white/5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+                type="button"
+              >
+                <svg
+                  class="w-3.5 h-3.5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"
+                  />
+                  <path
+                    d="M21 3v5h-5"
+                  />
+                  <path
+                    d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"
+                  />
+                  <path
+                    d="M8 16H3v5"
+                  />
+                </svg>
+              </button>
+              <div
+                class="w-px h-4 bg-ash/40 mx-1"
+              />
+              <div
+                class="flex items-center gap-0.5 text-silver/70"
+              >
+                <svg
+                  class="w-3 h-3 mr-0.5 text-silver/50"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <line
+                    x1="6"
+                    x2="6"
+                    y1="3"
+                    y2="15"
+                  />
+                  <circle
+                    cx="18"
+                    cy="6"
+                    r="3"
+                  />
+                  <circle
+                    cx="6"
+                    cy="18"
+                    r="3"
+                  />
+                  <path
+                    d="M18 9a9 9 0 0 1-9 9"
+                  />
+                </svg>
+                <button
+                  aria-label="Previous branch"
+                  class="p-0.5 hover:text-white hover:bg-white/10 transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-silver/70"
+                  disabled=""
+                  type="button"
+                >
+                  <svg
+                    class="w-3 h-3"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="m15 18-6-6 6-6"
+                    />
+                  </svg>
+                </button>
+                <span
+                  class="text-xs tabular-nums min-w-6 text-center"
+                >
+                  1
+                  /
+                  3
+                </span>
+                <button
+                  aria-label="Next branch"
+                  class="p-0.5 hover:text-white hover:bg-white/10 transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-silver/70"
+                  type="button"
+                >
+                  <svg
+                    class="w-3 h-3"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="m9 18 6-6-6-6"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3
+          class="text-lg font-semibold mb-4"
+        >
+          Streaming
+        </h3>
+        <p
+          class="text-sm text-silver mb-4"
+        >
+          During streaming, a cursor is shown and actions are hidden.
+        </p>
+        <div
+          class="flex flex-col items-start"
+        >
+          <div
+            class="px-3 py-2 w-fit max-w-11/12 bg-charcoal border border-ash text-white mr-auto"
           >
             <div
               class="prose prose-sm prose-invert"
             >
-              Of course! The Message component is designed for chat interfaces. It supports different variants for user and assistant messages, and automatically aligns them appropriately.
+              This message is currently streaming
+              <span
+                aria-hidden="true"
+                class="inline-block bg-current animate-cursor-blink w-0.5 h-cursor translate-y-cursor-offset ml-0.5"
+              />
             </div>
-          </div>
-          <div
-            class="px-3 py-2 w-fit bg-gold text-obsidian ml-auto"
-          >
-            <div
-              class="prose prose-sm prose-inherit"
-            >
-              That's great! What about longer messages with multiple paragraphs?
-            </div>
-          </div>
-          <div
-            class="px-3 py-2 w-fit bg-charcoal border border-ash text-white mr-auto"
-          >
-            <div
-              class="prose prose-sm prose-invert"
-            />
-            <span
-              aria-hidden="true"
-              class="inline-block bg-current animate-cursor-blink w-0.5 h-cursor translate-y-cursor-offset ml-0.5"
-            />
           </div>
         </div>
       </div>

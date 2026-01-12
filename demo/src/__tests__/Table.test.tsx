@@ -51,7 +51,7 @@ describe('Table', () => {
 
   it('applies custom className to table', () => {
     render(
-      <Table className="custom-table">
+      <Table className="w-full">
         <TableBody>
           <TableRow>
             <TableCell>Cell</TableCell>
@@ -59,7 +59,7 @@ describe('Table', () => {
         </TableBody>
       </Table>
     )
-    expect(screen.getByRole('table')).toHaveClass('custom-table')
+    expect(screen.getByRole('table')).toHaveClass('w-full')
   })
 })
 

@@ -68,8 +68,8 @@ describe('Row', () => {
   })
 
   it('merges custom className', () => {
-    const { container } = render(<Row className="custom-class">Content</Row>)
-    expect(container.firstChild).toHaveClass('row', 'custom-class')
+    const { container } = render(<Row className="mt-4">Content</Row>)
+    expect(container.firstChild).toHaveClass('row', 'mt-4')
   })
 
   it('forwards ref', () => {

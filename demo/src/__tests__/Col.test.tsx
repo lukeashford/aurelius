@@ -86,8 +86,8 @@ describe('Col', () => {
   })
 
   it('merges custom className', () => {
-    const { container } = render(<Col span={6} className="custom-class">Content</Col>)
-    expect(container.firstChild).toHaveClass('col-span-6', 'custom-class')
+    const { container } = render(<Col span={6} className="p-4">Content</Col>)
+    expect(container.firstChild).toHaveClass('col-span-6', 'p-4')
   })
 
   it('forwards ref', () => {
@@ -102,7 +102,7 @@ describe('Col', () => {
         span={{ base: 12, md: 6 }}
         offset={{ md: 3 }}
         order={{ base: 2, lg: 'first' }}
-        className="my-col"
+        className="gap-2"
       >
         Content
       </Col>
@@ -113,7 +113,7 @@ describe('Col', () => {
       'md:col-start-4',
       'order-2',
       'lg:order-first',
-      'my-col'
+      'gap-2'
     )
   })
 })

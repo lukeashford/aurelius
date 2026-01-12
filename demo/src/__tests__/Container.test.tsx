@@ -25,8 +25,8 @@ describe('Container', () => {
   })
 
   it('merges custom className', () => {
-    const { container } = render(<Container className="custom-class">Content</Container>)
-    expect(container.firstChild).toHaveClass('container', 'custom-class')
+    const { container } = render(<Container className="mt-8">Content</Container>)
+    expect(container.firstChild).toHaveClass('container', 'mt-8')
   })
 
   it('forwards ref', () => {

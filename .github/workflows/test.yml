@@ -83,6 +83,10 @@ jobs:
         run: |
           npm install react@${{ matrix.react-version }} react-dom@${{ matrix.react-version }} --legacy-peer-deps
 
+      - name: Lint demo
+        working-directory: ./demo
+        run: npm run lint
+
       - name: Run unit tests
         working-directory: ./demo
         run: npm test -- --ci --coverage --maxWorkers=2

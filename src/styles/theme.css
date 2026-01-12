@@ -5,6 +5,9 @@
 
 @theme {
   /* ===== COLORS ===== */
+  /* Clears all default colors */
+  --color-*: initial;
+
   /* Black spectrum */
   --color-void: #000000;
   --color-obsidian: #0a0a0a;
@@ -249,7 +252,7 @@
 /* ===== BASE STYLES (applied via @layer base) ===== */
 @layer base {
   html {
-    font-family: var(--font-body);
+    @apply font-body;
     background-color: var(--color-obsidian);
     color: var(--color-white);
     -webkit-font-smoothing: antialiased;
@@ -312,7 +315,7 @@
   h4,
   h5,
   h6 {
-    font-family: var(--font-heading);
+    @apply font-heading;
     font-weight: 600;
     letter-spacing: -0.025em;
     color: var(--color-white);
@@ -432,6 +435,21 @@
 
 @utility glow-lg {
   box-shadow: var(--shadow-glow-lg);
+}
+
+/* Flex utility for collapsing to zero size (0 0 0%) - use with flex-1 for expand/collapse animations */
+@utility flex-zero {
+  flex: 0 0 0%;
+}
+
+@utility font-heading {
+  font-family: var(--font-heading);
+  font-size-adjust: 0.5;
+}
+
+@utility font-body {
+  font-family: var(--font-body);
+  font-size-adjust: 0.521;
 }
 
 @utility scroll-smooth {

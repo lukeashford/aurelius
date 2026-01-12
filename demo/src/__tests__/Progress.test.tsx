@@ -67,7 +67,7 @@ describe('Progress', () => {
   })
 
   it('merges custom className', () => {
-    const { container } = render(<Progress className="custom-class" />)
-    expect((container.firstChild as HTMLElement)?.className).toContain('custom-class')
+    const { container } = render(<Progress className="w-full" />)
+    expect((container.firstChild as HTMLElement)?.className).toContain('w-full')
   })
 })

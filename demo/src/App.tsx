@@ -21,12 +21,15 @@ import DirectorNote from './sections/DirectorNote'
 import LayoutSection from './sections/LayoutSection'
 import NavigationSection from './sections/NavigationSection'
 import DataDisplaySection from './sections/DataDisplaySection'
+import ChatInterfaceSection from './sections/ChatInterfaceSection'
 import {Footer} from './components/Footer'
 import {LegalNotice} from './components/LegalNotice'
+import ChatDemo from './components/ChatDemo'
 import VideoCardSection from "./sections/VideoCardSection";
 
 const nav = [
   {id: 'overview', label: 'Overview'},
+  {id: 'chat-demo-link', label: 'Chat Demo'},
   {id: 'director-note', label: "Director's Note"},
   {id: 'colors', label: 'Colors'},
   {id: 'typography', label: 'Typography'},
@@ -53,11 +56,23 @@ const nav = [
 
 export default function App() {
   const [active, setActive] = useState('overview')
-  const [view, setView] = useState(window.location.hash === '#legal' ? 'legal' : 'main')
+  const [view, setView] = useState(() => {
+    const hash = window.location.hash
+    if (hash === '#legal') return 'legal'
+    if (hash === '#chat-demo') return 'chat-demo'
+    return 'main'
+  })
 
   React.useEffect(() => {
     const handleHashChange = () => {
-      setView(window.location.hash === '#legal' ? 'legal' : 'main')
+      const hash = window.location.hash
+      if (hash === '#legal') {
+        setView('legal')
+      } else if (hash === '#chat-demo') {
+        setView('chat-demo')
+      } else {
+        setView('main')
+      }
     }
     window.addEventListener('hashchange', handleHashChange)
     return () => window.removeEventListener('hashchange', handleHashChange)
@@ -65,6 +80,8 @@ export default function App() {
 
   // IntersectionObserver to set active nav link
   React.useEffect(() => {
+    if (view !== 'main') return // Only observe in main view
+
     const observer = new IntersectionObserver(
         entries => {
           entries.forEach(entry => {
@@ -83,7 +100,11 @@ export default function App() {
       }
     })
     return () => observer.disconnect()
-  }, [])
+  }, [view])
+
+  if (view === 'chat-demo') {
+    return <ChatDemo />
+  }
 
   if (view === 'legal') {
     return <LegalNotice/>
@@ -105,7 +126,7 @@ export default function App() {
           <nav className="p-3 space-y-1">
             {nav.map(n => (
                 <a key={n.id} href={`#${n.id}`}
-                   className={`block px-3 py-2 rounded-md transition-colors ${
+                   className={`block px-3 py-2 transition-colors ${
                        active === n.id
                            ? 'text-white bg-ash/30'
                            : 'text-silver hover:text-white hover:bg-ash/30'
@@ -123,6 +144,10 @@ export default function App() {
               A cohesive visual language for creative technologists — combining technical
               sophistication with artistic sensibility.
             </p>
+          </section>
+
+          <section id="chat-demo-link" className="space-y-4">
+            <ChatInterfaceSection/>
           </section>
 
           <section id="director-note" className="space-y-4">

@@ -6,7 +6,7 @@ exports[`ModalSection matches snapshot when modal is closed 1`] = `
     class="space-y-8"
   >
     <header
-      class="section-header"
+      class="mb-12"
     >
       <h2
         class="text-2xl"
@@ -206,7 +206,7 @@ exports[`ModalSection matches snapshot when modal is open 1`] = `
     class="space-y-8"
   >
     <header
-      class="section-header"
+      class="mb-12"
     >
       <h2
         class="text-2xl"

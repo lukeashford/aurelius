@@ -28,10 +28,12 @@
     "node": ">=22.14.0"
   },
   "scripts": {
-    "build": "npm run typecheck && npm run lint && tsup && node scripts/generate-manifest.js",
+    "build": "npm run typecheck && npm run lint:core && tsup && node scripts/generate-manifest.js",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint src --max-warnings 0",
+    "lint": "npm run lint:core && npm run lint:demo",
+    "lint:core": "eslint src --max-warnings 0",
+    "lint:demo": "npm --prefix demo run lint",
     "prepublishOnly": "npm run build",
     "dev:demo": "npm --prefix demo run dev",
     "dev:all": "concurrently -k \"npm run dev\" \"npm run dev:demo\"",

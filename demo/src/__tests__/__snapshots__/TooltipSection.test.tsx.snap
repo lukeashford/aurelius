@@ -4,7 +4,7 @@ exports[`TooltipSection matches snapshot 1`] = `
 <div>
   <section>
     <header
-      class="section-header"
+      class="mb-12"
     >
       <h2
         class="text-2xl"
@@ -33,7 +33,7 @@ exports[`TooltipSection matches snapshot 1`] = `
             top
           </button>
           <span
-            class="pointer-events-none absolute z-50 whitespace-nowrap rounded-md border border-ash bg-graphite px-3 py-1.5 text-sm text-white shadow-lg transition-opacity duration-200 ease-out opacity-0 left-1/2 -translate-x-1/2 -top-2 -translate-y-full"
+            class="pointer-events-none absolute z-50 whitespace-nowrap border border-ash bg-graphite px-3 py-1.5 text-sm text-white shadow-lg transition-opacity duration-200 ease-out opacity-0 left-1/2 -translate-x-1/2 -top-2 -translate-y-full"
             role="tooltip"
           >
             Tooltip on top
@@ -53,7 +53,7 @@ exports[`TooltipSection matches snapshot 1`] = `
             right
           </button>
           <span
-            class="pointer-events-none absolute z-50 whitespace-nowrap rounded-md border border-ash bg-graphite px-3 py-1.5 text-sm text-white shadow-lg transition-opacity duration-200 ease-out opacity-0 top-1/2 -translate-y-1/2 -right-2 translate-x-full"
+            class="pointer-events-none absolute z-50 whitespace-nowrap border border-ash bg-graphite px-3 py-1.5 text-sm text-white shadow-lg transition-opacity duration-200 ease-out opacity-0 top-1/2 -translate-y-1/2 -right-2 translate-x-full"
             role="tooltip"
           >
             Tooltip on right
@@ -73,7 +73,7 @@ exports[`TooltipSection matches snapshot 1`] = `
             bottom
           </button>
           <span
-            class="pointer-events-none absolute z-50 whitespace-nowrap rounded-md border border-ash bg-graphite px-3 py-1.5 text-sm text-white shadow-lg transition-opacity duration-200 ease-out opacity-0 left-1/2 -translate-x-1/2 -bottom-2 translate-y-full"
+            class="pointer-events-none absolute z-50 whitespace-nowrap border border-ash bg-graphite px-3 py-1.5 text-sm text-white shadow-lg transition-opacity duration-200 ease-out opacity-0 left-1/2 -translate-x-1/2 -bottom-2 translate-y-full"
             role="tooltip"
           >
             Tooltip on bottom
@@ -93,7 +93,7 @@ exports[`TooltipSection matches snapshot 1`] = `
             left
           </button>
           <span
-            class="pointer-events-none absolute z-50 whitespace-nowrap rounded-md border border-ash bg-graphite px-3 py-1.5 text-sm text-white shadow-lg transition-opacity duration-200 ease-out opacity-0 top-1/2 -translate-y-1/2 -left-2 -translate-x-full"
+            class="pointer-events-none absolute z-50 whitespace-nowrap border border-ash bg-graphite px-3 py-1.5 text-sm text-white shadow-lg transition-opacity duration-200 ease-out opacity-0 top-1/2 -translate-y-1/2 -left-2 -translate-x-full"
             role="tooltip"
           >
             Tooltip on left

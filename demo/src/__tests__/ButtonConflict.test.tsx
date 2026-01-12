@@ -23,7 +23,7 @@ describe('Button Class Merging', () => {
 
   it('keeps non-conflicting classes', () => {
     const {getByRole} = render(
-        <Button variant="outlined" className="custom-extra-class">
+        <Button variant="outlined" className="mt-8">
           Test Button
         </Button>
     );
@@ -31,7 +31,7 @@ describe('Button Class Merging', () => {
     const button = getByRole('button');
     const classes = button.className.split(' ');
     expect(classes).toContain('text-white'); // default from outlined
-    expect(classes).toContain('custom-extra-class'); // custom
+    expect(classes).toContain('mt-8'); // custom
     expect(classes).toContain('border-ash'); // default from outlined
   });
 });
