@@ -71,17 +71,15 @@ export function useAdaptiveSpacer(
     const availableHeight = container.clientHeight - paddingTop - paddingBottom
 
     // Calculate height from anchor to bottom of content
+    // Using offsetTop for stable measurement from "zero" (content top)
     let heightFromAnchorToBottom: number
     const anchor = anchorRef?.current
 
     if (anchor && content.contains(anchor)) {
-      // Get anchor's position relative to content wrapper
-      const anchorRect = anchor.getBoundingClientRect()
-      const contentRect = content.getBoundingClientRect()
-      const anchorOffsetInContent = anchorRect.top - contentRect.top
-
-      // Height from anchor start to content bottom
-      heightFromAnchorToBottom = content.scrollHeight - anchorOffsetInContent
+      // Anchor's position from the top of content (the "zero" point)
+      // Subtract content's offsetTop to get position relative to content
+      const anchorTop = anchor.offsetTop - content.offsetTop
+      heightFromAnchorToBottom = content.scrollHeight - anchorTop
     } else {
       // No anchor, use total content height
       heightFromAnchorToBottom = content.scrollHeight
