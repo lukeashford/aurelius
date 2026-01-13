@@ -3,7 +3,7 @@ import {expect, test} from '@playwright/test'
 test.describe('Chat Demo', () => {
   test.beforeEach(async ({page}) => {
     // Navigate to the chat demo
-    await page.goto('/#chat')
+    await page.goto('/#chat-demo')
     await page.waitForLoadState('networkidle')
     // Wait for the chat interface to be visible
     await expect(page.locator('text=Chat Interface Demo')).toBeVisible()
@@ -161,16 +161,18 @@ test.describe('Chat Demo', () => {
       await textarea.fill('show me something slow')
       await textarea.press('Enter')
 
-      // Wait for some content to stream
-      await page.waitForTimeout(2500)
+      // Wait for thinking to finish and streaming to start
+      const stopButton = page.getByRole('button', {name: /stop generation/i})
+      await expect(stopButton).toBeVisible({timeout: 10000})
+
+      // Wait for some content to appear
+      await expect(page.getByText(/deliberately slow/i)).toBeVisible({timeout: 10000})
 
       // Stop streaming
-      const stopButton = page.getByRole('button', {name: /stop generation/i})
-      await expect(stopButton).toBeVisible({timeout: 5000})
       await stopButton.click()
 
-      // Some response content should be visible
-      await expect(page.getByText(/deliberately slow|Stop button/i)).toBeVisible()
+      // The content should still be visible
+      await expect(page.getByText(/deliberately slow/i)).toBeVisible()
     })
 
     test('message becomes finished state after stopping', async ({page}) => {
@@ -327,7 +329,7 @@ test.describe('Chat Demo', () => {
       await textarea.press('Enter')
 
       // Wait for artifact to appear
-      await expect(page.getByText('Artifacts')).toBeVisible({timeout: 15000})
+      await expect(page.getByRole('heading', {name: 'Artifacts'})).toBeVisible({timeout: 15000})
     })
 
     test('can collapse artifacts panel', async ({page}) => {
@@ -340,13 +342,14 @@ test.describe('Chat Demo', () => {
       await textarea.press('Enter')
 
       // Wait for artifacts panel
-      await expect(page.getByText('Artifacts')).toBeVisible({timeout: 15000})
+      const panelTitle = page.getByRole('heading', {name: 'Artifacts'})
+      await expect(panelTitle).toBeVisible({timeout: 15000})
 
       // Click collapse button
       await page.getByRole('button', {name: /collapse artifacts panel/i}).click()
 
       // Panel title should not be visible
-      await expect(page.getByText('Artifacts')).not.toBeVisible()
+      await expect(panelTitle).not.toBeVisible()
     })
   })
 
