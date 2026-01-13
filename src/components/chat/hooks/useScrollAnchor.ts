@@ -43,7 +43,7 @@ export interface UseScrollAnchorReturn {
  * - Allows manual scroll detection
  */
 export function useScrollAnchor(
-  options: UseScrollAnchorOptions = {}
+    options: UseScrollAnchorOptions = {}
 ): UseScrollAnchorReturn {
   const {behavior = 'smooth', block = 'start'} = options
 
@@ -52,7 +52,9 @@ export function useScrollAnchor(
 
   const scrollToAnchor = useCallback(() => {
     const el = anchorRef.current
-    if (!el) return
+    if (!el) {
+      return
+    }
 
     // Double rAF to ensure layout updates (e.g., adaptive spacer) have been applied.
     // First frame: other rAF callbacks (like spacer recalculation) run
@@ -66,7 +68,9 @@ export function useScrollAnchor(
 
   const scrollToBottom = useCallback(() => {
     const container = containerRef.current
-    if (!container) return
+    if (!container) {
+      return
+    }
 
     if (typeof container.scrollTo === 'function') {
       container.scrollTo({top: container.scrollHeight, behavior})
@@ -77,7 +81,9 @@ export function useScrollAnchor(
 
   const isScrolledToBottom = useCallback(() => {
     const container = containerRef.current
-    if (!container) return true
+    if (!container) {
+      return true
+    }
 
     const threshold = 50 // pixels from bottom to consider "at bottom"
     const {scrollTop, scrollHeight, clientHeight} = container

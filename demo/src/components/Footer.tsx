@@ -16,7 +16,9 @@ export const Footer = () => {
             </p>
           </div>
           <div className="text-right">
-            <a href="#legal" className="font-medium text-silver/80 mb-1 hover:text-gold transition-colors">Impressum / Legal Notice</a>
+            <a href="#legal"
+               className="font-medium text-silver/80 mb-1 hover:text-gold transition-colors">Impressum
+              / Legal Notice</a>
           </div>
         </div>
       </footer>

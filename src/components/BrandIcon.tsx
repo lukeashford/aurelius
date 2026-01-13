@@ -1,5 +1,5 @@
 import React from 'react'
-import { cx } from '../utils/cx'
+import {cx} from '../utils/cx'
 
 export type BrandIconSize = 'sm' | 'md' | 'lg'
 export type BrandIconVariant = 'solid' | 'outline'

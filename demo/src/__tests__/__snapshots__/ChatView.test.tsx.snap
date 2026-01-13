@@ -1,0 +1,105 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ChatView matches snapshot with messages 1`] = `
+<div>
+  <div
+    class="flex flex-col w-full h-full overflow-y-auto scroll-smooth px-4 py-6 overscroll-contain"
+  >
+    <div
+      class="relative flex flex-col gap-3"
+    >
+      <div
+        class="scroll-mt-4"
+      >
+        <div
+          class="flex flex-col items-end"
+        >
+          <div
+            class="px-3 py-2 w-fit max-w-11/12 bg-gold text-obsidian ml-auto"
+          >
+            <div
+              class="prose prose-sm prose-inherit"
+            >
+              Hello, how are you?
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div
+          class="flex flex-col items-start"
+        >
+          <div
+            class="px-3 py-2 w-fit max-w-11/12 bg-charcoal border border-ash text-white mr-auto"
+          >
+            <div
+              class="prose prose-sm prose-invert"
+            >
+              I am doing well, thank you!
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      aria-hidden="true"
+      class="shrink-0 pointer-events-none"
+      style="height: 0px;"
+    />
+  </div>
+</div>
+`;
+
+exports[`ChatView matches snapshot with streaming state 1`] = `
+<div>
+  <div
+    class="flex flex-col w-full h-full overflow-y-auto scroll-smooth px-4 py-6 overscroll-contain"
+  >
+    <div
+      class="relative flex flex-col gap-3"
+    >
+      <div
+        class="scroll-mt-4"
+      >
+        <div
+          class="flex flex-col items-end"
+        >
+          <div
+            class="px-3 py-2 w-fit max-w-11/12 bg-gold text-obsidian ml-auto"
+          >
+            <div
+              class="prose prose-sm prose-inherit"
+            >
+              Question
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div
+          class="flex flex-col items-start"
+        >
+          <div
+            class="px-3 py-2 w-fit max-w-11/12 bg-charcoal border border-ash text-white mr-auto"
+          >
+            <div
+              class="prose prose-sm prose-invert"
+            >
+              Answering...
+              <span
+                aria-hidden="true"
+                class="inline-block bg-current animate-cursor-blink w-0.5 h-cursor translate-y-cursor-offset ml-0.5"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      aria-hidden="true"
+      class="shrink-0 pointer-events-none"
+      style="height: 0px;"
+    />
+  </div>
+</div>
+`;

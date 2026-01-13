@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect, useCallback, useId } from 'react'
-import { cx } from '../utils/cx'
+import React, {useCallback, useEffect, useId, useRef, useState} from 'react'
+import {cx} from '../utils/cx'
 
 export type PopoverPosition = 'top' | 'bottom' | 'left' | 'right'
 export type PopoverAlign = 'start' | 'center' | 'end'
@@ -60,18 +60,20 @@ export const Popover: React.FC<PopoverProps> = ({
   const baseId = useId()
 
   const setIsOpen = useCallback(
-    (newOpen: boolean) => {
-      if (!isControlled) {
-        setInternalOpen(newOpen)
-      }
-      onOpenChange?.(newOpen)
-    },
-    [isControlled, onOpenChange]
+      (newOpen: boolean) => {
+        if (!isControlled) {
+          setInternalOpen(newOpen)
+        }
+        onOpenChange?.(newOpen)
+      },
+      [isControlled, onOpenChange]
   )
 
   // Close on outside click
   useEffect(() => {
-    if (!isOpen || !closeOnClickOutside) return
+    if (!isOpen || !closeOnClickOutside) {
+      return
+    }
 
     const handleClickOutside = (e: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
@@ -85,7 +87,9 @@ export const Popover: React.FC<PopoverProps> = ({
 
   // Close on escape
   useEffect(() => {
-    if (!isOpen) return
+    if (!isOpen) {
+      return
+    }
 
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -110,24 +114,24 @@ export const Popover: React.FC<PopoverProps> = ({
   })
 
   return (
-    <div ref={containerRef} className="relative inline-block">
-      {triggerElement}
-      {isOpen && (
-        <div
-          id={`${baseId}-popover`}
-          role="dialog"
-          aria-labelledby={`${baseId}-trigger`}
-          className={cx(
-            'absolute z-50 min-w-48 p-4',
-            'bg-charcoal border border-ash shadow-lg',
-            'animate-fade-in',
-            POSITION_CLASSES[position][align]
-          )}
-        >
-          {children}
-        </div>
-      )}
-    </div>
+      <div ref={containerRef} className="relative inline-block">
+        {triggerElement}
+        {isOpen && (
+            <div
+                id={`${baseId}-popover`}
+                role="dialog"
+                aria-labelledby={`${baseId}-trigger`}
+                className={cx(
+                    'absolute z-50 min-w-48 p-4',
+                    'bg-charcoal border border-ash shadow-lg',
+                    'animate-fade-in',
+                    POSITION_CLASSES[position][align]
+                )}
+            >
+              {children}
+            </div>
+        )}
+      </div>
   )
 }
 

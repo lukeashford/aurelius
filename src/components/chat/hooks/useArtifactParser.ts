@@ -100,33 +100,34 @@ export function useArtifactParser(content: string): UseArtifactParserReturn {
 
     // First, extract all complete artifacts
     let artifactIndex = 0
-    workingContent = workingContent.replace(COMPLETE_ARTIFACT_REGEX, (_, attrString, innerContent) => {
-      const attrs = parseAttributes(attrString)
-      const type = (attrs.type || 'text') as ArtifactType
+    workingContent = workingContent.replace(COMPLETE_ARTIFACT_REGEX,
+        (_, attrString, innerContent) => {
+          const attrs = parseAttributes(attrString)
+          const type = (attrs.type || 'text') as ArtifactType
 
-      // Generate stable ID based on content (src for media, content for text)
-      const identifier = attrs.src || attrs.content || innerContent || `idx-${artifactIndex++}`
-      const id = generateStableArtifactId(type, identifier)
+          // Generate stable ID based on content (src for media, content for text)
+          const identifier = attrs.src || attrs.content || innerContent || `idx-${artifactIndex++}`
+          const id = generateStableArtifactId(type, identifier)
 
-      const artifact: Artifact = {
-        id,
-        type,
-        title: attrs.title,
-        subtitle: attrs.subtitle,
-      }
+          const artifact: Artifact = {
+            id,
+            type,
+            title: attrs.title,
+            subtitle: attrs.subtitle,
+          }
 
-      if (type === 'text') {
-        artifact.content = innerContent?.trim() || attrs.content
-      } else if (type === 'image') {
-        artifact.src = attrs.src
-        artifact.alt = attrs.alt || 'Image'
-      } else if (type === 'video') {
-        artifact.src = attrs.src
-      }
+          if (type === 'text') {
+            artifact.content = innerContent?.trim() || attrs.content
+          } else if (type === 'image') {
+            artifact.src = attrs.src
+            artifact.alt = attrs.alt || 'Image'
+          } else if (type === 'video') {
+            artifact.src = attrs.src
+          }
 
-      artifacts.push(artifact)
-      return ''
-    })
+          artifacts.push(artifact)
+          return ''
+        })
 
     // Check for incomplete artifact at the end (still streaming)
     const startMatch = workingContent.match(ARTIFACT_START_REGEX)

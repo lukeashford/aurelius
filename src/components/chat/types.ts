@@ -145,9 +145,9 @@ export function createEmptyTree(): ConversationTree {
  * Add a message to the tree
  */
 export function addMessageToTree(
-  tree: ConversationTree,
-  message: Omit<MessageNode, 'children' | 'branchIndex'>,
-  parentId: string | null = null
+    tree: ConversationTree,
+    message: Omit<MessageNode, 'children' | 'branchIndex'>,
+    parentId: string | null = null
 ): ConversationTree {
   const newNodes = {...tree.nodes}
   const newRootIds = [...tree.rootIds]
@@ -192,7 +192,9 @@ export function addMessageToTree(
  * Get the linear path from root to the active leaf
  */
 export function getActivePathMessages(tree: ConversationTree): MessageNode[] {
-  if (!tree.activeLeafId) return []
+  if (!tree.activeLeafId) {
+    return []
+  }
 
   const path: MessageNode[] = []
   let currentId: string | null = tree.activeLeafId
@@ -200,7 +202,9 @@ export function getActivePathMessages(tree: ConversationTree): MessageNode[] {
   // Walk up to the root
   while (currentId) {
     const node: MessageNode | undefined = tree.nodes[currentId]
-    if (!node) break
+    if (!node) {
+      break
+    }
     path.unshift(node)
     currentId = node.parentId
   }
@@ -211,9 +215,14 @@ export function getActivePathMessages(tree: ConversationTree): MessageNode[] {
 /**
  * Get sibling count and current index for a node
  */
-export function getSiblingInfo(tree: ConversationTree, nodeId: string): {total: number; current: number} {
+export function getSiblingInfo(tree: ConversationTree, nodeId: string): {
+  total: number;
+  current: number
+} {
   const node = tree.nodes[nodeId]
-  if (!node) return {total: 1, current: 1}
+  if (!node) {
+    return {total: 1, current: 1}
+  }
 
   if (node.parentId) {
     const parent = tree.nodes[node.parentId]
@@ -240,19 +249,23 @@ export function getSiblingInfo(tree: ConversationTree, nodeId: string): {total: 
  * Switch to a different branch at a given node
  */
 export function switchBranch(
-  tree: ConversationTree,
-  nodeId: string,
-  direction: 'prev' | 'next'
+    tree: ConversationTree,
+    nodeId: string,
+    direction: 'prev' | 'next'
 ): ConversationTree {
   const node = tree.nodes[nodeId]
-  if (!node) return tree
+  if (!node) {
+    return tree
+  }
 
   let siblings: string[]
   let currentIndex: number
 
   if (node.parentId) {
     const parent = tree.nodes[node.parentId]
-    if (!parent) return tree
+    if (!parent) {
+      return tree
+    }
     siblings = parent.children
     currentIndex = siblings.indexOf(nodeId)
   } else {
@@ -260,12 +273,14 @@ export function switchBranch(
     currentIndex = siblings.indexOf(nodeId)
   }
 
-  if (siblings.length <= 1) return tree
+  if (siblings.length <= 1) {
+    return tree
+  }
 
   // Calculate new index
   const newIndex = direction === 'next'
-    ? (currentIndex + 1) % siblings.length
-    : (currentIndex - 1 + siblings.length) % siblings.length
+      ? (currentIndex + 1) % siblings.length
+      : (currentIndex - 1 + siblings.length) % siblings.length
 
   const newNodeId = siblings[newIndex]
 
@@ -287,13 +302,15 @@ export function switchBranch(
  * Update a node's content (e.g., during streaming)
  */
 export function updateNodeContent(
-  tree: ConversationTree,
-  nodeId: string,
-  content: string,
-  isStreaming?: boolean
+    tree: ConversationTree,
+    nodeId: string,
+    content: string,
+    isStreaming?: boolean
 ): ConversationTree {
   const node = tree.nodes[nodeId]
-  if (!node) return tree
+  if (!node) {
+    return tree
+  }
 
   return {
     ...tree,
@@ -312,7 +329,12 @@ export function updateNodeContent(
  * Convert a flat message array to a conversation tree
  */
 export function messagesToTree(
-  messages: Array<{id: string; role: 'user' | 'assistant'; content: string; isStreaming?: boolean}>
+    messages: Array<{
+      id: string;
+      role: 'user' | 'assistant';
+      content: string;
+      isStreaming?: boolean
+    }>
 ): ConversationTree {
   let tree = createEmptyTree()
 

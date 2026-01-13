@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import { createPortal } from 'react-dom'
-import { X } from 'lucide-react'
-import { cx } from '../utils/cx'
+import React, {useEffect, useState} from 'react'
+import {createPortal} from 'react-dom'
+import {X} from 'lucide-react'
+import {cx} from '../utils/cx'
 
 export interface ModalProps {
   isOpen: boolean
@@ -11,7 +11,7 @@ export interface ModalProps {
   className?: string
 }
 
-export const Modal = ({ isOpen, onClose, title, children, className }: ModalProps) => {
+export const Modal = ({isOpen, onClose, title, children, className}: ModalProps) => {
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -34,50 +34,58 @@ export const Modal = ({ isOpen, onClose, title, children, className }: ModalProp
   }, [isOpen])
 
   useEffect(() => {
-      const handleEsc = (e: KeyboardEvent) => {
-          if (e.key === 'Escape') onClose()
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose()
       }
-      window.addEventListener('keydown', handleEsc)
-      return () => window.removeEventListener('keydown', handleEsc)
+    }
+    window.addEventListener('keydown', handleEsc)
+    return () => window.removeEventListener('keydown', handleEsc)
   }, [onClose])
 
-  if (!mounted) return null
+  if (!mounted) {
+    return null
+  }
 
   // Don't render anything if closed, unless we want exit animations. 
   // My CSS relies on data-state, but if I unmount immediately, exit animation won't play.
   // To support exit animations, I'd need a transition manager (like framer-motion or headlessui).
   // For this simple implementation, I'll render conditionally. 
   // If I want animation, I need to keep it mounted until animation ends.
-  // Given the prompt "add all suggestions" and "premium", a simple unmount is acceptable for v1 without heavy deps.
-  // However, the CSS I wrote has `data-state=closed`. 
-  // Without a transition library, handling exit animation is tricky. 
-  // I'll just conditional render for now. The entry animation `animate-fade-in` will play.
-  
-  if (!isOpen) return null;
+  // Given the prompt "add all suggestions" and "premium", a simple unmount is acceptable for v1
+  // without heavy deps. However, the CSS I wrote has `data-state=closed`.  Without a transition
+  // library, handling exit animation is tricky.  I'll just conditional render for now. The entry
+  // animation `animate-fade-in` will play.
+
+  if (!isOpen) {
+    return null;
+  }
 
   const content = (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6" onClick={onClose}>
-      <div className="fixed inset-0 z-40 bg-obsidian/80 backdrop-blur-sm" aria-hidden="true" />
-      <div
-        role="dialog"
-        aria-modal="true"
-        className={cx(
-          'bg-charcoal border border-gold/30 shadow-2xl z-50 w-full max-w-lg p-6 rounded-none relative',
-          className
-        )}
-        data-state="open"
-        onClick={(e) => e.stopPropagation()}
-      >
-         <div className="flex items-center justify-between mb-2">
-             {title ? <h3 className="text-xl font-semibold text-white m-0">{title}</h3> : <div />}
-             <button onClick={onClose} className="text-silver hover:text-white transition-colors ml-auto">
-                <X className="h-5 w-5" />
-                <span className="sr-only">Close</span>
-             </button>
-         </div>
-        <div>{children}</div>
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6"
+           onClick={onClose}>
+        <div className="fixed inset-0 z-40 bg-obsidian/80 backdrop-blur-sm" aria-hidden="true"/>
+        <div
+            role="dialog"
+            aria-modal="true"
+            className={cx(
+                'bg-charcoal border border-gold/30 shadow-2xl z-50 w-full max-w-lg p-6 rounded-none relative',
+                className
+            )}
+            data-state="open"
+            onClick={(e) => e.stopPropagation()}
+        >
+          <div className="flex items-center justify-between mb-2">
+            {title ? <h3 className="text-xl font-semibold text-white m-0">{title}</h3> : <div/>}
+            <button onClick={onClose}
+                    className="text-silver hover:text-white transition-colors ml-auto">
+              <X className="h-5 w-5"/>
+              <span className="sr-only">Close</span>
+            </button>
+          </div>
+          <div>{children}</div>
+        </div>
       </div>
-    </div>
   )
 
   return createPortal(content, document.body)

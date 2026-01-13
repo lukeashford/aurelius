@@ -203,10 +203,10 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
 
       // Auto-open artifacts panel when artifacts are found (including pending)
       React.useEffect(() => {
-        if ((artifacts.length > 0 || hasPendingArtifact) && !artifactsPanelOpen) {
+        if (artifacts.length > 0 || hasPendingArtifact) {
           setArtifactsPanelOpen(true)
         }
-      }, [artifacts.length, hasPendingArtifact, artifactsPanelOpen])
+      }, [artifacts.length, hasPendingArtifact])
 
       // Handle branch switching
       const handleBranchSwitch = useCallback(

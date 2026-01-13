@@ -1,19 +1,19 @@
 import React from 'react'
-import { render, screen, fireEvent } from '@testing-library/react'
-import { Menu, MenuTrigger, MenuContent, MenuItem, MenuSeparator } from '@lukeashford/aurelius'
+import {fireEvent, render, screen} from '@testing-library/react'
+import {Menu, MenuContent, MenuItem, MenuSeparator, MenuTrigger} from '@lukeashford/aurelius'
 
 describe('Menu', () => {
   const renderMenu = () => {
     return render(
-      <Menu>
-        <MenuTrigger>Open Menu</MenuTrigger>
-        <MenuContent>
-          <MenuItem>Item 1</MenuItem>
-          <MenuItem>Item 2</MenuItem>
-          <MenuSeparator />
-          <MenuItem destructive>Delete</MenuItem>
-        </MenuContent>
-      </Menu>
+        <Menu>
+          <MenuTrigger>Open Menu</MenuTrigger>
+          <MenuContent>
+            <MenuItem>Item 1</MenuItem>
+            <MenuItem>Item 2</MenuItem>
+            <MenuSeparator/>
+            <MenuItem destructive>Delete</MenuItem>
+          </MenuContent>
+        </Menu>
     )
   }
 

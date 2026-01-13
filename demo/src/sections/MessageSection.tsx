@@ -1,8 +1,5 @@
 import React from 'react'
-import {
-  Message,
-  type MessageVariant
-} from '@lukeashford/aurelius'
+import {Message, type MessageVariant} from '@lukeashford/aurelius'
 import Section from './Section'
 
 const variants: Array<{ variant: MessageVariant, label: string }> = [
@@ -69,7 +66,8 @@ export default function MessageSection() {
           <div>
             <h3 className="text-lg font-semibold mb-4">With Branch Navigation</h3>
             <p className="text-sm text-silver mb-4">
-              When a message has multiple branches (from edits or retries), a branch navigator appears.
+              When a message has multiple branches (from edits or retries), a branch navigator
+              appears.
             </p>
             <div className="space-y-4">
               <Message
@@ -101,7 +99,8 @@ export default function MessageSection() {
                 isStreaming={true}
                 actions={{
                   showCopy: true,
-                  onRetry: () => {},
+                  onRetry: () => {
+                  },
                 }}
             />
           </div>

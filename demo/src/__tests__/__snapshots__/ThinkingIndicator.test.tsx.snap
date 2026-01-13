@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ThinkingIndicator matches snapshot 1`] = `
+<div>
+  <div
+    aria-live="polite"
+    class="flex items-center gap-2 px-3 py-2 w-fit bg-charcoal border border-ash text-silver mr-auto"
+    role="status"
+  >
+    <div
+      aria-hidden="true"
+      class="flex gap-1"
+    >
+      <span
+        class="w-1.5 h-1.5 bg-gold/60 rounded-full animate-pulse"
+        style="animation-delay: 0ms;"
+      />
+      <span
+        class="w-1.5 h-1.5 bg-gold/60 rounded-full animate-pulse"
+        style="animation-delay: 150ms;"
+      />
+      <span
+        class="w-1.5 h-1.5 bg-gold/60 rounded-full animate-pulse"
+        style="animation-delay: 300ms;"
+      />
+    </div>
+    <span
+      class="text-sm italic transition-opacity duration-200 opacity-100"
+    >
+      Thinking...
+    </span>
+  </div>
+</div>
+`;

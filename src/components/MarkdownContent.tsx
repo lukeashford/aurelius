@@ -1,6 +1,6 @@
-import React, { useMemo } from 'react'
-import DOMPurify, { type Config } from 'dompurify'
-import { cx } from '../utils/cx'
+import React, {useMemo} from 'react'
+import DOMPurify, {type Config} from 'dompurify'
+import {cx} from '../utils/cx'
 
 export interface MarkdownContentProps extends React.HTMLAttributes<HTMLDivElement> {
   content: string
@@ -61,7 +61,8 @@ function injectStreamingCursor(html: string, cursorClassName?: string): string {
     return `<span class="${cx(CURSOR_BASE_CLASSES, cursorClassName)}" aria-hidden="true"></span>`
   }
 
-  const cursorHtml = `<span class="${cx(CURSOR_BASE_CLASSES, cursorClassName)}" aria-hidden="true"></span>`
+  const cursorHtml = `<span class="${cx(CURSOR_BASE_CLASSES,
+      cursorClassName)}" aria-hidden="true"></span>`
 
   // Parse the HTML to find the right injection point
   const parser = new DOMParser()

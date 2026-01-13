@@ -1,6 +1,6 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
-import { Container } from '@lukeashford/aurelius'
+import {render, screen} from '@testing-library/react'
+import {Container} from '@lukeashford/aurelius'
 
 describe('Container', () => {
   it('renders children', () => {
@@ -9,12 +9,12 @@ describe('Container', () => {
   })
 
   it('applies responsive container class by default', () => {
-    const { container } = render(<Container>Content</Container>)
+    const {container} = render(<Container>Content</Container>)
     expect(container.firstChild).toHaveClass('container')
   })
 
   it('applies size variant classes', () => {
-    const { rerender, container } = render(<Container size="sm">Content</Container>)
+    const {rerender, container} = render(<Container size="sm">Content</Container>)
     expect(container.firstChild).toHaveClass('container-sm')
 
     rerender(<Container size="lg">Content</Container>)
@@ -25,7 +25,7 @@ describe('Container', () => {
   })
 
   it('merges custom className', () => {
-    const { container } = render(<Container className="mt-8">Content</Container>)
+    const {container} = render(<Container className="mt-8">Content</Container>)
     expect(container.firstChild).toHaveClass('container', 'mt-8')
   })
 
