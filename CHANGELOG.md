@@ -1,3 +1,11 @@
+## [2.10.1](https://github.com/lukeashford/aurelius/compare/v2.10.0...v2.10.1) (2026-01-13)
+
+### Bug Fixes
+
+* **demo:** capture message ID before state callback in handleStop ([e0f71ee](https://github.com/lukeashford/aurelius/commit/e0f71ee78d68b0edce53f18170c6cbc10e24f78a))
+* **tests:** fix "can collapse artifacts panel" ([9e5cd9c](https://github.com/lukeashford/aurelius/commit/9e5cd9ceb113c5dd101d544bed90694253da24c9))
+* **tests:** fix linter errors ([a2f6de8](https://github.com/lukeashford/aurelius/commit/a2f6de8f75df567bc3cbe5c03a0641c78c1ede83))
+
 ## [2.10.0](https://github.com/lukeashford/aurelius/compare/v2.9.0...v2.10.0) (2026-01-12)
 
 ### Features
