@@ -1,0 +1,181 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ArtifactsPanel matches snapshot when collapsed with artifacts 1`] = `
+<div>
+  <div
+    class="h-full bg-charcoal/80 border-l border-ash/40 flex flex-col items-center py-3 w-12 flex-shrink-0"
+  >
+    <button
+      aria-label="Expand artifacts panel"
+      class="p-2 text-silver hover:text-white hover:bg-ash/20 transition-colors duration-150 relative"
+    >
+      <svg
+        class="w-5 h-5"
+        fill="currentColor"
+        viewBox="0 0 20 20"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M3.196 12.87l-.825.483a.75.75 0 000 1.294l7.25 4.25a.75.75 0 00.758 0l7.25-4.25a.75.75 0 000-1.294l-.825-.484-5.666 3.322a2.25 2.25 0 01-2.276 0L3.196 12.87z"
+        />
+        <path
+          d="M3.196 8.87l-.825.483a.75.75 0 000 1.294l7.25 4.25a.75.75 0 00.758 0l7.25-4.25a.75.75 0 000-1.294l-.825-.484-5.666 3.322a2.25 2.25 0 01-2.276 0L3.196 8.87z"
+        />
+        <path
+          d="M10.38 1.103a.75.75 0 00-.76 0l-7.25 4.25a.75.75 0 000 1.294l7.25 4.25a.75.75 0 00.76 0l7.25-4.25a.75.75 0 000-1.294l-7.25-4.25z"
+        />
+      </svg>
+      <span
+        class="absolute -top-1 -right-1 w-4 h-4 bg-gold text-obsidian text-xs font-medium flex items-center justify-center rounded-full"
+      >
+        2
+      </span>
+    </button>
+  </div>
+</div>
+`;
+
+exports[`ArtifactsPanel matches snapshot when expanded with artifacts 1`] = `
+<div>
+  <div
+    class="h-full bg-charcoal/50 border-l border-ash/40 flex flex-col w-96 flex-shrink-0"
+  >
+    <div
+      class="flex items-center justify-between p-4 border-b border-ash/40 flex-shrink-0"
+    >
+      <h3
+        class="text-lg font-semibold text-white"
+      >
+        Artifacts
+      </h3>
+      <button
+        aria-label="Collapse artifacts panel"
+        class="p-1.5 text-silver hover:text-white hover:bg-ash/20 transition-colors duration-150"
+      >
+        <svg
+          class="w-5 h-5"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            clip-rule="evenodd"
+            d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+            fill-rule="evenodd"
+          />
+        </svg>
+      </button>
+    </div>
+    <div
+      class="flex-1 overflow-y-auto p-4 space-y-4"
+    >
+      <div
+        class="relative"
+      >
+        <div
+          class="overflow-hidden"
+        >
+          <div
+            class="animate-pulse bg-ash w-full h-48"
+          />
+          <div
+            class="p-4 bg-charcoal border border-ash/40 border-t-0"
+          >
+            <div
+              class="animate-pulse bg-ash h-5 w-3/4 mb-2"
+            />
+            <div
+              class="animate-pulse bg-ash h-4 w-1/2"
+            />
+          </div>
+        </div>
+        <div
+          class="rounded-none bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-full transition-opacity duration-300 opacity-0 absolute inset-0"
+        >
+          <div
+            class="relative overflow-hidden"
+          >
+            <img
+              alt="Test image"
+              class="block max-w-full w-full h-full object-cover"
+              src="https://example.com/image.jpg"
+            />
+          </div>
+          <div
+            class="px-4 py-4"
+          >
+            <h4
+              class="text-lg font-semibold leading-tight"
+            >
+              Image Title
+            </h4>
+            <p
+              class="text-sm text-silver leading-normal"
+            >
+              Image subtitle
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="p-4 bg-charcoal border border-ash/40"
+      >
+        <h4
+          class="text-lg font-semibold text-white mb-2"
+        >
+          Text Artifact
+        </h4>
+        <div
+          class="prose prose-sm prose-invert"
+        >
+          Some markdown content
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ArtifactsPanel matches snapshot when expanded with no artifacts 1`] = `
+<div>
+  <div
+    class="h-full bg-charcoal/50 border-l border-ash/40 flex flex-col w-96 flex-shrink-0"
+  >
+    <div
+      class="flex items-center justify-between p-4 border-b border-ash/40 flex-shrink-0"
+    >
+      <h3
+        class="text-lg font-semibold text-white"
+      >
+        Artifacts
+      </h3>
+      <button
+        aria-label="Collapse artifacts panel"
+        class="p-1.5 text-silver hover:text-white hover:bg-ash/20 transition-colors duration-150"
+      >
+        <svg
+          class="w-5 h-5"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            clip-rule="evenodd"
+            d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+            fill-rule="evenodd"
+          />
+        </svg>
+      </button>
+    </div>
+    <div
+      class="flex-1 overflow-y-auto p-4 space-y-4"
+    >
+      <p
+        class="text-sm text-silver/60 text-center py-8"
+      >
+        No artifacts to display
+      </p>
+    </div>
+  </div>
+</div>
+`;

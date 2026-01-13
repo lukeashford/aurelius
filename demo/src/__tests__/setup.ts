@@ -36,6 +36,25 @@ global.IntersectionObserver = class IntersectionObserver {
   }
 } as any;
 
+// Mock ResizeObserver
+global.ResizeObserver = class ResizeObserver {
+  constructor(callback: ResizeObserverCallback) {
+  }
+
+  disconnect() {
+  }
+
+  observe() {
+  }
+
+  unobserve() {
+  }
+} as any;
+
+// Mock URL.createObjectURL and revokeObjectURL
+global.URL.createObjectURL = jest.fn((blob: Blob) => `blob:mock-url-${Math.random()}`);
+global.URL.revokeObjectURL = jest.fn();
+
 // Mock window.matchMedia
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
