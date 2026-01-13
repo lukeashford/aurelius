@@ -1,5 +1,5 @@
 import React from 'react'
-import { cx } from '../utils/cx'
+import {cx} from '../utils/cx'
 
 export type StackDirection = 'horizontal' | 'vertical'
 export type StackAlign = 'start' | 'center' | 'end' | 'stretch' | 'baseline'
@@ -46,38 +46,38 @@ const GAP_MAP: Record<StackGap, string> = {
 }
 
 export const Stack = React.forwardRef<HTMLDivElement, StackProps>(
-  (
-    {
-      direction = 'vertical',
-      align,
-      justify,
-      gap = 4,
-      wrap = false,
-      as: Component = 'div',
-      className,
-      children,
-      ...props
-    },
-    ref
-  ) => {
-    return (
-      <Component
-        ref={ref}
-        className={cx(
-          'flex',
-          direction === 'horizontal' ? 'flex-row' : 'flex-col',
-          align && ALIGN_MAP[align],
-          justify && JUSTIFY_MAP[justify],
-          GAP_MAP[gap],
-          wrap && 'flex-wrap',
-          className
-        )}
-        {...props}
-      >
-        {children}
-      </Component>
-    )
-  }
+    (
+        {
+          direction = 'vertical',
+          align,
+          justify,
+          gap = 4,
+          wrap = false,
+          as: Component = 'div',
+          className,
+          children,
+          ...props
+        },
+        ref
+    ) => {
+      return (
+          <Component
+              ref={ref}
+              className={cx(
+                  'flex',
+                  direction === 'horizontal' ? 'flex-row' : 'flex-col',
+                  align && ALIGN_MAP[align],
+                  justify && JUSTIFY_MAP[justify],
+                  GAP_MAP[gap],
+                  wrap && 'flex-wrap',
+                  className
+              )}
+              {...props}
+          >
+            {children}
+          </Component>
+      )
+    }
 )
 
 Stack.displayName = 'Stack'

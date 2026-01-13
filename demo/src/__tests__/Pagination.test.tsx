@@ -1,6 +1,6 @@
 import React from 'react'
-import { render, screen, fireEvent } from '@testing-library/react'
-import { Pagination } from '@lukeashford/aurelius'
+import {fireEvent, render, screen} from '@testing-library/react'
+import {Pagination} from '@lukeashford/aurelius'
 
 describe('Pagination', () => {
   const defaultProps = {
@@ -30,41 +30,41 @@ describe('Pagination', () => {
   })
 
   it('disables previous button on first page', () => {
-    render(<Pagination {...defaultProps} page={1} />)
+    render(<Pagination {...defaultProps} page={1}/>)
     const buttons = screen.getAllByRole('button')
     // First button should be the "previous" button
     expect(buttons[0]).toBeDisabled()
   })
 
   it('disables next button on last page', () => {
-    render(<Pagination {...defaultProps} page={10} />)
+    render(<Pagination {...defaultProps} page={10}/>)
     const buttons = screen.getAllByRole('button')
     // Last button should be the "next" button
     expect(buttons[buttons.length - 1]).toBeDisabled()
   })
 
   it('navigates to previous page', () => {
-    render(<Pagination {...defaultProps} page={5} />)
+    render(<Pagination {...defaultProps} page={5}/>)
     const buttons = screen.getAllByRole('button')
     fireEvent.click(buttons[0]) // Previous button
     expect(defaultProps.onPageChange).toHaveBeenCalledWith(4)
   })
 
   it('navigates to next page', () => {
-    render(<Pagination {...defaultProps} page={5} />)
+    render(<Pagination {...defaultProps} page={5}/>)
     const buttons = screen.getAllByRole('button')
     fireEvent.click(buttons[buttons.length - 1]) // Next button
     expect(defaultProps.onPageChange).toHaveBeenCalledWith(6)
   })
 
   it('highlights current page', () => {
-    render(<Pagination {...defaultProps} page={3} />)
+    render(<Pagination {...defaultProps} page={3}/>)
     const currentPageButton = screen.getByText('3')
     expect(currentPageButton).toHaveAttribute('aria-current', 'page')
   })
 
   it('renders with single page', () => {
-    render(<Pagination {...defaultProps} totalPages={1} />)
+    render(<Pagination {...defaultProps} totalPages={1}/>)
     expect(screen.getByText('1')).toBeInTheDocument()
     // Both prev and next should be disabled
     const buttons = screen.getAllByRole('button')
@@ -73,8 +73,8 @@ describe('Pagination', () => {
   })
 
   it('applies custom className', () => {
-    const { container } = render(
-      <Pagination {...defaultProps} className="mt-6" />
+    const {container} = render(
+        <Pagination {...defaultProps} className="mt-6"/>
     )
     expect(container.querySelector('.mt-6')).toBeInTheDocument()
   })

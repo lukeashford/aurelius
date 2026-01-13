@@ -51,7 +51,9 @@ export {
   type ListSubheaderProps,
 } from './List'
 export {FileChip, type FileChipProps, type FileChipStatus} from './FileChip'
-export {AttachmentPreview, type AttachmentPreviewProps, type AttachmentItem} from './AttachmentPreview'
+export {
+  AttachmentPreview, type AttachmentPreviewProps, type AttachmentItem
+} from './AttachmentPreview'
 
 // Forms
 export {Label, type LabelProps} from './Label'
@@ -160,7 +162,13 @@ export {Pagination, type PaginationProps} from './Pagination'
 export {Stepper, type StepperProps, type Step, type StepStatus} from './Stepper'
 
 // Chat/AI
-export {Message, type MessageProps, type MessageVariant, type MessageBranchInfo, type MessageActionsConfig} from './Message'
+export {
+  Message,
+  type MessageProps,
+  type MessageVariant,
+  type MessageBranchInfo,
+  type MessageActionsConfig
+} from './Message'
 export {StreamingCursor, type StreamingCursorProps} from './StreamingCursor'
 export {MarkdownContent, type MarkdownContentProps} from './MarkdownContent'
 

@@ -1,14 +1,14 @@
 import React from 'react'
-import { cx } from '../utils/cx'
+import {cx} from '../utils/cx'
 
 export type ButtonVariant =
-  | 'primary'
-  | 'important'
-  | 'elevated'
-  | 'outlined'
-  | 'featured'
-  | 'ghost'
-  | 'danger'
+    | 'primary'
+    | 'important'
+    | 'elevated'
+    | 'outlined'
+    | 'featured'
+    | 'ghost'
+    | 'danger'
 
 export type ButtonSize = 'sm' | 'md' | 'lg' | 'xl'
 

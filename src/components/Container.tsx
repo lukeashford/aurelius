@@ -1,5 +1,5 @@
 import React from 'react'
-import { cx } from '../utils/cx'
+import {cx} from '../utils/cx'
 
 export type ContainerSize = 'sm' | 'md' | 'lg' | 'xl' | 'fluid' | 'responsive'
 
@@ -17,13 +17,13 @@ const SIZE_CLASSES: Record<ContainerSize, string> = {
 }
 
 export const Container = React.forwardRef<HTMLDivElement, ContainerProps>(
-  ({ size = 'responsive', className, children, ...props }, ref) => {
-    return (
-      <div ref={ref} className={cx(SIZE_CLASSES[size], className)} {...props}>
-        {children}
-      </div>
-    )
-  }
+    ({size = 'responsive', className, children, ...props}, ref) => {
+      return (
+          <div ref={ref} className={cx(SIZE_CLASSES[size], className)} {...props}>
+            {children}
+          </div>
+      )
+    }
 )
 
 Container.displayName = 'Container'

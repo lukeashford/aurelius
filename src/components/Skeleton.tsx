@@ -1,18 +1,19 @@
 import React from 'react'
-import { cx } from '../utils/cx'
+import {cx} from '../utils/cx'
 
-export interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> {
+}
 
 export const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>(
-  ({ className, ...rest }, ref) => {
-    return (
-      <div
-        ref={ref}
-        className={cx('animate-pulse bg-ash', className)}
-        {...rest}
-      />
-    )
-  }
+    ({className, ...rest}, ref) => {
+      return (
+          <div
+              ref={ref}
+              className={cx('animate-pulse bg-ash', className)}
+              {...rest}
+          />
+      )
+    }
 )
 
 Skeleton.displayName = 'Skeleton'

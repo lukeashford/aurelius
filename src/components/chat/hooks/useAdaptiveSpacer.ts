@@ -54,7 +54,7 @@ export interface UseAdaptiveSpacerReturn {
  * - When content exceeds available space, spacer becomes 0
  */
 export function useAdaptiveSpacer(
-  options: UseAdaptiveSpacerOptions = {}
+    options: UseAdaptiveSpacerOptions = {}
 ): UseAdaptiveSpacerReturn {
   const {minHeight = 0, containerRef: externalContainerRef, anchorRef} = options
 
@@ -67,7 +67,9 @@ export function useAdaptiveSpacer(
   const recalculate = useCallback(() => {
     const container = containerRef.current
     const content = contentRef.current
-    if (!container || !content) return
+    if (!container || !content) {
+      return
+    }
 
     // Get container's computed padding
     const style = getComputedStyle(container)
@@ -105,7 +107,9 @@ export function useAdaptiveSpacer(
   useEffect(() => {
     const container = containerRef.current
     const content = contentRef.current
-    if (!container || !content) return
+    if (!container || !content) {
+      return
+    }
 
     // Initial calculation
     recalculate()

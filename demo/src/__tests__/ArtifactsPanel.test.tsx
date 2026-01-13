@@ -1,5 +1,5 @@
 import React from 'react'
-import {render, screen, fireEvent} from '@testing-library/react'
+import {fireEvent, render, screen} from '@testing-library/react'
 import {ArtifactsPanel} from '@lukeashford/aurelius'
 
 describe('ArtifactsPanel', () => {
@@ -21,31 +21,31 @@ describe('ArtifactsPanel', () => {
   ]
 
   it('renders without crashing', () => {
-    render(<ArtifactsPanel artifacts={[]} />)
+    render(<ArtifactsPanel artifacts={[]}/>)
     expect(document.body).toBeInTheDocument()
   })
 
   it('renders collapsed by default (isOpen=false)', () => {
-    render(<ArtifactsPanel artifacts={mockArtifacts} />)
+    render(<ArtifactsPanel artifacts={mockArtifacts}/>)
     // Should show expand button, not the artifacts panel title
     expect(screen.getByRole('button', {name: /expand artifacts panel/i})).toBeInTheDocument()
     expect(screen.queryByText('Artifacts')).not.toBeInTheDocument()
   })
 
   it('renders expanded when isOpen is true', () => {
-    render(<ArtifactsPanel artifacts={mockArtifacts} isOpen={true} />)
+    render(<ArtifactsPanel artifacts={mockArtifacts} isOpen={true}/>)
     expect(screen.getByText('Artifacts')).toBeInTheDocument()
   })
 
   it('shows artifact count badge when collapsed with artifacts', () => {
-    render(<ArtifactsPanel artifacts={mockArtifacts} isOpen={false} />)
+    render(<ArtifactsPanel artifacts={mockArtifacts} isOpen={false}/>)
     expect(screen.getByText('2')).toBeInTheDocument()
   })
 
   it('calls onClose when expand button is clicked in collapsed state', () => {
     const onClose = jest.fn()
     render(
-      <ArtifactsPanel artifacts={mockArtifacts} isOpen={false} onClose={onClose} />
+        <ArtifactsPanel artifacts={mockArtifacts} isOpen={false} onClose={onClose}/>
     )
 
     fireEvent.click(screen.getByRole('button', {name: /expand artifacts panel/i}))
@@ -55,7 +55,7 @@ describe('ArtifactsPanel', () => {
   it('calls onClose when collapse button is clicked in expanded state', () => {
     const onClose = jest.fn()
     render(
-      <ArtifactsPanel artifacts={mockArtifacts} isOpen={true} onClose={onClose} />
+        <ArtifactsPanel artifacts={mockArtifacts} isOpen={true} onClose={onClose}/>
     )
 
     fireEvent.click(screen.getByRole('button', {name: /collapse artifacts panel/i}))
@@ -63,7 +63,7 @@ describe('ArtifactsPanel', () => {
   })
 
   it('shows empty state when no artifacts and expanded', () => {
-    render(<ArtifactsPanel artifacts={[]} isOpen={true} />)
+    render(<ArtifactsPanel artifacts={[]} isOpen={true}/>)
     expect(screen.getByText('No artifacts to display')).toBeInTheDocument()
   })
 
@@ -78,7 +78,7 @@ describe('ArtifactsPanel', () => {
         subtitle: 'A test image',
       },
     ]
-    render(<ArtifactsPanel artifacts={imageArtifact} isOpen={true} />)
+    render(<ArtifactsPanel artifacts={imageArtifact} isOpen={true}/>)
     expect(screen.getByText('My Image')).toBeInTheDocument()
   })
 
@@ -91,7 +91,7 @@ describe('ArtifactsPanel', () => {
         content: 'Some documentation content',
       },
     ]
-    render(<ArtifactsPanel artifacts={textArtifact} isOpen={true} />)
+    render(<ArtifactsPanel artifacts={textArtifact} isOpen={true}/>)
     expect(screen.getByText('Documentation')).toBeInTheDocument()
   })
 
@@ -105,7 +105,7 @@ describe('ArtifactsPanel', () => {
         subtitle: 'A demonstration',
       },
     ]
-    render(<ArtifactsPanel artifacts={videoArtifact} isOpen={true} />)
+    render(<ArtifactsPanel artifacts={videoArtifact} isOpen={true}/>)
     expect(screen.getByText('Demo Video')).toBeInTheDocument()
   })
 
@@ -119,7 +119,7 @@ describe('ArtifactsPanel', () => {
       },
     ]
     render(
-      <ArtifactsPanel artifacts={artifactWithPending} isOpen={true} isLoading={true} />
+        <ArtifactsPanel artifacts={artifactWithPending} isOpen={true} isLoading={true}/>
     )
     // Skeleton elements should be present
     const skeletons = document.querySelectorAll('[class*="animate"]')
@@ -128,32 +128,32 @@ describe('ArtifactsPanel', () => {
 
   it('applies custom className', () => {
     const {container} = render(
-      <ArtifactsPanel
-        artifacts={mockArtifacts}
-        isOpen={true}
-        className="custom-panel"
-      />
+        <ArtifactsPanel
+            artifacts={mockArtifacts}
+            isOpen={true}
+            className="custom-panel"
+        />
     )
     expect(container.firstChild).toHaveClass('custom-panel')
   })
 
   it('matches snapshot when collapsed with artifacts', () => {
     const {container} = render(
-      <ArtifactsPanel artifacts={mockArtifacts} isOpen={false} />
+        <ArtifactsPanel artifacts={mockArtifacts} isOpen={false}/>
     )
     expect(container).toMatchSnapshot()
   })
 
   it('matches snapshot when expanded with artifacts', () => {
     const {container} = render(
-      <ArtifactsPanel artifacts={mockArtifacts} isOpen={true} />
+        <ArtifactsPanel artifacts={mockArtifacts} isOpen={true}/>
     )
     expect(container).toMatchSnapshot()
   })
 
   it('matches snapshot when expanded with no artifacts', () => {
     const {container} = render(
-      <ArtifactsPanel artifacts={[]} isOpen={true} />
+        <ArtifactsPanel artifacts={[]} isOpen={true}/>
     )
     expect(container).toMatchSnapshot()
   })

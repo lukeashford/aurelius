@@ -82,14 +82,16 @@ export function createAureliusESLintConfig(options = {}) {
         ],
 
         // Block arbitrary value utilities like bg-[...], text-[...], shadow-[...]
-        // Also block intermediate rounded corners (sm/md/lg/xl/2xl/3xl) - Aurelius prefers square corners.
-        // Allows: rounded-none (explicit no rounding), rounded-full (circles/pills for avatars, buttons, etc.)
+        // Also block intermediate rounded corners (sm/md/lg/xl/2xl/3xl) - Aurelius prefers square
+        // corners. Allows: rounded-none (explicit no rounding), rounded-full (circles/pills for
+        // avatars, buttons, etc.)
         'better-tailwindcss/no-restricted-classes': [
           'error',
           {
             restrict: [
               '\\[.*\\]',
-              // Block rounded-sm, rounded-md, rounded-lg, rounded-xl, rounded-2xl, rounded-3xl (base and directional variants)
+              // Block rounded-sm, rounded-md, rounded-lg, rounded-xl, rounded-2xl, rounded-3xl
+              // (base and directional variants)
               '^rounded-(sm|md|lg|xl|2xl|3xl)$',
               '^rounded$',
               '^rounded-(t|r|b|l|tl|tr|br|bl)$',

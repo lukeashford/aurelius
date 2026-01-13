@@ -1,10 +1,16 @@
-import React, { createContext, useContext, useState, useCallback, useEffect } from 'react'
-import { createPortal } from 'react-dom'
-import { X, CheckCircle, AlertCircle, AlertTriangle, Info } from 'lucide-react'
-import { cx } from '../utils/cx'
+import React, {createContext, useCallback, useContext, useEffect, useState} from 'react'
+import {createPortal} from 'react-dom'
+import {AlertCircle, AlertTriangle, CheckCircle, Info, X} from 'lucide-react'
+import {cx} from '../utils/cx'
 
 export type ToastVariant = 'default' | 'success' | 'error' | 'warning' | 'info'
-export type ToastPosition = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' | 'top-center' | 'bottom-center'
+export type ToastPosition =
+    'top-right'
+    | 'top-left'
+    | 'bottom-right'
+    | 'bottom-left'
+    | 'top-center'
+    | 'bottom-center'
 
 export interface ToastData {
   id: string
@@ -31,10 +37,10 @@ export function useToast() {
   }
 
   const toast = useCallback(
-    (options: Omit<ToastData, 'id'>) => {
-      return context.addToast(options)
-    },
-    [context]
+      (options: Omit<ToastData, 'id'>) => {
+        return context.addToast(options)
+      },
+      [context]
   )
 
   return {
@@ -63,17 +69,17 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({
   }, [])
 
   const addToast = useCallback(
-    (toast: Omit<ToastData, 'id'>) => {
-      const id = Math.random().toString(36).substr(2, 9)
-      const newToast: ToastData = {
-        ...toast,
-        id,
-        duration: toast.duration ?? defaultDuration,
-      }
-      setToasts((prev) => [...prev, newToast])
-      return id
-    },
-    [defaultDuration]
+      (toast: Omit<ToastData, 'id'>) => {
+        const id = Math.random().toString(36).substr(2, 9)
+        const newToast: ToastData = {
+          ...toast,
+          id,
+          duration: toast.duration ?? defaultDuration,
+        }
+        setToasts((prev) => [...prev, newToast])
+        return id
+      },
+      [defaultDuration]
   )
 
   const removeToast = useCallback((id: string) => {
@@ -81,10 +87,10 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({
   }, [])
 
   return (
-    <ToastContext.Provider value={{ toasts, addToast, removeToast, position }}>
-      {children}
-      {mounted && <ToastViewport />}
-    </ToastContext.Provider>
+      <ToastContext.Provider value={{toasts, addToast, removeToast, position}}>
+        {children}
+        {mounted && <ToastViewport/>}
+      </ToastContext.Provider>
   )
 }
 
@@ -93,9 +99,11 @@ ToastProvider.displayName = 'ToastProvider'
 // ToastViewport - container for all toasts
 const ToastViewport: React.FC = () => {
   const context = useContext(ToastContext)
-  if (!context) return null
+  if (!context) {
+    return null
+  }
 
-  const { toasts, position } = context
+  const {toasts, position} = context
 
   const positionClasses: Record<ToastPosition, string> = {
     'top-right': 'top-4 right-4',
@@ -107,22 +115,23 @@ const ToastViewport: React.FC = () => {
   }
 
   return createPortal(
-    <div
-      className={cx(
-        'fixed z-50 flex flex-col gap-2 pointer-events-none',
-        positionClasses[position]
-      )}
-    >
-      {toasts.map((toast) => (
-        <Toast key={toast.id} {...toast} />
-      ))}
-    </div>,
-    document.body
+      <div
+          className={cx(
+              'fixed z-50 flex flex-col gap-2 pointer-events-none',
+              positionClasses[position]
+          )}
+      >
+        {toasts.map((toast) => (
+            <Toast key={toast.id} {...toast} />
+        ))}
+      </div>,
+      document.body
   )
 }
 
 // Individual Toast
-interface ToastProps extends ToastData {}
+interface ToastProps extends ToastData {
+}
 
 const VARIANT_STYLES: Record<ToastVariant, string> = {
   default: 'bg-charcoal border-ash',
@@ -134,10 +143,10 @@ const VARIANT_STYLES: Record<ToastVariant, string> = {
 
 const VARIANT_ICONS: Record<ToastVariant, React.ReactNode> = {
   default: null,
-  success: <CheckCircle className="h-5 w-5 text-success" />,
-  error: <AlertCircle className="h-5 w-5 text-error" />,
-  warning: <AlertTriangle className="h-5 w-5 text-warning" />,
-  info: <Info className="h-5 w-5 text-info" />,
+  success: <CheckCircle className="h-5 w-5 text-success"/>,
+  error: <AlertCircle className="h-5 w-5 text-error"/>,
+  warning: <AlertTriangle className="h-5 w-5 text-warning"/>,
+  info: <Info className="h-5 w-5 text-info"/>,
 }
 
 const Toast: React.FC<ToastProps> = ({
@@ -162,33 +171,33 @@ const Toast: React.FC<ToastProps> = ({
   const icon = VARIANT_ICONS[variant]
 
   return (
-    <div
-      role="alert"
-      className={cx(
-        'pointer-events-auto w-80 p-4 border shadow-lg animate-slide-in-right',
-        VARIANT_STYLES[variant]
-      )}
-    >
-      <div className="flex gap-3">
-        {icon && <div className="shrink-0 mt-0.5">{icon}</div>}
-        <div className="flex-1 min-w-0">
-          {title && (
-            <p className="text-sm font-medium text-white">{title}</p>
+      <div
+          role="alert"
+          className={cx(
+              'pointer-events-auto w-80 p-4 border shadow-lg animate-slide-in-right',
+              VARIANT_STYLES[variant]
           )}
-          {description && (
-            <p className="text-sm text-silver mt-1">{description}</p>
-          )}
-          {action && <div className="mt-3">{action}</div>}
+      >
+        <div className="flex gap-3">
+          {icon && <div className="shrink-0 mt-0.5">{icon}</div>}
+          <div className="flex-1 min-w-0">
+            {title && (
+                <p className="text-sm font-medium text-white">{title}</p>
+            )}
+            {description && (
+                <p className="text-sm text-silver mt-1">{description}</p>
+            )}
+            {action && <div className="mt-3">{action}</div>}
+          </div>
+          <button
+              onClick={() => context?.removeToast(id)}
+              className="shrink-0 text-silver hover:text-white transition-colors"
+          >
+            <X className="h-4 w-4"/>
+            <span className="sr-only">Dismiss</span>
+          </button>
         </div>
-        <button
-          onClick={() => context?.removeToast(id)}
-          className="shrink-0 text-silver hover:text-white transition-colors"
-        >
-          <X className="h-4 w-4" />
-          <span className="sr-only">Dismiss</span>
-        </button>
       </div>
-    </div>
   )
 }
 

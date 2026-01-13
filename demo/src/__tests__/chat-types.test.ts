@@ -1,16 +1,16 @@
 import {
-  createEmptyTree,
   addMessageToTree,
+  createEmptyTree,
+  createPreviewUrl,
+  generateId,
   getActivePathMessages,
   getSiblingInfo,
+  isBranchPoint,
+  isImageFile,
+  messagesToTree,
+  revokePreviewUrl,
   switchBranch,
   updateNodeContent,
-  messagesToTree,
-  isBranchPoint,
-  generateId,
-  isImageFile,
-  createPreviewUrl,
-  revokePreviewUrl,
 } from '@lukeashford/aurelius'
 
 describe('Chat Types Utilities', () => {
@@ -27,9 +27,9 @@ describe('Chat Types Utilities', () => {
     it('adds a root message to empty tree', () => {
       const tree = createEmptyTree()
       const newTree = addMessageToTree(
-        tree,
-        {id: 'msg-1', role: 'user', content: 'Hello', parentId: null},
-        null
+          tree,
+          {id: 'msg-1', role: 'user', content: 'Hello', parentId: null},
+          null
       )
 
       expect(newTree.nodes['msg-1']).toBeDefined()
@@ -42,14 +42,14 @@ describe('Chat Types Utilities', () => {
     it('adds a child message to existing message', () => {
       let tree = createEmptyTree()
       tree = addMessageToTree(
-        tree,
-        {id: 'msg-1', role: 'user', content: 'Hello', parentId: null},
-        null
+          tree,
+          {id: 'msg-1', role: 'user', content: 'Hello', parentId: null},
+          null
       )
       tree = addMessageToTree(
-        tree,
-        {id: 'msg-2', role: 'assistant', content: 'Hi!', parentId: 'msg-1'},
-        'msg-1'
+          tree,
+          {id: 'msg-2', role: 'assistant', content: 'Hi!', parentId: 'msg-1'},
+          'msg-1'
       )
 
       expect(tree.nodes['msg-2']).toBeDefined()
@@ -61,21 +61,21 @@ describe('Chat Types Utilities', () => {
     it('sets correct branch index for sibling messages', () => {
       let tree = createEmptyTree()
       tree = addMessageToTree(
-        tree,
-        {id: 'msg-1', role: 'user', content: 'Hello', parentId: null},
-        null
+          tree,
+          {id: 'msg-1', role: 'user', content: 'Hello', parentId: null},
+          null
       )
       tree = addMessageToTree(
-        tree,
-        {id: 'msg-2a', role: 'assistant', content: 'Response A', parentId: 'msg-1'},
-        'msg-1'
+          tree,
+          {id: 'msg-2a', role: 'assistant', content: 'Response A', parentId: 'msg-1'},
+          'msg-1'
       )
 
       // Add another sibling
       tree = addMessageToTree(
-        tree,
-        {id: 'msg-2b', role: 'assistant', content: 'Response B', parentId: 'msg-1'},
-        'msg-1'
+          tree,
+          {id: 'msg-2b', role: 'assistant', content: 'Response B', parentId: 'msg-1'},
+          'msg-1'
       )
 
       expect(tree.nodes['msg-2a'].branchIndex).toBe(0)
@@ -86,9 +86,9 @@ describe('Chat Types Utilities', () => {
       const tree = createEmptyTree()
       const before = Date.now()
       const newTree = addMessageToTree(
-        tree,
-        {id: 'msg-1', role: 'user', content: 'Hello', parentId: null},
-        null
+          tree,
+          {id: 'msg-1', role: 'user', content: 'Hello', parentId: null},
+          null
       )
       const after = Date.now()
 
@@ -106,19 +106,19 @@ describe('Chat Types Utilities', () => {
     it('returns path from root to active leaf', () => {
       let tree = createEmptyTree()
       tree = addMessageToTree(
-        tree,
-        {id: 'msg-1', role: 'user', content: 'Hello', parentId: null},
-        null
+          tree,
+          {id: 'msg-1', role: 'user', content: 'Hello', parentId: null},
+          null
       )
       tree = addMessageToTree(
-        tree,
-        {id: 'msg-2', role: 'assistant', content: 'Hi!', parentId: 'msg-1'},
-        'msg-1'
+          tree,
+          {id: 'msg-2', role: 'assistant', content: 'Hi!', parentId: 'msg-1'},
+          'msg-1'
       )
       tree = addMessageToTree(
-        tree,
-        {id: 'msg-3', role: 'user', content: 'How are you?', parentId: 'msg-2'},
-        'msg-2'
+          tree,
+          {id: 'msg-3', role: 'user', content: 'How are you?', parentId: 'msg-2'},
+          'msg-2'
       )
 
       const path = getActivePathMessages(tree)
@@ -133,9 +133,9 @@ describe('Chat Types Utilities', () => {
     it('returns 1/1 for single node', () => {
       let tree = createEmptyTree()
       tree = addMessageToTree(
-        tree,
-        {id: 'msg-1', role: 'user', content: 'Hello', parentId: null},
-        null
+          tree,
+          {id: 'msg-1', role: 'user', content: 'Hello', parentId: null},
+          null
       )
 
       const info = getSiblingInfo(tree, 'msg-1')
@@ -146,24 +146,24 @@ describe('Chat Types Utilities', () => {
     it('returns correct info for siblings', () => {
       let tree = createEmptyTree()
       tree = addMessageToTree(
-        tree,
-        {id: 'msg-1', role: 'user', content: 'Hello', parentId: null},
-        null
+          tree,
+          {id: 'msg-1', role: 'user', content: 'Hello', parentId: null},
+          null
       )
       tree = addMessageToTree(
-        tree,
-        {id: 'msg-2a', role: 'assistant', content: 'Response A', parentId: 'msg-1'},
-        'msg-1'
+          tree,
+          {id: 'msg-2a', role: 'assistant', content: 'Response A', parentId: 'msg-1'},
+          'msg-1'
       )
       tree = addMessageToTree(
-        tree,
-        {id: 'msg-2b', role: 'assistant', content: 'Response B', parentId: 'msg-1'},
-        'msg-1'
+          tree,
+          {id: 'msg-2b', role: 'assistant', content: 'Response B', parentId: 'msg-1'},
+          'msg-1'
       )
       tree = addMessageToTree(
-        tree,
-        {id: 'msg-2c', role: 'assistant', content: 'Response C', parentId: 'msg-1'},
-        'msg-1'
+          tree,
+          {id: 'msg-2c', role: 'assistant', content: 'Response C', parentId: 'msg-1'},
+          'msg-1'
       )
 
       expect(getSiblingInfo(tree, 'msg-2a')).toEqual({total: 3, current: 1})
@@ -186,9 +186,9 @@ describe('Chat Types Utilities', () => {
     it('returns same tree if only one sibling', () => {
       let tree = createEmptyTree()
       tree = addMessageToTree(
-        tree,
-        {id: 'msg-1', role: 'user', content: 'Hello', parentId: null},
-        null
+          tree,
+          {id: 'msg-1', role: 'user', content: 'Hello', parentId: null},
+          null
       )
 
       const result = switchBranch(tree, 'msg-1', 'next')
@@ -198,19 +198,19 @@ describe('Chat Types Utilities', () => {
     it('switches to next branch', () => {
       let tree = createEmptyTree()
       tree = addMessageToTree(
-        tree,
-        {id: 'msg-1', role: 'user', content: 'Hello', parentId: null},
-        null
+          tree,
+          {id: 'msg-1', role: 'user', content: 'Hello', parentId: null},
+          null
       )
       tree = addMessageToTree(
-        tree,
-        {id: 'msg-2a', role: 'assistant', content: 'Response A', parentId: 'msg-1'},
-        'msg-1'
+          tree,
+          {id: 'msg-2a', role: 'assistant', content: 'Response A', parentId: 'msg-1'},
+          'msg-1'
       )
       tree = addMessageToTree(
-        tree,
-        {id: 'msg-2b', role: 'assistant', content: 'Response B', parentId: 'msg-1'},
-        'msg-1'
+          tree,
+          {id: 'msg-2b', role: 'assistant', content: 'Response B', parentId: 'msg-1'},
+          'msg-1'
       )
 
       // Currently at msg-2b (last added)
@@ -222,19 +222,19 @@ describe('Chat Types Utilities', () => {
     it('switches to previous branch', () => {
       let tree = createEmptyTree()
       tree = addMessageToTree(
-        tree,
-        {id: 'msg-1', role: 'user', content: 'Hello', parentId: null},
-        null
+          tree,
+          {id: 'msg-1', role: 'user', content: 'Hello', parentId: null},
+          null
       )
       tree = addMessageToTree(
-        tree,
-        {id: 'msg-2a', role: 'assistant', content: 'Response A', parentId: 'msg-1'},
-        'msg-1'
+          tree,
+          {id: 'msg-2a', role: 'assistant', content: 'Response A', parentId: 'msg-1'},
+          'msg-1'
       )
       tree = addMessageToTree(
-        tree,
-        {id: 'msg-2b', role: 'assistant', content: 'Response B', parentId: 'msg-1'},
-        'msg-1'
+          tree,
+          {id: 'msg-2b', role: 'assistant', content: 'Response B', parentId: 'msg-1'},
+          'msg-1'
       )
 
       const newTree = switchBranch(tree, 'msg-2b', 'prev')
@@ -244,19 +244,19 @@ describe('Chat Types Utilities', () => {
     it('wraps around when going next from last sibling', () => {
       let tree = createEmptyTree()
       tree = addMessageToTree(
-        tree,
-        {id: 'msg-1', role: 'user', content: 'Hello', parentId: null},
-        null
+          tree,
+          {id: 'msg-1', role: 'user', content: 'Hello', parentId: null},
+          null
       )
       tree = addMessageToTree(
-        tree,
-        {id: 'msg-2a', role: 'assistant', content: 'Response A', parentId: 'msg-1'},
-        'msg-1'
+          tree,
+          {id: 'msg-2a', role: 'assistant', content: 'Response A', parentId: 'msg-1'},
+          'msg-1'
       )
       tree = addMessageToTree(
-        tree,
-        {id: 'msg-2b', role: 'assistant', content: 'Response B', parentId: 'msg-1'},
-        'msg-1'
+          tree,
+          {id: 'msg-2b', role: 'assistant', content: 'Response B', parentId: 'msg-1'},
+          'msg-1'
       )
 
       const newTree = switchBranch(tree, 'msg-2b', 'next')
@@ -268,9 +268,9 @@ describe('Chat Types Utilities', () => {
     it('updates content of existing node', () => {
       let tree = createEmptyTree()
       tree = addMessageToTree(
-        tree,
-        {id: 'msg-1', role: 'assistant', content: 'Initial', parentId: null},
-        null
+          tree,
+          {id: 'msg-1', role: 'assistant', content: 'Initial', parentId: null},
+          null
       )
 
       const newTree = updateNodeContent(tree, 'msg-1', 'Updated content')
@@ -280,9 +280,9 @@ describe('Chat Types Utilities', () => {
     it('updates isStreaming flag', () => {
       let tree = createEmptyTree()
       tree = addMessageToTree(
-        tree,
-        {id: 'msg-1', role: 'assistant', content: '', parentId: null, isStreaming: true},
-        null
+          tree,
+          {id: 'msg-1', role: 'assistant', content: '', parentId: null, isStreaming: true},
+          null
       )
 
       const newTree = updateNodeContent(tree, 'msg-1', 'Complete', false)
@@ -292,9 +292,9 @@ describe('Chat Types Utilities', () => {
     it('preserves isStreaming if not specified', () => {
       let tree = createEmptyTree()
       tree = addMessageToTree(
-        tree,
-        {id: 'msg-1', role: 'assistant', content: '', parentId: null, isStreaming: true},
-        null
+          tree,
+          {id: 'msg-1', role: 'assistant', content: '', parentId: null, isStreaming: true},
+          null
       )
 
       const newTree = updateNodeContent(tree, 'msg-1', 'Partial')
@@ -310,9 +310,15 @@ describe('Chat Types Utilities', () => {
     it('correctly sets isStreaming to false', () => {
       let tree = createEmptyTree()
       tree = addMessageToTree(
-        tree,
-        {id: 'msg-1', role: 'assistant', content: 'Streaming...', parentId: null, isStreaming: true},
-        null
+          tree,
+          {
+            id: 'msg-1',
+            role: 'assistant',
+            content: 'Streaming...',
+            parentId: null,
+            isStreaming: true
+          },
+          null
       )
 
       // This is the critical case - explicitly setting isStreaming to false
@@ -361,9 +367,9 @@ describe('Chat Types Utilities', () => {
     it('returns false for node with no children', () => {
       let tree = createEmptyTree()
       tree = addMessageToTree(
-        tree,
-        {id: 'msg-1', role: 'user', content: 'Hello', parentId: null},
-        null
+          tree,
+          {id: 'msg-1', role: 'user', content: 'Hello', parentId: null},
+          null
       )
 
       expect(isBranchPoint(tree, 'msg-1')).toBe(false)
@@ -372,14 +378,14 @@ describe('Chat Types Utilities', () => {
     it('returns false for node with one child', () => {
       let tree = createEmptyTree()
       tree = addMessageToTree(
-        tree,
-        {id: 'msg-1', role: 'user', content: 'Hello', parentId: null},
-        null
+          tree,
+          {id: 'msg-1', role: 'user', content: 'Hello', parentId: null},
+          null
       )
       tree = addMessageToTree(
-        tree,
-        {id: 'msg-2', role: 'assistant', content: 'Hi!', parentId: 'msg-1'},
-        'msg-1'
+          tree,
+          {id: 'msg-2', role: 'assistant', content: 'Hi!', parentId: 'msg-1'},
+          'msg-1'
       )
 
       expect(isBranchPoint(tree, 'msg-1')).toBe(false)
@@ -388,19 +394,19 @@ describe('Chat Types Utilities', () => {
     it('returns true for node with multiple children', () => {
       let tree = createEmptyTree()
       tree = addMessageToTree(
-        tree,
-        {id: 'msg-1', role: 'user', content: 'Hello', parentId: null},
-        null
+          tree,
+          {id: 'msg-1', role: 'user', content: 'Hello', parentId: null},
+          null
       )
       tree = addMessageToTree(
-        tree,
-        {id: 'msg-2a', role: 'assistant', content: 'Response A', parentId: 'msg-1'},
-        'msg-1'
+          tree,
+          {id: 'msg-2a', role: 'assistant', content: 'Response A', parentId: 'msg-1'},
+          'msg-1'
       )
       tree = addMessageToTree(
-        tree,
-        {id: 'msg-2b', role: 'assistant', content: 'Response B', parentId: 'msg-1'},
-        'msg-1'
+          tree,
+          {id: 'msg-2b', role: 'assistant', content: 'Response B', parentId: 'msg-1'},
+          'msg-1'
       )
 
       expect(isBranchPoint(tree, 'msg-1')).toBe(true)

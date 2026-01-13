@@ -1,5 +1,5 @@
 import React from 'react'
-import {render, screen, fireEvent, waitFor} from '@testing-library/react'
+import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {MessageActions} from '@lukeashford/aurelius'
 
@@ -18,22 +18,22 @@ describe('MessageActions', () => {
   })
 
   it('renders without crashing', () => {
-    render(<MessageActions variant="user" content="Test message" />)
+    render(<MessageActions variant="user" content="Test message"/>)
     expect(document.body).toBeInTheDocument()
   })
 
   it('renders copy button for user messages', () => {
-    render(<MessageActions variant="user" content="Test message" />)
+    render(<MessageActions variant="user" content="Test message"/>)
     expect(screen.getByRole('button', {name: /copy message/i})).toBeInTheDocument()
   })
 
   it('renders copy button for assistant messages', () => {
-    render(<MessageActions variant="assistant" content="Test response" />)
+    render(<MessageActions variant="assistant" content="Test response"/>)
     expect(screen.getByRole('button', {name: /copy message/i})).toBeInTheDocument()
   })
 
   it('copies content to clipboard when copy button is clicked', async () => {
-    render(<MessageActions variant="user" content="Test message to copy" />)
+    render(<MessageActions variant="user" content="Test message to copy"/>)
 
     const copyButton = screen.getByRole('button', {name: /copy message/i})
     await userEvent.click(copyButton)
@@ -42,7 +42,7 @@ describe('MessageActions', () => {
   })
 
   it('shows check icon after copying', async () => {
-    render(<MessageActions variant="user" content="Test message" />)
+    render(<MessageActions variant="user" content="Test message"/>)
 
     const copyButton = screen.getByRole('button', {name: /copy message/i})
     await userEvent.click(copyButton)
@@ -54,44 +54,48 @@ describe('MessageActions', () => {
 
   it('renders edit button for user messages when onEdit is provided', () => {
     render(
-      <MessageActions
-        variant="user"
-        content="Test message"
-        onEdit={() => {}}
-      />
+        <MessageActions
+            variant="user"
+            content="Test message"
+            onEdit={() => {
+            }}
+        />
     )
     expect(screen.getByRole('button', {name: /edit message/i})).toBeInTheDocument()
   })
 
   it('does not render edit button for assistant messages', () => {
     render(
-      <MessageActions
-        variant="assistant"
-        content="Test response"
-        onEdit={() => {}}
-      />
+        <MessageActions
+            variant="assistant"
+            content="Test response"
+            onEdit={() => {
+            }}
+        />
     )
     expect(screen.queryByRole('button', {name: /edit message/i})).not.toBeInTheDocument()
   })
 
   it('renders retry button for assistant messages when onRetry is provided', () => {
     render(
-      <MessageActions
-        variant="assistant"
-        content="Test response"
-        onRetry={() => {}}
-      />
+        <MessageActions
+            variant="assistant"
+            content="Test response"
+            onRetry={() => {
+            }}
+        />
     )
     expect(screen.getByRole('button', {name: /regenerate response/i})).toBeInTheDocument()
   })
 
   it('does not render retry button for user messages', () => {
     render(
-      <MessageActions
-        variant="user"
-        content="Test message"
-        onRetry={() => {}}
-      />
+        <MessageActions
+            variant="user"
+            content="Test message"
+            onRetry={() => {
+            }}
+        />
     )
     expect(screen.queryByRole('button', {name: /regenerate response/i})).not.toBeInTheDocument()
   })
@@ -99,11 +103,11 @@ describe('MessageActions', () => {
   it('calls onRetry when retry button is clicked', async () => {
     const onRetry = jest.fn()
     render(
-      <MessageActions
-        variant="assistant"
-        content="Test response"
-        onRetry={onRetry}
-      />
+        <MessageActions
+            variant="assistant"
+            content="Test response"
+            onRetry={onRetry}
+        />
     )
 
     await userEvent.click(screen.getByRole('button', {name: /regenerate response/i}))
@@ -112,11 +116,12 @@ describe('MessageActions', () => {
 
   it('shows edit input when edit button is clicked', async () => {
     render(
-      <MessageActions
-        variant="user"
-        content="Original message"
-        onEdit={() => {}}
-      />
+        <MessageActions
+            variant="user"
+            content="Original message"
+            onEdit={() => {
+            }}
+        />
     )
 
     await userEvent.click(screen.getByRole('button', {name: /edit message/i}))
@@ -127,11 +132,11 @@ describe('MessageActions', () => {
   it('calls onEdit with new content when edit is submitted', async () => {
     const onEdit = jest.fn()
     render(
-      <MessageActions
-        variant="user"
-        content="Original message"
-        onEdit={onEdit}
-      />
+        <MessageActions
+            variant="user"
+            content="Original message"
+            onEdit={onEdit}
+        />
     )
 
     await userEvent.click(screen.getByRole('button', {name: /edit message/i}))
@@ -146,11 +151,12 @@ describe('MessageActions', () => {
 
   it('cancels edit when cancel button is clicked', async () => {
     render(
-      <MessageActions
-        variant="user"
-        content="Original message"
-        onEdit={() => {}}
-      />
+        <MessageActions
+            variant="user"
+            content="Original message"
+            onEdit={() => {
+            }}
+        />
     )
 
     await userEvent.click(screen.getByRole('button', {name: /edit message/i}))
@@ -162,11 +168,12 @@ describe('MessageActions', () => {
 
   it('cancels edit when Escape key is pressed', async () => {
     render(
-      <MessageActions
-        variant="user"
-        content="Original message"
-        onEdit={() => {}}
-      />
+        <MessageActions
+            variant="user"
+            content="Original message"
+            onEdit={() => {
+            }}
+        />
     )
 
     await userEvent.click(screen.getByRole('button', {name: /edit message/i}))
@@ -179,11 +186,11 @@ describe('MessageActions', () => {
   it('submits edit when Enter key is pressed', async () => {
     const onEdit = jest.fn()
     render(
-      <MessageActions
-        variant="user"
-        content="Original message"
-        onEdit={onEdit}
-      />
+        <MessageActions
+            variant="user"
+            content="Original message"
+            onEdit={onEdit}
+        />
     )
 
     await userEvent.click(screen.getByRole('button', {name: /edit message/i}))
@@ -198,11 +205,11 @@ describe('MessageActions', () => {
   it('does not submit edit when content is unchanged', async () => {
     const onEdit = jest.fn()
     render(
-      <MessageActions
-        variant="user"
-        content="Original message"
-        onEdit={onEdit}
-      />
+        <MessageActions
+            variant="user"
+            content="Original message"
+            onEdit={onEdit}
+        />
     )
 
     await userEvent.click(screen.getByRole('button', {name: /edit message/i}))
@@ -213,11 +220,12 @@ describe('MessageActions', () => {
 
   it('disables submit button when edit content is empty', async () => {
     render(
-      <MessageActions
-        variant="user"
-        content="Original message"
-        onEdit={() => {}}
-      />
+        <MessageActions
+            variant="user"
+            content="Original message"
+            onEdit={() => {
+            }}
+        />
     )
 
     await userEvent.click(screen.getByRole('button', {name: /edit message/i}))
@@ -230,45 +238,48 @@ describe('MessageActions', () => {
 
   it('applies custom className', () => {
     const {container} = render(
-      <MessageActions
-        variant="user"
-        content="Test message"
-        className="custom-actions"
-      />
+        <MessageActions
+            variant="user"
+            content="Test message"
+            className="custom-actions"
+        />
     )
     expect(container.firstChild).toHaveClass('custom-actions')
   })
 
   it('matches snapshot for user message', () => {
     const {container} = render(
-      <MessageActions
-        variant="user"
-        content="Test message"
-        onEdit={() => {}}
-      />
+        <MessageActions
+            variant="user"
+            content="Test message"
+            onEdit={() => {
+            }}
+        />
     )
     expect(container).toMatchSnapshot()
   })
 
   it('matches snapshot for assistant message', () => {
     const {container} = render(
-      <MessageActions
-        variant="assistant"
-        content="Test response"
-        onRetry={() => {}}
-      />
+        <MessageActions
+            variant="assistant"
+            content="Test response"
+            onRetry={() => {
+            }}
+        />
     )
     expect(container).toMatchSnapshot()
   })
 
   it('matches snapshot in edit mode', () => {
     const {container} = render(
-      <MessageActions
-        variant="user"
-        content="Test message"
-        onEdit={() => {}}
-        isEditing={true}
-      />
+        <MessageActions
+            variant="user"
+            content="Test message"
+            onEdit={() => {
+            }}
+            isEditing={true}
+        />
     )
     expect(container).toMatchSnapshot()
   })

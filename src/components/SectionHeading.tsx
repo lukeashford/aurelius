@@ -1,5 +1,5 @@
 import React from 'react'
-import { cx } from '../utils/cx'
+import {cx} from '../utils/cx'
 
 export type SectionHeadingLevel = 'h2' | 'h3'
 

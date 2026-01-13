@@ -58,8 +58,12 @@ export default function App() {
   const [active, setActive] = useState('overview')
   const [view, setView] = useState(() => {
     const hash = window.location.hash
-    if (hash === '#legal') return 'legal'
-    if (hash === '#chat-demo') return 'chat-demo'
+    if (hash === '#legal') {
+      return 'legal'
+    }
+    if (hash === '#chat-demo') {
+      return 'chat-demo'
+    }
     return 'main'
   })
 
@@ -80,7 +84,9 @@ export default function App() {
 
   // IntersectionObserver to set active nav link
   React.useEffect(() => {
-    if (view !== 'main') return // Only observe in main view
+    if (view !== 'main') {
+      return
+    } // Only observe in main view
 
     const observer = new IntersectionObserver(
         entries => {
@@ -103,7 +109,7 @@ export default function App() {
   }, [view])
 
   if (view === 'chat-demo') {
-    return <ChatDemo />
+    return <ChatDemo/>
   }
 
   if (view === 'legal') {

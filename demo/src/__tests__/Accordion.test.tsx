@@ -1,25 +1,20 @@
 import React from 'react'
-import { render, screen, fireEvent } from '@testing-library/react'
-import {
-  Accordion,
-  AccordionItem,
-  AccordionTrigger,
-  AccordionContent,
-} from '@lukeashford/aurelius'
+import {fireEvent, render, screen} from '@testing-library/react'
+import {Accordion, AccordionContent, AccordionItem, AccordionTrigger,} from '@lukeashford/aurelius'
 
 describe('Accordion', () => {
   const renderAccordion = (props = {}) => {
     return render(
-      <Accordion type="single" {...props}>
-        <AccordionItem value="item-1">
-          <AccordionTrigger>Trigger 1</AccordionTrigger>
-          <AccordionContent>Content 1</AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="item-2">
-          <AccordionTrigger>Trigger 2</AccordionTrigger>
-          <AccordionContent>Content 2</AccordionContent>
-        </AccordionItem>
-      </Accordion>
+        <Accordion type="single" {...props}>
+          <AccordionItem value="item-1">
+            <AccordionTrigger>Trigger 1</AccordionTrigger>
+            <AccordionContent>Content 1</AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="item-2">
+            <AccordionTrigger>Trigger 2</AccordionTrigger>
+            <AccordionContent>Content 2</AccordionContent>
+          </AccordionItem>
+        </Accordion>
     )
   }
 
@@ -39,7 +34,7 @@ describe('Accordion', () => {
   })
 
   it('shows content when defaultValue is set', () => {
-    renderAccordion({ defaultValue: 'item-1' })
+    renderAccordion({defaultValue: 'item-1'})
     const content1 = screen.getByText('Content 1')
     const content2 = screen.getByText('Content 2')
     expect(content1.closest('[hidden]')).toBeFalsy()
@@ -62,16 +57,16 @@ describe('Accordion', () => {
 
   it('allows multiple items open in multiple mode', () => {
     render(
-      <Accordion type="multiple">
-        <AccordionItem value="item-1">
-          <AccordionTrigger>Trigger 1</AccordionTrigger>
-          <AccordionContent>Content 1</AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="item-2">
-          <AccordionTrigger>Trigger 2</AccordionTrigger>
-          <AccordionContent>Content 2</AccordionContent>
-        </AccordionItem>
-      </Accordion>
+        <Accordion type="multiple">
+          <AccordionItem value="item-1">
+            <AccordionTrigger>Trigger 1</AccordionTrigger>
+            <AccordionContent>Content 1</AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="item-2">
+            <AccordionTrigger>Trigger 2</AccordionTrigger>
+            <AccordionContent>Content 2</AccordionContent>
+          </AccordionItem>
+        </Accordion>
     )
 
     fireEvent.click(screen.getByText('Trigger 1'))
@@ -87,20 +82,22 @@ describe('Accordion', () => {
   })
 
   it('sets aria-expanded correctly', () => {
-    renderAccordion({ defaultValue: 'item-1' })
-    expect(screen.getByText('Trigger 1').closest('button')?.getAttribute('aria-expanded')).toBe('true')
-    expect(screen.getByText('Trigger 2').closest('button')?.getAttribute('aria-expanded')).toBe('false')
+    renderAccordion({defaultValue: 'item-1'})
+    expect(screen.getByText('Trigger 1').closest('button')?.getAttribute('aria-expanded'))
+    .toBe('true')
+    expect(screen.getByText('Trigger 2').closest('button')?.getAttribute('aria-expanded'))
+    .toBe('false')
   })
 
   it('calls onValueChange when item is toggled', () => {
     const onValueChange = jest.fn()
     render(
-      <Accordion type="single" onValueChange={onValueChange}>
-        <AccordionItem value="item-1">
-          <AccordionTrigger>Trigger 1</AccordionTrigger>
-          <AccordionContent>Content 1</AccordionContent>
-        </AccordionItem>
-      </Accordion>
+        <Accordion type="single" onValueChange={onValueChange}>
+          <AccordionItem value="item-1">
+            <AccordionTrigger>Trigger 1</AccordionTrigger>
+            <AccordionContent>Content 1</AccordionContent>
+          </AccordionItem>
+        </Accordion>
     )
 
     fireEvent.click(screen.getByText('Trigger 1'))

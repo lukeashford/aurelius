@@ -1,11 +1,10 @@
 import React from 'react'
-import {render, screen, fireEvent} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import {fireEvent, render, screen} from '@testing-library/react'
 import {
-  ChatInterface,
-  createEmptyTree,
   addMessageToTree,
+  ChatInterface,
   type ConversationTree,
+  createEmptyTree,
 } from '@lukeashford/aurelius'
 
 describe('ChatInterface', () => {
@@ -17,41 +16,41 @@ describe('ChatInterface', () => {
   const createTreeWithMessages = (): ConversationTree => {
     let tree = createEmptyTree()
     tree = addMessageToTree(
-      tree,
-      {id: 'msg-1', role: 'user', content: 'Hello!', parentId: null},
-      null
+        tree,
+        {id: 'msg-1', role: 'user', content: 'Hello!', parentId: null},
+        null
     )
     tree = addMessageToTree(
-      tree,
-      {id: 'msg-2', role: 'assistant', content: 'Hi there!', parentId: 'msg-1'},
-      'msg-1'
+        tree,
+        {id: 'msg-2', role: 'assistant', content: 'Hi there!', parentId: 'msg-1'},
+        'msg-1'
     )
     return tree
   }
 
   it('renders without crashing', () => {
-    render(<ChatInterface />)
+    render(<ChatInterface/>)
     expect(document.body).toBeInTheDocument()
   })
 
   it('renders empty state with input centered', () => {
-    render(<ChatInterface />)
+    render(<ChatInterface/>)
     expect(screen.getByRole('textbox')).toBeInTheDocument()
   })
 
   it('renders helper text in empty state', () => {
-    render(<ChatInterface emptyStateHelper="Start a conversation" />)
+    render(<ChatInterface emptyStateHelper="Start a conversation"/>)
     expect(screen.getByText('Start a conversation')).toBeInTheDocument()
   })
 
   it('renders conversation sidebar', () => {
-    render(<ChatInterface conversations={mockConversations} />)
+    render(<ChatInterface conversations={mockConversations}/>)
     expect(screen.getByRole('button', {name: /collapse sidebar/i})).toBeInTheDocument()
   })
 
   it('renders messages when conversationTree is provided', () => {
     const tree = createTreeWithMessages()
-    render(<ChatInterface conversationTree={tree} />)
+    render(<ChatInterface conversationTree={tree}/>)
     expect(screen.getByText('Hello!')).toBeInTheDocument()
     expect(screen.getByText('Hi there!')).toBeInTheDocument()
   })
@@ -61,14 +60,14 @@ describe('ChatInterface', () => {
       {id: '1', variant: 'user' as const, content: 'User message'},
       {id: '2', variant: 'assistant' as const, content: 'Assistant response'},
     ]
-    render(<ChatInterface messages={messages} />)
+    render(<ChatInterface messages={messages}/>)
     expect(screen.getByText('User message')).toBeInTheDocument()
     expect(screen.getByText('Assistant response')).toBeInTheDocument()
   })
 
   it('calls onMessageSubmit when a message is submitted', () => {
     const onMessageSubmit = jest.fn()
-    render(<ChatInterface onMessageSubmit={onMessageSubmit} />)
+    render(<ChatInterface onMessageSubmit={onMessageSubmit}/>)
 
     const textarea = screen.getByRole('textbox')
     fireEvent.change(textarea, {target: {value: 'Test message'}})
@@ -79,7 +78,7 @@ describe('ChatInterface', () => {
 
   it('calls onNewChat when New Chat is clicked', () => {
     const onNewChat = jest.fn()
-    render(<ChatInterface conversations={mockConversations} onNewChat={onNewChat} />)
+    render(<ChatInterface conversations={mockConversations} onNewChat={onNewChat}/>)
 
     fireEvent.click(screen.getByText('New Chat'))
     expect(onNewChat).toHaveBeenCalled()
@@ -88,10 +87,10 @@ describe('ChatInterface', () => {
   it('calls onSelectConversation when a conversation is selected', () => {
     const onSelectConversation = jest.fn()
     render(
-      <ChatInterface
-        conversations={mockConversations}
-        onSelectConversation={onSelectConversation}
-      />
+        <ChatInterface
+            conversations={mockConversations}
+            onSelectConversation={onSelectConversation}
+        />
     )
 
     fireEvent.click(screen.getByText('Conversation 2'))
@@ -101,11 +100,12 @@ describe('ChatInterface', () => {
   it('shows stop button when isStreaming is true', () => {
     const tree = createTreeWithMessages()
     render(
-      <ChatInterface
-        conversationTree={tree}
-        isStreaming={true}
-        onStop={() => {}}
-      />
+        <ChatInterface
+            conversationTree={tree}
+            isStreaming={true}
+            onStop={() => {
+            }}
+        />
     )
     expect(screen.getByRole('button', {name: /stop generation/i})).toBeInTheDocument()
   })
@@ -114,11 +114,11 @@ describe('ChatInterface', () => {
     const onStop = jest.fn()
     const tree = createTreeWithMessages()
     render(
-      <ChatInterface
-        conversationTree={tree}
-        isStreaming={true}
-        onStop={onStop}
-      />
+        <ChatInterface
+            conversationTree={tree}
+            isStreaming={true}
+            onStop={onStop}
+        />
     )
 
     fireEvent.click(screen.getByRole('button', {name: /stop generation/i}))
@@ -130,62 +130,62 @@ describe('ChatInterface', () => {
       {id: '1', variant: 'user' as const, content: 'Hello'},
     ]
     render(
-      <ChatInterface
-        messages={messagesWithUserLast}
-        isThinking={true}
-      />
+        <ChatInterface
+            messages={messagesWithUserLast}
+            isThinking={true}
+        />
     )
     expect(screen.getByRole('status')).toBeInTheDocument()
   })
 
   it('renders attachment button when showAttachmentButton is true', () => {
-    render(<ChatInterface showAttachmentButton={true} />)
+    render(<ChatInterface showAttachmentButton={true}/>)
     expect(screen.getByRole('button', {name: /attach file/i})).toBeInTheDocument()
   })
 
   it('does not render attachment button when showAttachmentButton is false', () => {
-    render(<ChatInterface showAttachmentButton={false} />)
+    render(<ChatInterface showAttachmentButton={false}/>)
     expect(screen.queryByRole('button', {name: /attach file/i})).not.toBeInTheDocument()
   })
 
   it('disables input when streaming and no onStop provided', () => {
     const tree = createTreeWithMessages()
     render(
-      <ChatInterface
-        conversationTree={tree}
-        isStreaming={true}
-      />
+        <ChatInterface
+            conversationTree={tree}
+            isStreaming={true}
+        />
     )
     expect(screen.getByRole('textbox')).toBeDisabled()
   })
 
   it('starts with sidebar collapsed when initialSidebarCollapsed is true', () => {
     render(
-      <ChatInterface
-        conversations={mockConversations}
-        initialSidebarCollapsed={true}
-      />
+        <ChatInterface
+            conversations={mockConversations}
+            initialSidebarCollapsed={true}
+        />
     )
     expect(screen.getByRole('button', {name: /expand sidebar/i})).toBeInTheDocument()
     expect(screen.queryByText('Conversation 1')).not.toBeInTheDocument()
   })
 
   it('renders custom placeholder', () => {
-    render(<ChatInterface placeholder="Ask me anything..." />)
+    render(<ChatInterface placeholder="Ask me anything..."/>)
     expect(screen.getByPlaceholderText('Ask me anything...')).toBeInTheDocument()
   })
 
   it('renders custom empty state', () => {
     render(
-      <ChatInterface
-        emptyState={<div data-testid="custom-empty">Custom Empty State</div>}
-      />
+        <ChatInterface
+            emptyState={<div data-testid="custom-empty">Custom Empty State</div>}
+        />
     )
     expect(screen.getByTestId('custom-empty')).toBeInTheDocument()
   })
 
   it('applies custom className', () => {
-    const {container} = render(<ChatInterface className="custom-chat" />)
+    const {container} = render(<ChatInterface className="custom-chat"/>)
     expect(container.firstChild).toHaveClass('custom-chat')
   })
 
@@ -193,12 +193,14 @@ describe('ChatInterface', () => {
     const tree = createTreeWithMessages()
 
     render(
-      <ChatInterface
-        conversationTree={tree}
-        enableMessageActions={true}
-        onEditMessage={() => {}}
-        onRetryMessage={() => {}}
-      />
+        <ChatInterface
+            conversationTree={tree}
+            enableMessageActions={true}
+            onEditMessage={() => {
+            }}
+            onRetryMessage={() => {
+            }}
+        />
     )
 
     // With enableMessageActions=true and callbacks provided,
@@ -212,10 +214,10 @@ describe('ChatInterface', () => {
     const tree = createTreeWithMessages()
 
     render(
-      <ChatInterface
-        conversationTree={tree}
-        enableMessageActions={false}
-      />
+        <ChatInterface
+            conversationTree={tree}
+            enableMessageActions={false}
+        />
     )
 
     // Actions should not be rendered
@@ -225,11 +227,11 @@ describe('ChatInterface', () => {
 
   it('matches snapshot in empty state', () => {
     const {container} = render(
-      <ChatInterface
-        conversations={mockConversations}
-        placeholder="Send a message..."
-        emptyStateHelper="Type to begin"
-      />
+        <ChatInterface
+            conversations={mockConversations}
+            placeholder="Send a message..."
+            emptyStateHelper="Type to begin"
+        />
     )
     expect(container).toMatchSnapshot()
   })
@@ -237,10 +239,10 @@ describe('ChatInterface', () => {
   it('matches snapshot with messages', () => {
     const tree = createTreeWithMessages()
     const {container} = render(
-      <ChatInterface
-        conversationTree={tree}
-        conversations={mockConversations}
-      />
+        <ChatInterface
+            conversationTree={tree}
+            conversations={mockConversations}
+        />
     )
     expect(container).toMatchSnapshot()
   })
@@ -248,11 +250,12 @@ describe('ChatInterface', () => {
   it('matches snapshot while streaming', () => {
     const tree = createTreeWithMessages()
     const {container} = render(
-      <ChatInterface
-        conversationTree={tree}
-        isStreaming={true}
-        onStop={() => {}}
-      />
+        <ChatInterface
+            conversationTree={tree}
+            isStreaming={true}
+            onStop={() => {
+            }}
+        />
     )
     expect(container).toMatchSnapshot()
   })

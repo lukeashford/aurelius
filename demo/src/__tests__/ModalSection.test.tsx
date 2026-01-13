@@ -59,7 +59,7 @@ describe('ModalSection', () => {
     const confirmButtons = screen.getAllByRole('button', {name: /^Confirm$/i});
     // The modal's Confirm button is rendered in the dialog
     const modalConfirmButton = confirmButtons.find(btn =>
-      btn.closest('[role="dialog"]')
+        btn.closest('[role="dialog"]')
     );
     fireEvent.click(modalConfirmButton!);
 

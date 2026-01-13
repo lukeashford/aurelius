@@ -1,5 +1,5 @@
 import React from 'react'
-import {render, screen, fireEvent} from '@testing-library/react'
+import {fireEvent, render, screen} from '@testing-library/react'
 import {ConversationSidebar} from '@lukeashford/aurelius'
 
 describe('ConversationSidebar', () => {
@@ -21,35 +21,35 @@ describe('ConversationSidebar', () => {
   ]
 
   it('renders without crashing', () => {
-    render(<ConversationSidebar conversations={[]} />)
+    render(<ConversationSidebar conversations={[]}/>)
     expect(document.body).toBeInTheDocument()
   })
 
   it('renders expanded by default', () => {
-    render(<ConversationSidebar conversations={mockConversations} />)
+    render(<ConversationSidebar conversations={mockConversations}/>)
     expect(screen.getByText('First Conversation')).toBeInTheDocument()
   })
 
   it('renders collapsed when isCollapsed is true', () => {
     render(
-      <ConversationSidebar conversations={mockConversations} isCollapsed={true} />
+        <ConversationSidebar conversations={mockConversations} isCollapsed={true}/>
     )
     expect(screen.queryByText('First Conversation')).not.toBeInTheDocument()
     expect(screen.getByRole('button', {name: /expand sidebar/i})).toBeInTheDocument()
   })
 
   it('renders New Chat button when expanded', () => {
-    render(<ConversationSidebar conversations={mockConversations} />)
+    render(<ConversationSidebar conversations={mockConversations}/>)
     expect(screen.getByText('New Chat')).toBeInTheDocument()
   })
 
   it('calls onNewChat when New Chat button is clicked', () => {
     const onNewChat = jest.fn()
     render(
-      <ConversationSidebar
-        conversations={mockConversations}
-        onNewChat={onNewChat}
-      />
+        <ConversationSidebar
+            conversations={mockConversations}
+            onNewChat={onNewChat}
+        />
     )
 
     fireEvent.click(screen.getByText('New Chat'))
@@ -57,19 +57,19 @@ describe('ConversationSidebar', () => {
   })
 
   it('renders conversation titles', () => {
-    render(<ConversationSidebar conversations={mockConversations} />)
+    render(<ConversationSidebar conversations={mockConversations}/>)
     expect(screen.getByText('First Conversation')).toBeInTheDocument()
     expect(screen.getByText('Second Conversation')).toBeInTheDocument()
   })
 
   it('renders conversation previews', () => {
-    render(<ConversationSidebar conversations={mockConversations} />)
+    render(<ConversationSidebar conversations={mockConversations}/>)
     expect(screen.getByText('Hello, how can I help?')).toBeInTheDocument()
     expect(screen.getByText('Let me explain...')).toBeInTheDocument()
   })
 
   it('renders conversation timestamps', () => {
-    render(<ConversationSidebar conversations={mockConversations} />)
+    render(<ConversationSidebar conversations={mockConversations}/>)
     expect(screen.getByText('2 hours ago')).toBeInTheDocument()
     expect(screen.getByText('Yesterday')).toBeInTheDocument()
   })
@@ -77,10 +77,10 @@ describe('ConversationSidebar', () => {
   it('calls onSelectConversation when a conversation is clicked', () => {
     const onSelectConversation = jest.fn()
     render(
-      <ConversationSidebar
-        conversations={mockConversations}
-        onSelectConversation={onSelectConversation}
-      />
+        <ConversationSidebar
+            conversations={mockConversations}
+            onSelectConversation={onSelectConversation}
+        />
     )
 
     fireEvent.click(screen.getByText('Second Conversation'))
@@ -88,7 +88,7 @@ describe('ConversationSidebar', () => {
   })
 
   it('highlights the active conversation', () => {
-    render(<ConversationSidebar conversations={mockConversations} />)
+    render(<ConversationSidebar conversations={mockConversations}/>)
     const activeButton = screen.getByText('First Conversation').closest('button')
     expect(activeButton).toHaveClass('bg-ash/40')
   })
@@ -96,10 +96,10 @@ describe('ConversationSidebar', () => {
   it('calls onToggleCollapse when collapse button is clicked', () => {
     const onToggleCollapse = jest.fn()
     render(
-      <ConversationSidebar
-        conversations={mockConversations}
-        onToggleCollapse={onToggleCollapse}
-      />
+        <ConversationSidebar
+            conversations={mockConversations}
+            onToggleCollapse={onToggleCollapse}
+        />
     )
 
     const collapseButton = screen.getByRole('button', {name: /collapse sidebar/i})
@@ -110,11 +110,11 @@ describe('ConversationSidebar', () => {
   it('calls onToggleCollapse when expand button is clicked in collapsed state', () => {
     const onToggleCollapse = jest.fn()
     render(
-      <ConversationSidebar
-        conversations={mockConversations}
-        isCollapsed={true}
-        onToggleCollapse={onToggleCollapse}
-      />
+        <ConversationSidebar
+            conversations={mockConversations}
+            isCollapsed={true}
+            onToggleCollapse={onToggleCollapse}
+        />
     )
 
     const expandButton = screen.getByRole('button', {name: /expand sidebar/i})
@@ -123,36 +123,36 @@ describe('ConversationSidebar', () => {
   })
 
   it('shows empty state message when no conversations', () => {
-    render(<ConversationSidebar conversations={[]} />)
+    render(<ConversationSidebar conversations={[]}/>)
     expect(screen.getByText('No conversations yet')).toBeInTheDocument()
   })
 
   it('applies custom className', () => {
     const {container} = render(
-      <ConversationSidebar
-        conversations={mockConversations}
-        className="custom-sidebar"
-      />
+        <ConversationSidebar
+            conversations={mockConversations}
+            className="custom-sidebar"
+        />
     )
     expect(container.firstChild).toHaveClass('custom-sidebar')
   })
 
   it('matches snapshot when expanded', () => {
     const {container} = render(
-      <ConversationSidebar conversations={mockConversations} />
+        <ConversationSidebar conversations={mockConversations}/>
     )
     expect(container).toMatchSnapshot()
   })
 
   it('matches snapshot when collapsed', () => {
     const {container} = render(
-      <ConversationSidebar conversations={mockConversations} isCollapsed={true} />
+        <ConversationSidebar conversations={mockConversations} isCollapsed={true}/>
     )
     expect(container).toMatchSnapshot()
   })
 
   it('matches snapshot with empty conversations', () => {
-    const {container} = render(<ConversationSidebar conversations={[]} />)
+    const {container} = render(<ConversationSidebar conversations={[]}/>)
     expect(container).toMatchSnapshot()
   })
 })

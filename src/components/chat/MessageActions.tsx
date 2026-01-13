@@ -1,13 +1,6 @@
-import React, {useState, useCallback} from 'react'
+import React, {useCallback, useState} from 'react'
 import {cx} from '../../utils/cx'
-import {
-  Copy,
-  Check,
-  Pencil,
-  RotateCcw,
-  X,
-  Send,
-} from 'lucide-react'
+import {Check, Copy, Pencil, RotateCcw, Send, X,} from 'lucide-react'
 
 export type MessageActionsVariant = 'user' | 'assistant'
 
@@ -51,188 +44,189 @@ const ActionButton: React.FC<{
   className?: string
   disabled?: boolean
 }> = ({onClick, label, children, className, disabled}) => (
-  <button
-    type="button"
-    onClick={onClick}
-    disabled={disabled}
-    className={cx(
-      'p-1.5 text-silver/60 hover:text-silver transition-colors duration-150',
-      'hover:bg-white/5 ',
-      'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent',
-      className
-    )}
-    aria-label={label}
-  >
-    {children}
-  </button>
+    <button
+        type="button"
+        onClick={onClick}
+        disabled={disabled}
+        className={cx(
+            'p-1.5 text-silver/60 hover:text-silver transition-colors duration-150',
+            'hover:bg-white/5 ',
+            'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent',
+            className
+        )}
+        aria-label={label}
+    >
+      {children}
+    </button>
 )
 
 export const MessageActions = React.forwardRef<HTMLDivElement, MessageActionsProps>(
-  (
-    {
-      variant,
-      content,
-      onEdit,
-      onRetry,
-      isEditing: controlledIsEditing,
-      onEditingChange,
-      editValue: controlledEditValue,
-      className,
-      ...rest
-    },
-    ref
-  ) => {
-    // Local state for uncontrolled mode
-    const [localIsEditing, setLocalIsEditing] = useState(false)
-    const [localEditValue, setLocalEditValue] = useState(content)
-    const [copied, setCopied] = useState(false)
+    (
+        {
+          variant,
+          content,
+          onEdit,
+          onRetry,
+          isEditing: controlledIsEditing,
+          onEditingChange,
+          editValue: controlledEditValue,
+          className,
+          ...rest
+        },
+        ref
+    ) => {
+      // Local state for uncontrolled mode
+      const [localIsEditing, setLocalIsEditing] = useState(false)
+      const [localEditValue, setLocalEditValue] = useState(content)
+      const [copied, setCopied] = useState(false)
 
-    // Determine if controlled or uncontrolled
-    const isEditing = controlledIsEditing ?? localIsEditing
-    const editValue = controlledEditValue ?? localEditValue
+      // Determine if controlled or uncontrolled
+      const isEditing = controlledIsEditing ?? localIsEditing
+      const editValue = controlledEditValue ?? localEditValue
 
-    const setIsEditing = useCallback(
-      (value: boolean) => {
-        if (onEditingChange) {
-          onEditingChange(value)
-        } else {
-          setLocalIsEditing(value)
+      const setIsEditing = useCallback(
+          (value: boolean) => {
+            if (onEditingChange) {
+              onEditingChange(value)
+            } else {
+              setLocalIsEditing(value)
+            }
+          },
+          [onEditingChange]
+      )
+
+      const setEditValue = useCallback((value: string) => {
+        setLocalEditValue(value)
+      }, [])
+
+      const handleCopy = useCallback(async () => {
+        try {
+          await navigator.clipboard.writeText(content)
+          setCopied(true)
+          setTimeout(() => setCopied(false), 2000)
+        } catch {
+          // Fallback for older browsers
+          const textArea = document.createElement('textarea')
+          textArea.value = content
+          document.body.appendChild(textArea)
+          textArea.select()
+          document.execCommand('copy')
+          document.body.removeChild(textArea)
+          setCopied(true)
+          setTimeout(() => setCopied(false), 2000)
         }
-      },
-      [onEditingChange]
-    )
+      }, [content])
 
-    const setEditValue = useCallback((value: string) => {
-      setLocalEditValue(value)
-    }, [])
+      const handleStartEdit = useCallback(() => {
+        setLocalEditValue(content)
+        setIsEditing(true)
+      }, [content, setIsEditing])
 
-    const handleCopy = useCallback(async () => {
-      try {
-        await navigator.clipboard.writeText(content)
-        setCopied(true)
-        setTimeout(() => setCopied(false), 2000)
-      } catch {
-        // Fallback for older browsers
-        const textArea = document.createElement('textarea')
-        textArea.value = content
-        document.body.appendChild(textArea)
-        textArea.select()
-        document.execCommand('copy')
-        document.body.removeChild(textArea)
-        setCopied(true)
-        setTimeout(() => setCopied(false), 2000)
-      }
-    }, [content])
+      const handleCancelEdit = useCallback(() => {
+        setIsEditing(false)
+        setLocalEditValue(content)
+      }, [content, setIsEditing])
 
-    const handleStartEdit = useCallback(() => {
-      setLocalEditValue(content)
-      setIsEditing(true)
-    }, [content, setIsEditing])
-
-    const handleCancelEdit = useCallback(() => {
-      setIsEditing(false)
-      setLocalEditValue(content)
-    }, [content, setIsEditing])
-
-    const handleSubmitEdit = useCallback(() => {
-      const trimmed = editValue.trim()
-      if (trimmed && trimmed !== content) {
-        onEdit?.(trimmed)
-      }
-      setIsEditing(false)
-    }, [editValue, content, onEdit, setIsEditing])
-
-    const handleEditKeyDown = useCallback(
-      (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-          e.preventDefault()
-          handleSubmitEdit()
-        } else if (e.key === 'Escape') {
-          handleCancelEdit()
+      const handleSubmitEdit = useCallback(() => {
+        const trimmed = editValue.trim()
+        if (trimmed && trimmed !== content) {
+          onEdit?.(trimmed)
         }
-      },
-      [handleSubmitEdit, handleCancelEdit]
-    )
+        setIsEditing(false)
+      }, [editValue, content, onEdit, setIsEditing])
 
-    const isUser = variant === 'user'
+      const handleEditKeyDown = useCallback(
+          (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault()
+              handleSubmitEdit()
+            } else if (e.key === 'Escape') {
+              handleCancelEdit()
+            }
+          },
+          [handleSubmitEdit, handleCancelEdit]
+      )
 
-    // Render edit mode inline
-    if (isUser && isEditing) {
-      return (
-        <div
-          ref={ref}
-          className={cx('mt-2', className)}
-          {...rest}
-        >
-          <div className="relative bg-charcoal border border-ash/60 focus-within:border-gold/60 focus-within:ring-1 focus-within:ring-gold/20">
+      const isUser = variant === 'user'
+
+      // Render edit mode inline
+      if (isUser && isEditing) {
+        return (
+            <div
+                ref={ref}
+                className={cx('mt-2', className)}
+                {...rest}
+            >
+              <div
+                  className="relative bg-charcoal border border-ash/60 focus-within:border-gold/60 focus-within:ring-1 focus-within:ring-gold/20">
             <textarea
-              value={editValue}
-              onChange={(e) => setEditValue(e.target.value)}
-              onKeyDown={handleEditKeyDown}
-              className="w-full bg-transparent text-white px-3 py-2 pr-20 resize-none outline-none min-h-16 text-sm"
-              autoFocus
-              rows={2}
+                value={editValue}
+                onChange={(e) => setEditValue(e.target.value)}
+                onKeyDown={handleEditKeyDown}
+                className="w-full bg-transparent text-white px-3 py-2 pr-20 resize-none outline-none min-h-16 text-sm"
+                autoFocus
+                rows={2}
             />
-            <div className="absolute right-2 bottom-2 flex gap-1">
-              <ActionButton
-                onClick={handleCancelEdit}
-                label="Cancel edit"
-                className="text-silver/60 hover:text-error"
-              >
-                <X className="w-4 h-4" />
-              </ActionButton>
-              <ActionButton
-                onClick={handleSubmitEdit}
-                label="Submit edit"
-                className="text-silver/60 hover:text-gold"
-                disabled={!editValue.trim() || editValue.trim() === content}
-              >
-                <Send className="w-4 h-4" />
-              </ActionButton>
+                <div className="absolute right-2 bottom-2 flex gap-1">
+                  <ActionButton
+                      onClick={handleCancelEdit}
+                      label="Cancel edit"
+                      className="text-silver/60 hover:text-error"
+                  >
+                    <X className="w-4 h-4"/>
+                  </ActionButton>
+                  <ActionButton
+                      onClick={handleSubmitEdit}
+                      label="Submit edit"
+                      className="text-silver/60 hover:text-gold"
+                      disabled={!editValue.trim() || editValue.trim() === content}
+                  >
+                    <Send className="w-4 h-4"/>
+                  </ActionButton>
+                </div>
+              </div>
+              <p className="text-xs text-silver/50 mt-1">
+                Press Enter to submit, Esc to cancel. This will create a new branch.
+              </p>
             </div>
+        )
+      }
+
+      return (
+          <div
+              ref={ref}
+              className={cx(
+                  'flex items-center gap-0.5 mt-1',
+                  isUser ? 'justify-end' : 'justify-start',
+                  className
+              )}
+              {...rest}
+          >
+            {/* Copy - available for both user and assistant */}
+            <ActionButton onClick={handleCopy} label={copied ? 'Copied!' : 'Copy message'}>
+              {copied ? (
+                  <Check className="w-3.5 h-3.5 text-success"/>
+              ) : (
+                  <Copy className="w-3.5 h-3.5"/>
+              )}
+            </ActionButton>
+
+            {/* Edit - only for user messages */}
+            {isUser && onEdit && (
+                <ActionButton onClick={handleStartEdit} label="Edit message">
+                  <Pencil className="w-3.5 h-3.5"/>
+                </ActionButton>
+            )}
+
+            {/* Retry - only for assistant messages */}
+            {!isUser && onRetry && (
+                <ActionButton onClick={onRetry} label="Regenerate response">
+                  <RotateCcw className="w-3.5 h-3.5"/>
+                </ActionButton>
+            )}
           </div>
-          <p className="text-xs text-silver/50 mt-1">
-            Press Enter to submit, Esc to cancel. This will create a new branch.
-          </p>
-        </div>
       )
     }
-
-    return (
-      <div
-        ref={ref}
-        className={cx(
-          'flex items-center gap-0.5 mt-1',
-          isUser ? 'justify-end' : 'justify-start',
-          className
-        )}
-        {...rest}
-      >
-        {/* Copy - available for both user and assistant */}
-        <ActionButton onClick={handleCopy} label={copied ? 'Copied!' : 'Copy message'}>
-          {copied ? (
-            <Check className="w-3.5 h-3.5 text-success" />
-          ) : (
-            <Copy className="w-3.5 h-3.5" />
-          )}
-        </ActionButton>
-
-        {/* Edit - only for user messages */}
-        {isUser && onEdit && (
-          <ActionButton onClick={handleStartEdit} label="Edit message">
-            <Pencil className="w-3.5 h-3.5" />
-          </ActionButton>
-        )}
-
-        {/* Retry - only for assistant messages */}
-        {!isUser && onRetry && (
-          <ActionButton onClick={onRetry} label="Regenerate response">
-            <RotateCcw className="w-3.5 h-3.5" />
-          </ActionButton>
-        )}
-      </div>
-    )
-  }
 )
 
 MessageActions.displayName = 'MessageActions'

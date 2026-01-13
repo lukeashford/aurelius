@@ -1,5 +1,5 @@
 import React from 'react'
-import { cx } from '../utils/cx'
+import {cx} from '../utils/cx'
 
 export interface StreamingCursorProps extends React.HTMLAttributes<HTMLSpanElement> {
   variant?: 'block' | 'line' | 'underscore'

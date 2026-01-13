@@ -30,82 +30,84 @@ export interface BranchNavigatorProps extends React.HTMLAttributes<HTMLDivElemen
 }
 
 export const BranchNavigator = React.forwardRef<HTMLDivElement, BranchNavigatorProps>(
-  (
-    {
-      current,
-      total,
-      onPrevious,
-      onNext,
-      size = 'sm',
-      showIcon = true,
-      className,
-      ...rest
-    },
-    ref
-  ) => {
-    // Don't render if there's only one branch
-    if (total <= 1) return null
+    (
+        {
+          current,
+          total,
+          onPrevious,
+          onNext,
+          size = 'sm',
+          showIcon = true,
+          className,
+          ...rest
+        },
+        ref
+    ) => {
+      // Don't render if there's only one branch
+      if (total <= 1) {
+        return null
+      }
 
-    const isFirst = current <= 1
-    const isLast = current >= total
+      const isFirst = current <= 1
+      const isLast = current >= total
 
-    const buttonSize = size === 'sm' ? 'p-0.5' : 'p-1'
-    const iconSize = size === 'sm' ? 'w-3 h-3' : 'w-4 h-4'
-    const textSize = size === 'sm' ? 'text-xs' : 'text-sm'
+      const buttonSize = size === 'sm' ? 'p-0.5' : 'p-1'
+      const iconSize = size === 'sm' ? 'w-3 h-3' : 'w-4 h-4'
+      const textSize = size === 'sm' ? 'text-xs' : 'text-sm'
 
-    return (
-      <div
-        ref={ref}
-        className={cx(
-          'inline-flex items-center gap-0.5 text-silver/70',
-          className
-        )}
-        role="navigation"
-        aria-label="Branch navigation"
-        {...rest}
-      >
-        {/* Branch icon */}
-        {showIcon && (
-          <GitBranch className={cx(iconSize, 'mr-0.5 text-silver/50')} aria-hidden="true" />
-        )}
+      return (
+          <div
+              ref={ref}
+              className={cx(
+                  'inline-flex items-center gap-0.5 text-silver/70',
+                  className
+              )}
+              role="navigation"
+              aria-label="Branch navigation"
+              {...rest}
+          >
+            {/* Branch icon */}
+            {showIcon && (
+                <GitBranch className={cx(iconSize, 'mr-0.5 text-silver/50')} aria-hidden="true"/>
+            )}
 
-        {/* Previous button */}
-        <button
-          type="button"
-          onClick={onPrevious}
-          disabled={isFirst}
-          className={cx(
-            buttonSize,
-            'hover:text-white hover:bg-white/10  transition-colors',
-            'disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-silver/70'
-          )}
-          aria-label="Previous branch"
-        >
-          <ChevronLeft className={iconSize} />
-        </button>
+            {/* Previous button */}
+            <button
+                type="button"
+                onClick={onPrevious}
+                disabled={isFirst}
+                className={cx(
+                    buttonSize,
+                    'hover:text-white hover:bg-white/10  transition-colors',
+                    'disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-silver/70'
+                )}
+                aria-label="Previous branch"
+            >
+              <ChevronLeft className={iconSize}/>
+            </button>
 
-        {/* Counter */}
-        <span className={cx(textSize, 'tabular-nums min-w-6 text-center')}>
+            {/* Counter */}
+            <span className={cx(textSize, 'tabular-nums min-w-6 text-center')}>
           {current}/{total}
         </span>
 
-        {/* Next button */}
-        <button
-          type="button"
-          onClick={onNext}
-          disabled={isLast}
-          className={cx(
-            buttonSize,
-            'hover:text-white hover:bg-white/10  transition-colors',
-            'disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-silver/70'
-          )}
-          aria-label="Next branch"
-        >
-          <ChevronRight className={iconSize} />
-        </button>
-      </div>
-    )
-  }
+            {/* Next button */}
+            <button
+                type="button"
+                onClick={onNext}
+                disabled={isLast}
+                className={cx(
+                    buttonSize,
+                    'hover:text-white hover:bg-white/10  transition-colors',
+                    'disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-silver/70'
+                )}
+                aria-label="Next branch"
+            >
+              <ChevronRight className={iconSize}/>
+            </button>
+          </div>
+      )
+    }
 )
 
 BranchNavigator.displayName = 'BranchNavigator'

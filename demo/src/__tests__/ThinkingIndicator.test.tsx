@@ -1,5 +1,5 @@
 import React from 'react'
-import {render, screen, act} from '@testing-library/react'
+import {act, render, screen} from '@testing-library/react'
 import {ThinkingIndicator} from '@lukeashford/aurelius'
 
 describe('ThinkingIndicator', () => {
@@ -12,22 +12,22 @@ describe('ThinkingIndicator', () => {
   })
 
   it('renders when isVisible is true', () => {
-    render(<ThinkingIndicator isVisible={true} />)
+    render(<ThinkingIndicator isVisible={true}/>)
     expect(screen.getByRole('status')).toBeInTheDocument()
   })
 
   it('does not render when isVisible is false', () => {
-    render(<ThinkingIndicator isVisible={false} />)
+    render(<ThinkingIndicator isVisible={false}/>)
     expect(screen.queryByRole('status')).not.toBeInTheDocument()
   })
 
   it('renders with default visibility (true)', () => {
-    render(<ThinkingIndicator />)
+    render(<ThinkingIndicator/>)
     expect(screen.getByRole('status')).toBeInTheDocument()
   })
 
   it('displays a thinking phrase', () => {
-    render(<ThinkingIndicator isVisible={true} />)
+    render(<ThinkingIndicator isVisible={true}/>)
     // Should display one of the default thinking phrases
     const status = screen.getByRole('status')
     expect(status.textContent).toBeTruthy()
@@ -35,21 +35,21 @@ describe('ThinkingIndicator', () => {
 
   it('uses custom phrases when provided', () => {
     const customPhrases = ['Custom thinking...', 'Processing...']
-    render(<ThinkingIndicator isVisible={true} phrases={customPhrases} />)
+    render(<ThinkingIndicator isVisible={true} phrases={customPhrases}/>)
     const status = screen.getByRole('status')
     expect(
-      customPhrases.some((phrase) => status.textContent?.includes(phrase))
+        customPhrases.some((phrase) => status.textContent?.includes(phrase))
     ).toBe(true)
   })
 
   it('cycles through phrases at the specified interval', () => {
     const phrases = ['Phrase 1', 'Phrase 2', 'Phrase 3']
     render(
-      <ThinkingIndicator
-        isVisible={true}
-        phrases={phrases}
-        phraseInterval={1000}
-      />
+        <ThinkingIndicator
+            isVisible={true}
+            phrases={phrases}
+            phraseInterval={1000}
+        />
     )
 
     // Get initial phrase
@@ -66,24 +66,24 @@ describe('ThinkingIndicator', () => {
   })
 
   it('has accessible role="status"', () => {
-    render(<ThinkingIndicator isVisible={true} />)
+    render(<ThinkingIndicator isVisible={true}/>)
     expect(screen.getByRole('status')).toBeInTheDocument()
   })
 
   it('has aria-live="polite" for accessibility', () => {
-    render(<ThinkingIndicator isVisible={true} />)
+    render(<ThinkingIndicator isVisible={true}/>)
     expect(screen.getByRole('status')).toHaveAttribute('aria-live', 'polite')
   })
 
   it('renders animated dots', () => {
-    const {container} = render(<ThinkingIndicator isVisible={true} />)
+    const {container} = render(<ThinkingIndicator isVisible={true}/>)
     const dots = container.querySelectorAll('[aria-hidden="true"] span')
     expect(dots.length).toBe(3)
   })
 
   it('applies custom className', () => {
     const {container} = render(
-      <ThinkingIndicator isVisible={true} className="custom-thinking" />
+        <ThinkingIndicator isVisible={true} className="custom-thinking"/>
     )
     expect(container.firstChild).toHaveClass('custom-thinking')
   })
@@ -91,11 +91,11 @@ describe('ThinkingIndicator', () => {
   it('does not cycle phrases when only one phrase provided', () => {
     const singlePhrase = ['Only one phrase']
     render(
-      <ThinkingIndicator
-        isVisible={true}
-        phrases={singlePhrase}
-        phraseInterval={100}
-      />
+        <ThinkingIndicator
+            isVisible={true}
+            phrases={singlePhrase}
+            phraseInterval={100}
+        />
     )
 
     expect(screen.getByText('Only one phrase')).toBeInTheDocument()
@@ -111,10 +111,10 @@ describe('ThinkingIndicator', () => {
   it('matches snapshot', () => {
     // Use fixed phrases for deterministic snapshot
     const {container} = render(
-      <ThinkingIndicator
-        isVisible={true}
-        phrases={['Thinking...']}
-      />
+        <ThinkingIndicator
+            isVisible={true}
+            phrases={['Thinking...']}
+        />
     )
     expect(container).toMatchSnapshot()
   })
