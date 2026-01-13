@@ -255,11 +255,14 @@ export default function ChatDemo() {
       clearInterval(streamIntervalRef.current)
       streamIntervalRef.current = null
     }
-    if (currentMessageIdRef.current) {
+    // Capture the message ID before the callback - React may batch the state update
+    // and execute the callback later, by which time the ref would be null
+    const messageId = currentMessageIdRef.current
+    if (messageId) {
       setConversationTree((prev) => {
-        const node = prev.nodes[currentMessageIdRef.current!]
+        const node = prev.nodes[messageId]
         if (node) {
-          return updateNodeContent(prev, currentMessageIdRef.current!, node.content, false)
+          return updateNodeContent(prev, messageId, node.content, false)
         }
         return prev
       })
