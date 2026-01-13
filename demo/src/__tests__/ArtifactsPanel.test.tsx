@@ -131,10 +131,10 @@ describe('ArtifactsPanel', () => {
         <ArtifactsPanel
             artifacts={mockArtifacts}
             isOpen={true}
-            className="custom-panel"
+            className="gap-4"
         />
     )
-    expect(container.firstChild).toHaveClass('custom-panel')
+    expect(container.firstChild).toHaveClass('gap-4')
   })
 
   it('matches snapshot when collapsed with artifacts', () => {

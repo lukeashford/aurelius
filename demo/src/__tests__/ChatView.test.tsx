@@ -41,9 +41,9 @@ describe('ChatView', () => {
 
   it('applies custom className', () => {
     const {container} = render(
-        <ChatView messages={mockMessages} className="custom-class"/>
+        <ChatView messages={mockMessages} className="gap-4"/>
     )
-    expect(container.firstChild).toHaveClass('custom-class')
+    expect(container.firstChild).toHaveClass('gap-4')
   })
 
   it('shows thinking indicator when isThinking is true and last message is from user', () => {

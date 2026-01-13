@@ -83,9 +83,9 @@ describe('ThinkingIndicator', () => {
 
   it('applies custom className', () => {
     const {container} = render(
-        <ThinkingIndicator isVisible={true} className="custom-thinking"/>
+        <ThinkingIndicator isVisible={true} className="gap-4"/>
     )
-    expect(container.firstChild).toHaveClass('custom-thinking')
+    expect(container.firstChild).toHaveClass('gap-4')
   })
 
   it('does not cycle phrases when only one phrase provided', () => {

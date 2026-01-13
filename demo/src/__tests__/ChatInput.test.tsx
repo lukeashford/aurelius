@@ -136,8 +136,8 @@ describe('ChatInput', () => {
   })
 
   it('applies custom className', () => {
-    const {container} = render(<ChatInput className="custom-class"/>)
-    expect(container.firstChild).toHaveClass('custom-class')
+    const {container} = render(<ChatInput className="gap-4"/>)
+    expect(container.firstChild).toHaveClass('gap-4')
   })
 
   it('handles drag and drop for files', () => {

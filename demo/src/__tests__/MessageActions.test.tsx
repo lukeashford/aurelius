@@ -241,10 +241,10 @@ describe('MessageActions', () => {
         <MessageActions
             variant="user"
             content="Test message"
-            className="custom-actions"
+            className="gap-4"
         />
     )
-    expect(container.firstChild).toHaveClass('custom-actions')
+    expect(container.firstChild).toHaveClass('gap-4')
   })
 
   it('matches snapshot for user message', () => {

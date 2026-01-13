@@ -92,8 +92,8 @@ describe('BranchNavigator', () => {
   })
 
   it('applies custom className', () => {
-    render(<BranchNavigator current={1} total={2} className="custom-nav"/>)
-    expect(screen.getByRole('navigation')).toHaveClass('custom-nav')
+    render(<BranchNavigator current={1} total={2} className="gap-4"/>)
+    expect(screen.getByRole('navigation')).toHaveClass('gap-4')
   })
 
   it('renders in small size by default', () => {

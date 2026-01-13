@@ -131,10 +131,10 @@ describe('ConversationSidebar', () => {
     const {container} = render(
         <ConversationSidebar
             conversations={mockConversations}
-            className="custom-sidebar"
+            className="gap-4"
         />
     )
-    expect(container.firstChild).toHaveClass('custom-sidebar')
+    expect(container.firstChild).toHaveClass('gap-4')
   })
 
   it('matches snapshot when expanded', () => {

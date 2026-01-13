@@ -185,8 +185,8 @@ describe('ChatInterface', () => {
   })
 
   it('applies custom className', () => {
-    const {container} = render(<ChatInterface className="custom-chat"/>)
-    expect(container.firstChild).toHaveClass('custom-chat')
+    const {container} = render(<ChatInterface className="gap-4"/>)
+    expect(container.firstChild).toHaveClass('gap-4')
   })
 
   it('enables message actions when enableMessageActions is true', () => {
