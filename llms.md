@@ -219,84 +219,65 @@ Import hooks from `@lukeashford/aurelius`:
 
 ### useArtifacts
 
-Hook for managing artifacts in the ChatInterface. Provides methods to control the artifacts panel programmatically, designed for event-driven architectures like SSE streams.
+Hook for managing artifacts in the ChatInterface.
+
+Provides methods to control the artifacts panel programmatically,
+designed for event-driven architectures like SSE streams.
 
 **Returns:** `UseArtifactsReturn`
 
 | Property | Type | Description |
 |----------|------|-------------|
 | `artifacts` | `Artifact[]` | Current list of artifacts |
-| `scheduleArtifact` | `(artifact: Omit<Artifact, 'isPending'>) => void` | Add artifact with loading skeleton (SSE operator.started) |
-| `showArtifact` | `(id: string, data: Partial<Artifact>) => void` | Reveal artifact content (SSE artifact.created) |
-| `removeArtifact` | `(id: string) => void` | Remove artifact on failure (SSE operator.failed) |
+| `scheduleArtifact` | `(artifact: Omit<Artifact, 'isPending'>) => void` | Schedule a new artifact (adds to list with isPending=true, shows skeleton). Use when an operator starts processing (e.g., SSE operator.started event). |
+| `showArtifact` | `(artifactId: string, artifact: Omit<Artifact, 'id' | 'isPending'>) => void` | Show an artifact (updates existing or adds new with isPending=false). Use when artifact content is ready (e.g., SSE artifact.created event). |
+| `removeArtifact` | `(artifactId: string) => void` | Remove an artifact from the list. Use when artifact generation fails (e.g., SSE operator.failed event). |
 | `clearArtifacts` | `() => void` | Clear all artifacts |
 
-**Artifact type:**
+**Example:**
 
-```typescript
-interface Artifact {
-  id: string
-  type: 'text' | 'image' | 'video'
-  content?: string    // For text artifacts
-  src?: string        // For image/video artifacts
-  alt?: string        // For image artifacts
-  title?: string
-  subtitle?: string
-  isPending?: boolean // Shows loading skeleton
-}
+```tsx
+const { artifacts, scheduleArtifact, showArtifact, removeArtifact } = useArtifacts()
+
+// When SSE operator.started event arrives
+scheduleArtifact({ id: operatorId, type: 'image' })
+
+// When SSE artifact.created event arrives
+showArtifact(artifactId, {
+  type: 'image',
+  src: 'https://example.com/image.png',
+  title: 'Generated Image',
+})
+
+// When SSE operator.failed event arrives
+removeArtifact(operatorId)
 ```
 
 ### useScrollAnchor
 
-Hook for smart scroll behavior in chat interfaces. Anchors user messages to the top of the viewport and respects user's scroll position during streaming.
+Hook for smart scroll behavior in chat interfaces.
+
+Key behaviors:
+- Anchors user messages to the top of the viewport when they send a message
+- Does NOT auto-scroll during streaming to respect user's reading position
+- Allows manual scroll detection
+
+**Options:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `behavior` | `ScrollBehavior` | Behavior for scrolling. Defaults to 'smooth'. |
+| `block` | `ScrollLogicalPosition` | Block alignment for scrollIntoView. Defaults to 'start'. |
 
 **Returns:** `UseScrollAnchorReturn`
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `containerRef` | `React.RefObject<HTMLDivElement>` | Attach to scrollable container |
-| `anchorRef` | `React.RefObject<HTMLDivElement>` | Attach to anchor element (user message) |
-| `scrollToAnchor` | `() => void` | Scroll anchor into view |
-| `scrollToBottom` | `() => void` | Scroll to container bottom |
-| `isScrolledToBottom` | `() => boolean` | Check if near bottom |
-
-### Hook usage example
-
-```tsx
-import { ChatInterface, useArtifacts } from '@lukeashford/aurelius'
-
-function MyChat() {
-  const { artifacts, scheduleArtifact, showArtifact, removeArtifact } = useArtifacts()
-
-  // Connect to SSE stream
-  useEffect(() => {
-    const eventSource = new EventSource(`/projects/${projectId}/events`)
-
-    eventSource.addEventListener('operator.started', (e) => {
-      const { operatorId, type } = JSON.parse(e.data)
-      scheduleArtifact({ id: operatorId, type })
-    })
-
-    eventSource.addEventListener('artifact.created', (e) => {
-      const { artifactId, content } = JSON.parse(e.data)
-      showArtifact(artifactId, {
-        type: 'image',
-        src: content.url,
-        title: content.title,
-      })
-    })
-
-    eventSource.addEventListener('operator.failed', (e) => {
-      const { operatorId } = JSON.parse(e.data)
-      removeArtifact(operatorId)
-    })
-
-    return () => eventSource.close()
-  }, [projectId])
-
-  return <ChatInterface artifacts={artifacts} /* ... */ />
-}
-```
+| `containerRef` | `React.RefObject<HTMLDivElement | null>` | Ref to attach to the scrollable container |
+| `anchorRef` | `React.RefObject<HTMLDivElement | null>` | Ref to attach to the anchor element (latest user message) |
+| `scrollToAnchor` | `() => void` | Scroll the anchor element into view. Call this on user message submission. |
+| `scrollToBottom` | `() => void` | Scroll to the bottom of the container. |
+| `isScrolledToBottom` | `() => boolean` | Check if user has scrolled away from the bottom. |
 
 ---
 
