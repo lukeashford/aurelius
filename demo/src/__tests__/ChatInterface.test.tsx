@@ -189,6 +189,58 @@ describe('ChatInterface', () => {
     expect(container.firstChild).toHaveClass('gap-4')
   })
 
+  it('passes artifacts to ArtifactsPanel', () => {
+    const mockArtifacts = [
+      {
+        id: '1',
+        type: 'image' as const,
+        src: 'https://example.com/image.jpg',
+        title: 'Test Artifact',
+      },
+    ]
+    render(
+        <ChatInterface
+            artifacts={mockArtifacts}
+            isArtifactsPanelOpen={true}
+        />
+    )
+    expect(screen.getByText('Test Artifact')).toBeInTheDocument()
+  })
+
+  it('shows artifacts panel when artifacts are provided and panel is open', () => {
+    const mockArtifacts = [
+      {
+        id: '1',
+        type: 'image' as const,
+        src: 'https://example.com/image.jpg',
+        title: 'Artifact Title',
+      },
+    ]
+    render(
+        <ChatInterface
+            artifacts={mockArtifacts}
+            isArtifactsPanelOpen={true}
+        />
+    )
+    expect(screen.getByText('Artifacts')).toBeInTheDocument()
+  })
+
+  it('calls onArtifactsPanelOpenChange when panel toggle is clicked', () => {
+    const onPanelChange = jest.fn()
+    const mockArtifacts = [
+      {id: '1', type: 'image' as const, src: 'https://example.com/image.jpg'},
+    ]
+    render(
+        <ChatInterface
+            artifacts={mockArtifacts}
+            isArtifactsPanelOpen={true}
+            onArtifactsPanelOpenChange={onPanelChange}
+        />
+    )
+    fireEvent.click(screen.getByRole('button', {name: /collapse artifacts panel/i}))
+    expect(onPanelChange).toHaveBeenCalledWith(false)
+  })
+
   it('enables message actions when enableMessageActions is true', () => {
     const tree = createTreeWithMessages()
 
