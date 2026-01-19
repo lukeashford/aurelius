@@ -8,6 +8,7 @@ import {
   createEmptyTree,
   generateId,
   updateNodeContent,
+  useArtifacts,
 } from '@lukeashford/aurelius'
 
 // Mock response content for the first message (no artifacts)
@@ -21,14 +22,21 @@ const FIRST_RESPONSE = `<p>Thanks for your message! I'm here to demonstrate the 
 </ul>
 <p>Try editing this response or sending another message!</p>`
 
-// Mock response content for the second message (with artifacts)
+// Mock response content for the second message (with artifact)
 const SECOND_RESPONSE = `<p>Great! Now I'll show you the artifacts panel with some rich content.</p>
 <p>The panel slides in from the right and can display various types of content including images, videos, and formatted text.</p>
-<p>Check out the artifact I've added for you:</p>
-
-:::artifact{type="image" src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800" alt="Code visualization" title="Component Architecture" subtitle="A visual guide to structuring your React components"}:::
-
+<p>Check out the artifact I've added for you — it appears in the panel on the right!</p>
 <p>You can collapse or expand the artifacts panel at any time. Try sending more messages to see how the interface responds!</p>`
+
+// Artifact data for second response
+const SECOND_ARTIFACT = {
+  id: 'artifact-1',
+  type: 'image' as const,
+  src: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800',
+  alt: 'Code visualization',
+  title: 'Component Architecture',
+  subtitle: 'A visual guide to structuring your React components',
+}
 
 // Slow response for stop demo
 const SLOW_RESPONSE = `<p>This is a deliberately slow response to demonstrate the Stop button.</p>
@@ -40,15 +48,22 @@ const SLOW_RESPONSE = `<p>This is a deliberately slow response to demonstrate th
 <p>And going...</p>
 <p>You can stop me anytime!</p>`
 
-// Additional responses
+// Additional responses with artifacts
 const ADDITIONAL_RESPONSES = [
-  `<p>Here's another artifact with a different image:</p>
-
-:::artifact{type="image" src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800" alt="Developer workspace" title="Modern Development" subtitle="Setting up an efficient workspace"}:::
-
+  {
+    content: `<p>Here's another artifact with a different image!</p>
 <p>The artifacts panel stacks multiple items vertically with smooth transitions.</p>`,
-
-  `<p>This response demonstrates streaming without artifacts.</p>
+    artifact: {
+      id: 'artifact-2',
+      type: 'image' as const,
+      src: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800',
+      alt: 'Developer workspace',
+      title: 'Modern Development',
+      subtitle: 'Setting up an efficient workspace',
+    },
+  },
+  {
+    content: `<p>This response demonstrates streaming without artifacts.</p>
 <p>Notice how the scroll behavior works:</p>
 <ol>
 <li>Your message appears and anchors to the top</li>
@@ -56,12 +71,20 @@ const ADDITIONAL_RESPONSES = [
 <li>No jarring auto-scroll during generation</li>
 </ol>
 <p>This mimics the behavior of modern chat interfaces like Claude and ChatGPT.</p>`,
-
-  `<p>Let me show you one more artifact:</p>
-
-:::artifact{type="image" src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800" alt="Coding session" title="Development in Action" subtitle="Building with modern tools and frameworks"}:::
-
+    artifact: null,
+  },
+  {
+    content: `<p>Let me show you one more artifact!</p>
 <p>Each artifact can have a title and subtitle for context. The panel supports scrolling when content overflows.</p>`,
+    artifact: {
+      id: 'artifact-3',
+      type: 'image' as const,
+      src: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800',
+      alt: 'Coding session',
+      title: 'Development in Action',
+      subtitle: 'Building with modern tools and frameworks',
+    },
+  },
 ]
 
 // Create a pre-populated conversation tree with branches
@@ -85,7 +108,6 @@ function createBranchingDemoTree(): ConversationTree {
   }, 'branch-user-1')
 
   // Add a second branch (alternative response) - this creates a sibling
-  const node1a = tree.nodes['branch-assistant-1a']
   tree = {
     ...tree,
     nodes: {
@@ -151,6 +173,9 @@ export default function ChatDemo() {
   const streamIntervalRef = useRef<NodeJS.Timeout | null>(null)
   const currentMessageIdRef = useRef<string | null>(null)
 
+  // Use the artifacts hook for controlling the artifacts panel
+  const {artifacts, scheduleArtifact, showArtifact, removeArtifact, clearArtifacts} = useArtifacts()
+
   // Track attachments for mock upload simulation
   const [attachments, setAttachments] = useState<Attachment[]>([])
 
@@ -186,21 +211,26 @@ export default function ChatDemo() {
     }
   }, [])
 
-  // Simulate streaming a response
-  const streamResponse = useCallback((response: string, onComplete: () => void, slow = false) => {
+  // Simulate streaming a response with optional artifact
+  const streamResponse = useCallback((
+      response: string,
+      artifact: typeof SECOND_ARTIFACT | null,
+      onComplete: () => void,
+      slow = false
+  ) => {
     const messageId = generateId()
     currentMessageIdRef.current = messageId
+
+    // If there's an artifact, schedule it first (shows skeleton)
+    // This simulates receiving an SSE operator.started event
+    if (artifact) {
+      scheduleArtifact({id: artifact.id, type: artifact.type})
+    }
 
     // Split into tokens
     const tokens: string[] = []
     let remaining = response
     while (remaining.length > 0) {
-      const artifactMatch = remaining.match(/^:::artifact\{[^}]*\}:::/)
-      if (artifactMatch) {
-        tokens.push(artifactMatch[0])
-        remaining = remaining.slice(artifactMatch[0].length)
-        continue
-      }
       const wordMatch = remaining.match(/^(<[^>]+>|[^\s<]+)/)
       if (wordMatch) {
         tokens.push(wordMatch[0])
@@ -243,11 +273,23 @@ export default function ChatDemo() {
           streamIntervalRef.current = null
         }
         setConversationTree((prev) => updateNodeContent(prev, messageId, tokens.join(''), false))
+
+        // Show the artifact with full data (simulates SSE artifact.created event)
+        if (artifact) {
+          showArtifact(artifact.id, {
+            type: artifact.type,
+            src: artifact.src,
+            alt: artifact.alt,
+            title: artifact.title,
+            subtitle: artifact.subtitle,
+          })
+        }
+
         currentMessageIdRef.current = null
         onComplete()
       }
     }, interval)
-  }, [])
+  }, [scheduleArtifact, showArtifact])
 
   // Handle stop generation
   const handleStop = useCallback(() => {
@@ -255,8 +297,7 @@ export default function ChatDemo() {
       clearInterval(streamIntervalRef.current)
       streamIntervalRef.current = null
     }
-    // Capture the message ID before the callback - React may batch the state update
-    // and execute the callback later, by which time the ref would be null
+    // Capture the message ID before the callback
     const messageId = currentMessageIdRef.current
     if (messageId) {
       setConversationTree((prev) => {
@@ -268,9 +309,17 @@ export default function ChatDemo() {
       })
       currentMessageIdRef.current = null
     }
+
+    // If there are pending artifacts, remove them (simulates SSE operator.failed)
+    artifacts.forEach((a) => {
+      if (a.isPending) {
+        removeArtifact(a.id)
+      }
+    })
+
     setIsStreaming(false)
     setIsThinking(false)
-  }, [])
+  }, [artifacts, removeArtifact])
 
   // Handle message submission
   const handleSubmit = useCallback(
@@ -303,6 +352,7 @@ export default function ChatDemo() {
           setIsThinking(false)
 
           let response: string
+          let artifact: typeof SECOND_ARTIFACT | null = null
           let slow = false
 
           // Check for specific demo triggers
@@ -314,14 +364,17 @@ export default function ChatDemo() {
             response = FIRST_RESPONSE
           } else if (responseIndexRef.current === 1) {
             response = SECOND_RESPONSE
+            artifact = SECOND_ARTIFACT
           } else {
             const additionalIndex = (responseIndexRef.current - 2) % ADDITIONAL_RESPONSES.length
-            response = ADDITIONAL_RESPONSES[additionalIndex]
+            const additional = ADDITIONAL_RESPONSES[additionalIndex]
+            response = additional.content
+            artifact = additional.artifact
           }
 
           responseIndexRef.current++
 
-          streamResponse(response, () => {
+          streamResponse(response, artifact, () => {
             setIsStreaming(false)
           }, slow)
         }, thinkingDelay)
@@ -355,7 +408,7 @@ export default function ChatDemo() {
     setTimeout(() => {
       setIsThinking(false)
       const response = '<p>I see you\'ve edited your message! This created a new branch in the conversation. You can use the branch navigator (← 1/2 →) above messages to switch between different paths.</p>'
-      streamResponse(response, () => {
+      streamResponse(response, null, () => {
         setIsStreaming(false)
       })
     }, 1500)
@@ -421,6 +474,7 @@ export default function ChatDemo() {
   const handleNewChat = useCallback(() => {
     const newId = `chat-${Date.now()}`
     setConversationTree(createEmptyTree())
+    clearArtifacts()
     responseIndexRef.current = 0
     setActiveConversationId(newId)
 
@@ -435,7 +489,7 @@ export default function ChatDemo() {
     setConversations((prev) =>
         [newChat, ...prev.map((c) => ({...c, isActive: false}))].slice(0, 5)
     )
-  }, [])
+  }, [clearArtifacts])
 
   // Handle conversation selection
   const handleSelectConversation = useCallback((id: string) => {
@@ -445,6 +499,7 @@ export default function ChatDemo() {
 
     setActiveConversationId(id)
     responseIndexRef.current = 0
+    clearArtifacts()
 
     if (id === 'branching') {
       // Load the branching demo
@@ -456,7 +511,7 @@ export default function ChatDemo() {
     setConversations((prev) =>
         prev.map((c) => ({...c, isActive: c.id === id}))
     )
-  }, [activeConversationId])
+  }, [activeConversationId, clearArtifacts])
 
   const handleBack = useCallback(() => {
     window.location.hash = ''
@@ -522,6 +577,7 @@ export default function ChatDemo() {
               isThinking={isThinking}
               attachments={attachments}
               onAttachmentsChange={handleAttachmentsChange}
+              artifacts={artifacts}
               placeholder="Send a message..."
               emptyStateHelper={getEmptyStateHelper()}
               showAttachmentButton={true}

@@ -55,10 +55,10 @@ export {
 // Hooks
 export {
   useScrollAnchor,
-  useArtifactParser,
+  useArtifacts,
   type UseScrollAnchorOptions,
   type UseScrollAnchorReturn,
   type Artifact,
   type ArtifactType,
-  type UseArtifactParserReturn,
+  type UseArtifactsReturn,
 } from './hooks'

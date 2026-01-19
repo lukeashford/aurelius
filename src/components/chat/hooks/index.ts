@@ -2,11 +2,11 @@ export {
   useScrollAnchor, type UseScrollAnchorOptions, type UseScrollAnchorReturn
 } from './useScrollAnchor'
 export {
-  useArtifactParser,
+  useArtifacts,
   type Artifact,
   type ArtifactType,
-  type UseArtifactParserReturn,
-} from './useArtifactParser'
+  type UseArtifactsReturn,
+} from './useArtifacts'
 export {
   useAdaptiveSpacer, type UseAdaptiveSpacerOptions, type UseAdaptiveSpacerReturn
 } from './useAdaptiveSpacer'
