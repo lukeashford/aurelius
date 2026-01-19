@@ -62,6 +62,203 @@ function toTailwindClass(prefix, name) {
   return `${prefix}-${kebab}`;
 }
 
+/**
+ * Extract JSDoc comment from content starting at a position
+ * Returns the comment text without the markers
+ */
+function extractJSDoc(content, startIndex) {
+  const beforeContent = content.substring(0, startIndex);
+  const lastJSDocStart = beforeContent.lastIndexOf('/**');
+  if (lastJSDocStart === -1) {
+    return null;
+  }
+
+  // Make sure there's no other code between the JSDoc and the target
+  const between = beforeContent.substring(lastJSDocStart);
+  const jsDocEnd = between.indexOf('*/');
+  if (jsDocEnd === -1) {
+    return null;
+  }
+
+  // Check that there's only whitespace between end of JSDoc and the target
+  const afterJSDoc = between.substring(jsDocEnd + 2);
+  if (afterJSDoc.trim().length > 0) {
+    return null;
+  }
+
+  const jsDocContent = between.substring(3, jsDocEnd);
+  // Clean up the JSDoc content - remove leading * and whitespace
+  return jsDocContent
+    .split('\n')
+    .map(line => line.replace(/^\s*\*\s?/, ''))
+    .join('\n')
+    .trim();
+}
+
+/**
+ * Extract an interface body from content, handling nested braces
+ */
+function extractInterfaceBody(content, interfaceName) {
+  const interfaceRegex = new RegExp(`export\\s+interface\\s+${interfaceName}\\s*\\{`);
+  const match = content.match(interfaceRegex);
+  if (!match) {
+    return null;
+  }
+
+  const startIndex = match.index + match[0].length;
+  let braceCount = 1;
+  let endIndex = startIndex;
+
+  while (braceCount > 0 && endIndex < content.length) {
+    const char = content[endIndex];
+    if (char === '{') {
+      braceCount++;
+    } else if (char === '}') {
+      braceCount--;
+    }
+    endIndex++;
+  }
+
+  return content.substring(startIndex, endIndex - 1);
+}
+
+/**
+ * Parse interface properties with their JSDoc comments
+ */
+function parseInterfaceProperties(interfaceBody) {
+  const properties = [];
+  // Match JSDoc followed by property definition
+  // Handles multi-line JSDoc and various type definitions
+  const propRegex = /\/\*\*\s*([\s\S]*?)\s*\*\/\s*(\w+)\??:\s*([^;\n]+)/g;
+  let propMatch;
+
+  while ((propMatch = propRegex.exec(interfaceBody)) !== null) {
+    const propDoc = propMatch[1].replace(/\s*\*\s*/g, ' ').trim();
+    const propName = propMatch[2];
+    const propType = propMatch[3].trim();
+    properties.push({
+      name: propName,
+      type: propType,
+      description: propDoc
+    });
+  }
+
+  return properties;
+}
+
+/**
+ * Parse a hook file and extract documentation
+ */
+function parseHookFile(filePath) {
+  const content = fs.readFileSync(filePath, 'utf8');
+  const fileName = path.basename(filePath, '.ts');
+
+  // Extract the main hook function's JSDoc
+  const hookFunctionMatch = content.match(new RegExp(`export\\s+function\\s+(${fileName})\\s*[(<]`));
+  if (!hookFunctionMatch) {
+    return null;
+  }
+
+  const hookName = hookFunctionMatch[1];
+  const hookJSDoc = extractJSDoc(content, hookFunctionMatch.index);
+
+  // Extract description (first paragraph before @example or @param)
+  let description = '';
+  let example = '';
+  if (hookJSDoc) {
+    const exampleMatch = hookJSDoc.match(/@example\s*\n```(\w+)?\n([\s\S]*?)```/);
+    if (exampleMatch) {
+      example = exampleMatch[2].trim();
+    }
+
+    // Get description - everything before @example, @param, @returns, etc.
+    const descEnd = hookJSDoc.search(/@(example|param|returns|see)/);
+    description = descEnd > -1
+      ? hookJSDoc.substring(0, descEnd).trim()
+      : hookJSDoc.trim();
+  }
+
+  // Capitalize first letter for interface names (useArtifacts -> UseArtifacts)
+  const capitalizedHookName = hookName.charAt(0).toUpperCase() + hookName.slice(1);
+
+  // Extract return interface (UseXxxReturn)
+  const returnInterfaceBody = extractInterfaceBody(content, `${capitalizedHookName}Return`);
+  const returnProperties = returnInterfaceBody ? parseInterfaceProperties(returnInterfaceBody) : [];
+
+  // Extract options interface if present
+  const optionsInterfaceBody = extractInterfaceBody(content, `${capitalizedHookName}Options`);
+  const optionsProperties = optionsInterfaceBody ? parseInterfaceProperties(optionsInterfaceBody) : [];
+
+  return {
+    name: hookName,
+    description,
+    example,
+    returnProperties,
+    optionsProperties
+  };
+}
+
+/**
+ * Generate hooks documentation from source files
+ */
+function generateHooksSection() {
+  const hooksDir = path.join(ROOT, 'src/components/chat/hooks');
+  if (!fs.existsSync(hooksDir)) {
+    return '';
+  }
+
+  // Only document hooks that are exported from the main package
+  const exportedHooks = ['useArtifacts', 'useScrollAnchor'];
+
+  let output = '';
+
+  exportedHooks.forEach((hookName) => {
+    const hookFile = path.join(hooksDir, `${hookName}.ts`);
+    if (!fs.existsSync(hookFile)) {
+      return;
+    }
+
+    const hookData = parseHookFile(hookFile);
+    if (!hookData) {
+      return;
+    }
+
+    output += `### ${hookData.name}\n\n`;
+
+    if (hookData.description) {
+      output += `${hookData.description}\n\n`;
+    }
+
+    if (hookData.optionsProperties.length > 0) {
+      output += `**Options:**\n\n`;
+      output += `| Property | Type | Description |\n`;
+      output += `|----------|------|-------------|\n`;
+      hookData.optionsProperties.forEach(prop => {
+        output += `| \`${prop.name}\` | \`${prop.type}\` | ${prop.description} |\n`;
+      });
+      output += '\n';
+    }
+
+    if (hookData.returnProperties.length > 0) {
+      const capitalizedName = hookData.name.charAt(0).toUpperCase() + hookData.name.slice(1);
+      output += `**Returns:** \`${capitalizedName}Return\`\n\n`;
+      output += `| Property | Type | Description |\n`;
+      output += `|----------|------|-------------|\n`;
+      hookData.returnProperties.forEach(prop => {
+        output += `| \`${prop.name}\` | \`${prop.type}\` | ${prop.description} |\n`;
+      });
+      output += '\n';
+    }
+
+    if (hookData.example) {
+      output += `**Example:**\n\n`;
+      output += `\`\`\`tsx\n${hookData.example}\n\`\`\`\n\n`;
+    }
+  });
+
+  return output;
+}
+
 function generateManifest() {
   const tokens = parseThemeCSS();
 
@@ -311,89 +508,10 @@ Import hooks from \`@lukeashford/aurelius\`:
 
 `;
 
-  // Add hooks section - manually documented for clarity
-  output += `### useArtifacts
+  // Generate hooks documentation from source files
+  output += generateHooksSection();
 
-Hook for managing artifacts in the ChatInterface. Provides methods to control the artifacts panel programmatically, designed for event-driven architectures like SSE streams.
-
-**Returns:** \`UseArtifactsReturn\`
-
-| Property | Type | Description |
-|----------|------|-------------|
-| \`artifacts\` | \`Artifact[]\` | Current list of artifacts |
-| \`scheduleArtifact\` | \`(artifact: Omit<Artifact, 'isPending'>) => void\` | Add artifact with loading skeleton (SSE operator.started) |
-| \`showArtifact\` | \`(id: string, data: Partial<Artifact>) => void\` | Reveal artifact content (SSE artifact.created) |
-| \`removeArtifact\` | \`(id: string) => void\` | Remove artifact on failure (SSE operator.failed) |
-| \`clearArtifacts\` | \`() => void\` | Clear all artifacts |
-
-**Artifact type:**
-
-\`\`\`typescript
-interface Artifact {
-  id: string
-  type: 'text' | 'image' | 'video'
-  content?: string    // For text artifacts
-  src?: string        // For image/video artifacts
-  alt?: string        // For image artifacts
-  title?: string
-  subtitle?: string
-  isPending?: boolean // Shows loading skeleton
-}
-\`\`\`
-
-### useScrollAnchor
-
-Hook for smart scroll behavior in chat interfaces. Anchors user messages to the top of the viewport and respects user's scroll position during streaming.
-
-**Returns:** \`UseScrollAnchorReturn\`
-
-| Property | Type | Description |
-|----------|------|-------------|
-| \`containerRef\` | \`React.RefObject<HTMLDivElement>\` | Attach to scrollable container |
-| \`anchorRef\` | \`React.RefObject<HTMLDivElement>\` | Attach to anchor element (user message) |
-| \`scrollToAnchor\` | \`() => void\` | Scroll anchor into view |
-| \`scrollToBottom\` | \`() => void\` | Scroll to container bottom |
-| \`isScrolledToBottom\` | \`() => boolean\` | Check if near bottom |
-
-### Hook usage example
-
-\`\`\`tsx
-import { ChatInterface, useArtifacts } from '@lukeashford/aurelius'
-
-function MyChat() {
-  const { artifacts, scheduleArtifact, showArtifact, removeArtifact } = useArtifacts()
-
-  // Connect to SSE stream
-  useEffect(() => {
-    const eventSource = new EventSource(\`/projects/\${projectId}/events\`)
-
-    eventSource.addEventListener('operator.started', (e) => {
-      const { operatorId, type } = JSON.parse(e.data)
-      scheduleArtifact({ id: operatorId, type })
-    })
-
-    eventSource.addEventListener('artifact.created', (e) => {
-      const { artifactId, content } = JSON.parse(e.data)
-      showArtifact(artifactId, {
-        type: 'image',
-        src: content.url,
-        title: content.title,
-      })
-    })
-
-    eventSource.addEventListener('operator.failed', (e) => {
-      const { operatorId } = JSON.parse(e.data)
-      removeArtifact(operatorId)
-    })
-
-    return () => eventSource.close()
-  }, [projectId])
-
-  return <ChatInterface artifacts={artifacts} /* ... */ />
-}
-\`\`\`
-
----
+  output += `---
 
 `;
 
