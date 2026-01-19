@@ -185,7 +185,7 @@ export {
   ThinkingIndicator,
   BranchNavigator,
   useScrollAnchor,
-  useArtifactParser,
+  useArtifacts,
   // Types
   type ChatInterfaceProps,
   type ChatMessage,
@@ -210,7 +210,7 @@ export {
   type UseScrollAnchorReturn,
   type Artifact,
   type ArtifactType,
-  type UseArtifactParserReturn,
+  type UseArtifactsReturn,
   // Utility functions
   createEmptyTree,
   addMessageToTree,

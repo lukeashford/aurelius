@@ -4,7 +4,7 @@ import {ImageCard} from '../ImageCard'
 import {VideoCard} from '../VideoCard'
 import {MarkdownContent} from '../MarkdownContent'
 import {Skeleton} from '../Skeleton'
-import type {Artifact} from './hooks/useArtifactParser'
+import type {Artifact} from './hooks'
 
 export interface ArtifactsPanelProps extends React.HTMLAttributes<HTMLDivElement> {
   /**

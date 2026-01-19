@@ -4,7 +4,7 @@ import {ChatView, type ChatViewItem} from './ChatView'
 import {type Attachment, ChatInput} from './ChatInput'
 import {type Conversation, ConversationSidebar} from './ConversationSidebar'
 import {ArtifactsPanel} from './ArtifactsPanel'
-import {type Artifact, useArtifactParser} from './hooks'
+import type {Artifact} from './hooks'
 import {type ConversationTree, getActivePathMessages, getSiblingInfo, switchBranch,} from './types'
 
 export interface ChatMessage {
@@ -97,6 +97,18 @@ export interface ChatInterfaceProps extends Omit<React.HTMLAttributes<HTMLDivEle
    * Called when attachments change in the input
    */
   onAttachmentsChange?: (attachments: Attachment[]) => void
+  /**
+   * Artifacts to display in the panel. Controlled by parent via useArtifacts hook.
+   */
+  artifacts?: Artifact[]
+  /**
+   * Whether the artifacts panel is open (controlled mode)
+   */
+  isArtifactsPanelOpen?: boolean
+  /**
+   * Called when artifacts panel open state changes (controlled mode)
+   */
+  onArtifactsPanelOpenChange?: (open: boolean) => void
 }
 
 /**
@@ -105,11 +117,16 @@ export interface ChatInterfaceProps extends Omit<React.HTMLAttributes<HTMLDivEle
  * Features:
  * - ConversationSidebar (left) — collapsible list of past conversations
  * - ChatView (center) — main conversation area with smart scrolling
- * - ArtifactsPanel (right) — agent-controlled panel for rich content
+ * - ArtifactsPanel (right) — controlled via useArtifacts hook
  * - ChatInput — position-aware input that centers in empty state
  * - Branching — support for conversation tree with branch navigation
  * - Message Actions — copy, edit, retry
  * - Thinking Indicator — shown between user message and response
+ *
+ * Artifacts are controlled externally via the useArtifacts hook:
+ * - scheduleArtifact() — adds artifact with loading skeleton
+ * - showArtifact() — reveals artifact content
+ * - removeArtifact() — removes artifact on failure
  */
 export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps>(
     (
@@ -134,13 +151,20 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
           enableMessageActions = true,
           attachments: propsAttachments,
           onAttachmentsChange,
+          artifacts = [],
+          isArtifactsPanelOpen,
+          onArtifactsPanelOpenChange,
           className,
           ...rest
         },
         ref
     ) => {
       const [sidebarCollapsed, setSidebarCollapsed] = useState(initialSidebarCollapsed)
-      const [artifactsPanelOpen, setArtifactsPanelOpen] = useState(false)
+      const [internalPanelOpen, setInternalPanelOpen] = useState(false)
+
+      // Controlled vs uncontrolled artifacts panel
+      const isPanelControlled = isArtifactsPanelOpen !== undefined
+      const artifactsPanelOpen = isPanelControlled ? isArtifactsPanelOpen : internalPanelOpen
 
       // Determine if we're using tree mode or flat mode
       const isTreeMode = !!conversationTree
@@ -169,44 +193,17 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
         return -1
       }, [effectiveMessages])
 
-      // Get all assistant message contents for artifact parsing
-      const allAssistantContent = useMemo(() => {
-        return effectiveMessages
-        .filter((msg) => msg.variant === 'assistant')
-        .map((msg) => msg.content)
-        .join('\n\n')
-      }, [effectiveMessages])
+      // Check if any artifact is pending (for loading state)
+      const hasPendingArtifact = useMemo(() => {
+        return artifacts.some((a) => a.isPending)
+      }, [artifacts])
 
-      // Parse artifacts from all assistant messages
-      const {artifacts, hasPendingArtifact} = useArtifactParser(allAssistantContent)
-
-      // Get clean content for just the currently streaming message (if any)
-      const currentStreamingCleanContent = useMemo(() => {
-        if (!isStreaming || effectiveMessages.length === 0) {
-          return null
-        }
-        const lastMessage = effectiveMessages[effectiveMessages.length - 1]
-        if (lastMessage.variant === 'assistant') {
-          // Strip artifact syntax from the streaming message
-          const content = lastMessage.content
-          // Remove complete artifacts
-          let clean = content.replace(/:::artifact\{[^}]+}(?:[^:]*?)?:::/gs, '')
-          // Remove incomplete artifacts (still streaming)
-          const startMatch = clean.match(/:::artifact\{/)
-          if (startMatch && startMatch.index !== undefined) {
-            clean = clean.substring(0, startMatch.index)
-          }
-          return clean.trim()
-        }
-        return null
-      }, [effectiveMessages, isStreaming])
-
-      // Auto-open artifacts panel when artifacts are found (including pending)
+      // Auto-open artifacts panel when artifacts are added (uncontrolled mode only)
       React.useEffect(() => {
-        if (artifacts.length > 0 || hasPendingArtifact) {
-          setArtifactsPanelOpen(true)
+        if (!isPanelControlled && artifacts.length > 0) {
+          setInternalPanelOpen(true)
         }
-      }, [artifacts.length, hasPendingArtifact])
+      }, [artifacts.length, isPanelControlled])
 
       // Handle branch switching
       const handleBranchSwitch = useCallback(
@@ -220,27 +217,9 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
           [isTreeMode, conversationTree, onTreeChange]
       )
 
-      // Build the messages array with cleaned content (artifact syntax stripped)
+      // Build the messages array for display
       const displayMessages: ChatViewItem[] = useMemo(() => {
-        return effectiveMessages.map((msg, idx) => {
-          let cleanContent = msg.content
-
-          if (msg.variant === 'assistant') {
-            // For the currently streaming message, use the streaming-specific clean content
-            if (isStreaming && idx === effectiveMessages.length - 1 && currentStreamingCleanContent
-                !== null) {
-              cleanContent = currentStreamingCleanContent
-            } else {
-              // For completed assistant messages, strip artifact syntax
-              let clean = msg.content.replace(/:::artifact\{[^}]+}(?:[^:]*?)?:::/gs, '')
-              const startMatch = clean.match(/:::artifact\{/)
-              if (startMatch && startMatch.index !== undefined) {
-                clean = clean.substring(0, startMatch.index)
-              }
-              cleanContent = clean.trim()
-            }
-          }
-
+        return effectiveMessages.map((msg) => {
           // Get branch info if in tree mode
           let branchInfo = undefined
           if (isTreeMode && conversationTree) {
@@ -270,18 +249,12 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
 
           return {
             ...msg,
-            content: cleanContent,
             branchInfo,
             actions,
           }
         })
-      }, [effectiveMessages, isStreaming, currentStreamingCleanContent, isTreeMode,
-        conversationTree, enableMessageActions, onEditMessage, onRetryMessage, handleBranchSwitch])
-
-      // All artifacts parsed from all assistant messages via useArtifactParser
-      const allArtifacts: Artifact[] = useMemo(() => {
-        return artifacts
-      }, [artifacts])
+      }, [effectiveMessages, isTreeMode, conversationTree, enableMessageActions,
+        onEditMessage, onRetryMessage, handleBranchSwitch])
 
       const handleSubmit = useCallback(
           (message: string, attachments?: Attachment[]) => {
@@ -295,8 +268,12 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
       }, [])
 
       const toggleArtifactsPanel = useCallback(() => {
-        setArtifactsPanelOpen((prev) => !prev)
-      }, [])
+        if (isPanelControlled) {
+          onArtifactsPanelOpenChange?.(!artifactsPanelOpen)
+        } else {
+          setInternalPanelOpen((prev) => !prev)
+        }
+      }, [isPanelControlled, artifactsPanelOpen, onArtifactsPanelOpenChange])
 
       const isEmpty = effectiveMessages.length === 0
 
@@ -376,7 +353,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
 
             {/* Artifacts panel */}
             <ArtifactsPanel
-                artifacts={allArtifacts}
+                artifacts={artifacts}
                 isOpen={artifactsPanelOpen}
                 onClose={toggleArtifactsPanel}
                 isLoading={isStreaming && hasPendingArtifact}
