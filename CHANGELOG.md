@@ -1,3 +1,9 @@
+## [2.11.0](https://github.com/lukeashford/aurelius/compare/v2.10.1...v2.11.0) (2026-01-19)
+
+### Features
+
+* **chat:** convert artifact parsing to hooks-based API ([026c1ed](https://github.com/lukeashford/aurelius/commit/026c1ed635f222fbd0f656ea92d219270874b77d))
+
 ## [2.10.1](https://github.com/lukeashford/aurelius/compare/v2.10.0...v2.10.1) (2026-01-13)
 
 ### Bug Fixes
