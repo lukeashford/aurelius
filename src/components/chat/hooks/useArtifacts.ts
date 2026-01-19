@@ -38,17 +38,14 @@ export interface UseArtifactsReturn {
   artifacts: Artifact[]
   /**
    * Schedule a new artifact (adds to list with isPending=true, shows skeleton).
-   * Use when an operator starts processing (e.g., SSE operator.started event).
    */
   scheduleArtifact: (artifact: Omit<Artifact, 'isPending'>) => void
   /**
    * Show an artifact (updates existing or adds new with isPending=false).
-   * Use when artifact content is ready (e.g., SSE artifact.created event).
    */
   showArtifact: (artifactId: string, artifact: Omit<Artifact, 'id' | 'isPending'>) => void
   /**
    * Remove an artifact from the list.
-   * Use when artifact generation fails (e.g., SSE operator.failed event).
    */
   removeArtifact: (artifactId: string) => void
   /**
