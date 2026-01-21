@@ -30,6 +30,14 @@ export interface ConversationSidebarProps extends React.HTMLAttributes<HTMLDivEl
    * Callback to toggle collapse state
    */
   onToggleCollapse?: () => void
+  /**
+   * Current width of the sidebar (when expanded)
+   */
+  width?: number
+  /**
+   * Callback to start resizing
+   */
+  onResizeStart?: (e: React.MouseEvent) => void
 }
 
 /**
@@ -86,6 +94,8 @@ export const ConversationSidebar = React.forwardRef<HTMLDivElement, Conversation
           onSelectConversation,
           onNewChat,
           onToggleCollapse,
+          width,
+          onResizeStart,
           className,
           ...rest
         },
@@ -123,12 +133,24 @@ export const ConversationSidebar = React.forwardRef<HTMLDivElement, Conversation
           <div
               ref={ref}
               className={cx(
-                  'h-full bg-charcoal/80 border-r border-ash/40 flex flex-col',
-                  'w-64 flex-shrink-0',
+                  'h-full bg-charcoal/80 border-r border-ash/40 flex flex-col relative group',
+                  !width && 'w-64',
+                  'flex-shrink-0',
                   className
               )}
+              style={width ? {width: `${width}px`} : undefined}
               {...rest}
           >
+            {/* Resize handle */}
+            <div
+                onMouseDown={onResizeStart}
+                className={cx(
+                    "absolute top-0 right-0 w-1 h-full cursor-col-resize z-50",
+                    "hover:bg-gold/50 transition-colors",
+                    "after:absolute after:inset-y-0 after:-right-1 after:w-2" // Larger hit area
+                )}
+            />
+
             {/* Header with collapse chevron and New Chat button */}
             <div className="p-3 border-b border-ash/40 flex-shrink-0 flex items-center gap-2">
               <button

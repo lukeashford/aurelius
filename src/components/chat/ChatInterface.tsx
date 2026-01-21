@@ -6,6 +6,7 @@ import {type Conversation, ConversationSidebar} from './ConversationSidebar'
 import {ArtifactsPanel} from './ArtifactsPanel'
 import type {Artifact} from './hooks'
 import {type ConversationTree, getActivePathMessages, getSiblingInfo, switchBranch,} from './types'
+import {useResizable} from "./hooks/useResizable";
 
 export interface ChatMessage {
   id: string
@@ -162,6 +163,26 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
       const [sidebarCollapsed, setSidebarCollapsed] = useState(initialSidebarCollapsed)
       const [internalPanelOpen, setInternalPanelOpen] = useState(false)
 
+      const {
+        width: sidebarWidth,
+        startResizing: startResizingSidebar
+      } = useResizable({
+        initialWidth: 256, // w-64
+        minWidth: 200,
+        maxWidth: 500,
+        direction: 'right'
+      })
+
+      const {
+        width: artifactsWidth,
+        startResizing: startResizingArtifacts
+      } = useResizable({
+        initialWidth: 384, // w-96
+        minWidth: 300,
+        maxWidth: 1200,
+        direction: 'left'
+      })
+
       // Controlled vs uncontrolled artifacts panel
       const isPanelControlled = isArtifactsPanelOpen !== undefined
       const artifactsPanelOpen = isPanelControlled ? isArtifactsPanelOpen : internalPanelOpen
@@ -290,12 +311,14 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
                 onSelectConversation={onSelectConversation}
                 onNewChat={onNewChat}
                 onToggleCollapse={toggleSidebar}
+                width={sidebarWidth}
+                onResizeStart={startResizingSidebar}
             />
 
             {/* Main content area */}
             <div className="flex-1 flex flex-col min-w-0 relative">
               <div className={cx(
-                  "flex-1 flex flex-col min-h-0 relative transition-all duration-500",
+                  "flex-1 flex flex-col min-h-0 relative",
                   isEmpty ? "justify-center" : "justify-start"
               )}>
                 {/* Top spacer for centering in empty state */}
@@ -357,6 +380,8 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
                 isOpen={artifactsPanelOpen}
                 onClose={toggleArtifactsPanel}
                 isLoading={isStreaming && hasPendingArtifact}
+                width={artifactsWidth}
+                onResizeStart={startResizingArtifacts}
             />
           </div>
       )
