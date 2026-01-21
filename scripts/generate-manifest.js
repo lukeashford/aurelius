@@ -89,10 +89,10 @@ function extractJSDoc(content, startIndex) {
   const jsDocContent = between.substring(3, jsDocEnd);
   // Clean up the JSDoc content - remove leading * and whitespace
   return jsDocContent
-    .split('\n')
-    .map(line => line.replace(/^\s*\*\s?/, ''))
-    .join('\n')
-    .trim();
+  .split('\n')
+  .map(line => line.replace(/^\s*\*\s?/, ''))
+  .join('\n')
+  .trim();
 }
 
 /**
@@ -154,7 +154,8 @@ function parseHookFile(filePath) {
   const fileName = path.basename(filePath, '.ts');
 
   // Extract the main hook function's JSDoc
-  const hookFunctionMatch = content.match(new RegExp(`export\\s+function\\s+(${fileName})\\s*[(<]`));
+  const hookFunctionMatch = content.match(
+      new RegExp(`export\\s+function\\s+(${fileName})\\s*[(<]`));
   if (!hookFunctionMatch) {
     return null;
   }
@@ -174,8 +175,8 @@ function parseHookFile(filePath) {
     // Get description - everything before @example, @param, @returns, etc.
     const descEnd = hookJSDoc.search(/@(example|param|returns|see)/);
     description = descEnd > -1
-      ? hookJSDoc.substring(0, descEnd).trim()
-      : hookJSDoc.trim();
+        ? hookJSDoc.substring(0, descEnd).trim()
+        : hookJSDoc.trim();
   }
 
   // Capitalize first letter for interface names (useArtifacts -> UseArtifacts)
@@ -187,7 +188,8 @@ function parseHookFile(filePath) {
 
   // Extract options interface if present
   const optionsInterfaceBody = extractInterfaceBody(content, `${capitalizedHookName}Options`);
-  const optionsProperties = optionsInterfaceBody ? parseInterfaceProperties(optionsInterfaceBody) : [];
+  const optionsProperties = optionsInterfaceBody ? parseInterfaceProperties(optionsInterfaceBody)
+      : [];
 
   return {
     name: hookName,
@@ -369,13 +371,30 @@ Import from \`@lukeashford/aurelius\`:
   const componentNotes = {}; // Store JSDoc notes for components
 
   if (fs.existsSync(componentsDir)) {
-    const files = fs
-    .readdirSync(componentsDir)
-    .filter((f) => f.endsWith('.tsx') && f !== 'index.tsx');
+    const getFiles = (dir) => {
+      let results = [];
+      const list = fs.readdirSync(dir);
+      list.forEach((file) => {
+        file = path.join(dir, file);
+        const stat = fs.statSync(file);
+        if (stat && stat.isDirectory()) {
+          results = results.concat(getFiles(file));
+        } else if (file.endsWith('.tsx') && !file.endsWith('index.tsx')) {
+          results.push(file);
+        }
+      });
+      return results;
+    };
 
-    files.forEach((file) => {
-      const content = fs.readFileSync(path.join(componentsDir, file), 'utf8');
-      const name = file.replace('.tsx', '');
+    const files = getFiles(componentsDir);
+
+    files.forEach((filePath) => {
+      const content = fs.readFileSync(filePath, 'utf8');
+      const name = path.basename(filePath, '.tsx');
+
+      // Extract component description
+      const componentDoc = extractJSDoc(content,
+          content.search(new RegExp(`export\\s+(const|function)\\s+${name}`)));
 
       // Extract exported type aliases (e.g., export type ButtonVariant = 'primary' | 'secondary')
       // Handle both single-line and multi-line definitions
@@ -396,14 +415,17 @@ Import from \`@lukeashford/aurelius\`:
         }
       }
 
-      // Extract props from interface with JSDoc
-      const propsMatch = content.match(/interface\s+\w*Props[^{]*{([^}]+)}/s);
+      // Extract props from all interfaces with JSDoc
+      const interfaceRegex = /interface\s+(\w+)[^{]*{([^}]+)}/gs;
       const propsWithVariants = [];
       const propDocs = [];
+      let interfaceMatch;
 
-      if (propsMatch) {
-        const propsBlock = propsMatch[1];
+      while ((interfaceMatch = interfaceRegex.exec(content)) !== null) {
+        const interfaceName = interfaceMatch[1];
+        const propsBlock = interfaceMatch[2];
         const lines = propsBlock.split('\n');
+        const isMainProps = interfaceName.endsWith('Props');
 
         for (let i = 0; i < lines.length; i++) {
           const line = lines[i].trim();
@@ -436,19 +458,21 @@ Import from \`@lukeashford/aurelius\`:
               if (propLine && !propLine.startsWith('//') && !propLine.startsWith('/*')) {
                 const propMatch = propLine.match(/^(\w+)\??:/);
                 if (propMatch && docComment) {
-                  propDocs.push(`**${propMatch[1]}**: ${docComment}`);
+                  const prefix = isMainProps ? '' : `${interfaceName}.`;
+                  propDocs.push(`**${prefix}${propMatch[1]}**: ${docComment}`);
                 }
                 break;
               }
             }
           }
 
-          // Extract prop name and type (skip comment lines)
-          if (line && !line.startsWith('//') && !line.startsWith('/*') && !line.startsWith('*')) {
-            const propMatch = line.match(/^(\w+)\??:\s*(\w+)/);
+          // Extract prop name and type for the main table (only from main Props interface)
+          if (isMainProps && line && !line.startsWith('//') && !line.startsWith('/*')
+              && !line.startsWith('*')) {
+            const propMatch = line.match(/^(\w+)\??:\s*([^;,\n]+)/);
             if (propMatch) {
               const propName = propMatch[1];
-              const propType = propMatch[2];
+              const propType = propMatch[2].trim();
 
               // Check if the prop type is one of our exported type aliases
               if (typeAliases[propType]) {
@@ -465,8 +489,11 @@ Import from \`@lukeashford/aurelius\`:
       output += `| ${name} | ${propsStr} |\n`;
 
       // Store notes if any JSDoc was found
-      if (propDocs.length > 0) {
-        componentNotes[name] = propDocs;
+      if (propDocs.length > 0 || componentDoc) {
+        componentNotes[name] = {
+          description: componentDoc,
+          props: propDocs
+        };
       }
     });
   }
@@ -477,9 +504,12 @@ Import from \`@lukeashford/aurelius\`:
 ### Component Notes
 
 `;
-    Object.entries(componentNotes).forEach(([componentName, notes]) => {
+    Object.entries(componentNotes).forEach(([componentName, data]) => {
       output += `**${componentName}**\n`;
-      notes.forEach(note => {
+      if (data.description) {
+        output += `${data.description}\n\n`;
+      }
+      data.props.forEach(note => {
         output += `- ${note}\n`;
       });
       output += '\n';

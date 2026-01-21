@@ -38,8 +38,13 @@ exports[`ArtifactsPanel matches snapshot when collapsed with artifacts 1`] = `
 exports[`ArtifactsPanel matches snapshot when expanded with artifacts 1`] = `
 <div>
   <div
-    class="h-full bg-charcoal/50 border-l border-ash/40 flex flex-col w-96 flex-shrink-0"
+    class="h-full bg-charcoal/50 border-l border-ash/40 flex flex-col relative w-96 flex-shrink-0"
+    data-testid="artifacts-panel"
   >
+    <div
+      class="absolute top-0 left-0 w-1 h-full cursor-col-resize z-50 hover:bg-gold/50 transition-colors after:absolute after:inset-y-0 after:-left-1 after:w-2"
+      data-testid="artifacts-resize-handle"
+    />
     <div
       class="flex items-center justify-between p-4 border-b border-ash/40 flex-shrink-0"
     >
@@ -68,6 +73,7 @@ exports[`ArtifactsPanel matches snapshot when expanded with artifacts 1`] = `
     </div>
     <div
       class="flex-1 overflow-y-auto p-4 space-y-4"
+      data-testid="artifacts-grid"
     >
       <div
         class="relative"
@@ -139,8 +145,13 @@ exports[`ArtifactsPanel matches snapshot when expanded with artifacts 1`] = `
 exports[`ArtifactsPanel matches snapshot when expanded with no artifacts 1`] = `
 <div>
   <div
-    class="h-full bg-charcoal/50 border-l border-ash/40 flex flex-col w-96 flex-shrink-0"
+    class="h-full bg-charcoal/50 border-l border-ash/40 flex flex-col relative w-96 flex-shrink-0"
+    data-testid="artifacts-panel"
   >
+    <div
+      class="absolute top-0 left-0 w-1 h-full cursor-col-resize z-50 hover:bg-gold/50 transition-colors after:absolute after:inset-y-0 after:-left-1 after:w-2"
+      data-testid="artifacts-resize-handle"
+    />
     <div
       class="flex items-center justify-between p-4 border-b border-ash/40 flex-shrink-0"
     >
@@ -169,6 +180,7 @@ exports[`ArtifactsPanel matches snapshot when expanded with no artifacts 1`] = `
     </div>
     <div
       class="flex-1 overflow-y-auto p-4 space-y-4"
+      data-testid="artifacts-grid"
     >
       <p
         class="text-sm text-silver/60 text-center py-8"

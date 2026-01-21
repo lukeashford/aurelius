@@ -68,6 +68,17 @@ export interface ChatInputProps extends Omit<React.HTMLAttributes<HTMLDivElement
   acceptedFileTypes?: string
 }
 
+/**
+ * ChatInput is a context-aware input component that can transition between
+ * a centered position (for empty states) and a bottom position (for active conversations).
+ *
+ * Features:
+ * - Auto-expanding textarea
+ * - File attachments with preview
+ * - Drag and drop support
+ * - Streaming state with stop button
+ * - Animated transition between positions
+ */
 export const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
     (
         {

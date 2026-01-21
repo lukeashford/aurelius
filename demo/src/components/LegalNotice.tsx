@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import {Button, Card} from '@lukeashford/aurelius';
 
 export const LegalNotice = () => {
@@ -8,9 +9,9 @@ export const LegalNotice = () => {
           <header
               className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <h1 className="text-3xl font-semibold">Impressum / Legal Notice</h1>
-            <a href="#">
+            <Link to="/">
               <Button variant="ghost">← Back to Home</Button>
-            </a>
+            </Link>
           </header>
 
           <Card className="p-8 space-y-6">

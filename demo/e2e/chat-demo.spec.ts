@@ -3,7 +3,7 @@ import {expect, test} from '@playwright/test'
 test.describe('Chat Demo', () => {
   test.beforeEach(async ({page}) => {
     // Navigate to the chat demo
-    await page.goto('/#chat-demo')
+    await page.goto('/chat-demo')
     await page.waitForLoadState('networkidle')
     // Wait for the chat interface to be visible
     await expect(page.locator('text=Chat Interface Demo')).toBeVisible()
@@ -93,7 +93,8 @@ test.describe('Chat Demo', () => {
       await textarea.press('Enter')
 
       // Wait for the response to start streaming
-      await expect(page.getByText(/Thanks for your message|production-grade/i)).toBeVisible({
+      await expect(page.getByText(/Thanks for your message|production-grade/i).first())
+      .toBeVisible({
         timeout: 10000,
       })
     })

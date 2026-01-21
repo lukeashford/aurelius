@@ -56,6 +56,7 @@ export {
 export {
   useScrollAnchor,
   useArtifacts,
+  useResizable,
   type UseScrollAnchorOptions,
   type UseScrollAnchorReturn,
   type Artifact,

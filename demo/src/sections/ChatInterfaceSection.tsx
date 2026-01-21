@@ -1,5 +1,6 @@
 import React from 'react'
 import {Badge, Button, Card} from '@lukeashford/aurelius'
+import {Link} from "react-router-dom";
 
 export default function ChatInterfaceSection() {
   return (
@@ -35,7 +36,7 @@ export default function ChatInterfaceSection() {
           </div>
 
           <div className="shrink-0">
-            <a href="#chat-demo">
+            <Link to="/chat-demo">
               <Button
                   variant="important"
                   size="xl"
@@ -51,7 +52,7 @@ export default function ChatInterfaceSection() {
                   />
                 </svg>
               </Button>
-            </a>
+            </Link>
           </div>
         </div>
       </Card>

@@ -26,6 +26,7 @@ import {Footer} from './components/Footer'
 import {LegalNotice} from './components/LegalNotice'
 import ChatDemo from './components/ChatDemo'
 import VideoCardSection from "./sections/VideoCardSection";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
 
 const nav = [
   {id: 'overview', label: 'Overview'},
@@ -54,40 +55,11 @@ const nav = [
   {id: 'messages', label: 'Messages'},
 ]
 
-export default function App() {
+function MainLayout() {
   const [active, setActive] = useState('overview')
-  const [view, setView] = useState(() => {
-    const hash = window.location.hash
-    if (hash === '#legal') {
-      return 'legal'
-    }
-    if (hash === '#chat-demo') {
-      return 'chat-demo'
-    }
-    return 'main'
-  })
-
-  React.useEffect(() => {
-    const handleHashChange = () => {
-      const hash = window.location.hash
-      if (hash === '#legal') {
-        setView('legal')
-      } else if (hash === '#chat-demo') {
-        setView('chat-demo')
-      } else {
-        setView('main')
-      }
-    }
-    window.addEventListener('hashchange', handleHashChange)
-    return () => window.removeEventListener('hashchange', handleHashChange)
-  }, [])
 
   // IntersectionObserver to set active nav link
   React.useEffect(() => {
-    if (view !== 'main') {
-      return
-    } // Only observe in main view
-
     const observer = new IntersectionObserver(
         entries => {
           entries.forEach(entry => {
@@ -106,15 +78,7 @@ export default function App() {
       }
     })
     return () => observer.disconnect()
-  }, [view])
-
-  if (view === 'chat-demo') {
-    return <ChatDemo/>
-  }
-
-  if (view === 'legal') {
-    return <LegalNotice/>
-  }
+  }, [])
 
   return (
       <div className="min-h-screen bg-obsidian text-white">
@@ -247,5 +211,17 @@ export default function App() {
           <Footer/>
         </main>
       </div>
+  )
+}
+
+export default function App() {
+  return (
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<MainLayout/>}/>
+          <Route path="/chat-demo" element={<ChatDemo/>}/>
+          <Route path="/legal" element={<LegalNotice/>}/>
+        </Routes>
+      </BrowserRouter>
   )
 }

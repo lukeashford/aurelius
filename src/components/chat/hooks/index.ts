@@ -10,3 +10,4 @@ export {
 export {
   useAdaptiveSpacer, type UseAdaptiveSpacerOptions, type UseAdaptiveSpacerReturn
 } from './useAdaptiveSpacer'
+export {useResizable} from './useResizable'

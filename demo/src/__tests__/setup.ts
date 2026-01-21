@@ -1,5 +1,9 @@
 import '@testing-library/jest-dom';
 import React from 'react';
+import {TextDecoder, TextEncoder} from 'node:util';
+
+global.TextEncoder = TextEncoder;
+global.TextDecoder = TextDecoder as any;
 
 // Mock react-player
 jest.mock('react-player', () => {

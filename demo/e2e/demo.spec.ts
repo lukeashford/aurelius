@@ -56,7 +56,7 @@ test.describe('Aurelius Design Demo', () => {
   });
 
   test('legal notice navigation works', async ({page}) => {
-    await page.goto('/#legal');
+    await page.goto('/legal');
     await page.waitForLoadState('networkidle');
 
     // Check for the actual heading that exists (Impressum / Legal Notice)

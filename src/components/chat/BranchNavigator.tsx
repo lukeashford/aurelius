@@ -29,6 +29,10 @@ export interface BranchNavigatorProps extends React.HTMLAttributes<HTMLDivElemen
   showIcon?: boolean
 }
 
+/**
+ * BranchNavigator provides a UI for switching between conversation branches.
+ * Used in the Message component to navigate sibling branches (e.g., "1/3").
+ */
 export const BranchNavigator = React.forwardRef<HTMLDivElement, BranchNavigatorProps>(
     (
         {

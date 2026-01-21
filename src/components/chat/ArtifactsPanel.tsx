@@ -23,6 +23,14 @@ export interface ArtifactsPanelProps extends React.HTMLAttributes<HTMLDivElement
    * Whether artifacts are still loading (show skeletons)
    */
   isLoading?: boolean
+  /**
+   * Current width of the panel (when expanded)
+   */
+  width?: number
+  /**
+   * Callback to start resizing
+   */
+  onResizeStart?: (e: React.MouseEvent) => void
 }
 
 /**
@@ -190,7 +198,19 @@ function ArtifactRenderer({artifact, isLoading}: { artifact: Artifact; isLoading
  * When expanded, shows chevron at top-right to collapse.
  */
 export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelProps>(
-    ({artifacts, isOpen = false, onClose, isLoading = false, className, ...rest}, ref) => {
+    ({
+      artifacts,
+      isOpen = false,
+      onClose,
+      isLoading = false,
+      width,
+      onResizeStart,
+      className,
+      ...rest
+    }, ref) => {
+      // Determine number of columns based on width
+      const columns = width && width > 800 ? 3 : width && width > 500 ? 2 : 1
+
       // Collapsed state: thin strip with layers icon at top
       if (!isOpen) {
         return (
@@ -229,13 +249,27 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
       return (
           <div
               ref={ref}
+              data-testid="artifacts-panel"
               className={cx(
-                  'h-full bg-charcoal/50 border-l border-ash/40 flex flex-col',
-                  'w-96 flex-shrink-0',
+                  'h-full bg-charcoal/50 border-l border-ash/40 flex flex-col relative',
+                  !width && 'w-96',
+                  'flex-shrink-0',
                   className
               )}
+              style={width ? {width: `${width}px`} : undefined}
               {...rest}
           >
+            {/* Resize handle */}
+            <div
+                onMouseDown={onResizeStart}
+                data-testid="artifacts-resize-handle"
+                className={cx(
+                    "absolute top-0 left-0 w-1 h-full cursor-col-resize z-50",
+                    "hover:bg-gold/50 transition-colors",
+                    "after:absolute after:inset-y-0 after:-left-1 after:w-2" // Larger hit area
+                )}
+            />
+
             {/* Header with title and collapse chevron */}
             <div
                 className="flex items-center justify-between p-4 border-b border-ash/40 flex-shrink-0">
@@ -254,7 +288,14 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
             </div>
 
             {/* Artifacts list */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+            <div
+                data-testid="artifacts-grid"
+                className={cx(
+                    "flex-1 overflow-y-auto p-4",
+                    columns === 1 ? "space-y-4" : "grid gap-4",
+                    columns === 2 && "grid-cols-2",
+                    columns === 3 && "grid-cols-3"
+                )}>
               {artifacts.length === 0 && !isLoading ? (
                   <p className="text-sm text-silver/60 text-center py-8">
                     No artifacts to display

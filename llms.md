@@ -98,54 +98,62 @@ Import from `@lukeashford/aurelius`:
 
 | Component | Props |
 |-----------|-------|
-| Accordion | defaultValue, value |
+| Accordion | type, defaultValue, value, onValueChange, value, disabled |
 | Alert | variant (info, success, warning, error), title |
-| AttachmentPreview | attachments, removable, maxVisible |
+| AttachmentPreview | attachments, onRemove, removable, maxVisible |
 | Avatar | src, alt, name, size (xs, sm, md, lg, xl, 2xl), status (online, offline, busy) |
 | Badge | variant (default, gold, success, error, warning, info) |
 | BrandIcon | size (sm, md, lg), variant (solid, outline) |
-| Breadcrumb | separator |
+| Breadcrumb | separator, current |
 | Button | variant (primary, important, elevated, outlined, featured, ghost, danger), size (sm, md, lg, xl), loading |
-| Card | variant (default, elevated, outlined, ghost, featured), interactive, selected, noPadding |
+| Card | variant (default, elevated, outlined, ghost, featured), interactive, selected, noPadding, title, subtitle, action, align, src, alt, aspect, position, isVideo |
 | Checkbox | label |
-| Col | span (auto, full), offset, order (first, last, none) |
+| Col | span, offset, order |
 | ColorSwatch | color, label |
 | Container | size (sm, md, lg, xl, fluid, responsive) |
-| Dialog | description, confirmText, cancelText, isLoading |
-| Divider | orientation (horizontal, vertical), variant (solid, dashed, dotted), label |
-| Drawer | isOpen, position (left, right, top, bottom), title, children, className |
-| FileChip | name, size, type, status (pending, uploading, complete, error), previewUrl, removable, error |
+| Dialog | description, confirmText, cancelText, onConfirm, onCancel, confirmVariant, isLoading, description, acknowledgeText, variant, description, placeholder, defaultValue, submitText, cancelText, onSubmit, onCancel, isLoading |
+| Divider | orientation (horizontal, vertical), variant (solid, dashed, dotted), label, color |
+| Drawer | isOpen, onClose, position (left, right, top, bottom), title, size, children, className |
+| FileChip | name, size, type, status (pending, uploading, complete, error), previewUrl, onRemove, removable, error |
 | HelperText | error |
-| ImageCard | src, alt, title, subtitle, aspectRatio (${number}/${number}), overlay, mediaClassName, contentClassName |
+| ImageCard | src, alt, title, subtitle, aspectRatio (${number}/${number}), objectFit, overlay, mediaClassName, contentClassName |
 | Input | error, leadingIcon, trailingIcon |
 | InputGroup | children |
 | Label | required |
-| List | ordered |
+| List | variant, ordered, leading, trailing, interactive, selected, disabled, primary, secondary |
 | MarkdownContent | content, sanitizeConfig, isStreaming, cursorClassName |
-| Menu | children, open |
+| Menu | children, open, onOpenChange, asChild, align, side, icon, destructive |
 | Message | variant (user, assistant), content, isStreaming, branchInfo, actions, hideActions |
-| Modal | isOpen, title, children, className |
-| Navbar | fixed, bordered |
-| Pagination | page, totalPages, siblingCount, showEdges |
-| Popover | children, trigger, position (top, bottom, left, right), align (start, center, end), open, closeOnClickOutside |
-| Progress | value, max, size (sm, md, lg), variant (default, success, warning, error), showValue, indeterminate |
+| Modal | isOpen, onClose, title, children, className |
+| Navbar | fixed, bordered, position, active, active |
+| Pagination | page, totalPages, onPageChange, siblingCount, showEdges |
+| Popover | children, trigger, position (top, bottom, left, right), align (start, center, end), open, onOpenChange, closeOnClickOutside |
+| Progress | value, max, size (sm, md, lg), variant (default, success, warning, error), showValue, formatValue, indeterminate |
 | Radio | label |
 | Row | gutter, gutterX, gutterY, justify (start, center, end, between, around, evenly), align (start, center, end, stretch, baseline) |
 | SectionHeading | level (h2, h3) |
 | Select | error, options |
 | Skeleton | children |
-| Slider | value, defaultValue, min, max, step, disabled, showTooltip |
+| Slider | value, defaultValue, min, max, step, onChange, onChangeEnd, disabled, showTooltip, formatValue, size |
 | Spinner | size (sm, md, lg) |
-| Stack | direction (horizontal, vertical), align (start, center, end, stretch, baseline), justify (start, center, end, between, around, evenly), gap, wrap |
+| Stack | direction (horizontal, vertical), align (start, center, end, stretch, baseline), justify (start, center, end, between, around, evenly), gap, wrap, as |
 | Stepper | steps, currentStep, status (complete, error) |
-| StreamingCursor | children |
-| Switch | checked, defaultChecked, label |
-| Table | responsive |
-| Tabs | defaultValue, value |
+| StreamingCursor | variant |
+| Switch | checked, defaultChecked, onCheckedChange, label |
+| Table | responsive, hoverable, selected, sortable, sortDirection |
+| Tabs | defaultValue, value, onValueChange, value, value, forceMount |
 | Textarea | error |
 | Toast | children, position (top-right, top-left, bottom-right, bottom-left, top-center, bottom-center), defaultDuration |
 | Tooltip | content, children, open, side (top, right, bottom, left) |
 | VideoCard | src, title, subtitle, aspectRatio (${number}/${number}), playing, controls, light, volume, muted, loop, mediaClassName, contentClassName, playerProps |
+| ArtifactsPanel | artifacts, isOpen, onClose, isLoading, width, onResizeStart, artifactCount, onExpand |
+| BranchNavigator | current, total, onPrevious, onNext, size, showIcon |
+| ChatInput | position (centered, bottom), placeholder, helperText, onSubmit, disabled, animate, isStreaming, onStop, attachments, onAttachmentsChange, showAttachmentButton, acceptedFileTypes |
+| ChatInterface | messages, conversationTree, onTreeChange, conversations, onMessageSubmit, onEditMessage, onRetryMessage, onStop, onSelectConversation, onNewChat, isStreaming, isThinking, placeholder, emptyStateHelper, initialSidebarCollapsed, emptyState, showAttachmentButton, enableMessageActions, attachments, onAttachmentsChange, artifacts, isArtifactsPanelOpen, onArtifactsPanelOpenChange |
+| ChatView | messages, latestUserMessageIndex, isStreaming, isThinking, onScroll |
+| ConversationSidebar | conversations, isCollapsed, onSelectConversation, onNewChat, onToggleCollapse, width, onResizeStart, onExpand |
+| MessageActions | variant (user, assistant), content, onEdit, onRetry, isEditing, onEditingChange, editValue |
+| ThinkingIndicator | isVisible, phraseInterval, phrases |
 
 ### Component Notes
 
@@ -154,8 +162,15 @@ Import from `@lukeashford/aurelius`:
 - **defaultValue**: Default expanded item(s)
 - **value**: Controlled expanded item(s)
 - **onValueChange**: Callback when expanded items change
+- **value**: Unique identifier for this item
+- **disabled**: Disable this item
 
 **AttachmentPreview**
+- **AttachmentItem.id**: * Unique identifier
+- **AttachmentItem.file**: * The File object
+- **AttachmentItem.previewUrl**: * Blob URL for image previews
+- **AttachmentItem.status**: * Current status
+- **AttachmentItem.error**: * Error message if status is 'error'
 - **attachments**: * Array of attachments to display
 - **onRemove**: * Called when an attachment should be removed
 - **removable**: * Whether attachments are removable
@@ -176,6 +191,16 @@ Import from `@lukeashford/aurelius`:
 - **cursorClassName**: * Additional classes for the streaming cursor
 
 **Message**
+- **MessageBranchInfo.current**: * Current branch index (1-based)
+- **MessageBranchInfo.total**: * Total number of sibling branches
+- **MessageBranchInfo.onPrevious**: * Navigate to previous branch
+- **MessageBranchInfo.onNext**: * Navigate to next branch
+- **MessageActionsConfig.onEdit**: * Called when user edits a user message (creates a branch)
+- **MessageActionsConfig.onRetry**: * Called when user retries an assistant message (creates a branch)
+- **MessageActionsConfig.showCopy**: * Whether to show the copy button @default true
+- **variant**: * Whether the message is from the user or the assistant
+- **content**: * The message content (supports Markdown)
+- **isStreaming**: * Whether the message is currently being streamed (shows cursor)
 - **branchInfo**: * Branch navigation info (shows branch indicator if provided and total > 1)
 - **actions**: * Actions configuration (shows action bar if provided)
 - **hideActions**: * Whether to hide actions (e.g., during streaming)
@@ -196,6 +221,149 @@ Import from `@lukeashford/aurelius`:
 - **defaultValue**: The id of the initially active tab
 - **value**: Controlled active tab value
 - **onValueChange**: Callback when active tab changes
+- **value**: Unique identifier for this tab
+- **value**: Value matching the corresponding Tab
+- **forceMount**: Force the panel to stay mounted when inactive
+
+**ArtifactsPanel**
+ArtifactsPanel displays rich content artifacts in a slide-in panel.
+
+When collapsed, shows a thin strip with layers icon at top.
+When expanded, shows chevron at top-right to collapse.
+
+- **artifacts**: * Array of artifacts to display
+- **isOpen**: * Whether the panel is visible
+- **onClose**: * Callback to close/collapse the panel
+- **isLoading**: * Whether artifacts are still loading (show skeletons)
+- **width**: * Current width of the panel (when expanded)
+- **onResizeStart**: * Callback to start resizing
+
+**BranchNavigator**
+BranchNavigator provides a UI for switching between conversation branches.
+Used in the Message component to navigate sibling branches (e.g., "1/3").
+
+- **current**: * Current branch index (1-based for display)
+- **total**: * Total number of sibling branches
+- **onPrevious**: * Called when navigating to previous branch
+- **onNext**: * Called when navigating to next branch
+- **size**: * Size variant
+- **showIcon**: * Whether to show the branch icon
+
+**ChatInput**
+ChatInput is a context-aware input component that can transition between
+a centered position (for empty states) and a bottom position (for active conversations).
+
+Features:
+- Auto-expanding textarea
+- File attachments with preview
+- Drag and drop support
+- Streaming state with stop button
+- Animated transition between positions
+
+- **position**: * Position of the input: 'centered' for empty state, 'bottom' for conversation mode
+- **placeholder**: * Placeholder text for the input
+- **helperText**: * Helper text shown above the input in centered mode
+- **onSubmit**: * Called when the user submits a message
+- **disabled**: * Whether the input is disabled (e.g., during streaming)
+- **animate**: * Whether to animate the transition between positions
+- **isStreaming**: * Whether the assistant is currently streaming (shows Stop button)
+- **onStop**: * Called when the Stop button is clicked during streaming
+- **attachments**: * Current attachments (controlled mode)
+- **onAttachmentsChange**: * Called when attachments change (controlled mode)
+- **showAttachmentButton**: * Whether to show the attachment button
+- **acceptedFileTypes**: * Accepted file types for attachments
+
+**ChatInterface**
+ChatInterface is the main orchestrator for a full-featured chat experience.
+
+Features:
+- ConversationSidebar (left) — collapsible list of past conversations
+- ChatView (center) — main conversation area with smart scrolling
+- ArtifactsPanel (right) — controlled via useArtifacts hook
+- ChatInput — position-aware input that centers in empty state
+- Branching — support for conversation tree with branch navigation
+- Message Actions — copy, edit, retry
+- Thinking Indicator — shown between user message and response
+
+Artifacts are controlled externally via the useArtifacts hook:
+- scheduleArtifact() — adds artifact with loading skeleton
+- showArtifact() — reveals artifact content
+- removeArtifact() — removes artifact on failure
+
+- **ChatMessage.id**: * Unique identifier for the message
+- **ChatMessage.variant**: * Whether the message is from the user or the assistant
+- **ChatMessage.content**: * Message content (Markdown supported)
+- **ChatMessage.isStreaming**: * Whether the message is currently streaming
+- **messages**: * Array of messages in the conversation (flat mode) Use this OR conversationTree, not both
+- **conversationTree**: * Conversation tree for branching support Use this OR messages, not both
+- **onTreeChange**: * Called when the conversation tree changes (for tree mode)
+- **conversations**: * List of past conversations for the sidebar
+- **onMessageSubmit**: * Called when a message is submitted from the input. Provides the text content and any files attached.
+- **onEditMessage**: * Called when a user message is edited. In tree mode, this creates a new branch.
+- **onRetryMessage**: * Called when an assistant message is retried. In tree mode, this creates a new branch.
+- **onStop**: * Called when the Stop button is clicked during assistant streaming.
+- **onSelectConversation**: * Called when a conversation is selected from the sidebar.
+- **onNewChat**: * Called when the "New Chat" button is clicked in the sidebar.
+- **isStreaming**: * Whether the assistant is currently streaming a response. Shows a stop button and disables certain actions.
+- **isThinking**: * Whether to show the thinking indicator. Typically shown after a user message but before the first streaming token.
+- **placeholder**: * Placeholder text for the main chat input.
+- **emptyStateHelper**: * Helper text shown in the empty state (when there are no messages).
+- **initialSidebarCollapsed**: * Whether the sidebar should be initially collapsed.
+- **emptyState**: * Custom content to show when the conversation is empty. Overrides the default centered input and helper text.
+- **showAttachmentButton**: * Whether to show the attachment (paperclip) button in the input.
+- **enableMessageActions**: * Whether to enable message-level actions (copy, edit, retry).
+- **attachments**: * Current attachments for the chat input (controlled).
+- **onAttachmentsChange**: * Called when attachments are added or removed in the chat input.
+- **artifacts**: * Artifacts to display in the side panel. Best managed via the useArtifacts hook and passed here.
+- **isArtifactsPanelOpen**: * Whether the artifacts panel is currently open (controlled).
+- **onArtifactsPanelOpenChange**: * Called when the artifacts panel is opened or closed (controlled).
+
+**ChatView**
+ChatView displays a conversation thread with smart scrolling behavior.
+
+Key behaviors:
+- When a user message is sent, it anchors to the top of the viewport
+- Does NOT auto-scroll during streaming (respects user's reading position)
+- Smooth transitions and animations
+
+- **ChatViewItem.branchInfo**: * Branch navigation info for this message
+- **ChatViewItem.actions**: * Actions configuration for this message
+- **messages**: * Array of chat messages to display
+- **latestUserMessageIndex**: * Index of the latest user message to anchor scroll to. When this changes, the component scrolls that message to the top.
+- **isStreaming**: * Whether the assistant is currently streaming a response
+- **isThinking**: * Whether to show the thinking indicator (between user message and response)
+- **onScroll**: * Callback when the user scrolls manually
+
+**ConversationSidebar**
+ConversationSidebar displays a collapsible list of past conversations.
+
+When collapsed, shows a thin strip with history icon at top.
+When expanded, shows chevron at top-left to collapse.
+
+- **conversations**: * List of conversations to display
+- **isCollapsed**: * Whether the sidebar is collapsed
+- **onSelectConversation**: * Callback when a conversation is selected
+- **onNewChat**: * Callback when "New Chat" is clicked
+- **onToggleCollapse**: * Callback to toggle collapse state
+- **width**: * Current width of the sidebar (when expanded)
+- **onResizeStart**: * Callback to start resizing
+
+**MessageActions**
+- **variant**: * Whether this is for a user or assistant message
+- **content**: * The message content for copy functionality
+- **onEdit**: * Called when user wants to edit their message Consumer should handle creating a branch with the edited content
+- **onRetry**: * Called when user wants to retry/regenerate the assistant response Consumer should handle creating a branch with a new response
+- **isEditing**: * Whether the message is currently being edited
+- **onEditingChange**: * Callback to set editing state (controlled from parent)
+- **editValue**: * Initial content for the edit input (defaults to content prop)
+
+**ThinkingIndicator**
+ThinkingIndicator shows an animated state when the assistant is processing a request
+but has not yet started streaming tokens. It cycles through flavorful "thinking" phrases.
+
+- **isVisible**: * Whether the indicator is visible/active
+- **phraseInterval**: * Interval between phrase changes in ms @default 2500
+- **phrases**: * Custom phrases to cycle through (defaults to built-in phrases)
 
 
 ### Component usage example

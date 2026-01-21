@@ -40,8 +40,17 @@ export interface MessageActionsConfig {
 }
 
 export interface MessageProps extends React.HTMLAttributes<HTMLDivElement> {
+  /**
+   * Whether the message is from the user or the assistant
+   */
   variant?: MessageVariant
+  /**
+   * The message content (supports Markdown)
+   */
   content: string
+  /**
+   * Whether the message is currently being streamed (shows cursor)
+   */
   isStreaming?: boolean
   /**
    * Branch navigation info (shows branch indicator if provided and total > 1)
