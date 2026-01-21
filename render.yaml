@@ -1,0 +1,9 @@
+services:
+  - type: static
+    name: aurelius-design-demo
+    env: static
+    buildCommand: npm install && npm run build --prefix demo
+    staticPublishPath: demo/dist
+    rewrites:
+      - source: /*
+        destination: /index.html

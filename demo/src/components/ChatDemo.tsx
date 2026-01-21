@@ -1,4 +1,5 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react'
+import {useNavigate} from 'react-router-dom'
 import {
   addMessageToTree,
   type Attachment,
@@ -164,6 +165,7 @@ const MOCK_CONVERSATIONS: Conversation[] = [
 ]
 
 export default function ChatDemo() {
+  const navigate = useNavigate()
   const [conversationTree, setConversationTree] = useState<ConversationTree>(createEmptyTree())
   const [isStreaming, setIsStreaming] = useState(false)
   const [isThinking, setIsThinking] = useState(false)
@@ -514,8 +516,8 @@ export default function ChatDemo() {
   }, [activeConversationId, clearArtifacts])
 
   const handleBack = useCallback(() => {
-    window.location.hash = ''
-  }, [])
+    navigate('/')
+  }, [navigate])
 
   // Determine empty state helper based on conversation
   const getEmptyStateHelper = () => {

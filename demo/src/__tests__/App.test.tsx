@@ -4,7 +4,7 @@ import App from '../App';
 
 describe('App', () => {
   beforeEach(() => {
-    window.location.hash = '';
+    window.history.pushState({}, '', '/');
   });
 
   it('renders the main heading', () => {
@@ -62,8 +62,8 @@ describe('App', () => {
     expect(screen.getByText(/A cohesive visual language/i)).toBeInTheDocument();
   });
 
-  it('switches to legal view when hash is #legal', () => {
-    window.location.hash = '#legal';
+  it('switches to legal view when path is /legal', () => {
+    window.history.pushState({}, '', '/legal');
     render(<App/>);
 
     // Check that the main view content is not present
