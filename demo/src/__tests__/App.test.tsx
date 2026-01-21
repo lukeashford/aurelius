@@ -72,6 +72,16 @@ describe('App', () => {
     expect(screen.getByRole('heading', {name: /Impressum/i})).toBeInTheDocument();
   });
 
+  it('switches to chat-demo view when path is /chat-demo', () => {
+    window.history.pushState({}, '', '/chat-demo');
+    render(<App/>);
+
+    // Check that the main view content is not present
+    expect(screen.queryByText(/A cohesive visual language/i)).not.toBeInTheDocument();
+    // Check for Chat Demo content
+    expect(screen.getByText(/Chat Interface Demo/i)).toBeInTheDocument();
+  });
+
   it('renders expected number of sections', () => {
     const {container} = render(<App/>);
     // Count section elements with space-y-4 class (all demo sections have this)
