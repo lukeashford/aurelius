@@ -6,8 +6,14 @@ exports[`ChatInterface matches snapshot in empty state 1`] = `
     class="flex h-full w-full bg-obsidian overflow-hidden"
   >
     <div
-      class="h-full bg-charcoal/80 border-r border-ash/40 flex flex-col w-64 flex-shrink-0"
+      class="h-full bg-charcoal/80 border-r border-ash/40 flex flex-col relative group flex-shrink-0"
+      data-testid="conversation-sidebar"
+      style="width: 256px;"
     >
+      <div
+        class="absolute top-0 right-0 w-1 h-full cursor-col-resize z-50 hover:bg-gold/50 transition-colors after:absolute after:inset-y-0 after:-right-1 after:w-2"
+        data-testid="sidebar-resize-handle"
+      />
       <div
         class="p-3 border-b border-ash/40 flex-shrink-0 flex items-center gap-2"
       >
@@ -89,7 +95,7 @@ exports[`ChatInterface matches snapshot in empty state 1`] = `
       class="flex-1 flex flex-col min-w-0 relative"
     >
       <div
-        class="flex-1 flex flex-col min-h-0 relative transition-all duration-500 justify-center"
+        class="flex-1 flex flex-col min-h-0 relative justify-center"
       >
         <div
           class="transition-all duration-500 ease-in-out flex-1"
@@ -233,8 +239,14 @@ exports[`ChatInterface matches snapshot while streaming 1`] = `
     class="flex h-full w-full bg-obsidian overflow-hidden"
   >
     <div
-      class="h-full bg-charcoal/80 border-r border-ash/40 flex flex-col w-64 flex-shrink-0"
+      class="h-full bg-charcoal/80 border-r border-ash/40 flex flex-col relative group flex-shrink-0"
+      data-testid="conversation-sidebar"
+      style="width: 256px;"
     >
+      <div
+        class="absolute top-0 right-0 w-1 h-full cursor-col-resize z-50 hover:bg-gold/50 transition-colors after:absolute after:inset-y-0 after:-right-1 after:w-2"
+        data-testid="sidebar-resize-handle"
+      />
       <div
         class="p-3 border-b border-ash/40 flex-shrink-0 flex items-center gap-2"
       >
@@ -289,7 +301,7 @@ exports[`ChatInterface matches snapshot while streaming 1`] = `
       class="flex-1 flex flex-col min-w-0 relative"
     >
       <div
-        class="flex-1 flex flex-col min-h-0 relative transition-all duration-500 justify-start"
+        class="flex-1 flex flex-col min-h-0 relative justify-start"
       >
         <div
           class="transition-all duration-500 ease-in-out flex-zero"
@@ -499,8 +511,14 @@ exports[`ChatInterface matches snapshot with messages 1`] = `
     class="flex h-full w-full bg-obsidian overflow-hidden"
   >
     <div
-      class="h-full bg-charcoal/80 border-r border-ash/40 flex flex-col w-64 flex-shrink-0"
+      class="h-full bg-charcoal/80 border-r border-ash/40 flex flex-col relative group flex-shrink-0"
+      data-testid="conversation-sidebar"
+      style="width: 256px;"
     >
+      <div
+        class="absolute top-0 right-0 w-1 h-full cursor-col-resize z-50 hover:bg-gold/50 transition-colors after:absolute after:inset-y-0 after:-right-1 after:w-2"
+        data-testid="sidebar-resize-handle"
+      />
       <div
         class="p-3 border-b border-ash/40 flex-shrink-0 flex items-center gap-2"
       >
@@ -582,7 +600,7 @@ exports[`ChatInterface matches snapshot with messages 1`] = `
       class="flex-1 flex flex-col min-w-0 relative"
     >
       <div
-        class="flex-1 flex flex-col min-h-0 relative transition-all duration-500 justify-start"
+        class="flex-1 flex flex-col min-h-0 relative justify-start"
       >
         <div
           class="transition-all duration-500 ease-in-out flex-zero"

@@ -29,8 +29,13 @@ exports[`ConversationSidebar matches snapshot when collapsed 1`] = `
 exports[`ConversationSidebar matches snapshot when expanded 1`] = `
 <div>
   <div
-    class="h-full bg-charcoal/80 border-r border-ash/40 flex flex-col w-64 flex-shrink-0"
+    class="h-full bg-charcoal/80 border-r border-ash/40 flex flex-col relative group w-64 flex-shrink-0"
+    data-testid="conversation-sidebar"
   >
+    <div
+      class="absolute top-0 right-0 w-1 h-full cursor-col-resize z-50 hover:bg-gold/50 transition-colors after:absolute after:inset-y-0 after:-right-1 after:w-2"
+      data-testid="sidebar-resize-handle"
+    />
     <div
       class="p-3 border-b border-ash/40 flex-shrink-0 flex items-center gap-2"
     >
@@ -124,8 +129,13 @@ exports[`ConversationSidebar matches snapshot when expanded 1`] = `
 exports[`ConversationSidebar matches snapshot with empty conversations 1`] = `
 <div>
   <div
-    class="h-full bg-charcoal/80 border-r border-ash/40 flex flex-col w-64 flex-shrink-0"
+    class="h-full bg-charcoal/80 border-r border-ash/40 flex flex-col relative group w-64 flex-shrink-0"
+    data-testid="conversation-sidebar"
   >
+    <div
+      class="absolute top-0 right-0 w-1 h-full cursor-col-resize z-50 hover:bg-gold/50 transition-colors after:absolute after:inset-y-0 after:-right-1 after:w-2"
+      data-testid="sidebar-resize-handle"
+    />
     <div
       class="p-3 border-b border-ash/40 flex-shrink-0 flex items-center gap-2"
     >

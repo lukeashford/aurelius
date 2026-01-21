@@ -132,6 +132,7 @@ export const ConversationSidebar = React.forwardRef<HTMLDivElement, Conversation
       return (
           <div
               ref={ref}
+              data-testid="conversation-sidebar"
               className={cx(
                   'h-full bg-charcoal/80 border-r border-ash/40 flex flex-col relative group',
                   !width && 'w-64',
@@ -144,6 +145,7 @@ export const ConversationSidebar = React.forwardRef<HTMLDivElement, Conversation
             {/* Resize handle */}
             <div
                 onMouseDown={onResizeStart}
+                data-testid="sidebar-resize-handle"
                 className={cx(
                     "absolute top-0 right-0 w-1 h-full cursor-col-resize z-50",
                     "hover:bg-gold/50 transition-colors",

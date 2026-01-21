@@ -186,6 +186,7 @@ export {
   BranchNavigator,
   useScrollAnchor,
   useArtifacts,
+  useResizable,
   // Types
   type ChatInterfaceProps,
   type ChatMessage,

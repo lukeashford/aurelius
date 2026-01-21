@@ -249,6 +249,7 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
       return (
           <div
               ref={ref}
+              data-testid="artifacts-panel"
               className={cx(
                   'h-full bg-charcoal/50 border-l border-ash/40 flex flex-col relative',
                   !width && 'w-96',
@@ -261,6 +262,7 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
             {/* Resize handle */}
             <div
                 onMouseDown={onResizeStart}
+                data-testid="artifacts-resize-handle"
                 className={cx(
                     "absolute top-0 left-0 w-1 h-full cursor-col-resize z-50",
                     "hover:bg-gold/50 transition-colors",
@@ -286,12 +288,14 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
             </div>
 
             {/* Artifacts list */}
-            <div className={cx(
-                "flex-1 overflow-y-auto p-4",
-                columns === 1 ? "space-y-4" : "grid gap-4",
-                columns === 2 && "grid-cols-2",
-                columns === 3 && "grid-cols-3"
-            )}>
+            <div
+                data-testid="artifacts-grid"
+                className={cx(
+                    "flex-1 overflow-y-auto p-4",
+                    columns === 1 ? "space-y-4" : "grid gap-4",
+                    columns === 2 && "grid-cols-2",
+                    columns === 3 && "grid-cols-3"
+                )}>
               {artifacts.length === 0 && !isLoading ? (
                   <p className="text-sm text-silver/60 text-center py-8">
                     No artifacts to display
