@@ -1,3 +1,16 @@
+## [2.12.0](https://github.com/lukeashford/aurelius/compare/v2.11.0...v2.12.0) (2026-01-21)
+
+### Features
+
+* **chat:** add resizable panels and columns adjustment logic ([8bc2136](https://github.com/lukeashford/aurelius/commit/8bc2136305b72cc1f0a0cec0acfb546ba476e636))
+* **chat:** add test ids and useResizable hook for resizable panels ([d60fa16](https://github.com/lukeashford/aurelius/commit/d60fa1677db172e08504895d5d1d7b3af2593c50))
+* **components:** document new props, features, and usage for chat components ([22295dc](https://github.com/lukeashford/aurelius/commit/22295dc517ba4197e77398d0c2ab7f1f7c8842d4))
+* **router:** migrate to react-router-dom with route-based navigation ([4be2cc6](https://github.com/lukeashford/aurelius/commit/4be2cc6e1889cdab157904571240db78feba0c7b))
+
+### Bug Fixes
+
+* **tests:** update navigation paths and add chat-demo view test ([4a9b0c6](https://github.com/lukeashford/aurelius/commit/4a9b0c6fcf902ed8647bd159775fb624a03d4843))
+
 ## [2.11.0](https://github.com/lukeashford/aurelius/compare/v2.10.1...v2.11.0) (2026-01-19)
 
 ### Features
