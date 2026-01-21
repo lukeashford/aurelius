@@ -9,9 +9,21 @@ import {type ConversationTree, getActivePathMessages, getSiblingInfo, switchBran
 import {useResizable} from "./hooks/useResizable";
 
 export interface ChatMessage {
+  /**
+   * Unique identifier for the message
+   */
   id: string
+  /**
+   * Whether the message is from the user or the assistant
+   */
   variant: 'user' | 'assistant'
+  /**
+   * Message content (Markdown supported)
+   */
   content: string
+  /**
+   * Whether the message is currently streaming
+   */
   isStreaming?: boolean
 }
 
@@ -35,79 +47,86 @@ export interface ChatInterfaceProps extends Omit<React.HTMLAttributes<HTMLDivEle
    */
   conversations?: Conversation[]
   /**
-   * Called when a message is submitted
+   * Called when a message is submitted from the input.
+   * Provides the text content and any files attached.
    */
   onMessageSubmit?: (message: string, attachments?: Attachment[]) => void
   /**
-   * Called when a user message is edited (creates a branch)
+   * Called when a user message is edited.
+   * In tree mode, this creates a new branch.
    */
   onEditMessage?: (messageId: string, newContent: string) => void
   /**
-   * Called when an assistant message is retried (creates a branch)
+   * Called when an assistant message is retried.
+   * In tree mode, this creates a new branch.
    */
   onRetryMessage?: (messageId: string) => void
   /**
-   * Called when Stop button is clicked during streaming
+   * Called when the Stop button is clicked during assistant streaming.
    */
   onStop?: () => void
   /**
-   * Called when a conversation is selected from sidebar
+   * Called when a conversation is selected from the sidebar.
    */
   onSelectConversation?: (id: string) => void
   /**
-   * Called when "New Chat" is clicked
+   * Called when the "New Chat" button is clicked in the sidebar.
    */
   onNewChat?: () => void
   /**
-   * Whether the assistant is currently streaming a response
+   * Whether the assistant is currently streaming a response.
+   * Shows a stop button and disables certain actions.
    */
   isStreaming?: boolean
   /**
-   * Whether to show the thinking indicator (before first response token)
+   * Whether to show the thinking indicator.
+   * Typically shown after a user message but before the first streaming token.
    */
   isThinking?: boolean
   /**
-   * Input placeholder text
+   * Placeholder text for the main chat input.
    */
   placeholder?: string
   /**
-   * Helper text shown in empty state
+   * Helper text shown in the empty state (when there are no messages).
    */
   emptyStateHelper?: React.ReactNode
   /**
-   * Initial sidebar collapsed state
+   * Whether the sidebar should be initially collapsed.
    */
   initialSidebarCollapsed?: boolean
   /**
-   * Custom empty state content
+   * Custom content to show when the conversation is empty.
+   * Overrides the default centered input and helper text.
    */
   emptyState?: React.ReactNode
   /**
-   * Whether to show attachment button
+   * Whether to show the attachment (paperclip) button in the input.
    */
   showAttachmentButton?: boolean
   /**
-   * Whether to enable message actions (copy, edit, retry)
+   * Whether to enable message-level actions (copy, edit, retry).
    */
   enableMessageActions?: boolean
   /**
-   * Current attachments for the input
+   * Current attachments for the chat input (controlled).
    */
   attachments?: Attachment[]
   /**
-   * Called when attachments change in the input
+   * Called when attachments are added or removed in the chat input.
    */
   onAttachmentsChange?: (attachments: Attachment[]) => void
   /**
-   * Artifacts to display in the panel. Controlled by parent via useArtifacts hook.
+   * Artifacts to display in the side panel.
+   * Best managed via the useArtifacts hook and passed here.
    */
   artifacts?: Artifact[]
   /**
-   * Whether the artifacts panel is open (controlled mode)
+   * Whether the artifacts panel is currently open (controlled).
    */
   isArtifactsPanelOpen?: boolean
   /**
-   * Called when artifacts panel open state changes (controlled mode)
+   * Called when the artifacts panel is opened or closed (controlled).
    */
   onArtifactsPanelOpenChange?: (open: boolean) => void
 }

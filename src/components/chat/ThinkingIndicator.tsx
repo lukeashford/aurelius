@@ -33,6 +33,10 @@ export interface ThinkingIndicatorProps extends React.HTMLAttributes<HTMLDivElem
   phrases?: string[]
 }
 
+/**
+ * ThinkingIndicator shows an animated state when the assistant is processing a request
+ * but has not yet started streaming tokens. It cycles through flavorful "thinking" phrases.
+ */
 export const ThinkingIndicator = React.forwardRef<HTMLDivElement, ThinkingIndicatorProps>(
     (
         {
