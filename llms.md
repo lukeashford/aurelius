@@ -149,11 +149,12 @@ Import from `@lukeashford/aurelius`:
 | ArtifactsPanel | artifacts, isOpen, onClose, isLoading, width, onResizeStart, artifactCount, onExpand |
 | BranchNavigator | current, total, onPrevious, onNext, size, showIcon |
 | ChatInput | position (centered, bottom), placeholder, helperText, onSubmit, disabled, animate, isStreaming, onStop, attachments, onAttachmentsChange, showAttachmentButton, acceptedFileTypes |
-| ChatInterface | messages, conversationTree, onTreeChange, conversations, onMessageSubmit, onEditMessage, onRetryMessage, onStop, onSelectConversation, onNewChat, isStreaming, isThinking, placeholder, emptyStateHelper, initialSidebarCollapsed, emptyState, showAttachmentButton, enableMessageActions, attachments, onAttachmentsChange, artifacts, isArtifactsPanelOpen, onArtifactsPanelOpenChange |
+| ChatInterface | messages, conversationTree, onTreeChange, conversations, onMessageSubmit, onEditMessage, onRetryMessage, onStop, onSelectConversation, onNewChat, isStreaming, isThinking, placeholder, emptyStateHelper, initialSidebarCollapsed, emptyState, showAttachmentButton, enableMessageActions, attachments, onAttachmentsChange, artifacts, isArtifactsPanelOpen, onArtifactsPanelOpenChange, tasks, tasksTitle |
 | ChatView | messages, latestUserMessageIndex, isStreaming, isThinking, onScroll |
 | ConversationSidebar | conversations, isCollapsed, onSelectConversation, onNewChat, onToggleCollapse, width, onResizeStart, onExpand |
 | MessageActions | variant (user, assistant), content, onEdit, onRetry, isEditing, onEditingChange, editValue |
 | ThinkingIndicator | isVisible, phraseInterval, phrases |
+| TodosList | tasks, title |
 
 ### Component Notes
 
@@ -230,6 +231,7 @@ ArtifactsPanel displays rich content artifacts in a slide-in panel.
 
 When collapsed, shows a thin strip with layers icon at top.
 When expanded, shows chevron at top-right to collapse.
+Click on artifacts to expand them to full screen modal.
 
 - **artifacts**: * Array of artifacts to display
 - **isOpen**: * Whether the panel is visible
@@ -317,6 +319,8 @@ Artifacts are controlled externally via the useArtifacts hook:
 - **artifacts**: * Artifacts to display in the side panel. Best managed via the useArtifacts hook and passed here.
 - **isArtifactsPanelOpen**: * Whether the artifacts panel is currently open (controlled).
 - **onArtifactsPanelOpenChange**: * Called when the artifacts panel is opened or closed (controlled).
+- **tasks**: * Tasks to display in the todos list below the artifacts panel. Shows a list of tasks with status indicators.
+- **tasksTitle**: * Title for the todos list @default "Tasks"
 
 **ChatView**
 ChatView displays a conversation thread with smart scrolling behavior.
@@ -364,6 +368,24 @@ but has not yet started streaming tokens. It cycles through flavorful "thinking"
 - **isVisible**: * Whether the indicator is visible/active
 - **phraseInterval**: * Interval between phrase changes in ms @default 2500
 - **phrases**: * Custom phrases to cycle through (defaults to built-in phrases)
+
+**TodosList**
+TodosList displays a structured list of tasks with status indicators.
+
+Features:
+- Nested tasks with indentation
+- Status indicators: done (checkmark), in_progress (snake animation), pending (empty), cancelled, failed
+- Done tasks are crossed out with golden checkmark
+- Cancelled/failed tasks are crossed out with subtle styling and sorted to bottom
+- Max 1/4 screen height with scroll
+- Subtasks only appear when parent task is in_progress
+
+- **Task.id**: * Unique identifier for the task
+- **Task.label**: * Task description text
+- **Task.status**: * Current status of the task
+- **Task.subtasks**: * Optional subtasks (only shown when parent is in_progress)
+- **tasks**: * Array of tasks to display
+- **title**: * Title for the todos list @default "Tasks"
 
 
 ### Component usage example
