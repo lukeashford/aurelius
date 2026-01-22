@@ -179,6 +179,8 @@
   --animate-slide-out-right: slide-out-right 200ms ease-in;
   --animate-pulse-glow: pulse-glow 2s ease-in-out infinite;
   --animate-cursor-blink: cursor-blink 1s steps(1) infinite;
+  --animate-snake-spin: snake-spin 1.5s linear infinite;
+  --animate-snake-travel: snake-travel 1.5s ease-in-out infinite;
 
   /* ===== LAYOUT TOKENS ===== */
   --container-sm: 640px;
@@ -246,6 +248,24 @@
   51%,
   100% {
     opacity: 0;
+  }
+}
+
+@keyframes snake-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes snake-travel {
+  0% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: -56;
   }
 }
 

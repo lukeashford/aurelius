@@ -1,6 +1,6 @@
 import {useCallback, useState} from 'react'
 
-export type ArtifactType = 'text' | 'image' | 'video'
+export type ArtifactType = 'text' | 'image' | 'video' | 'html'
 
 export interface Artifact {
   id: string
