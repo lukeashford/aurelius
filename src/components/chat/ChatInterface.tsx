@@ -199,19 +199,20 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
         width: sidebarWidth,
         startResizing: startResizingSidebar
       } = useResizable({
-        initialWidth: 256, // w-64
-        minWidth: 200,
-        maxWidth: 500,
+        initialWidthPercent: 15,
+        minWidthPercent: 12,
+        maxWidthPercent: 25,
         direction: 'right'
       })
 
       const {
         width: artifactsWidth,
+        widthPercent: artifactsWidthPercent,
         startResizing: startResizingArtifacts
       } = useResizable({
-        initialWidth: 720, // ~50% of 1440px screen
-        minWidth: 400,
-        maxWidth: 1000, // ~70% of 1440px screen
+        initialWidthPercent: 50,
+        minWidthPercent: 25,
+        maxWidthPercent: 70,
         direction: 'left'
       })
 
@@ -416,6 +417,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
                     onClose={toggleArtifactsPanel}
                     isLoading={isStreaming && hasPendingArtifact}
                     width={artifactsWidth}
+                    widthPercent={artifactsWidthPercent}
                     onResizeStart={startResizingArtifacts}
                     className="h-full"
                 />
@@ -426,7 +428,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
                 <TodosList
                     tasks={tasks}
                     title={tasksTitle}
-                    style={{width: artifactsWidth ? `${artifactsWidth}px` : undefined}}
+                    style={{width: artifactsWidth}}
                 />
               )}
             </div>

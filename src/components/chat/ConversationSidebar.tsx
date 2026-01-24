@@ -31,9 +31,10 @@ export interface ConversationSidebarProps extends React.HTMLAttributes<HTMLDivEl
    */
   onToggleCollapse?: () => void
   /**
-   * Current width of the sidebar (when expanded)
+   * Current width of the sidebar (when expanded).
+   * Accepts CSS width value (e.g., "15vw", "256px").
    */
-  width?: number
+  width?: string
   /**
    * Callback to start resizing
    */
@@ -139,7 +140,7 @@ export const ConversationSidebar = React.forwardRef<HTMLDivElement, Conversation
                   'flex-shrink-0',
                   className
               )}
-              style={width ? {width: `${width}px`} : undefined}
+              style={width ? {width} : undefined}
               {...rest}
           >
             {/* Resize handle */}

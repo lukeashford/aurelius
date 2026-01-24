@@ -147,7 +147,7 @@ Import from `@lukeashford/aurelius`:
 | Toast | children, position (top-right, top-left, bottom-right, bottom-left, top-center, bottom-center), defaultDuration |
 | Tooltip | content, children, open, side (top, right, bottom, left) |
 | VideoCard | src, title, subtitle, aspectRatio (${number}/${number}), playing, controls, light, volume, muted, loop, mediaClassName, contentClassName, playerProps |
-| ArtifactsPanel | artifacts, isOpen, onClose, isLoading, width, onResizeStart, artifactCount, onExpand |
+| ArtifactsPanel | artifacts, isOpen, onClose, isLoading, width, widthPercent, onResizeStart, artifactCount, onExpand |
 | BranchNavigator | current, total, onPrevious, onNext, size, showIcon |
 | ChatInput | position (centered, bottom), placeholder, helperText, onSubmit, disabled, animate, isStreaming, onStop, attachments, onAttachmentsChange, showAttachmentButton, acceptedFileTypes |
 | ChatInterface | messages, conversationTree, onTreeChange, conversations, onMessageSubmit, onEditMessage, onRetryMessage, onStop, onSelectConversation, onNewChat, isStreaming, isThinking, placeholder, emptyStateHelper, initialSidebarCollapsed, emptyState, showAttachmentButton, enableMessageActions, attachments, onAttachmentsChange, artifacts, isArtifactsPanelOpen, onArtifactsPanelOpenChange, tasks, tasksTitle |
@@ -266,7 +266,8 @@ Supports fullWidth artifacts that span all columns in the grid.
 - **isOpen**: * Whether the panel is visible
 - **onClose**: * Callback to close/collapse the panel
 - **isLoading**: * Whether artifacts are still loading (show skeletons)
-- **width**: * Current width of the panel (when expanded)
+- **width**: * Current width of the panel as CSS value (e.g., "50vw", "400px").
+- **widthPercent**: * Width as percentage of viewport (0-100) for column calculations.
 - **onResizeStart**: * Callback to start resizing
 
 **BranchNavigator**
@@ -378,7 +379,7 @@ When expanded, shows chevron at top-left to collapse.
 - **onSelectConversation**: * Callback when a conversation is selected
 - **onNewChat**: * Callback when "New Chat" is clicked
 - **onToggleCollapse**: * Callback to toggle collapse state
-- **width**: * Current width of the sidebar (when expanded)
+- **width**: * Current width of the sidebar (when expanded). Accepts CSS width value (e.g., "15vw", "256px").
 - **onResizeStart**: * Callback to start resizing
 
 **MessageActions**

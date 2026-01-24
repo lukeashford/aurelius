@@ -31,9 +31,13 @@ export interface ArtifactsPanelProps extends React.HTMLAttributes<HTMLDivElement
    */
   isLoading?: boolean
   /**
-   * Current width of the panel (when expanded)
+   * Current width of the panel as CSS value (e.g., "50vw", "400px").
    */
-  width?: number
+  width?: string
+  /**
+   * Width as percentage of viewport (0-100) for column calculations.
+   */
+  widthPercent?: number
   /**
    * Callback to start resizing
    */
@@ -336,14 +340,16 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
     onClose,
     isLoading = false,
     width,
+    widthPercent,
     onResizeStart,
     className,
     ...rest
   }, ref) => {
     const [expandedArtifact, setExpandedArtifact] = useState<Artifact | null>(null)
 
-    // Determine number of columns based on width
-    const columns = width && width > 800 ? 3 : width && width > 500 ? 2 : 1
+    // Determine number of columns based on percentage of viewport
+    // >55% viewport = 3 columns, >35% = 2 columns, else 1
+    const columns = widthPercent && widthPercent > 55 ? 3 : widthPercent && widthPercent > 35 ? 2 : 1
 
     // Collapsed state: thin strip with layers icon at top
     if (!isOpen) {
@@ -391,7 +397,7 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
             'flex-shrink-0',
             className
           )}
-          style={width ? {width: `${width}px`} : undefined}
+          style={width ? {width} : undefined}
           {...rest}
         >
           {/* Resize handle */}
