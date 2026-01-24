@@ -131,6 +131,7 @@ Import from `@lukeashford/aurelius`:
 | Progress | value, max, size (sm, md, lg), variant (default, success, warning, error), showValue, formatValue, indeterminate |
 | Radio | label |
 | Row | gutter, gutterX, gutterY, justify (start, center, end, between, around, evenly), align (start, center, end, stretch, baseline) |
+| ScriptCard | title, subtitle, elements, maxHeight |
 | SectionHeading | level (h2, h3) |
 | Select | error, options |
 | Skeleton | children |
@@ -155,6 +156,17 @@ Import from `@lukeashford/aurelius`:
 | MessageActions | variant (user, assistant), content, onEdit, onRetry, isEditing, onEditingChange, editValue |
 | ThinkingIndicator | isVisible, phraseInterval, phrases |
 | TodosList | tasks, title |
+| CheckSquareIcon | children |
+| ChevronLeftIcon | children |
+| ChevronRightIcon | children |
+| CloseIcon | children |
+| CrossSquareIcon | variant |
+| EmptySquareIcon | children |
+| ExpandIcon | children |
+| HistoryIcon | children |
+| LayersIcon | children |
+| PlusIcon | children |
+| SquareLoaderIcon | children |
 
 ### Component Notes
 
@@ -214,6 +226,21 @@ Import from `@lukeashford/aurelius`:
 - **onOpenChange**: Callback when open state changes
 - **closeOnClickOutside**: Close when clicking outside
 
+**ScriptCard**
+ScriptCard displays a formatted movie/video script.
+
+Follows standard screenplay formatting conventions:
+- Scene headings: uppercase, gold, left-aligned
+- Action: silver, full width
+- Character names: uppercase, centered-left
+- Dialogue: indented from both sides
+- Transitions: uppercase, right-aligned
+
+- **title**: * Title of the script (shown at top)
+- **subtitle**: * Subtitle/metadata (e.g., "30-second spot • Directed by AI Creative")
+- **elements**: * Array of script elements in order
+- **maxHeight**: * Maximum height before scrolling (default: 16rem / 256px)
+
 **Stepper**
 - **steps**: Array of steps. Each requires: id (string | number), label (string).
 - **currentStep**: ID of the current step (must match a step.id from the steps array).
@@ -232,6 +259,8 @@ ArtifactsPanel displays rich content artifacts in a slide-in panel.
 When collapsed, shows a thin strip with layers icon at top.
 When expanded, shows chevron at top-right to collapse.
 Click on artifacts to expand them to full screen modal.
+
+Supports fullWidth artifacts that span all columns in the grid.
 
 - **artifacts**: * Array of artifacts to display
 - **isOpen**: * Whether the panel is visible
@@ -376,16 +405,27 @@ Features:
 - Nested tasks with indentation
 - Status indicators: done (checkmark), in_progress (snake animation), pending (empty), cancelled, failed
 - Done tasks are crossed out with golden checkmark
-- Cancelled/failed tasks are crossed out with subtle styling and sorted to bottom
+- Cancelled/failed tasks are crossed out with subtle styling and sorted to bottom of their local group
 - Max 1/4 screen height with scroll
-- Subtasks only appear when parent task is in_progress
+- Subtasks appear when parent task is in_progress or done
+
+The component automatically sorts cancelled/failed tasks to the bottom of their local group
+(not globally), so just changing a task's status will reorder it appropriately.
 
 - **Task.id**: * Unique identifier for the task
 - **Task.label**: * Task description text
 - **Task.status**: * Current status of the task
-- **Task.subtasks**: * Optional subtasks (only shown when parent is in_progress)
+- **Task.subtasks**: * Optional subtasks (shown when parent is in_progress or done)
 - **tasks**: * Array of tasks to display
 - **title**: * Title for the todos list @default "Tasks"
+
+**CrossSquareIcon**
+- **variant**: * Visual variant for different states - 'cancelled': subtle ash coloring - 'failed': error red coloring
+
+**SquareLoaderIcon**
+Square loading spinner with "snake" animation.
+A golden stroke travels around a square border.
+
 
 
 ### Component usage example

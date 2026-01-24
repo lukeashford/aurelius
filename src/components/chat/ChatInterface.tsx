@@ -209,9 +209,9 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
         width: artifactsWidth,
         startResizing: startResizingArtifacts
       } = useResizable({
-        initialWidth: 384, // w-96
-        minWidth: 300,
-        maxWidth: 1200,
+        initialWidth: 720, // ~50% of 1440px screen
+        minWidth: 400,
+        maxWidth: 1000, // ~70% of 1440px screen
         direction: 'left'
       })
 

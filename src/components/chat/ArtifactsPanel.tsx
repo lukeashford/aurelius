@@ -2,8 +2,15 @@ import React, {useCallback, useEffect, useState} from 'react'
 import {cx} from '../../utils/cx'
 import {ImageCard} from '../ImageCard'
 import {VideoCard} from '../VideoCard'
+import {ScriptCard} from '../ScriptCard'
 import {MarkdownContent} from '../MarkdownContent'
 import {Skeleton} from '../Skeleton'
+import {
+  ChevronRightIcon,
+  CloseIcon,
+  ExpandIcon,
+  LayersIcon,
+} from '../icons'
 import type {Artifact} from './hooks'
 
 export interface ArtifactsPanelProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -34,89 +41,14 @@ export interface ArtifactsPanelProps extends React.HTMLAttributes<HTMLDivElement
 }
 
 /**
- * Layers/documents icon for expanding collapsed artifacts panel
- */
-function LayersIcon({className}: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 20 20"
-      fill="currentColor"
-      className={className}
-    >
-      <path
-        d="M3.196 12.87l-.825.483a.75.75 0 000 1.294l7.25 4.25a.75.75 0 00.758 0l7.25-4.25a.75.75 0 000-1.294l-.825-.484-5.666 3.322a2.25 2.25 0 01-2.276 0L3.196 12.87z"/>
-      <path
-        d="M3.196 8.87l-.825.483a.75.75 0 000 1.294l7.25 4.25a.75.75 0 00.758 0l7.25-4.25a.75.75 0 000-1.294l-.825-.484-5.666 3.322a2.25 2.25 0 01-2.276 0L3.196 8.87z"/>
-      <path
-        d="M10.38 1.103a.75.75 0 00-.76 0l-7.25 4.25a.75.75 0 000 1.294l7.25 4.25a.75.75 0 00.76 0l7.25-4.25a.75.75 0 000-1.294l-7.25-4.25z"/>
-    </svg>
-  )
-}
-
-/**
- * Chevron right icon for collapsing expanded artifacts panel
- */
-function ChevronRightIcon({className}: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 20 20"
-      fill="currentColor"
-      className={className}
-    >
-      <path
-        fillRule="evenodd"
-        d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
-        clipRule="evenodd"
-      />
-    </svg>
-  )
-}
-
-/**
- * Close icon (X)
- */
-function CloseIcon({className}: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 20 20"
-      fill="currentColor"
-      className={className}
-    >
-      <path
-        d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"
-      />
-    </svg>
-  )
-}
-
-/**
- * Expand icon for modal trigger
- */
-function ExpandIcon({className}: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 20 20"
-      fill="currentColor"
-      className={className}
-    >
-      <path
-        d="M13.28 7.78l3.22-3.22v2.69a.75.75 0 001.5 0v-4.5a.75.75 0 00-.75-.75h-4.5a.75.75 0 000 1.5h2.69l-3.22 3.22a.75.75 0 001.06 1.06zM2 17.25v-4.5a.75.75 0 011.5 0v2.69l3.22-3.22a.75.75 0 011.06 1.06L4.56 16.5h2.69a.75.75 0 010 1.5h-4.5a.75.75 0 01-.75-.75z"
-      />
-    </svg>
-  )
-}
-
-/**
  * Render a skeleton placeholder for an artifact
  */
-function ArtifactSkeleton({type}: { type: Artifact['type'] }) {
+function ArtifactSkeleton({type, fullWidth}: { type: Artifact['type']; fullWidth?: boolean }) {
+  const wrapperClass = fullWidth ? 'col-span-full' : ''
+
   if (type === 'image') {
     return (
-      <div className="overflow-hidden">
+      <div className={cx('overflow-hidden', wrapperClass)}>
         <Skeleton className="w-full h-48"/>
         <div className="p-4 bg-charcoal border border-ash/40 border-t-0">
           <Skeleton className="h-5 w-3/4 mb-2"/>
@@ -128,7 +60,7 @@ function ArtifactSkeleton({type}: { type: Artifact['type'] }) {
 
   if (type === 'video') {
     return (
-      <div className="overflow-hidden">
+      <div className={cx('overflow-hidden', wrapperClass)}>
         <Skeleton className="w-full aspect-video"/>
         <div className="p-4 bg-charcoal border border-ash/40 border-t-0">
           <Skeleton className="h-5 w-3/4 mb-2"/>
@@ -140,41 +72,25 @@ function ArtifactSkeleton({type}: { type: Artifact['type'] }) {
 
   if (type === 'html') {
     return (
-      <div className="p-4 bg-charcoal border border-ash/40 space-y-2">
-        <Skeleton className="h-6 w-1/3 mb-4"/>
-        <Skeleton className="h-4 w-2/3"/>
-        <Skeleton className="h-4 w-full"/>
-        <Skeleton className="h-4 w-3/4"/>
-        <Skeleton className="h-4 w-full"/>
-        <Skeleton className="h-4 w-1/2"/>
+      <div className={cx('p-4 bg-charcoal border border-ash/40 space-y-2', wrapperClass)}>
+        <Skeleton className="h-5 w-1/3 mb-4"/>
+        <Skeleton className="h-3 w-2/3"/>
+        <Skeleton className="h-3 w-full"/>
+        <Skeleton className="h-3 w-3/4"/>
+        <Skeleton className="h-3 w-full"/>
+        <Skeleton className="h-3 w-1/2"/>
       </div>
     )
   }
 
   // Text artifact skeleton
   return (
-    <div className="p-4 bg-charcoal border border-ash/40 space-y-2">
+    <div className={cx('p-4 bg-charcoal border border-ash/40 space-y-2', wrapperClass)}>
       <Skeleton className="h-5 w-1/2"/>
       <Skeleton className="h-4 w-full"/>
       <Skeleton className="h-4 w-full"/>
       <Skeleton className="h-4 w-3/4"/>
     </div>
-  )
-}
-
-/**
- * Movie script styled HTML content
- */
-function ScriptContent({content, className}: { content: string; className?: string }) {
-  return (
-    <div
-      className={cx(
-        'font-mono text-sm leading-relaxed text-silver',
-        'max-h-64 overflow-y-auto',
-        className
-      )}
-      dangerouslySetInnerHTML={{__html: content}}
-    />
   )
 }
 
@@ -216,10 +132,10 @@ function ArtifactModal({
         <div className="flex items-center justify-between p-4 border-b border-ash/40 flex-shrink-0">
           <div>
             {artifact.title && (
-              <h3 className="text-lg font-semibold text-white">{artifact.title}</h3>
+              <h3 className="text-sm font-semibold text-white">{artifact.title}</h3>
             )}
             {artifact.subtitle && (
-              <p className="text-sm text-silver">{artifact.subtitle}</p>
+              <p className="text-xs text-silver">{artifact.subtitle}</p>
             )}
           </div>
           <button
@@ -254,10 +170,11 @@ function ArtifactModal({
               className="prose-sm prose-invert max-w-none"
             />
           )}
-          {artifact.type === 'html' && (
-            <div
-              className="font-mono text-base leading-loose text-silver max-w-3xl mx-auto"
-              dangerouslySetInnerHTML={{__html: artifact.content || ''}}
+          {artifact.type === 'html' && artifact.scriptElements && (
+            <ScriptCard
+              elements={artifact.scriptElements}
+              maxHeight="100%"
+              className="max-w-3xl mx-auto border-0"
             />
           )}
         </div>
@@ -294,9 +211,12 @@ function ArtifactRenderer({
     return () => clearTimeout(timer)
   }, [artifact.src, artifact.id])
 
+  // Full-width class for grid layout
+  const fullWidthClass = artifact.fullWidth ? 'col-span-full' : ''
+
   // Show skeleton for pending artifacts or when loading
   if (isLoading || artifact.isPending) {
-    return <ArtifactSkeleton type={artifact.type}/>
+    return <ArtifactSkeleton type={artifact.type} fullWidth={artifact.fullWidth}/>
   }
 
   // Only show the actual content when both image is loaded AND minimum delay has passed
@@ -323,7 +243,7 @@ function ArtifactRenderer({
     case 'image':
       return (
         <div
-          className="relative group cursor-pointer"
+          className={cx('relative group cursor-pointer', fullWidthClass)}
           onClick={onExpand}
         >
           {!showContent && <ArtifactSkeleton type="image"/>}
@@ -345,7 +265,7 @@ function ArtifactRenderer({
 
     case 'video':
       return (
-        <div className="relative group">
+        <div className={cx('relative group', fullWidthClass)}>
           {expandButton}
           <VideoCard
             src={artifact.src || ''}
@@ -361,33 +281,32 @@ function ArtifactRenderer({
     case 'html':
       return (
         <div
-          className="relative group cursor-pointer bg-charcoal border border-ash/40"
+          className={cx('relative group cursor-pointer', fullWidthClass)}
           onClick={onExpand}
         >
           {expandButton}
-          <div className="p-4">
-            {artifact.title && (
-              <h4 className="text-lg font-heading text-gold mb-3">{artifact.title}</h4>
-            )}
-            <ScriptContent content={artifact.content || ''}/>
-            {artifact.subtitle && (
-              <p className="text-xs text-silver/60 mt-3 pt-2 border-t border-ash/40">
-                {artifact.subtitle}
-              </p>
-            )}
-          </div>
+          <ScriptCard
+            title={artifact.title}
+            subtitle={artifact.subtitle}
+            elements={artifact.scriptElements || []}
+            maxHeight="16rem"
+            className="w-full"
+          />
         </div>
       )
 
     case 'text':
       return (
         <div
-          className="relative group cursor-pointer p-4 bg-charcoal border border-ash/40"
+          className={cx(
+            'relative group cursor-pointer p-4 bg-charcoal border border-ash/40',
+            fullWidthClass
+          )}
           onClick={onExpand}
         >
           {expandButton}
           {artifact.title && (
-            <h4 className="text-lg font-semibold text-white mb-2">{artifact.title}</h4>
+            <h4 className="text-sm font-semibold text-white mb-2">{artifact.title}</h4>
           )}
           <MarkdownContent
             content={artifact.content || ''}
@@ -407,6 +326,8 @@ function ArtifactRenderer({
  * When collapsed, shows a thin strip with layers icon at top.
  * When expanded, shows chevron at top-right to collapse.
  * Click on artifacts to expand them to full screen modal.
+ *
+ * Supports fullWidth artifacts that span all columns in the grid.
  */
 export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelProps>(
   ({
@@ -487,7 +408,7 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
           {/* Header with title and collapse chevron */}
           <div
             className="flex items-center justify-between p-4 border-b border-ash/40 flex-shrink-0">
-            <h3 className="text-lg font-semibold text-white">Artifacts</h3>
+            <h3 className="text-sm font-semibold text-white">Artifacts</h3>
             <button
               onClick={onClose}
               className={cx(
@@ -511,7 +432,7 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
               columns === 3 && "grid-cols-3"
             )}>
             {artifacts.length === 0 && !isLoading ? (
-              <p className="text-sm text-silver/60 text-center py-8">
+              <p className="text-xs text-silver/60 text-center py-8">
                 No artifacts to display
               </p>
             ) : (

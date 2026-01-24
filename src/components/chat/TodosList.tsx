@@ -1,5 +1,11 @@
 import React, {useMemo} from 'react'
 import {cx} from '../../utils/cx'
+import {
+  CheckSquareIcon,
+  CrossSquareIcon,
+  EmptySquareIcon,
+  SquareLoaderIcon,
+} from '../icons'
 
 export type TaskStatus = 'pending' | 'in_progress' | 'done' | 'cancelled' | 'failed'
 
@@ -17,7 +23,7 @@ export interface Task {
    */
   status: TaskStatus
   /**
-   * Optional subtasks (only shown when parent is in_progress)
+   * Optional subtasks (shown when parent is in_progress or done)
    */
   subtasks?: Task[]
 }
@@ -35,131 +41,27 @@ export interface TodosListProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 /**
- * Snake loading animation component - a golden "snake" circling through a square
- */
-function SnakeLoader({className}: { className?: string }) {
-  return (
-    <div className={cx('relative w-4 h-4 flex-shrink-0', className)}>
-      <svg
-        viewBox="0 0 16 16"
-        className="w-full h-full animate-snake-spin"
-      >
-        {/* Square border path that the snake travels around */}
-        <rect
-          x="1"
-          y="1"
-          width="14"
-          height="14"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          className="text-ash/40"
-        />
-        {/* The "snake" - an animated stroke */}
-        <rect
-          x="1"
-          y="1"
-          width="14"
-          height="14"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeDasharray="14 42"
-          strokeLinecap="square"
-          className="text-gold animate-snake-travel"
-        />
-      </svg>
-    </div>
-  )
-}
-
-/**
- * Checkmark icon inside a square
- */
-function CheckmarkSquare({className}: { className?: string }) {
-  return (
-    <div className={cx(
-      'relative w-4 h-4 flex-shrink-0 border-2 border-gold bg-gold/10',
-      className
-    )}>
-      <svg
-        viewBox="0 0 16 16"
-        fill="none"
-        className="absolute inset-0 w-full h-full p-0.5"
-      >
-        <path
-          d="M3 8l3 3 7-7"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="text-gold"
-        />
-      </svg>
-    </div>
-  )
-}
-
-/**
- * Empty square for pending tasks
- */
-function EmptySquare({className}: { className?: string }) {
-  return (
-    <div className={cx(
-      'w-4 h-4 flex-shrink-0 border-2 border-ash/60',
-      className
-    )} />
-  )
-}
-
-/**
- * Cancelled/Failed square (X mark)
- */
-function CrossSquare({className, variant}: { className?: string; variant: 'cancelled' | 'failed' }) {
-  return (
-    <div className={cx(
-      'relative w-4 h-4 flex-shrink-0 border-2',
-      variant === 'failed' ? 'border-error/60 bg-error/5' : 'border-ash/40 bg-ash/5',
-      className
-    )}>
-      <svg
-        viewBox="0 0 16 16"
-        fill="none"
-        className="absolute inset-0 w-full h-full p-0.5"
-      >
-        <path
-          d="M4 4l8 8M12 4l-8 8"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          className={variant === 'failed' ? 'text-error/60' : 'text-ash/40'}
-        />
-      </svg>
-    </div>
-  )
-}
-
-/**
  * Get the status icon for a task
  */
 function TaskIcon({status}: { status: TaskStatus }) {
   switch (status) {
     case 'done':
-      return <CheckmarkSquare />
+      return <CheckSquareIcon/>
     case 'in_progress':
-      return <SnakeLoader />
+      return <SquareLoaderIcon/>
     case 'cancelled':
-      return <CrossSquare variant="cancelled" />
+      return <CrossSquareIcon variant="cancelled"/>
     case 'failed':
-      return <CrossSquare variant="failed" />
+      return <CrossSquareIcon variant="failed"/>
     case 'pending':
     default:
-      return <EmptySquare />
+      return <EmptySquareIcon/>
   }
 }
 
 /**
- * Sort tasks so cancelled and failed items appear at the bottom of their group
+ * Sort tasks so cancelled and failed items appear at the bottom of their group.
+ * This sorts in place within the local group, not globally.
  */
 function sortTasks(tasks: Task[]): Task[] {
   const normal: Task[] = []
@@ -183,8 +85,9 @@ function TaskItem({task, depth = 0}: { task: Task; depth?: number }) {
   const isTerminal = task.status === 'done' || task.status === 'cancelled' || task.status === 'failed'
   const isSubtle = task.status === 'cancelled' || task.status === 'failed'
 
-  // Subtasks only show when parent is in_progress and has subtasks
-  const showSubtasks = task.status === 'in_progress' && task.subtasks && task.subtasks.length > 0
+  // Show subtasks when parent is in_progress or done (to keep showing after completion)
+  const showSubtasks = (task.status === 'in_progress' || task.status === 'done') &&
+    task.subtasks && task.subtasks.length > 0
   const sortedSubtasks = showSubtasks ? sortTasks(task.subtasks!) : []
 
   return (
@@ -195,10 +98,10 @@ function TaskItem({task, depth = 0}: { task: Task; depth?: number }) {
           depth > 0 && 'pl-6'
         )}
       >
-        <TaskIcon status={task.status} />
+        <TaskIcon status={task.status}/>
         <span
           className={cx(
-            'text-sm leading-tight transition-colors',
+            'text-xs leading-tight transition-colors',
             isTerminal && 'line-through',
             isSubtle ? 'text-silver/50' : 'text-silver',
             task.status === 'in_progress' && 'text-white',
@@ -215,11 +118,11 @@ function TaskItem({task, depth = 0}: { task: Task; depth?: number }) {
         </span>
       </div>
 
-      {/* Render subtasks when parent is in_progress */}
+      {/* Render subtasks when parent is in_progress or done */}
       {showSubtasks && (
         <div className="flex flex-col">
           {sortedSubtasks.map((subtask) => (
-            <TaskItem key={subtask.id} task={subtask} depth={depth + 1} />
+            <TaskItem key={subtask.id} task={subtask} depth={depth + 1}/>
           ))}
         </div>
       )}
@@ -234,13 +137,34 @@ function TaskItem({task, depth = 0}: { task: Task; depth?: number }) {
  * - Nested tasks with indentation
  * - Status indicators: done (checkmark), in_progress (snake animation), pending (empty), cancelled, failed
  * - Done tasks are crossed out with golden checkmark
- * - Cancelled/failed tasks are crossed out with subtle styling and sorted to bottom
+ * - Cancelled/failed tasks are crossed out with subtle styling and sorted to bottom of their local group
  * - Max 1/4 screen height with scroll
- * - Subtasks only appear when parent task is in_progress
+ * - Subtasks appear when parent task is in_progress or done
+ *
+ * The component automatically sorts cancelled/failed tasks to the bottom of their local group
+ * (not globally), so just changing a task's status will reorder it appropriately.
  */
 export const TodosList = React.forwardRef<HTMLDivElement, TodosListProps>(
   ({tasks, title = 'Tasks', className, ...rest}, ref) => {
     const sortedTasks = useMemo(() => sortTasks(tasks), [tasks])
+
+    // Count completed tasks (recursively)
+    const countCompleted = (taskList: Task[]): number => {
+      let count = 0
+      for (const task of taskList) {
+        if (task.status === 'done') count++
+        if (task.subtasks) count += countCompleted(task.subtasks)
+      }
+      return count
+    }
+
+    const countTotal = (taskList: Task[]): number => {
+      let count = taskList.length
+      for (const task of taskList) {
+        if (task.subtasks) count += countTotal(task.subtasks)
+      }
+      return count
+    }
 
     if (tasks.length === 0) {
       return null
@@ -259,16 +183,16 @@ export const TodosList = React.forwardRef<HTMLDivElement, TodosListProps>(
       >
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-2 border-b border-ash/40 flex-shrink-0">
-          <h4 className="text-sm font-medium text-white">{title}</h4>
+          <h4 className="text-xs font-medium text-white">{title}</h4>
           <span className="text-xs text-silver/60">
-            {tasks.filter(t => t.status === 'done').length}/{tasks.length}
+            {countCompleted(tasks)}/{countTotal(tasks)}
           </span>
         </div>
 
         {/* Tasks list */}
         <div className="flex-1 overflow-y-auto px-4 py-2">
           {sortedTasks.map((task) => (
-            <TaskItem key={task.id} task={task} />
+            <TaskItem key={task.id} task={task}/>
           ))}
         </div>
       </div>

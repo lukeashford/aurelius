@@ -161,6 +161,22 @@ export {
 export {Pagination, type PaginationProps} from './Pagination'
 export {Stepper, type StepperProps, type Step, type StepStatus} from './Stepper'
 
+// Icons
+export {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  CloseIcon,
+  ExpandIcon,
+  HistoryIcon,
+  LayersIcon,
+  PlusIcon,
+  CheckSquareIcon,
+  EmptySquareIcon,
+  CrossSquareIcon,
+  SquareLoaderIcon,
+  type IconProps,
+} from './icons'
+
 // Chat/AI
 export {
   Message,
@@ -252,3 +268,9 @@ export {
   type VideoAspectRatioPreset,
 } from './VideoCard'
 export {SectionHeading, type SectionHeadingProps, type SectionHeadingLevel} from './SectionHeading'
+export {
+  ScriptCard,
+  type ScriptCardProps,
+  type ScriptElement,
+  type ScriptElementType,
+} from './ScriptCard'

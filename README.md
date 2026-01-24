@@ -159,3 +159,47 @@ function LoginForm() {
   )
 }
 ```
+
+---
+
+## Icons
+
+Aurelius includes a set of reusable icon components designed for the chat interface and general use.
+
+### Available Icons
+
+| Icon | Usage |
+|------|-------|
+| `CheckSquareIcon` | Task completion indicator (gold checkmark in square) |
+| `EmptySquareIcon` | Pending task indicator (empty square) |
+| `SquareLoaderIcon` | In-progress indicator (animated snake around square border) |
+| `CrossSquareIcon` | Cancelled/failed indicator (X in square, supports `variant="cancelled"` or `variant="failed"`) |
+| `ChevronLeftIcon` | Navigation, collapse actions |
+| `ChevronRightIcon` | Navigation, expand actions |
+| `CloseIcon` | Close/dismiss actions |
+| `ExpandIcon` | Expand to fullscreen |
+| `HistoryIcon` | Conversation history |
+| `LayersIcon` | Artifacts/layers panel |
+| `PlusIcon` | Add/create actions |
+
+### Usage
+
+```tsx
+import {
+  CheckSquareIcon,
+  SquareLoaderIcon,
+  CrossSquareIcon,
+  ChevronLeftIcon
+} from '@lukeashford/aurelius'
+
+// Basic usage
+<ChevronLeftIcon className="w-5 h-5" />
+
+// Task status indicators
+<CheckSquareIcon />        {/* Done - gold checkmark */}
+<SquareLoaderIcon />       {/* In progress - animated */}
+<CrossSquareIcon variant="failed" />  {/* Failed - red X */}
+<CrossSquareIcon variant="cancelled" />  {/* Cancelled - gray X */}
+```
+
+All icons accept standard HTML attributes and a `className` prop for sizing and styling.

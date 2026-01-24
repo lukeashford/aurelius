@@ -8,6 +8,7 @@ import {
   type ConversationTree,
   createEmptyTree,
   generateId,
+  type ScriptElement,
   type Task,
   updateNodeContent,
   useArtifacts,
@@ -151,52 +152,28 @@ function createBranchingDemoTree(): ConversationTree {
 // BRAND ANALYSIS DEMO - Luminova Coffee
 // ============================================================================
 
-// Movie script artifact content for brand analysis
-const LUMINOVA_SCRIPT = `<div class="script-content">
-  <p class="scene-heading">FADE IN:</p>
-
-  <p class="scene-heading">EXT. MOUNTAIN COFFEE FARM - DAWN</p>
-
-  <p class="action">Mist rolls through lush green coffee plants. The first rays of sunlight pierce through clouds, illuminating dewdrops on coffee cherries.</p>
-
-  <p class="character">NARRATOR (V.O.)</p>
-  <p class="dialogue">In the highlands where clouds kiss the earth...</p>
-
-  <p class="scene-heading">CUT TO:</p>
-
-  <p class="scene-heading">INT. ARTISAN ROASTERY - DAY</p>
-
-  <p class="action">ELENA (30s, passionate artisan roaster) carefully tends to a vintage copper roasting drum. Steam rises as she checks the beans' color.</p>
-
-  <p class="character">ELENA</p>
-  <p class="dialogue">Every bean has a story. Our job is to let it speak.</p>
-
-  <p class="action">Her loyal companion, a golden retriever named BEAN, watches attentively from his bed nearby.</p>
-
-  <p class="scene-heading">CUT TO:</p>
-
-  <p class="scene-heading">EXT. COZY CAFÉ - MORNING</p>
-
-  <p class="action">A bustling café with warm wooden interiors. Customers cradle cups, lost in conversation or quiet contemplation. BEAN weaves between tables, spreading joy.</p>
-
-  <p class="character">NARRATOR (V.O.)</p>
-  <p class="dialogue">Luminova Coffee. Where every cup illuminates your moment.</p>
-
-  <p class="action">The Luminova logo appears, golden and radiant, as the tagline fades in:</p>
-
-  <p class="tagline">"Illuminate Your Day"</p>
-
-  <p class="scene-heading">FADE OUT.</p>
-</div>
-
-<style>
-  .script-content { font-family: 'Courier New', monospace; }
-  .scene-heading { font-weight: bold; margin-top: 1.5em; text-transform: uppercase; color: #fecb6b; }
-  .action { margin: 1em 0; color: #a3a3a3; }
-  .character { margin-top: 1.5em; margin-left: 2em; font-weight: bold; color: #ffffff; }
-  .dialogue { margin-left: 1em; margin-right: 2em; color: #d4d4d4; }
-  .tagline { text-align: center; font-size: 1.2em; font-style: italic; margin-top: 2em; color: #fecb6b; }
-</style>`
+// Movie script using structured ScriptElement format
+const LUMINOVA_SCRIPT_ELEMENTS: ScriptElement[] = [
+  {type: 'scene-heading', content: 'FADE IN:'},
+  {type: 'scene-heading', content: 'EXT. MOUNTAIN COFFEE FARM - DAWN'},
+  {type: 'action', content: 'Mist rolls through lush green coffee plants. The first rays of sunlight pierce through clouds, illuminating dewdrops on coffee cherries.'},
+  {type: 'character', content: 'NARRATOR (V.O.)'},
+  {type: 'dialogue', content: 'In the highlands where clouds kiss the earth...'},
+  {type: 'transition', content: 'CUT TO:'},
+  {type: 'scene-heading', content: 'INT. ARTISAN ROASTERY - DAY'},
+  {type: 'action', content: 'ELENA (30s, passionate artisan roaster) carefully tends to a vintage copper roasting drum. Steam rises as she checks the beans\' color.'},
+  {type: 'character', content: 'ELENA'},
+  {type: 'dialogue', content: 'Every bean has a story. Our job is to let it speak.'},
+  {type: 'action', content: 'Her loyal companion, a golden retriever named BEAN, watches attentively from his bed nearby.'},
+  {type: 'transition', content: 'CUT TO:'},
+  {type: 'scene-heading', content: 'EXT. COZY CAFÉ - MORNING'},
+  {type: 'action', content: 'A bustling café with warm wooden interiors. Customers cradle cups, lost in conversation or quiet contemplation. BEAN weaves between tables, spreading joy.'},
+  {type: 'character', content: 'NARRATOR (V.O.)'},
+  {type: 'dialogue', content: 'Luminova Coffee. Where every cup illuminates your moment.'},
+  {type: 'action', content: 'The Luminova logo appears, golden and radiant, as the tagline fades in:'},
+  {type: 'title', content: '"Illuminate Your Day"'},
+  {type: 'transition', content: 'FADE OUT.'},
+]
 
 // Brand analysis workflow responses
 const BRAND_ANALYSIS_INTRO = `<p>I'll help you create a comprehensive brand video for <strong>Luminova Coffee</strong>!</p>
@@ -214,7 +191,7 @@ const BRAND_ANALYSIS_PROGRESS = `<p>Great progress! I've completed the research 
 <p>The script is now ready — you can see it in the artifacts panel. It tells the story of Elena, an artisan roaster, and her loyal companion Bean (a golden retriever).</p>
 <p>Now I'm generating the visual assets to bring this story to life...</p>`
 
-const BRAND_ANALYSIS_IMAGES = `<p>The visual assets are coming together beautifully!</p>
+const BRAND_ANALYSIS_IMAGES = `<p>The visual assets are coming together!</p>
 <p>I've created:</p>
 <ul>
 <li><strong>Elena</strong> — Our hero character, the passionate artisan roaster</li>
@@ -226,16 +203,17 @@ const BRAND_ANALYSIS_IMAGES = `<p>The visual assets are coming together beautifu
 const BRAND_ANALYSIS_COMPLETE = `<p>The brand video for <strong>Luminova Coffee</strong> is complete!</p>
 <p>Check out all the artifacts in the panel — the script, character images, and the final video.</p>
 <p>The video captures the essence of the brand: artisanal quality, warmth, and the joy of a perfect cup of coffee.</p>
-<p><em>Note: One image generation was cancelled as we decided to focus on the main dog character rather than creating duplicates.</em></p>`
+<p><em>Note: One image generation was cancelled as we decided to focus on the main dog character. An impossible task also failed — watch how it was sorted to the bottom of its group automatically.</em></p>`
 
 // Brand analysis artifacts
 const BRAND_ARTIFACTS = {
   script: {
     id: 'brand-script',
     type: 'html' as const,
-    content: LUMINOVA_SCRIPT,
+    scriptElements: LUMINOVA_SCRIPT_ELEMENTS,
     title: 'Luminova Coffee — Brand Video Script',
     subtitle: '30-second spot • Directed by AI Creative',
+    fullWidth: true,
   },
   hero: {
     id: 'brand-hero',
@@ -270,7 +248,7 @@ const BRAND_ARTIFACTS = {
   },
 }
 
-// Initial tasks for brand analysis (before any subtasks are known)
+// Initial tasks for brand analysis
 const INITIAL_BRAND_TASKS: Task[] = [
   {id: 'task-collect', label: 'Collect sources online', status: 'pending'},
   {id: 'task-analyze', label: 'Analyze sources', status: 'pending'},
@@ -359,7 +337,7 @@ export default function ChatDemo() {
     }
   }, [])
 
-  // Update a specific task's status
+  // Update a specific task's status (and optionally add subtasks)
   const updateTask = useCallback((taskId: string, updates: Partial<Task>) => {
     setTasks(prev => prev.map(t =>
       t.id === taskId ? {...t, ...updates} : t
@@ -399,7 +377,6 @@ export default function ChatDemo() {
     currentMessageIdRef.current = messageId
 
     // If there's an artifact, schedule it first (shows skeleton)
-    // This simulates receiving an SSE operator.started event
     if (artifact) {
       scheduleArtifact({id: artifact.id, type: artifact.type})
     }
@@ -451,7 +428,7 @@ export default function ChatDemo() {
         }
         setConversationTree((prev) => updateNodeContent(prev, messageId, tokens.join(''), false))
 
-        // Show the artifact with full data (simulates SSE artifact.created event)
+        // Show the artifact with full data
         if (artifact) {
           showArtifact(artifact.id, {
             type: artifact.type,
@@ -516,21 +493,24 @@ export default function ChatDemo() {
         scheduleArtifact({id: BRAND_ARTIFACTS.script.id, type: 'html'})
       }},
 
-      // Complete script with artifact, send progress message
+      // Complete script with artifact, start pictures task with subtasks
       {time: 12000, action: () => {
         updateTask('task-script', {status: 'done'})
         showArtifact(BRAND_ARTIFACTS.script.id, {
           type: 'html',
-          content: BRAND_ARTIFACTS.script.content,
+          scriptElements: BRAND_ARTIFACTS.script.scriptElements,
           title: BRAND_ARTIFACTS.script.title,
           subtitle: BRAND_ARTIFACTS.script.subtitle,
+          fullWidth: BRAND_ARTIFACTS.script.fullWidth,
         })
 
         // Start pictures task with subtasks
+        // Subtasks: a (hero), b (impossible - will fail), c (dog), d (location)
         updateTask('task-pictures', {status: 'in_progress'})
         addSubtasks('task-pictures', [
           {id: 'subtask-hero', label: 'Hero character', status: 'pending'},
-          {id: 'subtask-dog', label: 'Dog', status: 'pending'},
+          {id: 'subtask-impossible', label: 'Materialize actual coffee (impossible)', status: 'pending'},
+          {id: 'subtask-dog', label: 'Dog mascot', status: 'pending'},
           {id: 'subtask-location', label: 'Location', status: 'pending'},
           {id: 'subtask-dog2', label: 'Another dog picture', status: 'pending'},
         ])
@@ -542,13 +522,13 @@ export default function ChatDemo() {
         })
       }},
 
-      // Start generating hero image
+      // Start generating hero image (subtask a)
       {time: 14000, action: () => {
         updateSubtask('task-pictures', 'subtask-hero', {status: 'in_progress'})
         scheduleArtifact({id: BRAND_ARTIFACTS.hero.id, type: 'image'})
       }},
 
-      // Complete hero, start dog
+      // Complete hero, start impossible task (subtask b)
       {time: 17000, action: () => {
         updateSubtask('task-pictures', 'subtask-hero', {status: 'done'})
         showArtifact(BRAND_ARTIFACTS.hero.id, {
@@ -558,12 +538,20 @@ export default function ChatDemo() {
           title: BRAND_ARTIFACTS.hero.title,
           subtitle: BRAND_ARTIFACTS.hero.subtitle,
         })
+        // Start impossible task
+        updateSubtask('task-pictures', 'subtask-impossible', {status: 'in_progress'})
+      }},
+
+      // FAIL impossible task - watch it sort to bottom automatically!
+      {time: 19000, action: () => {
+        updateSubtask('task-pictures', 'subtask-impossible', {status: 'failed'})
+        // Start dog right after
         updateSubtask('task-pictures', 'subtask-dog', {status: 'in_progress'})
         scheduleArtifact({id: BRAND_ARTIFACTS.dog.id, type: 'image'})
       }},
 
       // Complete dog, start location
-      {time: 20000, action: () => {
+      {time: 22000, action: () => {
         updateSubtask('task-pictures', 'subtask-dog', {status: 'done'})
         showArtifact(BRAND_ARTIFACTS.dog.id, {
           type: 'image',
@@ -577,7 +565,7 @@ export default function ChatDemo() {
       }},
 
       // Complete location, cancel duplicate dog, complete pictures task
-      {time: 23000, action: () => {
+      {time: 25000, action: () => {
         updateSubtask('task-pictures', 'subtask-location', {status: 'done'})
         showArtifact(BRAND_ARTIFACTS.location.id, {
           type: 'image',
@@ -588,6 +576,7 @@ export default function ChatDemo() {
         })
         // Cancel the duplicate dog picture
         updateSubtask('task-pictures', 'subtask-dog2', {status: 'cancelled'})
+        // Complete pictures task (subtasks remain visible!)
         updateTask('task-pictures', {status: 'done'})
 
         // Send images complete message
@@ -598,13 +587,13 @@ export default function ChatDemo() {
       }},
 
       // Start video generation
-      {time: 26000, action: () => {
+      {time: 28000, action: () => {
         updateTask('task-video', {status: 'in_progress'})
         scheduleArtifact({id: BRAND_ARTIFACTS.video.id, type: 'video'})
       }},
 
       // Complete video, start impossible task
-      {time: 30000, action: () => {
+      {time: 32000, action: () => {
         updateTask('task-video', {status: 'done'})
         showArtifact(BRAND_ARTIFACTS.video.id, {
           type: 'video',
@@ -616,7 +605,7 @@ export default function ChatDemo() {
       }},
 
       // Fail impossible task, send completion message
-      {time: 33000, action: () => {
+      {time: 35000, action: () => {
         updateTask('task-impossible', {status: 'failed'})
 
         // Send final message
@@ -657,7 +646,7 @@ export default function ChatDemo() {
       currentMessageIdRef.current = null
     }
 
-    // If there are pending artifacts, remove them (simulates SSE operator.failed)
+    // If there are pending artifacts, remove them
     artifacts.forEach((a) => {
       if (a.isPending) {
         removeArtifact(a.id)
@@ -923,10 +912,10 @@ export default function ChatDemo() {
             <span className="text-sm">Back to Docs</span>
           </button>
           <div className="h-6 w-px bg-ash/40"/>
-          <h1 className="text-lg font-semibold text-white">Chat Interface Demo</h1>
+          <h1 className="text-sm font-semibold text-white">Chat Interface Demo</h1>
         </div>
         <div className="flex items-center gap-4">
-          <p className="text-sm text-silver hidden md:block">
+          <p className="text-xs text-silver hidden md:block">
             {getHeaderSubtitle()}
           </p>
         </div>
