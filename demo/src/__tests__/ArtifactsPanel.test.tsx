@@ -109,6 +109,24 @@ describe('ArtifactsPanel', () => {
     expect(screen.getByText('Demo Video')).toBeInTheDocument()
   })
 
+  it('renders script artifact (type: html)', () => {
+    const scriptArtifact = [
+      {
+        id: '1',
+        type: 'html' as const,
+        title: 'Script Artifact',
+        scriptElements: [
+          {type: 'scene-heading' as const, content: 'INT. OFFICE - DAY'},
+          {type: 'dialogue' as const, content: 'Work, work, work.'},
+        ],
+      },
+    ]
+    render(<ArtifactsPanel artifacts={scriptArtifact} isOpen={true}/>)
+    expect(screen.getByText('Script Artifact')).toBeInTheDocument()
+    expect(screen.getByText('INT. OFFICE - DAY')).toBeInTheDocument()
+    expect(screen.getByText('Work, work, work.')).toBeInTheDocument()
+  })
+
   it('shows skeleton when isLoading is true', () => {
     const artifactWithPending = [
       {

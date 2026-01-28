@@ -23,6 +23,12 @@ export {
   type ArtifactsPanelProps,
   type ArtifactsPanelToggleProps,
 } from './ArtifactsPanel'
+export {
+  TodosList,
+  type TodosListProps,
+  type Task,
+  type TaskStatus,
+} from './TodosList'
 
 // New components
 export {

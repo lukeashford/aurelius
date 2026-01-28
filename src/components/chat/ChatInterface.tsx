@@ -4,6 +4,7 @@ import {ChatView, type ChatViewItem} from './ChatView'
 import {type Attachment, ChatInput} from './ChatInput'
 import {type Conversation, ConversationSidebar} from './ConversationSidebar'
 import {ArtifactsPanel} from './ArtifactsPanel'
+import {TodosList, type Task} from './TodosList'
 import type {Artifact} from './hooks'
 import {type ConversationTree, getActivePathMessages, getSiblingInfo, switchBranch,} from './types'
 import {useResizable} from "./hooks/useResizable";
@@ -129,6 +130,16 @@ export interface ChatInterfaceProps extends Omit<React.HTMLAttributes<HTMLDivEle
    * Called when the artifacts panel is opened or closed (controlled).
    */
   onArtifactsPanelOpenChange?: (open: boolean) => void
+  /**
+   * Tasks to display in the todos list below the artifacts panel.
+   * Shows a list of tasks with status indicators.
+   */
+  tasks?: Task[]
+  /**
+   * Title for the todos list
+   * @default "Tasks"
+   */
+  tasksTitle?: string
 }
 
 /**
@@ -174,6 +185,8 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
           artifacts = [],
           isArtifactsPanelOpen,
           onArtifactsPanelOpenChange,
+          tasks = [],
+          tasksTitle,
           className,
           ...rest
         },
@@ -186,19 +199,20 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
         width: sidebarWidth,
         startResizing: startResizingSidebar
       } = useResizable({
-        initialWidth: 256, // w-64
-        minWidth: 200,
-        maxWidth: 500,
+        initialWidthPercent: 15,
+        minWidthPercent: 12,
+        maxWidthPercent: 25,
         direction: 'right'
       })
 
       const {
         width: artifactsWidth,
+        widthPercent: artifactsWidthPercent,
         startResizing: startResizingArtifacts
       } = useResizable({
-        initialWidth: 384, // w-96
-        minWidth: 300,
-        maxWidth: 1200,
+        initialWidthPercent: 50,
+        minWidthPercent: 25,
+        maxWidthPercent: 70,
         direction: 'left'
       })
 
@@ -393,15 +407,31 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
               </div>
             </div>
 
-            {/* Artifacts panel */}
-            <ArtifactsPanel
-                artifacts={artifacts}
-                isOpen={artifactsPanelOpen}
-                onClose={toggleArtifactsPanel}
-                isLoading={isStreaming && hasPendingArtifact}
-                width={artifactsWidth}
-                onResizeStart={startResizingArtifacts}
-            />
+            {/* Right panel: Artifacts and Tasks */}
+            <div className="h-full flex flex-col flex-shrink-0">
+              {/* Artifacts panel - takes remaining space */}
+              <div className="flex-1 min-h-0">
+                <ArtifactsPanel
+                    artifacts={artifacts}
+                    isOpen={artifactsPanelOpen}
+                    onClose={toggleArtifactsPanel}
+                    isLoading={isStreaming && hasPendingArtifact}
+                    width={artifactsWidth}
+                    widthPercent={artifactsWidthPercent}
+                    onResizeStart={startResizingArtifacts}
+                    className="h-full"
+                />
+              </div>
+
+              {/* Tasks list - below artifacts, max 1/4 screen height */}
+              {tasks.length > 0 && artifactsPanelOpen && (
+                <TodosList
+                    tasks={tasks}
+                    title={tasksTitle}
+                    style={{width: artifactsWidth}}
+                />
+              )}
+            </div>
           </div>
       )
     }

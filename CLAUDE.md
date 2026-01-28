@@ -1,7 +1,6 @@
 # Aurelius — Agent Development Guide
 
-This file provides instructions for AI coding agents working **on** this repository (developing the
-library itself).
+This file provides instructions for AI coding agents working **on** this repository (developing the library itself).
 
 For agents **using** the library in other projects, see `llms.md`.
 
@@ -9,7 +8,62 @@ For agents **using** the library in other projects, see `llms.md`.
 
 ## README
 
-See @README.md for project orientation, philosophy, and quick start commands.
+The following is the human-readable README for orientation:
+
+<!-- BEGIN README -->
+
+# Aurelius
+
+[![npm version](https://img.shields.io/npm/v/@lukeashford/aurelius.svg)](https://www.npmjs.com/package/@lukeashford/aurelius)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+**A dark-mode design system for creative technologists** — combining technical sophistication with a
+cinematic aesthetic.
+
+[Live Demo](https://aurelius.lukeashford.com/)
+
+---
+
+## Philosophy
+
+Aurelius relies on deep blacks, rich golds, and refined typography to convey stability, trust, and
+quiet luxury.
+
+**Core principles:**
+
+- **Cinematic:** Strictly dark mode. No white backgrounds.
+- **Refined:** Gold (`#c9a227`) is reserved for primary actions and key highlights.
+- **Grounded:** Subtle 1px borders over heavy drop shadows.
+
+**Usage hierarchy:**
+
+1. **React Components** — Use `<Button />`, `<Card />`, etc. whenever possible
+2. **Tailwind utilities** — Build custom layouts with token-based classes (`bg-obsidian`,
+   `text-gold`)
+3. **Design tokens** — Direct access to values as a last resort
+
+---
+
+## Quick Start
+
+```bash
+# Install dependencies
+npm install
+
+# Run the demo site
+npm run dev:demo
+
+# Build the library
+npm run build
+
+# Run tests
+npm test
+
+# Lint
+npm run lint
+```
+
+<!-- END README -->
 
 ---
 
@@ -42,8 +96,7 @@ aurelius/
 ### Adding Components
 
 1. Create component file in `src/components/` (or appropriate subdirectory)
-2. Add JSDoc comments to the component and its props interface — these are auto-extracted to
-   `llms.md`
+2. Add JSDoc comments to the component and its props interface — these are auto-extracted to `llms.md`
 3. Export from `src/components/index.ts`
 4. Run `npm run build` to regenerate `llms.md`
 
@@ -66,7 +119,7 @@ export interface MyComponentProps {
  * Component description goes here.
  * This will be extracted to llms.md.
  */
-export function MyComponent({propName, optionalProp = 'option1'}: MyComponentProps) {
+export function MyComponent({ propName, optionalProp = 'option1' }: MyComponentProps) {
   // ...
 }
 ```
@@ -117,14 +170,14 @@ npm run dev:demo
 
 ## Key Files
 
-| File                                        | Purpose                                  |
-|---------------------------------------------|------------------------------------------|
-| `src/styles/theme.css`                      | Design tokens (colors, fonts, utilities) |
-| `src/components/index.ts`                   | Main export barrel                       |
-| `src/components/chat/hooks/useArtifacts.ts` | Artifacts panel state management         |
-| `src/components/chat/ChatInterface.tsx`     | Main chat orchestrator component         |
-| `scripts/generate-manifest.js`              | Generates llms.md from source            |
-| `eslint/index.js`                           | ESLint config enforcing design system    |
+| File | Purpose |
+|------|---------|
+| `src/styles/theme.css` | Design tokens (colors, fonts, utilities) |
+| `src/components/index.ts` | Main export barrel |
+| `src/components/chat/hooks/useArtifacts.ts` | Artifacts panel state management |
+| `src/components/chat/ChatInterface.tsx` | Main chat orchestrator component |
+| `scripts/generate-manifest.js` | Generates llms.md from source |
+| `eslint/index.js` | ESLint config enforcing design system |
 
 ---
 

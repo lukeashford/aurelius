@@ -110,6 +110,15 @@ describe('ChatInterface', () => {
     expect(screen.getByRole('button', {name: /stop generation/i})).toBeInTheDocument()
   })
 
+  it('renders TodosList when tasks are provided and panel is open', () => {
+    const tasks = [
+      {id: '1', label: 'Task 1', status: 'in_progress' as const},
+    ]
+    render(<ChatInterface tasks={tasks} isArtifactsPanelOpen={true}/>)
+    expect(screen.getByText('Tasks')).toBeInTheDocument()
+    expect(screen.getByText('Task 1')).toBeInTheDocument()
+  })
+
   it('calls onStop when stop button is clicked', () => {
     const onStop = jest.fn()
     const tree = createTreeWithMessages()

@@ -1,0 +1,159 @@
+import React from 'react'
+import {cx} from '../utils/cx'
+
+/**
+ * Script element types following standard screenplay format
+ */
+export type ScriptElementType =
+  | 'scene-heading'
+  | 'action'
+  | 'character'
+  | 'dialogue'
+  | 'parenthetical'
+  | 'transition'
+  | 'title'
+  | 'subtitle'
+
+/**
+ * A single element in the script
+ */
+export interface ScriptElement {
+  type: ScriptElementType
+  content: string
+}
+
+export interface ScriptCardProps extends React.HTMLAttributes<HTMLDivElement> {
+  /**
+   * Title of the script (shown at top)
+   */
+  title?: string
+  /**
+   * Subtitle/metadata (e.g., "30-second spot • Directed by AI Creative")
+   */
+  subtitle?: string
+  /**
+   * Array of script elements in order
+   */
+  elements: ScriptElement[]
+  /**
+   * Maximum height before scrolling (default: 16rem / 256px)
+   */
+  maxHeight?: string
+}
+
+/**
+ * Render a script element with proper formatting
+ */
+function ScriptElementRenderer({element}: { element: ScriptElement }) {
+  switch (element.type) {
+    case 'scene-heading':
+      return (
+        <p className="mt-4 mb-2 font-bold uppercase text-gold text-xs tracking-wide">
+          {element.content}
+        </p>
+      )
+
+    case 'action':
+      return (
+        <p className="my-2 text-silver text-xs leading-relaxed">
+          {element.content}
+        </p>
+      )
+
+    case 'character':
+      return (
+        <p className="mt-4 mb-0.5 ml-8 font-bold text-white text-xs uppercase tracking-wide">
+          {element.content}
+        </p>
+      )
+
+    case 'parenthetical':
+      return (
+        <p className="ml-6 text-silver/70 text-xs italic">
+          ({element.content})
+        </p>
+      )
+
+    case 'dialogue':
+      return (
+        <p className="ml-4 mr-8 text-silver text-xs leading-relaxed">
+          {element.content}
+        </p>
+      )
+
+    case 'transition':
+      return (
+        <p className="mt-4 mb-2 text-right font-bold uppercase text-gold/80 text-xs tracking-wide">
+          {element.content}
+        </p>
+      )
+
+    case 'title':
+      return (
+        <p className="mt-6 mb-2 text-center font-bold text-gold text-sm">
+          {element.content}
+        </p>
+      )
+
+    case 'subtitle':
+      return (
+        <p className="text-center italic text-gold/70 text-xs">
+          {element.content}
+        </p>
+      )
+
+    default:
+      return null
+  }
+}
+
+/**
+ * ScriptCard displays a formatted movie/video script.
+ *
+ * Follows standard screenplay formatting conventions:
+ * - Scene headings: uppercase, gold, left-aligned
+ * - Action: silver, full width
+ * - Character names: uppercase, centered-left
+ * - Dialogue: indented from both sides
+ * - Transitions: uppercase, right-aligned
+ */
+export const ScriptCard = React.forwardRef<HTMLDivElement, ScriptCardProps>(
+  ({title, subtitle, elements, maxHeight = '16rem', className, style, ...rest}, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={cx(
+          'bg-charcoal border border-ash/40',
+          className
+        )}
+        {...rest}
+      >
+        {/* Header */}
+        {(title || subtitle) && (
+          <div className="px-4 py-3 border-b border-ash/40">
+            {title && (
+              <h4 className="text-sm font-heading text-gold">{title}</h4>
+            )}
+            {subtitle && (
+              <p className="text-xs text-silver/60 mt-0.5">{subtitle}</p>
+            )}
+          </div>
+        )}
+
+        {/* Script content */}
+        <div
+          className="px-4 py-3 font-mono overflow-y-auto"
+          style={{maxHeight, ...style}}
+        >
+          {elements.map((element, index) => (
+            <ScriptElementRenderer key={index} element={element}/>
+          ))}
+        </div>
+      </div>
+    )
+  }
+)
+
+ScriptCard.displayName = 'ScriptCard'
+
+export default ScriptCard

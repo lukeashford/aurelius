@@ -1,6 +1,8 @@
 import {useCallback, useState} from 'react'
 
-export type ArtifactType = 'text' | 'image' | 'video'
+export type ArtifactType = 'text' | 'image' | 'video' | 'html'
+
+import type {ScriptElement} from '../../ScriptCard'
 
 export interface Artifact {
   id: string
@@ -29,6 +31,14 @@ export interface Artifact {
    * Whether this artifact is still loading (shows skeleton)
    */
   isPending?: boolean
+  /**
+   * Whether the artifact should span full width in the grid
+   */
+  fullWidth?: boolean
+  /**
+   * For html artifacts - structured script elements (used by ScriptCard)
+   */
+  scriptElements?: ScriptElement[]
 }
 
 export interface UseArtifactsReturn {

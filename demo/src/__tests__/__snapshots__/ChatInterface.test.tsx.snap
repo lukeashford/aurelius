@@ -8,7 +8,7 @@ exports[`ChatInterface matches snapshot in empty state 1`] = `
     <div
       class="h-full bg-charcoal/80 border-r border-ash/40 flex flex-col relative group flex-shrink-0"
       data-testid="conversation-sidebar"
-      style="width: 256px;"
+      style="width: 15vw;"
     >
       <div
         class="absolute top-0 right-0 w-1 h-full cursor-col-resize z-50 hover:bg-gold/50 transition-colors after:absolute after:inset-y-0 after:-right-1 after:w-2"
@@ -205,29 +205,37 @@ exports[`ChatInterface matches snapshot in empty state 1`] = `
       </div>
     </div>
     <div
-      class="h-full bg-charcoal/80 border-l border-ash/40 flex flex-col items-center py-3 w-12 flex-shrink-0"
+      class="h-full flex flex-col flex-shrink-0"
     >
-      <button
-        aria-label="Expand artifacts panel"
-        class="p-2 text-silver hover:text-white hover:bg-ash/20 transition-colors duration-150 relative"
+      <div
+        class="flex-1 min-h-0"
       >
-        <svg
-          class="w-5 h-5"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg"
+        <div
+          class="bg-charcoal/80 border-l border-ash/40 flex flex-col items-center py-3 w-12 flex-shrink-0 h-full"
         >
-          <path
-            d="M3.196 12.87l-.825.483a.75.75 0 000 1.294l7.25 4.25a.75.75 0 00.758 0l7.25-4.25a.75.75 0 000-1.294l-.825-.484-5.666 3.322a2.25 2.25 0 01-2.276 0L3.196 12.87z"
-          />
-          <path
-            d="M3.196 8.87l-.825.483a.75.75 0 000 1.294l7.25 4.25a.75.75 0 00.758 0l7.25-4.25a.75.75 0 000-1.294l-.825-.484-5.666 3.322a2.25 2.25 0 01-2.276 0L3.196 8.87z"
-          />
-          <path
-            d="M10.38 1.103a.75.75 0 00-.76 0l-7.25 4.25a.75.75 0 000 1.294l7.25 4.25a.75.75 0 00.76 0l7.25-4.25a.75.75 0 000-1.294l-7.25-4.25z"
-          />
-        </svg>
-      </button>
+          <button
+            aria-label="Expand artifacts panel"
+            class="p-2 text-silver hover:text-white hover:bg-ash/20 transition-colors duration-150 relative"
+          >
+            <svg
+              class="w-5 h-5"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M3.196 12.87l-.825.483a.75.75 0 000 1.294l7.25 4.25a.75.75 0 00.758 0l7.25-4.25a.75.75 0 000-1.294l-.825-.484-5.666 3.322a2.25 2.25 0 01-2.276 0L3.196 12.87z"
+              />
+              <path
+                d="M3.196 8.87l-.825.483a.75.75 0 000 1.294l7.25 4.25a.75.75 0 00.758 0l7.25-4.25a.75.75 0 000-1.294l-.825-.484-5.666 3.322a2.25 2.25 0 01-2.276 0L3.196 8.87z"
+              />
+              <path
+                d="M10.38 1.103a.75.75 0 00-.76 0l-7.25 4.25a.75.75 0 000 1.294l7.25 4.25a.75.75 0 00.76 0l7.25-4.25a.75.75 0 000-1.294l-7.25-4.25z"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -241,7 +249,7 @@ exports[`ChatInterface matches snapshot while streaming 1`] = `
     <div
       class="h-full bg-charcoal/80 border-r border-ash/40 flex flex-col relative group flex-shrink-0"
       data-testid="conversation-sidebar"
-      style="width: 256px;"
+      style="width: 15vw;"
     >
       <div
         class="absolute top-0 right-0 w-1 h-full cursor-col-resize z-50 hover:bg-gold/50 transition-colors after:absolute after:inset-y-0 after:-right-1 after:w-2"
@@ -477,29 +485,37 @@ exports[`ChatInterface matches snapshot while streaming 1`] = `
       </div>
     </div>
     <div
-      class="h-full bg-charcoal/80 border-l border-ash/40 flex flex-col items-center py-3 w-12 flex-shrink-0"
+      class="h-full flex flex-col flex-shrink-0"
     >
-      <button
-        aria-label="Expand artifacts panel"
-        class="p-2 text-silver hover:text-white hover:bg-ash/20 transition-colors duration-150 relative"
+      <div
+        class="flex-1 min-h-0"
       >
-        <svg
-          class="w-5 h-5"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg"
+        <div
+          class="bg-charcoal/80 border-l border-ash/40 flex flex-col items-center py-3 w-12 flex-shrink-0 h-full"
         >
-          <path
-            d="M3.196 12.87l-.825.483a.75.75 0 000 1.294l7.25 4.25a.75.75 0 00.758 0l7.25-4.25a.75.75 0 000-1.294l-.825-.484-5.666 3.322a2.25 2.25 0 01-2.276 0L3.196 12.87z"
-          />
-          <path
-            d="M3.196 8.87l-.825.483a.75.75 0 000 1.294l7.25 4.25a.75.75 0 00.758 0l7.25-4.25a.75.75 0 000-1.294l-.825-.484-5.666 3.322a2.25 2.25 0 01-2.276 0L3.196 8.87z"
-          />
-          <path
-            d="M10.38 1.103a.75.75 0 00-.76 0l-7.25 4.25a.75.75 0 000 1.294l7.25 4.25a.75.75 0 00.76 0l7.25-4.25a.75.75 0 000-1.294l-7.25-4.25z"
-          />
-        </svg>
-      </button>
+          <button
+            aria-label="Expand artifacts panel"
+            class="p-2 text-silver hover:text-white hover:bg-ash/20 transition-colors duration-150 relative"
+          >
+            <svg
+              class="w-5 h-5"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M3.196 12.87l-.825.483a.75.75 0 000 1.294l7.25 4.25a.75.75 0 00.758 0l7.25-4.25a.75.75 0 000-1.294l-.825-.484-5.666 3.322a2.25 2.25 0 01-2.276 0L3.196 12.87z"
+              />
+              <path
+                d="M3.196 8.87l-.825.483a.75.75 0 000 1.294l7.25 4.25a.75.75 0 00.758 0l7.25-4.25a.75.75 0 000-1.294l-.825-.484-5.666 3.322a2.25 2.25 0 01-2.276 0L3.196 8.87z"
+              />
+              <path
+                d="M10.38 1.103a.75.75 0 00-.76 0l-7.25 4.25a.75.75 0 000 1.294l7.25 4.25a.75.75 0 00.76 0l7.25-4.25a.75.75 0 000-1.294l-7.25-4.25z"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -513,7 +529,7 @@ exports[`ChatInterface matches snapshot with messages 1`] = `
     <div
       class="h-full bg-charcoal/80 border-r border-ash/40 flex flex-col relative group flex-shrink-0"
       data-testid="conversation-sidebar"
-      style="width: 256px;"
+      style="width: 15vw;"
     >
       <div
         class="absolute top-0 right-0 w-1 h-full cursor-col-resize z-50 hover:bg-gold/50 transition-colors after:absolute after:inset-y-0 after:-right-1 after:w-2"
@@ -802,29 +818,37 @@ exports[`ChatInterface matches snapshot with messages 1`] = `
       </div>
     </div>
     <div
-      class="h-full bg-charcoal/80 border-l border-ash/40 flex flex-col items-center py-3 w-12 flex-shrink-0"
+      class="h-full flex flex-col flex-shrink-0"
     >
-      <button
-        aria-label="Expand artifacts panel"
-        class="p-2 text-silver hover:text-white hover:bg-ash/20 transition-colors duration-150 relative"
+      <div
+        class="flex-1 min-h-0"
       >
-        <svg
-          class="w-5 h-5"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg"
+        <div
+          class="bg-charcoal/80 border-l border-ash/40 flex flex-col items-center py-3 w-12 flex-shrink-0 h-full"
         >
-          <path
-            d="M3.196 12.87l-.825.483a.75.75 0 000 1.294l7.25 4.25a.75.75 0 00.758 0l7.25-4.25a.75.75 0 000-1.294l-.825-.484-5.666 3.322a2.25 2.25 0 01-2.276 0L3.196 12.87z"
-          />
-          <path
-            d="M3.196 8.87l-.825.483a.75.75 0 000 1.294l7.25 4.25a.75.75 0 00.758 0l7.25-4.25a.75.75 0 000-1.294l-.825-.484-5.666 3.322a2.25 2.25 0 01-2.276 0L3.196 8.87z"
-          />
-          <path
-            d="M10.38 1.103a.75.75 0 00-.76 0l-7.25 4.25a.75.75 0 000 1.294l7.25 4.25a.75.75 0 00.76 0l7.25-4.25a.75.75 0 000-1.294l-7.25-4.25z"
-          />
-        </svg>
-      </button>
+          <button
+            aria-label="Expand artifacts panel"
+            class="p-2 text-silver hover:text-white hover:bg-ash/20 transition-colors duration-150 relative"
+          >
+            <svg
+              class="w-5 h-5"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M3.196 12.87l-.825.483a.75.75 0 000 1.294l7.25 4.25a.75.75 0 00.758 0l7.25-4.25a.75.75 0 000-1.294l-.825-.484-5.666 3.322a2.25 2.25 0 01-2.276 0L3.196 12.87z"
+              />
+              <path
+                d="M3.196 8.87l-.825.483a.75.75 0 000 1.294l7.25 4.25a.75.75 0 00.758 0l7.25-4.25a.75.75 0 000-1.294l-.825-.484-5.666 3.322a2.25 2.25 0 01-2.276 0L3.196 8.87z"
+              />
+              <path
+                d="M10.38 1.103a.75.75 0 00-.76 0l-7.25 4.25a.75.75 0 000 1.294l7.25 4.25a.75.75 0 00.76 0l7.25-4.25a.75.75 0 000-1.294l-7.25-4.25z"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>

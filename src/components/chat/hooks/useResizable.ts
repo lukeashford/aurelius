@@ -1,19 +1,35 @@
 import {useCallback, useEffect, useRef, useState} from 'react'
 
 interface UseResizableProps {
-  initialWidth: number
-  minWidth: number
-  maxWidth: number
+  /**
+   * Initial width as percentage of viewport (0-100)
+   */
+  initialWidthPercent: number
+  /**
+   * Minimum width as percentage of viewport (0-100)
+   */
+  minWidthPercent: number
+  /**
+   * Maximum width as percentage of viewport (0-100)
+   */
+  maxWidthPercent: number
+  /**
+   * Direction to resize from
+   */
   direction: 'left' | 'right'
 }
 
+/**
+ * Hook for resizable panels with percentage-based widths.
+ * Returns width as a CSS percentage string (e.g., "50%").
+ */
 export function useResizable({
-  initialWidth,
-  minWidth,
-  maxWidth,
+  initialWidthPercent,
+  minWidthPercent,
+  maxWidthPercent,
   direction,
 }: UseResizableProps) {
-  const [width, setWidth] = useState(initialWidth)
+  const [widthPercent, setWidthPercent] = useState(initialWidthPercent)
   const [isResizing, setIsResizing] = useState(false)
   const lastX = useRef<number | null>(null)
 
@@ -36,15 +52,17 @@ export function useResizable({
 
         const deltaX = e.clientX - lastX.current
         const factor = direction === 'right' ? 1 : -1
+        // Convert pixel delta to percentage of viewport
+        const deltaPercent = (deltaX / window.innerWidth) * 100
 
-        setWidth((prevWidth) => {
-          const newWidth = prevWidth + deltaX * factor
-          return Math.min(Math.max(newWidth, minWidth), maxWidth)
+        setWidthPercent((prevPercent) => {
+          const newPercent = prevPercent + deltaPercent * factor
+          return Math.min(Math.max(newPercent, minWidthPercent), maxWidthPercent)
         })
 
         lastX.current = e.clientX
       },
-      [isResizing, direction, minWidth, maxWidth]
+      [isResizing, direction, minWidthPercent, maxWidthPercent]
   )
 
   useEffect(() => {
@@ -68,5 +86,8 @@ export function useResizable({
     }
   }, [isResizing, resize, stopResizing])
 
-  return {width, isResizing, startResizing}
+  // Return width as CSS percentage string
+  const width = `${widthPercent}vw`
+
+  return {width, widthPercent, isResizing, startResizing}
 }
