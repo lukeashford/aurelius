@@ -49,7 +49,7 @@ exports[`ArtifactsPanel matches snapshot when expanded with artifacts 1`] = `
       class="flex items-center justify-between p-4 border-b border-ash/40 flex-shrink-0"
     >
       <h3
-        class="text-lg font-semibold text-white"
+        class="text-sm font-semibold text-white"
       >
         Artifacts
       </h3>
@@ -76,7 +76,7 @@ exports[`ArtifactsPanel matches snapshot when expanded with artifacts 1`] = `
       data-testid="artifacts-grid"
     >
       <div
-        class="relative"
+        class="relative group cursor-pointer"
       >
         <div
           class="overflow-hidden"
@@ -95,6 +95,21 @@ exports[`ArtifactsPanel matches snapshot when expanded with artifacts 1`] = `
             />
           </div>
         </div>
+        <button
+          aria-label="Expand artifact"
+          class="absolute top-2 right-2 z-10 p-1.5 bg-obsidian/80 text-silver hover:text-white hover:bg-obsidian opacity-0 group-hover:opacity-100 transition-opacity"
+        >
+          <svg
+            class="w-4 h-4"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M13.28 7.78l3.22-3.22v2.69a.75.75 0 001.5 0v-4.5a.75.75 0 00-.75-.75h-4.5a.75.75 0 000 1.5h2.69l-3.22 3.22a.75.75 0 001.06 1.06zM2 17.25v-4.5a.75.75 0 011.5 0v2.69l3.22-3.22a.75.75 0 011.06 1.06L4.56 16.5h2.69a.75.75 0 010 1.5h-4.5a.75.75 0 01-.75-.75z"
+            />
+          </svg>
+        </button>
         <div
           class="rounded-none bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-full transition-opacity duration-300 opacity-0 absolute inset-0"
         >
@@ -124,15 +139,30 @@ exports[`ArtifactsPanel matches snapshot when expanded with artifacts 1`] = `
         </div>
       </div>
       <div
-        class="p-4 bg-charcoal border border-ash/40"
+        class="relative group cursor-pointer p-4 bg-charcoal border border-ash/40"
       >
+        <button
+          aria-label="Expand artifact"
+          class="absolute top-2 right-2 z-10 p-1.5 bg-obsidian/80 text-silver hover:text-white hover:bg-obsidian opacity-0 group-hover:opacity-100 transition-opacity"
+        >
+          <svg
+            class="w-4 h-4"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M13.28 7.78l3.22-3.22v2.69a.75.75 0 001.5 0v-4.5a.75.75 0 00-.75-.75h-4.5a.75.75 0 000 1.5h2.69l-3.22 3.22a.75.75 0 001.06 1.06zM2 17.25v-4.5a.75.75 0 011.5 0v2.69l3.22-3.22a.75.75 0 011.06 1.06L4.56 16.5h2.69a.75.75 0 010 1.5h-4.5a.75.75 0 01-.75-.75z"
+            />
+          </svg>
+        </button>
         <h4
-          class="text-lg font-semibold text-white mb-2"
+          class="text-sm font-semibold text-white mb-2"
         >
           Text Artifact
         </h4>
         <div
-          class="prose prose-sm prose-invert"
+          class="prose prose-sm prose-invert max-h-48 overflow-y-auto"
         >
           Some markdown content
         </div>
@@ -156,7 +186,7 @@ exports[`ArtifactsPanel matches snapshot when expanded with no artifacts 1`] = `
       class="flex items-center justify-between p-4 border-b border-ash/40 flex-shrink-0"
     >
       <h3
-        class="text-lg font-semibold text-white"
+        class="text-sm font-semibold text-white"
       >
         Artifacts
       </h3>
@@ -183,7 +213,7 @@ exports[`ArtifactsPanel matches snapshot when expanded with no artifacts 1`] = `
       data-testid="artifacts-grid"
     >
       <p
-        class="text-sm text-silver/60 text-center py-8"
+        class="text-xs text-silver/60 text-center py-8"
       >
         No artifacts to display
       </p>

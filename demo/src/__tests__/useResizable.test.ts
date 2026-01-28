@@ -4,15 +4,16 @@ import React from 'react';
 
 describe('useResizable', () => {
   const initialProps = {
-    initialWidth: 256,
-    minWidth: 200,
-    maxWidth: 500,
+    initialWidthPercent: 25,
+    minWidthPercent: 20,
+    maxWidthPercent: 50,
     direction: 'right' as const,
   };
 
-  it('initializes with initialWidth', () => {
+  it('initializes with initialWidthPercent', () => {
     const {result} = renderHook(() => useResizable(initialProps));
-    expect(result.current.width).toBe(256);
+    expect(result.current.width).toBe('25vw');
+    expect(result.current.widthPercent).toBe(25);
     expect(result.current.isResizing).toBe(false);
   });
 
@@ -34,6 +35,9 @@ describe('useResizable', () => {
   it('updates width on mousemove when resizing', () => {
     const {result} = renderHook(() => useResizable(initialProps));
 
+    // Mock window.innerWidth
+    Object.defineProperty(window, 'innerWidth', {writable: true, configurable: true, value: 1000});
+
     act(() => {
       result.current.startResizing({
         preventDefault: () => {
@@ -43,17 +47,22 @@ describe('useResizable', () => {
     });
 
     // Simulate mousemove
-    const mouseMoveEvent = new MouseEvent('mousemove', {clientX: 150});
+    const mouseMoveEvent = new MouseEvent('mousemove', {clientX: 200});
     act(() => {
       window.dispatchEvent(mouseMoveEvent);
     });
 
-    // Width should increase by 50 (150 - 100)
-    expect(result.current.width).toBe(306);
+    // Width should increase by 10% ((200 - 100) / 1000 * 100)
+    // 25% + 10% = 35%
+    expect(result.current.widthPercent).toBe(35);
+    expect(result.current.width).toBe('35vw');
   });
 
-  it('respects minWidth', () => {
+  it('respects minWidthPercent', () => {
     const {result} = renderHook(() => useResizable(initialProps));
+
+    // Mock window.innerWidth
+    Object.defineProperty(window, 'innerWidth', {writable: true, configurable: true, value: 1000});
 
     act(() => {
       result.current.startResizing({
@@ -69,12 +78,16 @@ describe('useResizable', () => {
       window.dispatchEvent(mouseMoveEvent);
     });
 
-    // 256 - 100 = 156, but minWidth is 200
-    expect(result.current.width).toBe(200);
+    // 25% - 10% = 15%, but minWidthPercent is 20%
+    expect(result.current.widthPercent).toBe(20);
+    expect(result.current.width).toBe('20vw');
   });
 
-  it('respects maxWidth', () => {
+  it('respects maxWidthPercent', () => {
     const {result} = renderHook(() => useResizable(initialProps));
+
+    // Mock window.innerWidth
+    Object.defineProperty(window, 'innerWidth', {writable: true, configurable: true, value: 1000});
 
     act(() => {
       result.current.startResizing({
@@ -90,12 +103,16 @@ describe('useResizable', () => {
       window.dispatchEvent(mouseMoveEvent);
     });
 
-    // 256 + 900 = 1156, but maxWidth is 500
-    expect(result.current.width).toBe(500);
+    // 25% + 90% = 115%, but maxWidthPercent is 50%
+    expect(result.current.widthPercent).toBe(50);
+    expect(result.current.width).toBe('50vw');
   });
 
   it('stops resizing on mouseup', () => {
     const {result} = renderHook(() => useResizable(initialProps));
+
+    // Mock window.innerWidth
+    Object.defineProperty(window, 'innerWidth', {writable: true, configurable: true, value: 1000});
 
     act(() => {
       result.current.startResizing({
@@ -120,7 +137,8 @@ describe('useResizable', () => {
       window.dispatchEvent(mouseMoveEvent);
     });
 
-    expect(result.current.width).toBe(256);
+    expect(result.current.widthPercent).toBe(25);
+    expect(result.current.width).toBe('25vw');
   });
 
   it('handles "left" direction correctly', () => {
@@ -128,6 +146,9 @@ describe('useResizable', () => {
       ...initialProps,
       direction: 'left',
     }));
+
+    // Mock window.innerWidth
+    Object.defineProperty(window, 'innerWidth', {writable: true, configurable: true, value: 1000});
 
     act(() => {
       result.current.startResizing({
@@ -138,14 +159,16 @@ describe('useResizable', () => {
     });
 
     // Move mouse to the left (clientX decreases)
-    const mouseMoveEvent = new MouseEvent('mousemove', {clientX: 450});
+    const mouseMoveEvent = new MouseEvent('mousemove', {clientX: 400});
     act(() => {
       window.dispatchEvent(mouseMoveEvent);
     });
 
-    // For "left" direction, deltaX = 450 - 500 = -50.
+    // For "left" direction, deltaX = 400 - 500 = -100.
+    // deltaPercent = -100 / 1000 * 100 = -10.
     // factor = -1.
-    // newWidth = 256 + (-50 * -1) = 306.
-    expect(result.current.width).toBe(306);
+    // newPercent = 25 + (-10 * -1) = 35.
+    expect(result.current.widthPercent).toBe(35);
+    expect(result.current.width).toBe('35vw');
   });
 });
