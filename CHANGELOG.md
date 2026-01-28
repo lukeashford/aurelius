@@ -1,3 +1,9 @@
+## [2.13.0](https://github.com/lukeashford/aurelius/compare/v2.12.0...v2.13.0) (2026-01-28)
+
+### Features
+
+* **chat:** add TodosList component with task workflow visualization ([7db6d40](https://github.com/lukeashford/aurelius/commit/7db6d40830b971d14233acc703246e48e4464d16))
+
 ## [2.12.0](https://github.com/lukeashford/aurelius/compare/v2.11.0...v2.12.0) (2026-01-21)
 
 ### Features
