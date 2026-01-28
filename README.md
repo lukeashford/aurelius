@@ -1,204 +1,152 @@
-# Aurelius
+# Aurelius — Agent Development Guide
 
-[![npm version](https://img.shields.io/npm/v/@lukeashford/aurelius.svg)](https://www.npmjs.com/package/@lukeashford/aurelius)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+This file provides instructions for AI coding agents working **on** this repository (developing the
+library itself).
 
-**A dark-mode design system for creative technologists** — combining technical sophistication with a
-cinematic aesthetic.
-
-[Live Demo](https://aurelius.lukeashford.com/)
+For agents **using** the library in other projects, see `llms.md`.
 
 ---
 
-## Philosophy
+## README
 
-Aurelius relies on deep blacks, rich golds, and refined typography to convey stability, trust, and
-quiet luxury.
-
-**Core principles:**
-
-- **Cinematic:** Strictly dark mode. No white backgrounds.
-- **Refined:** Gold (`#c9a227`) is reserved for primary actions and key highlights.
-- **Grounded:** Subtle 1px borders over heavy drop shadows.
-
-**Usage hierarchy:**
-
-1. **React Components** — Use `<Button />`, `<Card />`, etc. whenever possible
-2. **Tailwind utilities** — Build custom layouts with token-based classes (`bg-obsidian`,
-   `text-gold`)
-3. **Design tokens** — Direct access to values as a last resort
+See @README.md for project orientation, philosophy, and quick start commands.
 
 ---
 
-## AI Agent Optimization 🤖
-
-This package includes a machine-readable manifest and ESLint enforcement for AI coding assistants.
-
-**Prompt your agent:**
-
-> Use the Aurelius design system for this project.
->
-> 1. Run `npm install @lukeashford/aurelius`
-> 2. Read `node_modules/@lukeashford/aurelius/llms.md` completely before writing any code
-> 3. Follow its setup instructions (Tailwind config, ESLint, fonts)
-> 4. Use only the components and Tailwind classes listed in that file
-
-The manifest provides complete setup instructions, so agents can bootstrap a project from scratch
-while staying within design system constraints.
-
-[View the manifest](./llms.md)
-
----
-
-## Quick Start
-
-### 1. Install
-
-```bash
-# For Vite projects (Recommended)
-npm install @lukeashford/aurelius
-npm install -D tailwindcss @tailwindcss/vite eslint @typescript-eslint/parser eslint-plugin-better-tailwindcss @poupe/eslint-plugin-tailwindcss @eslint/css tailwind-csstree
-
-# For other projects
-# npm install -D tailwindcss @tailwindcss/postcss postcss ...
-```
-
-### 2. Configure (Vite)
-
-If you are using Vite, add the Tailwind CSS plugin to your `vite.config.ts`:
-
-```typescript
-import {defineConfig} from 'vite'
-import tailwindcss from '@tailwindcss/vite'
-
-export default defineConfig({
-  plugins: [
-    tailwindcss(),
-  ],
-})
-```
-
-### 3. Import the design system
-
-Create or update your `index.css`:
-
-```css
-/* Import the complete Aurelius design system (includes Tailwind v4, fonts, and theme) */
-@import '@lukeashford/aurelius/styles/base.css';
-
-/* Tell Tailwind to scan the Aurelius package for utility classes */
-@source "../node_modules/@lukeashford/aurelius/dist";
-```
-
-Then import it in your entry file:
-
-```typescript
-// main.tsx or index.tsx
-import './index.css'
-```
-
-### 4. Configure ESLint (simplest form)
-
-Aurelius ships with a default ESLint config you can re-export in one line. It enforces design system
-constraints — if ESLint complains, you're leaving the rails.
-
-```javascript
-// eslint.config.mjs
-export {default} from '@lukeashford/aurelius/eslint';
-```
-
-**Need a different CSS entry point?**
-
-```javascript
-// eslint.config.mjs
-import {createAureliusESLintConfig} from '@lukeashford/aurelius/eslint';
-
-export default createAureliusESLintConfig({
-  entryPoint: './app/styles.css'
-});
-```
-
-**What this enforces:**
-
-- **JS/TS/JSX/TSX files:** No custom/non-Aurelius class names, no arbitrary value utilities like
-  `bg-[#123456]` or `text-[15px]`
-- **CSS files:** Tailwind v4 CSS best practices, valid `@apply` directives, no arbitrary value
-  overuse, and proper theme token usage
-
-### 5. Update package.json scripts
-
-Add a lint script and wire it into your workflow:
-
-```json
-{
-  "scripts": {
-    "lint": "eslint src --max-warnings 0",
-    "dev": "npm run lint && vite",
-    "build": "npm run lint && vite build"
-  }
-}
-```
-
-If your project already has CI (or you're asked to add one), include `npm run lint` in that
-pipeline so lint failures block merges.
-
-### 6. Use components
-
-```tsx
-import {Button, Card, Input} from '@lukeashford/aurelius'
-
-function LoginForm() {
-  return (
-      <Card variant="featured" className="p-8 max-w-sm mx-auto">
-        <h2 className="text-gold text-2xl mb-6">Sign In</h2>
-        <Input placeholder="email@example.com"/>
-        <Button variant="primary" className="w-full mt-4">
-          Enter
-        </Button>
-      </Card>
-  )
-}
-```
-
----
-
-## Development
-
-```bash
-# Install dependencies
-npm install
-
-# Run the demo site
-npm run dev:demo
-
-# Build the library
-npm run build
-
-# Run tests
-npm test
-
-# Lint
-npm run lint
-```
-
-### Project Structure
+## Project Structure
 
 ```
 aurelius/
 ├── src/                    # Library source code
 │   ├── components/         # React components
 │   │   ├── chat/          # Chat interface components
+│   │   │   └── hooks/     # React hooks (useArtifacts, useScrollAnchor, etc.)
 │   │   └── icons/         # Icon components
 │   ├── styles/            # CSS and theme definitions
-│   └── utils/             # Utility functions
+│   │   ├── base.css       # Entry point (imports theme + Tailwind)
+│   │   └── theme.css      # Design tokens and custom utilities
+│   └── utils/             # Utility functions (cx, etc.)
 ├── demo/                   # Demo site (Vite + React)
+│   └── src/components/    # Demo components (ChatDemo, etc.)
 ├── scripts/               # Build scripts
 │   └── generate-manifest.js  # Generates llms.md from source
-└── llms.md                # Auto-generated AI manifest
+├── llms.md                # Auto-generated AI manifest (DO NOT EDIT)
+├── CLAUDE.md              # This file
+└── README.md              # Human-readable overview
+```
+
+---
+
+## Development Guidelines
+
+### Adding Components
+
+1. Create component file in `src/components/` (or appropriate subdirectory)
+2. Add JSDoc comments to the component and its props interface — these are auto-extracted to
+   `llms.md`
+3. Export from `src/components/index.ts`
+4. Run `npm run build` to regenerate `llms.md`
+
+### JSDoc Format for Props
+
+```tsx
+export interface MyComponentProps {
+  /**
+   * Description of this prop
+   */
+  propName: string
+  /**
+   * Another prop with type annotation in description
+   * @default "defaultValue"
+   */
+  optionalProp?: 'option1' | 'option2'
+}
+
+/**
+ * Component description goes here.
+ * This will be extracted to llms.md.
+ */
+export function MyComponent({propName, optionalProp = 'option1'}: MyComponentProps) {
+  // ...
+}
+```
+
+### Tailwind CSS v4
+
+This project uses Tailwind CSS v4 with `@theme` design tokens:
+
+- All colors defined in `src/styles/theme.css` under `@theme { }`
+- Custom utilities defined with `@utility` directive
+- ESLint enforces design system constraints (no arbitrary values)
+
+**Restricted patterns (will fail lint):**
+
+- `bg-[#...]`, `text-[...]` — arbitrary color values
+- `rounded-sm`, `rounded` — use design system border radius
+- `max-h-[...]`, `w-[...]` — use relative units or design tokens
+
+### Testing Changes
+
+```bash
+# Type check
+npm run typecheck
+
+# Lint (must pass with 0 warnings)
+npm run lint
+
+# Full build (typecheck + lint + compile + generate manifest)
+npm run build
+
+# Run demo to visually test
+npm run dev:demo
 ```
 
 ### Documentation
 
-- **README.md** — Human-readable overview (this file)
-- **llms.md** — Auto-generated manifest for AI coding agents consuming the library
-- **CLAUDE.md** — Instructions for AI agents working on this repository
+- **README.md** — Keep focused on human orientation. No component API docs.
+- **llms.md** — Auto-generated. Never edit directly. Add JSDoc to components instead.
+- **CLAUDE.md** — This file. Update when project structure or processes change.
+
+### Commit Guidelines
+
+- Use conventional commits: `feat:`, `fix:`, `refactor:`, `docs:`, `chore:`
+- Run `npm run build` before committing to ensure everything compiles
+- The build regenerates `llms.md` — commit it with your changes
+
+---
+
+## Key Files
+
+| File                                        | Purpose                                  |
+|---------------------------------------------|------------------------------------------|
+| `src/styles/theme.css`                      | Design tokens (colors, fonts, utilities) |
+| `src/components/index.ts`                   | Main export barrel                       |
+| `src/components/chat/hooks/useArtifacts.ts` | Artifacts panel state management         |
+| `src/components/chat/ChatInterface.tsx`     | Main chat orchestrator component         |
+| `scripts/generate-manifest.js`              | Generates llms.md from source            |
+| `eslint/index.js`                           | ESLint config enforcing design system    |
+
+---
+
+## Common Tasks
+
+### Add a new icon
+
+1. Create `src/components/icons/MyIcon.tsx`
+2. Add React import and IconProps type
+3. Export from `src/components/icons/index.ts`
+4. Export from `src/components/index.ts`
+
+### Add a new color token
+
+1. Add to `@theme { }` block in `src/styles/theme.css`:
+   ```css
+   --color-mycolor: #hexvalue;
+   ```
+2. Run `npm run build` — the color will auto-appear in `llms.md`
+
+### Update component documentation
+
+1. Edit JSDoc comments in the component file
+2. Run `npm run build` to regenerate `llms.md`
+3. Commit both files
