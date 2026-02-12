@@ -1,3 +1,10 @@
+## [2.14.0](https://github.com/lukeashford/aurelius/compare/v2.13.0...v2.14.0) (2026-02-12)
+
+### Features
+
+* **cards:** add audio card ([0e88ff5](https://github.com/lukeashford/aurelius/commit/0e88ff5211240983540c2ff4cf935a6dc4480d3f))
+* **cards:** add audio card ([#27](https://github.com/lukeashford/aurelius/issues/27)) ([d950ab5](https://github.com/lukeashford/aurelius/commit/d950ab5cf1b02fad307d7c4b1299263ce2b4ad2a))
+
 ## [2.13.0](https://github.com/lukeashford/aurelius/compare/v2.12.0...v2.13.0) (2026-01-28)
 
 ### Features
