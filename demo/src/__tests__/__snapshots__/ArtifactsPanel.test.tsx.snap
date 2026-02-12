@@ -3,7 +3,7 @@
 exports[`ArtifactsPanel matches snapshot when collapsed with artifacts 1`] = `
 <div>
   <div
-    class="h-full bg-charcoal/80 border-l border-ash/40 flex flex-col items-center py-3 w-12 flex-shrink-0"
+    class="h-full bg-charcoal/80 border-l border-ash/40 flex flex-col items-center py-3 w-12 shrink-0"
   >
     <button
       aria-label="Expand artifacts panel"
@@ -38,7 +38,7 @@ exports[`ArtifactsPanel matches snapshot when collapsed with artifacts 1`] = `
 exports[`ArtifactsPanel matches snapshot when expanded with artifacts 1`] = `
 <div>
   <div
-    class="h-full bg-charcoal/50 border-l border-ash/40 flex flex-col relative w-96 flex-shrink-0"
+    class="h-full bg-charcoal/50 border-l border-ash/40 flex flex-col relative w-96 shrink-0"
     data-testid="artifacts-panel"
   >
     <div
@@ -46,7 +46,7 @@ exports[`ArtifactsPanel matches snapshot when expanded with artifacts 1`] = `
       data-testid="artifacts-resize-handle"
     />
     <div
-      class="flex items-center justify-between p-4 border-b border-ash/40 flex-shrink-0"
+      class="flex items-center justify-between p-4 border-b border-ash/40 shrink-0"
     >
       <h3
         class="text-sm font-semibold text-white"
@@ -175,7 +175,7 @@ exports[`ArtifactsPanel matches snapshot when expanded with artifacts 1`] = `
 exports[`ArtifactsPanel matches snapshot when expanded with no artifacts 1`] = `
 <div>
   <div
-    class="h-full bg-charcoal/50 border-l border-ash/40 flex flex-col relative w-96 flex-shrink-0"
+    class="h-full bg-charcoal/50 border-l border-ash/40 flex flex-col relative w-96 shrink-0"
     data-testid="artifacts-panel"
   >
     <div
@@ -183,7 +183,7 @@ exports[`ArtifactsPanel matches snapshot when expanded with no artifacts 1`] = `
       data-testid="artifacts-resize-handle"
     />
     <div
-      class="flex items-center justify-between p-4 border-b border-ash/40 flex-shrink-0"
+      class="flex items-center justify-between p-4 border-b border-ash/40 shrink-0"
     >
       <h3
         class="text-sm font-semibold text-white"

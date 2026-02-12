@@ -211,7 +211,7 @@ exports[`ChatInterface matches snapshot in empty state 1`] = `
         class="flex-1 min-h-0"
       >
         <div
-          class="bg-charcoal/80 border-l border-ash/40 flex flex-col items-center py-3 w-12 flex-shrink-0 h-full"
+          class="bg-charcoal/80 border-l border-ash/40 flex flex-col items-center py-3 w-12 shrink-0 h-full"
         >
           <button
             aria-label="Expand artifacts panel"
@@ -491,7 +491,7 @@ exports[`ChatInterface matches snapshot while streaming 1`] = `
         class="flex-1 min-h-0"
       >
         <div
-          class="bg-charcoal/80 border-l border-ash/40 flex flex-col items-center py-3 w-12 flex-shrink-0 h-full"
+          class="bg-charcoal/80 border-l border-ash/40 flex flex-col items-center py-3 w-12 shrink-0 h-full"
         >
           <button
             aria-label="Expand artifacts panel"
@@ -824,7 +824,7 @@ exports[`ChatInterface matches snapshot with messages 1`] = `
         class="flex-1 min-h-0"
       >
         <div
-          class="bg-charcoal/80 border-l border-ash/40 flex flex-col items-center py-3 w-12 flex-shrink-0 h-full"
+          class="bg-charcoal/80 border-l border-ash/40 flex flex-col items-center py-3 w-12 shrink-0 h-full"
         >
           <button
             aria-label="Expand artifacts panel"

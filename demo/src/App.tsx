@@ -26,6 +26,7 @@ import {Footer} from './components/Footer'
 import {LegalNotice} from './components/LegalNotice'
 import ChatDemo from './components/ChatDemo'
 import VideoCardSection from "./sections/VideoCardSection";
+import AudioCardSection from "./sections/AudioCardSection";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 
 const nav = [
@@ -50,6 +51,7 @@ const nav = [
   {id: 'cards', label: 'Cards'},
   {id: 'image-cards', label: 'Image Cards'},
   {id: 'video-cards', label: 'Video Cards'},
+  {id: 'audio-cards', label: 'Audio Cards'},
   {id: 'feedback', label: 'Feedback'},
   {id: 'streaming', label: 'Streaming Cursor'},
   {id: 'messages', label: 'Messages'},
@@ -194,6 +196,10 @@ function MainLayout() {
 
           <section id="video-cards" className="space-y-4">
             <VideoCardSection/>
+          </section>
+
+          <section id="audio-cards" className="space-y-4">
+            <AudioCardSection/>
           </section>
 
           <section id="feedback" className="space-y-4">
