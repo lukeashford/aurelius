@@ -1,8 +1,7 @@
 import {useCallback, useState} from 'react'
-
-export type ArtifactType = 'text' | 'image' | 'video' | 'html'
-
 import type {ScriptElement} from '../../ScriptCard'
+
+export type ArtifactType = 'text' | 'image' | 'video' | 'audio' | 'html'
 
 export interface Artifact {
   id: string

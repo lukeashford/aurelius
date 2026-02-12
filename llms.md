@@ -101,6 +101,7 @@ Import from `@lukeashford/aurelius`:
 | Accordion | type, defaultValue, value, onValueChange, value, disabled |
 | Alert | variant (info, success, warning, error), title |
 | AttachmentPreview | attachments, onRemove, removable, maxVisible |
+| AudioCard | src, title, subtitle, playing, controls, volume, muted, loop, mediaClassName, contentClassName, playerProps |
 | Avatar | src, alt, name, size (xs, sm, md, lg, xl, 2xl), status (online, offline, busy) |
 | Badge | variant (default, gold, success, error, warning, info) |
 | BrandIcon | size (sm, md, lg), variant (solid, outline) |

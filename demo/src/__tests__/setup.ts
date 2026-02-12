@@ -11,10 +11,10 @@ jest.mock('react-player', () => {
     __esModule: true,
     default: (props: any) => {
       // Filter out props that are not valid for a div or use a custom tag
-      const {src, playing, controls, light, volume, muted, loop, ...rest} = props;
+      const {url, src, playing, controls, light, volume, muted, loop, ...rest} = props;
       return React.createElement('div', {
         'data-testid': 'mock-react-player',
-        'data-src': src,
+        'data-src': src || url,
         ...rest
       });
     },

@@ -267,6 +267,10 @@ export {
   type VideoAspectRatio,
   type VideoAspectRatioPreset,
 } from './VideoCard'
+export {
+  AudioCard,
+  type AudioCardProps,
+} from './AudioCard'
 export {SectionHeading, type SectionHeadingProps, type SectionHeadingLevel} from './SectionHeading'
 export {
   ScriptCard,
