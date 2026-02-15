@@ -4,10 +4,10 @@ import {ChatView, type ChatViewItem} from './ChatView'
 import {type Attachment, ChatInput} from './ChatInput'
 import {type Conversation, ConversationSidebar} from './ConversationSidebar'
 import {ArtifactsPanel} from './ArtifactsPanel'
-import {TodosList, type Task} from './TodosList'
+import {type Task, TodosList} from './TodosList'
 import type {Artifact} from './hooks'
 import {type ConversationTree, getActivePathMessages, getSiblingInfo, switchBranch,} from './types'
-import {useResizable} from "./hooks/useResizable";
+import {useResizable} from "./hooks";
 
 export interface ChatMessage {
   /**
@@ -175,7 +175,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
           isStreaming = false,
           isThinking = false,
           placeholder = 'Send a message...',
-          emptyStateHelper = 'Type anything to start a conversation',
+          emptyStateHelper = "Let's talk.",
           initialSidebarCollapsed = false,
           emptyState,
           showAttachmentButton = true,
@@ -376,27 +376,33 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
 
                 {/* Input Area */}
                 <div className={cx(
-                    "transition-all duration-500 ease-in-out z-10 w-full",
+                    "transition-all duration-500 ease-in-out z-10 w-full flex flex-col items-center",
                     isEmpty ? "p-4" : "shrink-0 p-4 border-t border-ash/40 bg-obsidian"
                 )}>
-                  {isEmpty && emptyState ? (
-                      <div className="flex justify-center">
-                        {emptyState}
+                  {isEmpty && (
+                      <div className="mb-8 text-center animate-fade-in duration-500">
+                        {emptyState ? (
+                            emptyState
+                        ) : (
+                            <h1 className="text-4xl md:text-5xl font-heading text-gold mb-2 tracking-tight">
+                              Welcome!
+                            </h1>
+                        )}
                       </div>
-                  ) : (
-                      <ChatInput
-                          position={isEmpty ? "centered" : "bottom"}
-                          placeholder={placeholder}
-                          helperText={isEmpty ? emptyStateHelper : undefined}
-                          onSubmit={handleSubmit}
-                          disabled={isEmpty ? isStreaming : (isStreaming && !onStop)}
-                          isStreaming={isStreaming}
-                          onStop={onStop}
-                          showAttachmentButton={showAttachmentButton}
-                          attachments={propsAttachments}
-                          onAttachmentsChange={onAttachmentsChange}
-                      />
                   )}
+
+                  <ChatInput
+                      position={isEmpty ? "centered" : "bottom"}
+                      placeholder={placeholder}
+                      helperText={isEmpty ? emptyStateHelper : undefined}
+                      onSubmit={handleSubmit}
+                      disabled={isEmpty ? isStreaming : (isStreaming && !onStop)}
+                      isStreaming={isStreaming}
+                      onStop={onStop}
+                      showAttachmentButton={showAttachmentButton}
+                      attachments={propsAttachments}
+                      onAttachmentsChange={onAttachmentsChange}
+                  />
                 </div>
 
                 {/* Bottom spacer for centering in empty state */}
@@ -408,7 +414,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
             </div>
 
             {/* Right panel: Artifacts and Tasks */}
-            <div className="h-full flex flex-col flex-shrink-0">
+            <div className="h-full flex flex-col shrink-0">
               {/* Artifacts panel - takes remaining space */}
               <div className="flex-1 min-h-0">
                 <ArtifactsPanel
@@ -425,11 +431,11 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
 
               {/* Tasks list - below artifacts, max 1/4 screen height */}
               {tasks.length > 0 && artifactsPanelOpen && (
-                <TodosList
-                    tasks={tasks}
-                    title={tasksTitle}
-                    style={{width: artifactsWidth}}
-                />
+                  <TodosList
+                      tasks={tasks}
+                      title={tasksTitle}
+                      style={{width: artifactsWidth}}
+                  />
               )}
             </div>
           </div>
