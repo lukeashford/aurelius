@@ -1,3 +1,16 @@
+## [2.16.0](https://github.com/lukeashford/aurelius/compare/v2.15.1...v2.16.0) (2026-02-15)
+
+### Features
+
+* **app:** add more specialized cards ([999020d](https://github.com/lukeashford/aurelius/commit/999020dbb33c4a148f9c624e8cbc565f97543ef9))
+* **app:** add more specialized cards ([#30](https://github.com/lukeashford/aurelius/issues/30)) ([dc2008e](https://github.com/lukeashford/aurelius/commit/dc2008e48f7e6b6386a1cc1e3f5800915fff2eb9))
+
+### Bug Fixes
+
+* **ci:** simplify test workflows and drop react 18 support ([46311c1](https://github.com/lukeashford/aurelius/commit/46311c18f1a175b372f68a2ca62e57773f216dd2))
+* **test:** update snapshots, add test:all, correct use of url and inlineContent ([42954e9](https://github.com/lukeashford/aurelius/commit/42954e9fe00695b69e04cd832a6bcb55211302c3))
+* **ui:** remove illegal min-height from specialist cards section ([0d0b4c9](https://github.com/lukeashford/aurelius/commit/0d0b4c9ffde2023899e2a84dfd212a8399b55bd2))
+
 ## [2.15.1](https://github.com/lukeashford/aurelius/compare/v2.15.0...v2.15.1) (2026-02-15)
 
 ### Bug Fixes
