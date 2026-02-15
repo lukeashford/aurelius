@@ -36,6 +36,8 @@ describe('ChatInterface', () => {
   it('renders empty state with input centered', () => {
     render(<ChatInterface/>)
     expect(screen.getByRole('textbox')).toBeInTheDocument()
+    expect(screen.getByText('Welcome!')).toBeInTheDocument()
+    expect(screen.getByText("Let's talk.")).toBeInTheDocument()
   })
 
   it('renders helper text in empty state', () => {
@@ -191,6 +193,16 @@ describe('ChatInterface', () => {
         />
     )
     expect(screen.getByTestId('custom-empty')).toBeInTheDocument()
+  })
+
+  it('renders input even when custom empty state is provided', () => {
+    render(
+        <ChatInterface
+            emptyState={<div data-testid="custom-empty">Custom Empty State</div>}
+        />
+    )
+    expect(screen.getByTestId('custom-empty')).toBeInTheDocument()
+    expect(screen.getByRole('textbox')).toBeInTheDocument()
   })
 
   it('applies custom className', () => {
