@@ -11,13 +11,13 @@ describe('useArtifacts', () => {
     const {result} = renderHook(() => useArtifacts())
 
     act(() => {
-      result.current.scheduleArtifact({id: 'art-1', type: 'image'})
+      result.current.scheduleArtifact({id: 'art-1', type: 'IMAGE'})
     })
 
     expect(result.current.artifacts).toHaveLength(1)
     expect(result.current.artifacts[0]).toEqual({
       id: 'art-1',
-      type: 'image',
+      type: 'IMAGE',
       isPending: true,
     })
   })
@@ -26,12 +26,12 @@ describe('useArtifacts', () => {
     const {result} = renderHook(() => useArtifacts())
 
     act(() => {
-      result.current.scheduleArtifact({id: 'art-1', type: 'image'})
+      result.current.scheduleArtifact({id: 'art-1', type: 'IMAGE'})
     })
 
     act(() => {
       result.current.showArtifact('art-1', {
-        type: 'image',
+        type: 'IMAGE',
         src: 'https://example.com/image.jpg',
         title: 'Test Image',
       })
@@ -40,7 +40,7 @@ describe('useArtifacts', () => {
     expect(result.current.artifacts).toHaveLength(1)
     expect(result.current.artifacts[0]).toEqual({
       id: 'art-1',
-      type: 'image',
+      type: 'IMAGE',
       src: 'https://example.com/image.jpg',
       title: 'Test Image',
       isPending: false,
@@ -52,7 +52,7 @@ describe('useArtifacts', () => {
 
     act(() => {
       result.current.showArtifact('art-1', {
-        type: 'image',
+        type: 'IMAGE',
         src: 'https://example.com/image.jpg',
         title: 'New Image',
       })
@@ -61,7 +61,7 @@ describe('useArtifacts', () => {
     expect(result.current.artifacts).toHaveLength(1)
     expect(result.current.artifacts[0]).toEqual({
       id: 'art-1',
-      type: 'image',
+      type: 'IMAGE',
       src: 'https://example.com/image.jpg',
       title: 'New Image',
       isPending: false,
@@ -72,8 +72,8 @@ describe('useArtifacts', () => {
     const {result} = renderHook(() => useArtifacts())
 
     act(() => {
-      result.current.scheduleArtifact({id: 'art-1', type: 'image'})
-      result.current.scheduleArtifact({id: 'art-2', type: 'text'})
+      result.current.scheduleArtifact({id: 'art-1', type: 'IMAGE'})
+      result.current.scheduleArtifact({id: 'art-2', type: 'TEXT'})
     })
 
     expect(result.current.artifacts).toHaveLength(2)
@@ -90,9 +90,9 @@ describe('useArtifacts', () => {
     const {result} = renderHook(() => useArtifacts())
 
     act(() => {
-      result.current.scheduleArtifact({id: 'art-1', type: 'image'})
-      result.current.scheduleArtifact({id: 'art-2', type: 'text'})
-      result.current.scheduleArtifact({id: 'art-3', type: 'video'})
+      result.current.scheduleArtifact({id: 'art-1', type: 'IMAGE'})
+      result.current.scheduleArtifact({id: 'art-2', type: 'TEXT'})
+      result.current.scheduleArtifact({id: 'art-3', type: 'VIDEO'})
     })
 
     expect(result.current.artifacts).toHaveLength(3)
@@ -125,14 +125,14 @@ describe('useArtifacts', () => {
 
     // 1. Schedule artifact (shows skeleton)
     act(() => {
-      result.current.scheduleArtifact({id: 'op-123', type: 'image'})
+      result.current.scheduleArtifact({id: 'op-123', type: 'IMAGE'})
     })
     expect(result.current.artifacts[0].isPending).toBe(true)
 
     // 2. Show artifact (reveals content)
     act(() => {
       result.current.showArtifact('op-123', {
-        type: 'image',
+        type: 'IMAGE',
         src: 'https://example.com/result.png',
         title: 'Generated Image',
         subtitle: 'AI-generated artwork',
@@ -153,7 +153,7 @@ describe('useArtifacts', () => {
 
     // Schedule artifact
     act(() => {
-      result.current.scheduleArtifact({id: 'failed-op', type: 'image'})
+      result.current.scheduleArtifact({id: 'failed-op', type: 'IMAGE'})
     })
     expect(result.current.artifacts).toHaveLength(1)
 

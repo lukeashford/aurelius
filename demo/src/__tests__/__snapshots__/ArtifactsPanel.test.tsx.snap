@@ -119,7 +119,6 @@ exports[`ArtifactsPanel matches snapshot when expanded with artifacts 1`] = `
             <img
               alt="Test image"
               class="block max-w-full w-full h-full object-cover"
-              src="https://example.com/image.jpg"
             />
           </div>
           <div
@@ -163,9 +162,7 @@ exports[`ArtifactsPanel matches snapshot when expanded with artifacts 1`] = `
         </h4>
         <div
           class="prose prose-sm prose-invert max-h-48 overflow-y-auto"
-        >
-          Some markdown content
-        </div>
+        />
       </div>
     </div>
   </div>

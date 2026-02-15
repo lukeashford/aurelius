@@ -101,7 +101,7 @@ Import from `@lukeashford/aurelius`:
 | Accordion | type, defaultValue, value, onValueChange, value, disabled |
 | Alert | variant (info, success, warning, error), title |
 | AttachmentPreview | attachments, onRemove, removable, maxVisible |
-| AudioCard | src, title, subtitle, playing, controls, volume, muted, loop, mediaClassName, contentClassName, playerProps |
+| AudioCard | src, title, subtitle, playing, controls, volume, muted, loop, mediaClassName, contentClassName, playerProps, height |
 | Avatar | src, alt, name, size (xs, sm, md, lg, xl, 2xl), status (online, offline, busy) |
 | Badge | variant (default, gold, success, error, warning, info) |
 | BrandIcon | size (sm, md, lg), variant (solid, outline) |
@@ -122,12 +122,13 @@ Import from `@lukeashford/aurelius`:
 | InputGroup | children |
 | Label | required |
 | List | variant, ordered, leading, trailing, interactive, selected, disabled, primary, secondary |
-| MarkdownContent | content, sanitizeConfig, isStreaming, cursorClassName |
+| MarkdownContent | content, isMarkdown, sanitizeConfig, isStreaming, cursorClassName |
 | Menu | children, open, onOpenChange, asChild, align, side, icon, destructive |
 | Message | variant (user, assistant), content, isStreaming, branchInfo, actions, hideActions |
 | Modal | isOpen, onClose, title, children, className |
 | Navbar | fixed, bordered, position, active, active |
 | Pagination | page, totalPages, onPageChange, siblingCount, showEdges |
+| PdfCard | url, title, subtitle, height, mediaClassName, contentClassName |
 | Popover | children, trigger, position (top, bottom, left, right), align (start, center, end), open, onOpenChange, closeOnClickOutside |
 | Progress | value, max, size (sm, md, lg), variant (default, success, warning, error), showValue, formatValue, indeterminate |
 | Radio | label |
@@ -201,6 +202,8 @@ Import from `@lukeashford/aurelius`:
 - **error**: * Error message to display (when status is 'error')
 
 **MarkdownContent**
+- **content**: * Content to display (can be Markdown or HTML)
+- **isMarkdown**: * Whether the content should be treated as Markdown @default true
 - **isStreaming**: * When true, injects a streaming cursor at the end of the content
 - **cursorClassName**: * Additional classes for the streaming cursor
 
@@ -218,6 +221,16 @@ Import from `@lukeashford/aurelius`:
 - **branchInfo**: * Branch navigation info (shows branch indicator if provided and total > 1)
 - **actions**: * Actions configuration (shows action bar if provided)
 - **hideActions**: * Whether to hide actions (e.g., during streaming)
+
+**PdfCard**
+A card for displaying PDF documents with an embedded viewer.
+
+- **url**: * URL of the PDF file
+- **title**: * Title of the document
+- **subtitle**: * Subtitle or document metadata
+- **height**: * Height of the PDF viewer
+- **mediaClassName**: * Optional class name for the media container
+- **contentClassName**: * Optional class name for the content container
 
 **Popover**
 - **trigger**: The trigger element
@@ -237,9 +250,24 @@ Follows standard screenplay formatting conventions:
 - Dialogue: indented from both sides
 - Transitions: uppercase, right-aligned
 
+@example
+```tsx
+<ScriptCard
+  title="The Arrival"
+  elements={[
+    { type: 'scene-heading', content: 'EXT. SPACE STATION - NIGHT' },
+    { type: 'action', content: 'A lone ship approaches the docking bay.' },
+    { type: 'character', content: 'PILOT' },
+    { type: 'dialogue', content: 'Requesting permission to land.' }
+  ]}
+/>
+```
+
+- **ScriptElement.type**: * The type of script element (e.g., 'scene-heading', 'character', 'dialogue')
+- **ScriptElement.content**: * The text content of the element
 - **title**: * Title of the script (shown at top)
 - **subtitle**: * Subtitle/metadata (e.g., "30-second spot • Directed by AI Creative")
-- **elements**: * Array of script elements in order
+- **elements**: * Array of script elements in order. Available types: 'scene-heading', 'action', 'character', 'dialogue', 'parenthetical', 'transition', 'title', 'subtitle'
 - **maxHeight**: * Maximum height before scrolling (default: 16rem / 256px)
 
 **Stepper**
@@ -472,11 +500,11 @@ designed for event-driven architectures like SSE streams.
 const { artifacts, scheduleArtifact, showArtifact, removeArtifact } = useArtifacts()
 
 // When SSE operator.started event arrives
-scheduleArtifact({ id: operatorId, type: 'image' })
+scheduleArtifact({ id: operatorId, type: 'IMAGE' })
 
 // When SSE artifact.created event arrives
 showArtifact(artifactId, {
-  type: 'image',
+  type: 'IMAGE',
   src: 'https://example.com/image.png',
   title: 'Generated Image',
 })

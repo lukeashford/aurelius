@@ -6,7 +6,7 @@ describe('ArtifactsPanel', () => {
   const mockArtifacts = [
     {
       id: '1',
-      type: 'image' as const,
+      type: 'IMAGE' as const,
       src: 'https://example.com/image.jpg',
       alt: 'Test image',
       title: 'Image Title',
@@ -14,7 +14,7 @@ describe('ArtifactsPanel', () => {
     },
     {
       id: '2',
-      type: 'text' as const,
+      type: 'TEXT' as const,
       title: 'Text Artifact',
       content: 'Some markdown content',
     },
@@ -71,7 +71,7 @@ describe('ArtifactsPanel', () => {
     const imageArtifact = [
       {
         id: '1',
-        type: 'image' as const,
+        type: 'IMAGE' as const,
         src: 'https://example.com/image.jpg',
         alt: 'Test image',
         title: 'My Image',
@@ -86,7 +86,7 @@ describe('ArtifactsPanel', () => {
     const textArtifact = [
       {
         id: '1',
-        type: 'text' as const,
+        type: 'TEXT' as const,
         title: 'Documentation',
         content: 'Some documentation content',
       },
@@ -99,7 +99,7 @@ describe('ArtifactsPanel', () => {
     const videoArtifact = [
       {
         id: '1',
-        type: 'video' as const,
+        type: 'VIDEO' as const,
         src: 'https://example.com/video.mp4',
         title: 'Demo Video',
         subtitle: 'A demonstration',
@@ -113,7 +113,7 @@ describe('ArtifactsPanel', () => {
     const scriptArtifact = [
       {
         id: '1',
-        type: 'html' as const,
+        type: 'SCRIPT' as const,
         title: 'Script Artifact',
         scriptElements: [
           {type: 'scene-heading' as const, content: 'INT. OFFICE - DAY'},
@@ -131,7 +131,7 @@ describe('ArtifactsPanel', () => {
     const artifactWithPending = [
       {
         id: '1',
-        type: 'image' as const,
+        type: 'IMAGE' as const,
         src: 'https://example.com/image.jpg',
         isPending: true,
       },

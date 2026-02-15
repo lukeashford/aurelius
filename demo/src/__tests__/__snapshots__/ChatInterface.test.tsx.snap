@@ -214,7 +214,7 @@ exports[`ChatInterface matches snapshot in empty state 1`] = `
       </div>
     </div>
     <div
-      class="h-full flex flex-col flex-shrink-0"
+      class="h-full flex flex-col shrink-0"
     >
       <div
         class="flex-1 min-h-0"
@@ -344,7 +344,11 @@ exports[`ChatInterface matches snapshot while streaming 1`] = `
                     <div
                       class="prose prose-sm prose-inherit"
                     >
-                      Hello!
+                      <p>
+                        Hello!
+                      </p>
+                      
+
                     </div>
                   </div>
                   <div
@@ -391,11 +395,15 @@ exports[`ChatInterface matches snapshot while streaming 1`] = `
                     <div
                       class="prose prose-sm prose-invert"
                     >
-                      Hi there!
-                      <span
-                        aria-hidden="true"
-                        class="inline-block bg-current animate-cursor-blink w-0.5 h-cursor translate-y-cursor-offset ml-0.5"
-                      />
+                      <p>
+                        Hi there!
+                        <span
+                          aria-hidden="true"
+                          class="inline-block bg-current animate-cursor-blink w-0.5 h-cursor translate-y-cursor-offset ml-0.5"
+                        />
+                      </p>
+                      
+
                     </div>
                   </div>
                 </div>
@@ -494,7 +502,7 @@ exports[`ChatInterface matches snapshot while streaming 1`] = `
       </div>
     </div>
     <div
-      class="h-full flex flex-col flex-shrink-0"
+      class="h-full flex flex-col shrink-0"
     >
       <div
         class="flex-1 min-h-0"
@@ -651,7 +659,11 @@ exports[`ChatInterface matches snapshot with messages 1`] = `
                     <div
                       class="prose prose-sm prose-inherit"
                     >
-                      Hello!
+                      <p>
+                        Hello!
+                      </p>
+                      
+
                     </div>
                   </div>
                   <div
@@ -698,7 +710,11 @@ exports[`ChatInterface matches snapshot with messages 1`] = `
                     <div
                       class="prose prose-sm prose-invert"
                     >
-                      Hi there!
+                      <p>
+                        Hi there!
+                      </p>
+                      
+
                     </div>
                   </div>
                   <div
@@ -827,7 +843,7 @@ exports[`ChatInterface matches snapshot with messages 1`] = `
       </div>
     </div>
     <div
-      class="h-full flex flex-col flex-shrink-0"
+      class="h-full flex flex-col shrink-0"
     >
       <div
         class="flex-1 min-h-0"

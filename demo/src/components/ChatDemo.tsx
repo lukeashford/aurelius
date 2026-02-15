@@ -34,8 +34,8 @@ const SECOND_RESPONSE = `<p>Great! Now I'll show you the artifacts panel with so
 // Artifact data for second response
 const SECOND_ARTIFACT = {
   id: 'artifact-1',
-  type: 'image' as const,
-  src: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800',
+  type: 'IMAGE' as const,
+  url: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800',
   alt: 'Code visualization',
   title: 'Component Architecture',
   subtitle: 'A visual guide to structuring your React components',
@@ -58,8 +58,8 @@ const ADDITIONAL_RESPONSES = [
 <p>The artifacts panel stacks multiple items vertically with smooth transitions.</p>`,
     artifact: {
       id: 'artifact-2',
-      type: 'image' as const,
-      src: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800',
+      type: 'IMAGE' as const,
+      url: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800',
       alt: 'Developer workspace',
       title: 'Modern Development',
       subtitle: 'Setting up an efficient workspace',
@@ -81,8 +81,8 @@ const ADDITIONAL_RESPONSES = [
 <p>Each artifact can have a title and subtitle for context. The panel supports scrolling when content overflows.</p>`,
     artifact: {
       id: 'artifact-3',
-      type: 'image' as const,
-      src: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800',
+      type: 'IMAGE' as const,
+      url: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800',
       alt: 'Coding session',
       title: 'Development in Action',
       subtitle: 'Building with modern tools and frameworks',
@@ -156,21 +156,36 @@ function createBranchingDemoTree(): ConversationTree {
 const LUMINOVA_SCRIPT_ELEMENTS: ScriptElement[] = [
   {type: 'scene-heading', content: 'FADE IN:'},
   {type: 'scene-heading', content: 'EXT. MOUNTAIN COFFEE FARM - DAWN'},
-  {type: 'action', content: 'Mist rolls through lush green coffee plants. The first rays of sunlight pierce through clouds, illuminating dewdrops on coffee cherries.'},
+  {
+    type: 'action',
+    content: 'Mist rolls through lush green coffee plants. The first rays of sunlight pierce through clouds, illuminating dewdrops on coffee cherries.'
+  },
   {type: 'character', content: 'NARRATOR (V.O.)'},
   {type: 'dialogue', content: 'In the highlands where clouds kiss the earth...'},
   {type: 'transition', content: 'CUT TO:'},
   {type: 'scene-heading', content: 'INT. ARTISAN ROASTERY - DAY'},
-  {type: 'action', content: 'ELENA (30s, passionate artisan roaster) carefully tends to a vintage copper roasting drum. Steam rises as she checks the beans\' color.'},
+  {
+    type: 'action',
+    content: 'ELENA (30s, passionate artisan roaster) carefully tends to a vintage copper roasting drum. Steam rises as she checks the beans\' color.'
+  },
   {type: 'character', content: 'ELENA'},
   {type: 'dialogue', content: 'Every bean has a story. Our job is to let it speak.'},
-  {type: 'action', content: 'Her loyal companion, a golden retriever named BEAN, watches attentively from his bed nearby.'},
+  {
+    type: 'action',
+    content: 'Her loyal companion, a golden retriever named BEAN, watches attentively from his bed nearby.'
+  },
   {type: 'transition', content: 'CUT TO:'},
   {type: 'scene-heading', content: 'EXT. COZY CAFÉ - MORNING'},
-  {type: 'action', content: 'A bustling café with warm wooden interiors. Customers cradle cups, lost in conversation or quiet contemplation. BEAN weaves between tables, spreading joy.'},
+  {
+    type: 'action',
+    content: 'A bustling café with warm wooden interiors. Customers cradle cups, lost in conversation or quiet contemplation. BEAN weaves between tables, spreading joy.'
+  },
   {type: 'character', content: 'NARRATOR (V.O.)'},
   {type: 'dialogue', content: 'Luminova Coffee. Where every cup illuminates your moment.'},
-  {type: 'action', content: 'The Luminova logo appears, golden and radiant, as the tagline fades in:'},
+  {
+    type: 'action',
+    content: 'The Luminova logo appears, golden and radiant, as the tagline fades in:'
+  },
   {type: 'title', content: '"Illuminate Your Day"'},
   {type: 'transition', content: 'FADE OUT.'},
 ]
@@ -209,7 +224,7 @@ const BRAND_ANALYSIS_COMPLETE = `<p>The brand video for <strong>Luminova Coffee<
 const BRAND_ARTIFACTS = {
   script: {
     id: 'brand-script',
-    type: 'html' as const,
+    type: 'SCRIPT' as const,
     scriptElements: LUMINOVA_SCRIPT_ELEMENTS,
     title: 'Luminova Coffee — Brand Video Script',
     subtitle: '30-second spot • Directed by AI Creative',
@@ -217,32 +232,32 @@ const BRAND_ARTIFACTS = {
   },
   hero: {
     id: 'brand-hero',
-    type: 'image' as const,
-    src: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800',
+    type: 'IMAGE' as const,
+    url: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800',
     alt: 'Elena the artisan roaster',
     title: 'Elena — Hero Character',
     subtitle: 'The passionate artisan roaster',
   },
   dog: {
     id: 'brand-dog',
-    type: 'image' as const,
-    src: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800',
+    type: 'IMAGE' as const,
+    url: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800',
     alt: 'Bean the golden retriever',
     title: 'Bean — Brand Mascot',
     subtitle: 'The loyal café companion',
   },
   location: {
     id: 'brand-location',
-    type: 'image' as const,
-    src: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=800',
+    type: 'IMAGE' as const,
+    url: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=800',
     alt: 'Cozy artisan roastery',
     title: 'The Roastery',
     subtitle: 'Warm, inviting café atmosphere',
   },
   video: {
     id: 'brand-video',
-    type: 'video' as const,
-    src: 'https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_1mb.mp4',
+    type: 'VIDEO' as const,
+    url: 'https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_1mb.mp4',
     title: 'Luminova Coffee — Final Video',
     subtitle: '30-second brand spot',
   },
@@ -313,13 +328,13 @@ export default function ChatDemo() {
         // Step 1: Pending -> Uploading after 1s
         setTimeout(() => {
           setAttachments((prev) =>
-            prev.map((a) => (a.id === attachment.id ? {...a, status: 'uploading' as const} : a))
+              prev.map((a) => (a.id === attachment.id ? {...a, status: 'uploading' as const} : a))
           )
 
           // Step 2: Uploading -> Complete after another 1s
           setTimeout(() => {
             setAttachments((prev) =>
-              prev.map((a) => (a.id === attachment.id ? {...a, status: 'complete' as const} : a))
+                prev.map((a) => (a.id === attachment.id ? {...a, status: 'complete' as const} : a))
             )
           }, 1000)
         }, 1000)
@@ -340,38 +355,39 @@ export default function ChatDemo() {
   // Update a specific task's status (and optionally add subtasks)
   const updateTask = useCallback((taskId: string, updates: Partial<Task>) => {
     setTasks(prev => prev.map(t =>
-      t.id === taskId ? {...t, ...updates} : t
+        t.id === taskId ? {...t, ...updates} : t
     ))
   }, [])
 
   // Update a subtask within a parent task
-  const updateSubtask = useCallback((parentId: string, subtaskId: string, updates: Partial<Task>) => {
-    setTasks(prev => prev.map(t => {
-      if (t.id === parentId && t.subtasks) {
-        return {
-          ...t,
-          subtasks: t.subtasks.map(st =>
-            st.id === subtaskId ? {...st, ...updates} : st
-          )
-        }
-      }
-      return t
-    }))
-  }, [])
+  const updateSubtask = useCallback(
+      (parentId: string, subtaskId: string, updates: Partial<Task>) => {
+        setTasks(prev => prev.map(t => {
+          if (t.id === parentId && t.subtasks) {
+            return {
+              ...t,
+              subtasks: t.subtasks.map(st =>
+                  st.id === subtaskId ? {...st, ...updates} : st
+              )
+            }
+          }
+          return t
+        }))
+      }, [])
 
   // Add subtasks to a parent task
   const addSubtasks = useCallback((parentId: string, subtasks: Task[]) => {
     setTasks(prev => prev.map(t =>
-      t.id === parentId ? {...t, subtasks} : t
+        t.id === parentId ? {...t, subtasks} : t
     ))
   }, [])
 
   // Simulate streaming a response with optional artifact
   const streamResponse = useCallback((
-    response: string,
-    artifact: typeof SECOND_ARTIFACT | null,
-    onComplete: () => void,
-    slow = false
+      response: string,
+      artifact: typeof SECOND_ARTIFACT | null,
+      onComplete: () => void,
+      slow = false
   ) => {
     const messageId = generateId()
     currentMessageIdRef.current = messageId
@@ -432,7 +448,7 @@ export default function ChatDemo() {
         if (artifact) {
           showArtifact(artifact.id, {
             type: artifact.type,
-            src: artifact.src,
+            url: artifact.url,
             alt: artifact.alt,
             title: artifact.title,
             subtitle: artifact.subtitle,
@@ -471,149 +487,177 @@ export default function ChatDemo() {
     // Timeline of events (all times in ms from start)
     const timeline = [
       // Intro response and start first task
-      {time: 1500, action: () => {
-        setIsThinking(false)
-        updateTask('task-collect', {status: 'in_progress'})
-        streamResponse(BRAND_ANALYSIS_INTRO, null, () => {
-          setIsStreaming(false)
-        })
-      }},
+      {
+        time: 1500, action: () => {
+          setIsThinking(false)
+          updateTask('task-collect', {status: 'in_progress'})
+          streamResponse(BRAND_ANALYSIS_INTRO, null, () => {
+            setIsStreaming(false)
+          })
+        }
+      },
 
       // Complete collect, start analyze
-      {time: 5000, action: () => {
-        updateTask('task-collect', {status: 'done'})
-        updateTask('task-analyze', {status: 'in_progress'})
-      }},
+      {
+        time: 5000, action: () => {
+          updateTask('task-collect', {status: 'done'})
+          updateTask('task-analyze', {status: 'in_progress'})
+        }
+      },
 
       // Complete analyze, start script
-      {time: 8000, action: () => {
-        updateTask('task-analyze', {status: 'done'})
-        updateTask('task-script', {status: 'in_progress'})
-        // Schedule script artifact
-        scheduleArtifact({id: BRAND_ARTIFACTS.script.id, type: 'html'})
-      }},
+      {
+        time: 8000, action: () => {
+          updateTask('task-analyze', {status: 'done'})
+          updateTask('task-script', {status: 'in_progress'})
+          // Schedule script artifact
+          scheduleArtifact({id: BRAND_ARTIFACTS.script.id, type: 'SCRIPT'})
+        }
+      },
 
       // Complete script with artifact, start pictures task with subtasks
-      {time: 12000, action: () => {
-        updateTask('task-script', {status: 'done'})
-        showArtifact(BRAND_ARTIFACTS.script.id, {
-          type: 'html',
-          scriptElements: BRAND_ARTIFACTS.script.scriptElements,
-          title: BRAND_ARTIFACTS.script.title,
-          subtitle: BRAND_ARTIFACTS.script.subtitle,
-          fullWidth: BRAND_ARTIFACTS.script.fullWidth,
-        })
+      {
+        time: 12000, action: () => {
+          updateTask('task-script', {status: 'done'})
+          showArtifact(BRAND_ARTIFACTS.script.id, {
+            type: 'SCRIPT',
+            scriptElements: BRAND_ARTIFACTS.script.scriptElements,
+            title: BRAND_ARTIFACTS.script.title,
+            subtitle: BRAND_ARTIFACTS.script.subtitle,
+            fullWidth: BRAND_ARTIFACTS.script.fullWidth,
+          })
 
-        // Start pictures task with subtasks
-        // Subtasks: a (hero), b (impossible - will fail), c (dog), d (location)
-        updateTask('task-pictures', {status: 'in_progress'})
-        addSubtasks('task-pictures', [
-          {id: 'subtask-hero', label: 'Hero character', status: 'pending'},
-          {id: 'subtask-impossible', label: 'Materialize actual coffee (impossible)', status: 'pending'},
-          {id: 'subtask-dog', label: 'Dog mascot', status: 'pending'},
-          {id: 'subtask-location', label: 'Location', status: 'pending'},
-          {id: 'subtask-dog2', label: 'Another dog picture', status: 'pending'},
-        ])
+          // Start pictures task with subtasks
+          // Subtasks: a (hero), b (impossible - will fail), c (dog), d (location)
+          updateTask('task-pictures', {status: 'in_progress'})
+          addSubtasks('task-pictures', [
+            {id: 'subtask-hero', label: 'Hero character', status: 'pending'},
+            {
+              id: 'subtask-impossible',
+              label: 'Materialize actual coffee (impossible)',
+              status: 'pending'
+            },
+            {id: 'subtask-dog', label: 'Dog mascot', status: 'pending'},
+            {id: 'subtask-location', label: 'Location', status: 'pending'},
+            {id: 'subtask-dog2', label: 'Another dog picture', status: 'pending'},
+          ])
 
-        // Stream progress message
-        setIsStreaming(true)
-        streamResponse(BRAND_ANALYSIS_PROGRESS, null, () => {
-          setIsStreaming(false)
-        })
-      }},
+          // Stream progress message
+          setIsStreaming(true)
+          streamResponse(BRAND_ANALYSIS_PROGRESS, null, () => {
+            setIsStreaming(false)
+          })
+        }
+      },
 
       // Start generating hero image (subtask a)
-      {time: 14000, action: () => {
-        updateSubtask('task-pictures', 'subtask-hero', {status: 'in_progress'})
-        scheduleArtifact({id: BRAND_ARTIFACTS.hero.id, type: 'image'})
-      }},
+      {
+        time: 14000, action: () => {
+          updateSubtask('task-pictures', 'subtask-hero', {status: 'in_progress'})
+          scheduleArtifact({id: BRAND_ARTIFACTS.hero.id, type: 'IMAGE'})
+        }
+      },
 
       // Complete hero, start impossible task (subtask b)
-      {time: 17000, action: () => {
-        updateSubtask('task-pictures', 'subtask-hero', {status: 'done'})
-        showArtifact(BRAND_ARTIFACTS.hero.id, {
-          type: 'image',
-          src: BRAND_ARTIFACTS.hero.src,
-          alt: BRAND_ARTIFACTS.hero.alt,
-          title: BRAND_ARTIFACTS.hero.title,
-          subtitle: BRAND_ARTIFACTS.hero.subtitle,
-        })
-        // Start impossible task
-        updateSubtask('task-pictures', 'subtask-impossible', {status: 'in_progress'})
-      }},
+      {
+        time: 17000, action: () => {
+          updateSubtask('task-pictures', 'subtask-hero', {status: 'done'})
+          showArtifact(BRAND_ARTIFACTS.hero.id, {
+            type: 'IMAGE',
+            url: BRAND_ARTIFACTS.hero.url,
+            alt: BRAND_ARTIFACTS.hero.alt,
+            title: BRAND_ARTIFACTS.hero.title,
+            subtitle: BRAND_ARTIFACTS.hero.subtitle,
+          })
+          // Start impossible task
+          updateSubtask('task-pictures', 'subtask-impossible', {status: 'in_progress'})
+        }
+      },
 
       // FAIL impossible task - watch it sort to bottom automatically!
-      {time: 19000, action: () => {
-        updateSubtask('task-pictures', 'subtask-impossible', {status: 'failed'})
-        // Start dog right after
-        updateSubtask('task-pictures', 'subtask-dog', {status: 'in_progress'})
-        scheduleArtifact({id: BRAND_ARTIFACTS.dog.id, type: 'image'})
-      }},
+      {
+        time: 19000, action: () => {
+          updateSubtask('task-pictures', 'subtask-impossible', {status: 'failed'})
+          // Start dog right after
+          updateSubtask('task-pictures', 'subtask-dog', {status: 'in_progress'})
+          scheduleArtifact({id: BRAND_ARTIFACTS.dog.id, type: 'IMAGE'})
+        }
+      },
 
       // Complete dog, start location
-      {time: 22000, action: () => {
-        updateSubtask('task-pictures', 'subtask-dog', {status: 'done'})
-        showArtifact(BRAND_ARTIFACTS.dog.id, {
-          type: 'image',
-          src: BRAND_ARTIFACTS.dog.src,
-          alt: BRAND_ARTIFACTS.dog.alt,
-          title: BRAND_ARTIFACTS.dog.title,
-          subtitle: BRAND_ARTIFACTS.dog.subtitle,
-        })
-        updateSubtask('task-pictures', 'subtask-location', {status: 'in_progress'})
-        scheduleArtifact({id: BRAND_ARTIFACTS.location.id, type: 'image'})
-      }},
+      {
+        time: 22000, action: () => {
+          updateSubtask('task-pictures', 'subtask-dog', {status: 'done'})
+          showArtifact(BRAND_ARTIFACTS.dog.id, {
+            type: 'IMAGE',
+            url: BRAND_ARTIFACTS.dog.url,
+            alt: BRAND_ARTIFACTS.dog.alt,
+            title: BRAND_ARTIFACTS.dog.title,
+            subtitle: BRAND_ARTIFACTS.dog.subtitle,
+          })
+          updateSubtask('task-pictures', 'subtask-location', {status: 'in_progress'})
+          scheduleArtifact({id: BRAND_ARTIFACTS.location.id, type: 'IMAGE'})
+        }
+      },
 
       // Complete location, cancel duplicate dog, complete pictures task
-      {time: 25000, action: () => {
-        updateSubtask('task-pictures', 'subtask-location', {status: 'done'})
-        showArtifact(BRAND_ARTIFACTS.location.id, {
-          type: 'image',
-          src: BRAND_ARTIFACTS.location.src,
-          alt: BRAND_ARTIFACTS.location.alt,
-          title: BRAND_ARTIFACTS.location.title,
-          subtitle: BRAND_ARTIFACTS.location.subtitle,
-        })
-        // Cancel the duplicate dog picture
-        updateSubtask('task-pictures', 'subtask-dog2', {status: 'cancelled'})
-        // Complete pictures task (subtasks remain visible!)
-        updateTask('task-pictures', {status: 'done'})
+      {
+        time: 25000, action: () => {
+          updateSubtask('task-pictures', 'subtask-location', {status: 'done'})
+          showArtifact(BRAND_ARTIFACTS.location.id, {
+            type: 'IMAGE',
+            url: BRAND_ARTIFACTS.location.url,
+            alt: BRAND_ARTIFACTS.location.alt,
+            title: BRAND_ARTIFACTS.location.title,
+            subtitle: BRAND_ARTIFACTS.location.subtitle,
+          })
+          // Cancel the duplicate dog picture
+          updateSubtask('task-pictures', 'subtask-dog2', {status: 'cancelled'})
+          // Complete pictures task (subtasks remain visible!)
+          updateTask('task-pictures', {status: 'done'})
 
-        // Send images complete message
-        setIsStreaming(true)
-        streamResponse(BRAND_ANALYSIS_IMAGES, null, () => {
-          setIsStreaming(false)
-        })
-      }},
+          // Send images complete message
+          setIsStreaming(true)
+          streamResponse(BRAND_ANALYSIS_IMAGES, null, () => {
+            setIsStreaming(false)
+          })
+        }
+      },
 
       // Start video generation
-      {time: 28000, action: () => {
-        updateTask('task-video', {status: 'in_progress'})
-        scheduleArtifact({id: BRAND_ARTIFACTS.video.id, type: 'video'})
-      }},
+      {
+        time: 28000, action: () => {
+          updateTask('task-video', {status: 'in_progress'})
+          scheduleArtifact({id: BRAND_ARTIFACTS.video.id, type: 'VIDEO'})
+        }
+      },
 
       // Complete video, start impossible task
-      {time: 32000, action: () => {
-        updateTask('task-video', {status: 'done'})
-        showArtifact(BRAND_ARTIFACTS.video.id, {
-          type: 'video',
-          src: BRAND_ARTIFACTS.video.src,
-          title: BRAND_ARTIFACTS.video.title,
-          subtitle: BRAND_ARTIFACTS.video.subtitle,
-        })
-        updateTask('task-impossible', {status: 'in_progress'})
-      }},
+      {
+        time: 32000, action: () => {
+          updateTask('task-video', {status: 'done'})
+          showArtifact(BRAND_ARTIFACTS.video.id, {
+            type: 'VIDEO',
+            url: BRAND_ARTIFACTS.video.url,
+            title: BRAND_ARTIFACTS.video.title,
+            subtitle: BRAND_ARTIFACTS.video.subtitle,
+          })
+          updateTask('task-impossible', {status: 'in_progress'})
+        }
+      },
 
       // Fail impossible task, send completion message
-      {time: 35000, action: () => {
-        updateTask('task-impossible', {status: 'failed'})
+      {
+        time: 35000, action: () => {
+          updateTask('task-impossible', {status: 'failed'})
 
-        // Send final message
-        setIsStreaming(true)
-        streamResponse(BRAND_ANALYSIS_COMPLETE, null, () => {
-          setIsStreaming(false)
-        })
-      }},
+          // Send final message
+          setIsStreaming(true)
+          streamResponse(BRAND_ANALYSIS_COMPLETE, null, () => {
+            setIsStreaming(false)
+          })
+        }
+      },
     ]
 
     // Schedule all timeline events
@@ -621,7 +665,8 @@ export default function ChatDemo() {
       const timeoutId = setTimeout(action, time)
       brandWorkflowRef.current.push(timeoutId)
     })
-  }, [clearArtifacts, scheduleArtifact, showArtifact, streamResponse, updateTask, updateSubtask, addSubtasks])
+  }, [clearArtifacts, scheduleArtifact, showArtifact, streamResponse, updateTask, updateSubtask,
+    addSubtasks])
 
   // Handle stop generation
   const handleStop = useCallback(() => {
@@ -659,63 +704,63 @@ export default function ChatDemo() {
 
   // Handle message submission
   const handleSubmit = useCallback(
-    (message: string, _attachments?: Attachment[]) => {
-      if (isStreaming) {
-        return
-      }
-
-      // Clear attachments after submission
-      setAttachments([])
-
-      // Add user message to tree
-      const userMessageId = generateId()
-      setConversationTree((prev) => {
-        const parentId = prev.activeLeafId
-        return addMessageToTree(prev, {
-          id: userMessageId,
-          role: 'user',
-          content: message,
-          parentId,
-        }, parentId)
-      })
-
-      setIsStreaming(true)
-      setIsThinking(true)
-
-      // Simulate thinking delay (1-2s)
-      const thinkingDelay = 1000 + Math.random() * 1000
-      setTimeout(() => {
-        setIsThinking(false)
-
-        let response: string
-        let artifact: typeof SECOND_ARTIFACT | null = null
-        let slow = false
-
-        // Check for specific demo triggers
-        const lowerMessage = message.toLowerCase()
-        if (lowerMessage.includes('slow') || lowerMessage.includes('stop')) {
-          response = SLOW_RESPONSE
-          slow = true
-        } else if (responseIndexRef.current === 0) {
-          response = FIRST_RESPONSE
-        } else if (responseIndexRef.current === 1) {
-          response = SECOND_RESPONSE
-          artifact = SECOND_ARTIFACT
-        } else {
-          const additionalIndex = (responseIndexRef.current - 2) % ADDITIONAL_RESPONSES.length
-          const additional = ADDITIONAL_RESPONSES[additionalIndex]
-          response = additional.content
-          artifact = additional.artifact
+      (message: string, _attachments?: Attachment[]) => {
+        if (isStreaming) {
+          return
         }
 
-        responseIndexRef.current++
+        // Clear attachments after submission
+        setAttachments([])
 
-        streamResponse(response, artifact, () => {
-          setIsStreaming(false)
-        }, slow)
-      }, thinkingDelay)
-    },
-    [isStreaming, streamResponse]
+        // Add user message to tree
+        const userMessageId = generateId()
+        setConversationTree((prev) => {
+          const parentId = prev.activeLeafId
+          return addMessageToTree(prev, {
+            id: userMessageId,
+            role: 'user',
+            content: message,
+            parentId,
+          }, parentId)
+        })
+
+        setIsStreaming(true)
+        setIsThinking(true)
+
+        // Simulate thinking delay (1-2s)
+        const thinkingDelay = 1000 + Math.random() * 1000
+        setTimeout(() => {
+          setIsThinking(false)
+
+          let response: string
+          let artifact: typeof SECOND_ARTIFACT | null = null
+          let slow = false
+
+          // Check for specific demo triggers
+          const lowerMessage = message.toLowerCase()
+          if (lowerMessage.includes('slow') || lowerMessage.includes('stop')) {
+            response = SLOW_RESPONSE
+            slow = true
+          } else if (responseIndexRef.current === 0) {
+            response = FIRST_RESPONSE
+          } else if (responseIndexRef.current === 1) {
+            response = SECOND_RESPONSE
+            artifact = SECOND_ARTIFACT
+          } else {
+            const additionalIndex = (responseIndexRef.current - 2) % ADDITIONAL_RESPONSES.length
+            const additional = ADDITIONAL_RESPONSES[additionalIndex]
+            response = additional.content
+            artifact = additional.artifact
+          }
+
+          responseIndexRef.current++
+
+          streamResponse(response, artifact, () => {
+            setIsStreaming(false)
+          }, slow)
+        }, thinkingDelay)
+      },
+      [isStreaming, streamResponse]
   )
 
   // Handle edit message (creates a branch)
@@ -824,7 +869,7 @@ export default function ChatDemo() {
     }
 
     setConversations((prev) =>
-      [newChat, ...prev.map((c) => ({...c, isActive: false}))].slice(0, 6)
+        [newChat, ...prev.map((c) => ({...c, isActive: false}))].slice(0, 6)
     )
   }, [clearArtifacts])
 
@@ -857,7 +902,7 @@ export default function ChatDemo() {
     }
 
     setConversations((prev) =>
-      prev.map((c) => ({...c, isActive: c.id === id}))
+        prev.map((c) => ({...c, isActive: c.id === id}))
     )
   }, [activeConversationId, clearArtifacts, handleStop, runBrandAnalysisWorkflow])
 
@@ -874,7 +919,7 @@ export default function ChatDemo() {
       return 'Starting brand analysis workflow...'
     }
     return (
-      <span>
+        <span>
         Type anything to start. Try <em>&quot;show me something slow&quot;</em> to test the Stop button, or attach a file!
       </span>
     )
@@ -892,60 +937,60 @@ export default function ChatDemo() {
   }
 
   return (
-    <div className="h-screen w-screen flex flex-col bg-obsidian">
-      {/* Header */}
-      <header
-        className="flex-shrink-0 h-14 px-4 flex items-center justify-between border-b border-ash/40 bg-charcoal/50">
-        <div className="flex items-center gap-4">
-          <button
-            onClick={handleBack}
-            className="flex items-center gap-2 text-silver hover:text-white transition-colors"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                 className="w-5 h-5">
-              <path
-                fillRule="evenodd"
-                d="M17 10a.75.75 0 01-.75.75H5.612l4.158 3.96a.75.75 0 11-1.04 1.08l-5.5-5.25a.75.75 0 010-1.08l5.5-5.25a.75.75 0 111.04 1.08L5.612 9.25H16.25A.75.75 0 0117 10z"
-                clipRule="evenodd"
-              />
-            </svg>
-            <span className="text-sm">Back to Docs</span>
-          </button>
-          <div className="h-6 w-px bg-ash/40"/>
-          <h1 className="text-sm font-semibold text-white">Chat Interface Demo</h1>
-        </div>
-        <div className="flex items-center gap-4">
-          <p className="text-xs text-silver hidden md:block">
-            {getHeaderSubtitle()}
-          </p>
-        </div>
-      </header>
+      <div className="h-screen w-screen flex flex-col bg-obsidian">
+        {/* Header */}
+        <header
+            className="shrink-0 h-14 px-4 flex items-center justify-between border-b border-ash/40 bg-charcoal/50">
+          <div className="flex items-center gap-4">
+            <button
+                onClick={handleBack}
+                className="flex items-center gap-2 text-silver hover:text-white transition-colors"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                   className="w-5 h-5">
+                <path
+                    fillRule="evenodd"
+                    d="M17 10a.75.75 0 01-.75.75H5.612l4.158 3.96a.75.75 0 11-1.04 1.08l-5.5-5.25a.75.75 0 010-1.08l5.5-5.25a.75.75 0 111.04 1.08L5.612 9.25H16.25A.75.75 0 0117 10z"
+                    clipRule="evenodd"
+                />
+              </svg>
+              <span className="text-sm">Back to Docs</span>
+            </button>
+            <div className="h-6 w-px bg-ash/40"/>
+            <h1 className="text-sm font-semibold text-white">Chat Interface Demo</h1>
+          </div>
+          <div className="flex items-center gap-4">
+            <p className="text-xs text-silver hidden md:block">
+              {getHeaderSubtitle()}
+            </p>
+          </div>
+        </header>
 
-      {/* Chat Interface */}
-      <div className="flex-1 overflow-hidden">
-        <ChatInterface
-          conversationTree={conversationTree}
-          onTreeChange={setConversationTree}
-          conversations={conversations}
-          onMessageSubmit={handleSubmit}
-          onEditMessage={handleEditMessage}
-          onRetryMessage={handleRetryMessage}
-          onStop={handleStop}
-          onSelectConversation={handleSelectConversation}
-          onNewChat={handleNewChat}
-          isStreaming={isStreaming}
-          isThinking={isThinking}
-          attachments={attachments}
-          onAttachmentsChange={handleAttachmentsChange}
-          artifacts={artifacts}
-          tasks={tasks}
-          tasksTitle="Workflow Progress"
-          placeholder="Send a message..."
-          emptyStateHelper={getEmptyStateHelper()}
-          showAttachmentButton={true}
-          enableMessageActions={true}
-        />
+        {/* Chat Interface */}
+        <div className="flex-1 overflow-hidden">
+          <ChatInterface
+              conversationTree={conversationTree}
+              onTreeChange={setConversationTree}
+              conversations={conversations}
+              onMessageSubmit={handleSubmit}
+              onEditMessage={handleEditMessage}
+              onRetryMessage={handleRetryMessage}
+              onStop={handleStop}
+              onSelectConversation={handleSelectConversation}
+              onNewChat={handleNewChat}
+              isStreaming={isStreaming}
+              isThinking={isThinking}
+              attachments={attachments}
+              onAttachmentsChange={handleAttachmentsChange}
+              artifacts={artifacts}
+              tasks={tasks}
+              tasksTitle="Workflow Progress"
+              placeholder="Send a message..."
+              emptyStateHelper={getEmptyStateHelper()}
+              showAttachmentButton={true}
+              enableMessageActions={true}
+          />
+        </div>
       </div>
-    </div>
   )
 }

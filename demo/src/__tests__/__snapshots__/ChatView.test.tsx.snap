@@ -20,7 +20,11 @@ exports[`ChatView matches snapshot with messages 1`] = `
             <div
               class="prose prose-sm prose-inherit"
             >
-              Hello, how are you?
+              <p>
+                Hello, how are you?
+              </p>
+              
+
             </div>
           </div>
         </div>
@@ -35,7 +39,11 @@ exports[`ChatView matches snapshot with messages 1`] = `
             <div
               class="prose prose-sm prose-invert"
             >
-              I am doing well, thank you!
+              <p>
+                I am doing well, thank you!
+              </p>
+              
+
             </div>
           </div>
         </div>
@@ -70,7 +78,11 @@ exports[`ChatView matches snapshot with streaming state 1`] = `
             <div
               class="prose prose-sm prose-inherit"
             >
-              Question
+              <p>
+                Question
+              </p>
+              
+
             </div>
           </div>
         </div>
@@ -85,11 +97,15 @@ exports[`ChatView matches snapshot with streaming state 1`] = `
             <div
               class="prose prose-sm prose-invert"
             >
-              Answering...
-              <span
-                aria-hidden="true"
-                class="inline-block bg-current animate-cursor-blink w-0.5 h-cursor translate-y-cursor-offset ml-0.5"
-              />
+              <p>
+                Answering...
+                <span
+                  aria-hidden="true"
+                  class="inline-block bg-current animate-cursor-blink w-0.5 h-cursor translate-y-cursor-offset ml-0.5"
+                />
+              </p>
+              
+
             </div>
           </div>
         </div>

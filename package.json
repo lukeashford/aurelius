@@ -86,6 +86,7 @@
     "@testing-library/user-event": "^14.5.2",
     "@types/dompurify": "^3.0.5",
     "@types/jest": "^29.5.14",
+    "@types/marked": "^5.0.2",
     "@types/node": "^20.0.0",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
@@ -128,6 +129,7 @@
     "clsx": "^2.1.1",
     "dompurify": "^3.3.1",
     "lucide-react": "^0.555.0",
+    "marked": "^15.0.12",
     "react-player": "^3.4.0",
     "tailwind-merge": "^3.4.0"
   }

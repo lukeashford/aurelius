@@ -24,8 +24,6 @@ exports[`MarkdownContentSection matches snapshot 1`] = `
         <div
           class="prose"
         >
-          
-
           <h2>
             Styled text example
           </h2>

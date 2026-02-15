@@ -1,19 +1,23 @@
 import {useCallback, useState} from 'react'
 import type {ScriptElement} from '../../ScriptCard'
 
-export type ArtifactType = 'text' | 'image' | 'video' | 'audio' | 'html'
+export type ArtifactType = 'TEXT' | 'IMAGE' | 'VIDEO' | 'AUDIO' | 'SCRIPT' | 'PDF'
 
 export interface Artifact {
   id: string
   type: ArtifactType
   /**
-   * For text artifacts - the markdown content
+   * For text artifacts - the content (markdown, HTML, or plain text)
    */
-  content?: string
+  inlineContent?: string
   /**
-   * For image and video artifacts - the source URL
+   * For artifacts that source from a URL (image, video, audio, pdf, file)
    */
-  src?: string
+  url?: string
+  /**
+   * The mime type of the content
+   */
+  mimeType?: string
   /**
    * For image artifacts - alt text
    */
@@ -74,11 +78,11 @@ export interface UseArtifactsReturn {
  * const { artifacts, scheduleArtifact, showArtifact, removeArtifact } = useArtifacts()
  *
  * // When SSE operator.started event arrives
- * scheduleArtifact({ id: operatorId, type: 'image' })
+ * scheduleArtifact({ id: operatorId, type: 'IMAGE' })
  *
  * // When SSE artifact.created event arrives
  * showArtifact(artifactId, {
- *   type: 'image',
+ *   type: 'IMAGE',
  *   src: 'https://example.com/image.png',
  *   title: 'Generated Image',
  * })

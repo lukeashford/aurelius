@@ -8,6 +8,7 @@ import {MarkdownContent} from '../MarkdownContent'
 import {Skeleton} from '../Skeleton'
 import {ChevronRightIcon, CloseIcon, ExpandIcon, LayersIcon,} from '../icons'
 import type {Artifact} from './hooks'
+import {PdfCard} from "../PdfCard";
 
 export interface ArtifactsPanelProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
@@ -46,7 +47,7 @@ export interface ArtifactsPanelProps extends React.HTMLAttributes<HTMLDivElement
 function ArtifactSkeleton({type, fullWidth}: { type: Artifact['type']; fullWidth?: boolean }) {
   const wrapperClass = fullWidth ? 'col-span-full' : ''
 
-  if (type === 'image') {
+  if (type === 'IMAGE') {
     return (
         <div className={cx('overflow-hidden', wrapperClass)}>
           <Skeleton className="w-full h-48"/>
@@ -58,7 +59,7 @@ function ArtifactSkeleton({type, fullWidth}: { type: Artifact['type']; fullWidth
     )
   }
 
-  if (type === 'video') {
+  if (type === 'VIDEO') {
     return (
         <div className={cx('overflow-hidden', wrapperClass)}>
           <Skeleton className="w-full aspect-video"/>
@@ -70,7 +71,7 @@ function ArtifactSkeleton({type, fullWidth}: { type: Artifact['type']; fullWidth
     )
   }
 
-  if (type === 'audio') {
+  if (type === 'AUDIO' || type === 'PDF') {
     return (
         <div className={cx('overflow-hidden', wrapperClass)}>
           <Skeleton className="w-full h-32"/>
@@ -82,7 +83,7 @@ function ArtifactSkeleton({type, fullWidth}: { type: Artifact['type']; fullWidth
     )
   }
 
-  if (type === 'html') {
+  if (type === 'SCRIPT') {
     return (
         <div className={cx('p-4 bg-charcoal border border-ash/40 space-y-2', wrapperClass)}>
           <Skeleton className="h-5 w-1/3 mb-4"/>
@@ -163,35 +164,45 @@ function ArtifactModal({
 
           {/* Modal content */}
           <div className="flex-1 overflow-auto p-4">
-            {artifact.type === 'image' && (
+            {artifact.type === 'IMAGE' && (
                 <img
-                    src={artifact.src}
+                    src={artifact.url}
                     alt={artifact.alt || 'Artifact image'}
                     className="max-w-full max-h-full object-contain mx-auto"
                 />
             )}
-            {artifact.type === 'video' && (
+            {artifact.type === 'VIDEO' && (
                 <VideoCard
-                    src={artifact.src || ''}
+                    src={artifact.url || ''}
                     aspectRatio="video"
                     controls
                     className="max-w-full max-h-full mx-auto"
                 />
             )}
-            {artifact.type === 'audio' && (
+            {artifact.type === 'AUDIO' && (
                 <AudioCard
-                    src={artifact.src || ''}
+                    src={artifact.url || ''}
                     controls
                     className="max-w-xl mx-auto"
                 />
             )}
-            {artifact.type === 'text' && (
-                <MarkdownContent
-                    content={artifact.content || ''}
-                    className="prose-sm prose-invert max-w-none"
+            {artifact.type === 'PDF' && (
+                <PdfCard
+                    url={artifact.url || ''}
+                    className="h-full border-0"
                 />
             )}
-            {artifact.type === 'html' && artifact.scriptElements && (
+            {artifact.type === 'TEXT' && (
+                <MarkdownContent
+                    content={artifact.inlineContent || artifact.inlineContent || ''}
+                    isMarkdown={artifact.mimeType === 'text/markdown'}
+                    className={cx(
+                        "prose prose-invert max-w-none",
+                        artifact.mimeType === 'text/plain' && "whitespace-pre-wrap"
+                    )}
+                />
+            )}
+            {artifact.type === 'SCRIPT' && artifact.scriptElements && (
                 <ScriptCard
                     elements={artifact.scriptElements}
                     maxHeight="100%"
@@ -230,7 +241,7 @@ function ArtifactRenderer({
     }, 800)
 
     return () => clearTimeout(timer)
-  }, [artifact.src, artifact.id])
+  }, [artifact.url, artifact.id])
 
   // Full-width class for grid layout
   const fullWidthClass = artifact.fullWidth ? 'col-span-full' : ''
@@ -241,7 +252,7 @@ function ArtifactRenderer({
   }
 
   // Only show the actual content when both image is loaded AND minimum delay has passed
-  const showContent = artifact.type !== 'image' || (imageLoaded && minDelayPassed)
+  const showContent = artifact.type !== 'IMAGE' || (imageLoaded && minDelayPassed)
 
   const expandButton = onExpand && (
       <button
@@ -261,16 +272,16 @@ function ArtifactRenderer({
   )
 
   switch (artifact.type) {
-    case 'image':
+    case 'IMAGE':
       return (
           <div
               className={cx('relative group cursor-pointer', fullWidthClass)}
               onClick={onExpand}
           >
-            {!showContent && <ArtifactSkeleton type="image"/>}
+            {!showContent && <ArtifactSkeleton type="IMAGE"/>}
             {expandButton}
             <ImageCard
-                src={artifact.src || ''}
+                src={artifact.url || ''}
                 alt={artifact.alt || 'Artifact image'}
                 title={artifact.title}
                 subtitle={artifact.subtitle}
@@ -284,12 +295,12 @@ function ArtifactRenderer({
           </div>
       )
 
-    case 'video':
+    case 'VIDEO':
       return (
           <div className={cx('relative group', fullWidthClass)}>
             {expandButton}
             <VideoCard
-                src={artifact.src || ''}
+                src={artifact.url || ''}
                 title={artifact.title}
                 subtitle={artifact.subtitle}
                 aspectRatio="video"
@@ -299,12 +310,12 @@ function ArtifactRenderer({
           </div>
       )
 
-    case 'audio':
+    case 'AUDIO':
       return (
           <div className={cx('relative group', fullWidthClass)}>
             {expandButton}
             <AudioCard
-                src={artifact.src || ''}
+                src={artifact.url || ''}
                 title={artifact.title}
                 subtitle={artifact.subtitle}
                 controls
@@ -313,7 +324,23 @@ function ArtifactRenderer({
           </div>
       )
 
-    case 'html':
+    case 'PDF':
+      return (
+          <div
+              className={cx('relative group cursor-pointer', fullWidthClass)}
+              onClick={onExpand}
+          >
+            {expandButton}
+            <PdfCard
+                url={artifact.url || ''}
+                title={artifact.title}
+                subtitle={artifact.subtitle}
+                className="w-full"
+            />
+          </div>
+      )
+
+    case 'SCRIPT':
       return (
           <div
               className={cx('relative group cursor-pointer', fullWidthClass)}
@@ -330,7 +357,7 @@ function ArtifactRenderer({
           </div>
       )
 
-    case 'text':
+    case 'TEXT':
       return (
           <div
               className={cx(
@@ -344,8 +371,12 @@ function ArtifactRenderer({
                 <h4 className="text-sm font-semibold text-white mb-2">{artifact.title}</h4>
             )}
             <MarkdownContent
-                content={artifact.content || ''}
-                className="prose-sm prose-invert max-h-48 overflow-y-auto"
+                content={artifact.inlineContent || artifact.inlineContent || ''}
+                isMarkdown={artifact.mimeType === 'text/markdown'}
+                className={cx(
+                    "prose-sm prose-invert max-h-48 overflow-y-auto",
+                    artifact.mimeType === 'text/plain' && "whitespace-pre-wrap"
+                )}
             />
           </div>
       )
