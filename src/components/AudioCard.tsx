@@ -16,6 +16,7 @@ export interface AudioCardProps extends Omit<CardProps, 'title'> {
   mediaClassName?: string
   contentClassName?: string
   playerProps?: any
+  height?: string | number
 }
 
 export const AudioCard = React.forwardRef<HTMLDivElement, AudioCardProps>(
@@ -34,6 +35,7 @@ export const AudioCard = React.forwardRef<HTMLDivElement, AudioCardProps>(
           className,
           children,
           playerProps,
+          height = '40px',
           ...props
         },
         ref
@@ -60,13 +62,13 @@ export const AudioCard = React.forwardRef<HTMLDivElement, AudioCardProps>(
                     muted={muted}
                     loop={loop}
                     width="100%"
-                    height="40px"
+                    height={height}
                     style={{backgroundColor: 'transparent'}}
                     config={{
                       file: {
                         forceAudio: true,
                         attributes: {
-                          style: {width: '100%', height: '40px'}
+                          style: {width: '100%', height: height}
                         }
                       }
                     }}

@@ -271,7 +271,13 @@ export {
   AudioCard,
   type AudioCardProps,
 } from './AudioCard'
-export {SectionHeading, type SectionHeadingProps, type SectionHeadingLevel} from './SectionHeading'
+export {
+  PdfCard,
+  type PdfCardProps,
+} from './PdfCard'
+export {
+  SectionHeading, type SectionHeadingProps, type SectionHeadingLevel
+} from './SectionHeading'
 export {
   ScriptCard,
   type ScriptCardProps,

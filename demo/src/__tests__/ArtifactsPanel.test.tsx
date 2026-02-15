@@ -6,17 +6,17 @@ describe('ArtifactsPanel', () => {
   const mockArtifacts = [
     {
       id: '1',
-      type: 'image' as const,
-      src: 'https://example.com/image.jpg',
+      type: 'IMAGE' as const,
+      url: 'https://example.com/image.jpg',
       alt: 'Test image',
       title: 'Image Title',
       subtitle: 'Image subtitle',
     },
     {
       id: '2',
-      type: 'text' as const,
+      type: 'TEXT' as const,
       title: 'Text Artifact',
-      content: 'Some markdown content',
+      inlineContent: 'Some markdown content',
     },
   ]
 
@@ -71,8 +71,8 @@ describe('ArtifactsPanel', () => {
     const imageArtifact = [
       {
         id: '1',
-        type: 'image' as const,
-        src: 'https://example.com/image.jpg',
+        type: 'IMAGE' as const,
+        url: 'https://example.com/image.jpg',
         alt: 'Test image',
         title: 'My Image',
         subtitle: 'A test image',
@@ -86,9 +86,9 @@ describe('ArtifactsPanel', () => {
     const textArtifact = [
       {
         id: '1',
-        type: 'text' as const,
+        type: 'TEXT' as const,
         title: 'Documentation',
-        content: 'Some documentation content',
+        inlineContent: 'Some documentation content',
       },
     ]
     render(<ArtifactsPanel artifacts={textArtifact} isOpen={true}/>)
@@ -99,8 +99,8 @@ describe('ArtifactsPanel', () => {
     const videoArtifact = [
       {
         id: '1',
-        type: 'video' as const,
-        src: 'https://example.com/video.mp4',
+        type: 'VIDEO' as const,
+        url: 'https://example.com/video.mp4',
         title: 'Demo Video',
         subtitle: 'A demonstration',
       },
@@ -113,7 +113,7 @@ describe('ArtifactsPanel', () => {
     const scriptArtifact = [
       {
         id: '1',
-        type: 'html' as const,
+        type: 'SCRIPT' as const,
         title: 'Script Artifact',
         scriptElements: [
           {type: 'scene-heading' as const, content: 'INT. OFFICE - DAY'},
@@ -131,8 +131,8 @@ describe('ArtifactsPanel', () => {
     const artifactWithPending = [
       {
         id: '1',
-        type: 'image' as const,
-        src: 'https://example.com/image.jpg',
+        type: 'IMAGE' as const,
+        url: 'https://example.com/image.jpg',
         isPending: true,
       },
     ]

@@ -1,9 +1,18 @@
 import React, {useMemo} from 'react'
 import DOMPurify, {type Config} from 'dompurify'
-import {cx} from '../utils/cx'
+import {marked} from 'marked'
+import {cx} from '../utils'
 
 export interface MarkdownContentProps extends React.HTMLAttributes<HTMLDivElement> {
+  /**
+   * Content to display (can be Markdown or HTML)
+   */
   content: string
+  /**
+   * Whether the content should be treated as Markdown
+   * @default true
+   */
+  isMarkdown?: boolean
   sanitizeConfig?: Config
   /**
    * When true, injects a streaming cursor at the end of the content
@@ -101,7 +110,20 @@ export const MarkdownContent = React.forwardRef<HTMLDivElement, MarkdownContentP
           return ''
         }
         const config = sanitizeConfig ?? DEFAULT_SANITIZE_CONFIG
-        const sanitized = content ? DOMPurify.sanitize(content, config) : ''
+
+        // Convert markdown to HTML if requested
+        let htmlContent: string
+        try {
+          // marked.parse can be sync or async, but for simple strings it's usually sync
+          // In latest marked versions, it returns a promise if not configured otherwise,
+          // but we can use marked.parse or just marked.parse if we know it's sync.
+          htmlContent = marked.parse(content) as string
+        } catch (e) {
+          console.error('Error parsing markdown:', e)
+          htmlContent = content
+        }
+
+        const sanitized = htmlContent ? DOMPurify.sanitize(htmlContent, config) : ''
 
         if (isStreaming) {
           return injectStreamingCursor(sanitized, cursorClassName)

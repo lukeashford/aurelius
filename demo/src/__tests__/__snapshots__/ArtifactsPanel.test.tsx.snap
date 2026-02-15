@@ -164,7 +164,11 @@ exports[`ArtifactsPanel matches snapshot when expanded with artifacts 1`] = `
         <div
           class="prose prose-sm prose-invert max-h-48 overflow-y-auto"
         >
-          Some markdown content
+          <p>
+            Some markdown content
+          </p>
+          
+
         </div>
       </div>
     </div>

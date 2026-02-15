@@ -214,8 +214,8 @@ describe('ChatInterface', () => {
     const mockArtifacts = [
       {
         id: '1',
-        type: 'image' as const,
-        src: 'https://example.com/image.jpg',
+        type: 'IMAGE' as const,
+        url: 'https://example.com/image.jpg',
         title: 'Test Artifact',
       },
     ]
@@ -232,8 +232,8 @@ describe('ChatInterface', () => {
     const mockArtifacts = [
       {
         id: '1',
-        type: 'image' as const,
-        src: 'https://example.com/image.jpg',
+        type: 'IMAGE' as const,
+        url: 'https://example.com/image.jpg',
         title: 'Artifact Title',
       },
     ]
@@ -249,7 +249,7 @@ describe('ChatInterface', () => {
   it('calls onArtifactsPanelOpenChange when panel toggle is clicked', () => {
     const onPanelChange = jest.fn()
     const mockArtifacts = [
-      {id: '1', type: 'image' as const, src: 'https://example.com/image.jpg'},
+      {id: '1', type: 'IMAGE' as const, url: 'https://example.com/image.jpg'},
     ]
     render(
         <ChatInterface

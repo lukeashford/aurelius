@@ -7,17 +7,22 @@ global.TextDecoder = TextDecoder as any;
 
 // Mock react-player
 jest.mock('react-player', () => {
+  const MockPlayer = (props: any) => {
+    // Filter out props that are not valid for a div or use a custom tag
+    const {url, src, playing, controls, light, volume, muted, loop, ...rest} = props;
+    return React.createElement('div', {
+      'data-testid': 'mock-react-player',
+      'data-src': src || url,
+      ...rest
+    });
+  };
+
+  // Add canPlay static method
+  MockPlayer.canPlay = () => true;
+
   return {
     __esModule: true,
-    default: (props: any) => {
-      // Filter out props that are not valid for a div or use a custom tag
-      const {url, src, playing, controls, light, volume, muted, loop, ...rest} = props;
-      return React.createElement('div', {
-        'data-testid': 'mock-react-player',
-        'data-src': src || url,
-        ...rest
-      });
-    },
+    default: MockPlayer,
   };
 });
 
