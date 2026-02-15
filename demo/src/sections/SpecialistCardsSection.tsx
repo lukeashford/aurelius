@@ -163,7 +163,7 @@ export default function SpecialistCardsSection() {
           </div>
 
           <div
-              className="py-8 min-h-[400px] flex items-center justify-center bg-obsidian/50 border border-ash/10">
+              className="py-8 flex items-center justify-center bg-obsidian/50 border border-ash/10">
             {renderActiveCard()}
           </div>
 
