@@ -1,4 +1,4 @@
-name: Test React Compatibility
+name: Tests
 
 on:
   push:
@@ -8,13 +8,8 @@ on:
 
 jobs:
   test-root:
-    name: Test Root Package (React ${{ matrix.react-version }})
+    name: Test Root Package
     runs-on: ubuntu-latest
-
-    strategy:
-      fail-fast: false
-      matrix:
-        react-version: [ '18.3.0', '19.2.1' ]
 
     steps:
       - uses: actions/checkout@v4
@@ -28,10 +23,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Override React version to ${{ matrix.react-version }}
-        run: |
-          npm install react@${{ matrix.react-version }} react-dom@${{ matrix.react-version }} --save-dev --legacy-peer-deps
-
       - name: Type check
         run: npm run typecheck
 
@@ -39,13 +30,8 @@ jobs:
         run: npm run build
 
   test-demo:
-    name: Test Demo (React ${{ matrix.react-version }})
+    name: Test Demo
     runs-on: ubuntu-latest
-
-    strategy:
-      fail-fast: false
-      matrix:
-        react-version: [ '18.3.0', '19.2.1' ]
 
     steps:
       - uses: actions/checkout@v4
@@ -58,10 +44,6 @@ jobs:
 
       - name: Install root dependencies
         run: npm ci
-
-      - name: Override React version in root to ${{ matrix.react-version }}
-        run: |
-          npm install react@${{ matrix.react-version }} react-dom@${{ matrix.react-version }} --save-dev --legacy-peer-deps
 
       - name: Build root package
         run: npm run build
@@ -77,11 +59,6 @@ jobs:
       - name: Install packed aurelius tarball in demo
         working-directory: ./demo
         run: npm install ../${{ steps.pack.outputs.tarball }} --legacy-peer-deps --no-save
-
-      - name: Override React version in demo to ${{ matrix.react-version }}
-        working-directory: ./demo
-        run: |
-          npm install react@${{ matrix.react-version }} react-dom@${{ matrix.react-version }} --legacy-peer-deps
 
       - name: Lint demo
         working-directory: ./demo
@@ -109,7 +86,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: playwright-report-react-${{ matrix.react-version }}
+          name: playwright-report
           path: demo/playwright-report/
           retention-days: 30
 
@@ -117,7 +94,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: playwright-snapshots-react-${{ matrix.react-version }}
+          name: playwright-snapshots
           path: demo/e2e/**/*-snapshots/
           retention-days: 30
 
@@ -134,4 +111,4 @@ jobs:
             echo "Tests failed! Check the logs above."
             exit 1
           fi
-          echo "✅ All tests passed on React 18.3.0 and 19.2.1!"
+          echo "✅ All tests passed on React 19!"
