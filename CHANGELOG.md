@@ -1,3 +1,10 @@
+## [2.15.0](https://github.com/lukeashford/aurelius/compare/v2.14.0...v2.15.0) (2026-02-15)
+
+### Features
+
+* **chat:** improve empty state UI and align styles ([8aef267](https://github.com/lukeashford/aurelius/commit/8aef2675ec6274065988af7d31c0c755aecaaf80))
+* **chat:** improve empty state UI and align styles ([#28](https://github.com/lukeashford/aurelius/issues/28)) ([74d46b4](https://github.com/lukeashford/aurelius/commit/74d46b4b62f50c91e5afdccbc9f34db738b9dd79))
+
 ## [2.14.0](https://github.com/lukeashford/aurelius/compare/v2.13.0...v2.14.0) (2026-02-12)
 
 ### Features
