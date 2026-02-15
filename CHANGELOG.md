@@ -1,3 +1,10 @@
+## [2.15.1](https://github.com/lukeashford/aurelius/compare/v2.15.0...v2.15.1) (2026-02-15)
+
+### Bug Fixes
+
+* **deps:** upgrade dependencies to rm vulns ([69fb240](https://github.com/lukeashford/aurelius/commit/69fb24076d0ee61369dcd59134193dd680142ff8))
+* **deps:** upgrade dependencies to rm vulns ([#29](https://github.com/lukeashford/aurelius/issues/29)) ([2605c2e](https://github.com/lukeashford/aurelius/commit/2605c2ec5b85f28f2047d0fce57150c797674108))
+
 ## [2.15.0](https://github.com/lukeashford/aurelius/compare/v2.14.0...v2.15.0) (2026-02-15)
 
 ### Features
