@@ -83,7 +83,7 @@ export interface UseArtifactsReturn {
  * // When SSE artifact.created event arrives
  * showArtifact(artifactId, {
  *   type: 'IMAGE',
- *   src: 'https://example.com/image.png',
+ *   url: 'https://example.com/image.png',
  *   title: 'Generated Image',
  * })
  *

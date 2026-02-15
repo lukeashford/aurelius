@@ -505,7 +505,7 @@ scheduleArtifact({ id: operatorId, type: 'IMAGE' })
 // When SSE artifact.created event arrives
 showArtifact(artifactId, {
   type: 'IMAGE',
-  src: 'https://example.com/image.png',
+  url: 'https://example.com/image.png',
   title: 'Generated Image',
 })
 

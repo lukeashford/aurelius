@@ -32,7 +32,7 @@ describe('useArtifacts', () => {
     act(() => {
       result.current.showArtifact('art-1', {
         type: 'IMAGE',
-        src: 'https://example.com/image.jpg',
+        url: 'https://example.com/image.jpg',
         title: 'Test Image',
       })
     })
@@ -41,7 +41,7 @@ describe('useArtifacts', () => {
     expect(result.current.artifacts[0]).toEqual({
       id: 'art-1',
       type: 'IMAGE',
-      src: 'https://example.com/image.jpg',
+      url: 'https://example.com/image.jpg',
       title: 'Test Image',
       isPending: false,
     })
@@ -53,7 +53,7 @@ describe('useArtifacts', () => {
     act(() => {
       result.current.showArtifact('art-1', {
         type: 'IMAGE',
-        src: 'https://example.com/image.jpg',
+        url: 'https://example.com/image.jpg',
         title: 'New Image',
       })
     })
@@ -62,7 +62,7 @@ describe('useArtifacts', () => {
     expect(result.current.artifacts[0]).toEqual({
       id: 'art-1',
       type: 'IMAGE',
-      src: 'https://example.com/image.jpg',
+      url: 'https://example.com/image.jpg',
       title: 'New Image',
       isPending: false,
     })
@@ -133,13 +133,13 @@ describe('useArtifacts', () => {
     act(() => {
       result.current.showArtifact('op-123', {
         type: 'IMAGE',
-        src: 'https://example.com/result.png',
+        url: 'https://example.com/result.png',
         title: 'Generated Image',
         subtitle: 'AI-generated artwork',
       })
     })
     expect(result.current.artifacts[0].isPending).toBe(false)
-    expect(result.current.artifacts[0].src).toBe('https://example.com/result.png')
+    expect(result.current.artifacts[0].url).toBe('https://example.com/result.png')
 
     // 3. Clear all
     act(() => {

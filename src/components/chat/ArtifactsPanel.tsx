@@ -194,7 +194,7 @@ function ArtifactModal({
             )}
             {artifact.type === 'TEXT' && (
                 <MarkdownContent
-                    content={artifact.inlineContent || artifact.inlineContent || ''}
+                    content={artifact.inlineContent || ''}
                     isMarkdown={artifact.mimeType === 'text/markdown'}
                     className={cx(
                         "prose prose-invert max-w-none",
@@ -371,7 +371,7 @@ function ArtifactRenderer({
                 <h4 className="text-sm font-semibold text-white mb-2">{artifact.title}</h4>
             )}
             <MarkdownContent
-                content={artifact.inlineContent || artifact.inlineContent || ''}
+                content={artifact.inlineContent || ''}
                 isMarkdown={artifact.mimeType === 'text/markdown'}
                 className={cx(
                     "prose-sm prose-invert max-h-48 overflow-y-auto",

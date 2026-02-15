@@ -7,7 +7,7 @@ describe('ArtifactsPanel', () => {
     {
       id: '1',
       type: 'IMAGE' as const,
-      src: 'https://example.com/image.jpg',
+      url: 'https://example.com/image.jpg',
       alt: 'Test image',
       title: 'Image Title',
       subtitle: 'Image subtitle',
@@ -16,7 +16,7 @@ describe('ArtifactsPanel', () => {
       id: '2',
       type: 'TEXT' as const,
       title: 'Text Artifact',
-      content: 'Some markdown content',
+      inlineContent: 'Some markdown content',
     },
   ]
 
@@ -72,7 +72,7 @@ describe('ArtifactsPanel', () => {
       {
         id: '1',
         type: 'IMAGE' as const,
-        src: 'https://example.com/image.jpg',
+        url: 'https://example.com/image.jpg',
         alt: 'Test image',
         title: 'My Image',
         subtitle: 'A test image',
@@ -88,7 +88,7 @@ describe('ArtifactsPanel', () => {
         id: '1',
         type: 'TEXT' as const,
         title: 'Documentation',
-        content: 'Some documentation content',
+        inlineContent: 'Some documentation content',
       },
     ]
     render(<ArtifactsPanel artifacts={textArtifact} isOpen={true}/>)
@@ -100,7 +100,7 @@ describe('ArtifactsPanel', () => {
       {
         id: '1',
         type: 'VIDEO' as const,
-        src: 'https://example.com/video.mp4',
+        url: 'https://example.com/video.mp4',
         title: 'Demo Video',
         subtitle: 'A demonstration',
       },
@@ -132,7 +132,7 @@ describe('ArtifactsPanel', () => {
       {
         id: '1',
         type: 'IMAGE' as const,
-        src: 'https://example.com/image.jpg',
+        url: 'https://example.com/image.jpg',
         isPending: true,
       },
     ]
