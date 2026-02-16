@@ -408,6 +408,11 @@
     color: var(--color-obsidian);
   }
 
+  .bg-gold ::selection {
+    background-color: var(--color-obsidian);
+    color: var(--color-gold);
+  }
+
   /* Scrollbars */
   ::-webkit-scrollbar {
     width: 8px;
