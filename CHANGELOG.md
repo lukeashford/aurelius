@@ -1,3 +1,10 @@
+## [2.17.0](https://github.com/lukeashford/aurelius/compare/v2.16.0...v2.17.0) (2026-02-17)
+
+### Features
+
+* **card:** refactor card structure ([efdfb69](https://github.com/lukeashford/aurelius/commit/efdfb694080cdfdb900c20fb478d1460978070d2))
+* **styles:** add custom ::selection styles for .bg-gold class ([3ad8bde](https://github.com/lukeashford/aurelius/commit/3ad8bde30ec9cc268333e39c6c27b5e17805730f))
+
 ## [2.16.0](https://github.com/lukeashford/aurelius/compare/v2.15.1...v2.16.0) (2026-02-15)
 
 ### Features
