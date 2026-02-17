@@ -1,16 +1,5 @@
 import React, {useState} from 'react'
-import {
-  ArtifactType,
-  AudioCard,
-  Button,
-  Card,
-  ImageCard,
-  MarkdownContent,
-  PdfCard,
-  ScriptCard,
-  ScriptElement,
-  VideoCard
-} from '@lukeashford/aurelius'
+import {ArtifactCard, ArtifactType, Button, ScriptElement} from '@lukeashford/aurelius'
 import Section from './Section'
 
 const SCRIPT_ELEMENTS: ScriptElement[] = [
@@ -77,70 +66,15 @@ export default function SpecialistCardsSection() {
   const renderActiveCard = () => {
     const data = DEMO_DATA[activeType]
 
-    switch (activeType) {
-      case 'IMAGE':
-        return (
-            <ImageCard
-                src={data.url}
-                alt={data.alt}
-                title={data.title}
-                subtitle={data.subtitle}
-                aspectRatio="landscape"
-                className="w-full max-w-2xl mx-auto"
-            />
-        )
-      case 'PDF':
-        return (
-            <PdfCard
-                url={data.url}
-                title={data.title}
-                subtitle={data.subtitle}
-                className="w-full max-w-4xl mx-auto"
-            />
-        )
-      case 'AUDIO':
-        return (
-            <AudioCard
-                src={data.url}
-                title={data.title}
-                subtitle={data.subtitle}
-                className="w-full max-w-xl mx-auto"
-            />
-        )
-      case 'VIDEO':
-        return (
-            <VideoCard
-                src={data.url}
-                title={data.title}
-                subtitle={data.subtitle}
-                aspectRatio="video"
-                className="w-full max-w-3xl mx-auto"
-            />
-        )
-      case 'TEXT':
-        return (
-            <Card className="w-full max-w-2xl mx-auto p-6">
-              <h4 className="text-lg font-semibold mb-4">{data.title}</h4>
-              <MarkdownContent
-                  content={data.inlineContent}
-                  isMarkdown={data.mimeType === 'text/markdown'}
-                  className="prose prose-invert"
-              />
-            </Card>
-        )
-      case 'SCRIPT':
-        return (
-            <ScriptCard
-                title={data.title}
-                subtitle={data.subtitle}
-                elements={data.scriptElements}
-                maxHeight="400px"
-                className="w-full max-w-2xl mx-auto"
-            />
-        )
-      default:
-        return null
-    }
+    return (
+        <ArtifactCard
+            artifact={{
+              id: 'demo',
+              ...data
+            }}
+            className="w-full max-w-4xl mx-auto"
+        />
+    )
   }
 
   return (

@@ -1,6 +1,8 @@
 import React from 'react'
 import {cx} from '../utils'
 
+import {Card, type CardProps} from './Card'
+
 /**
  * Script element types following standard screenplay format
  */
@@ -28,15 +30,15 @@ export interface ScriptElement {
   content: string
 }
 
-export interface ScriptCardProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface ScriptCardProps extends Omit<CardProps, 'title'> {
   /**
    * Title of the script (shown at top)
    */
-  title?: string
+  title?: React.ReactNode
   /**
    * Subtitle/metadata (e.g., "30-second spot • Directed by AI Creative")
    */
-  subtitle?: string
+  subtitle?: React.ReactNode
   /**
    * Array of script elements in order.
    * Available types: 'scene-heading', 'action', 'character', 'dialogue', 'parenthetical',
@@ -139,38 +141,28 @@ function ScriptElementRenderer({element}: { element: ScriptElement }) {
  * ```
  */
 export const ScriptCard = React.forwardRef<HTMLDivElement, ScriptCardProps>(
-    ({title, subtitle, elements, maxHeight = '16rem', className, style, ...rest}, ref) => {
+    ({title, subtitle, elements, maxHeight = '16rem', className, style, isLoading, ...rest},
+        ref) => {
       return (
-          <div
+          <Card
               ref={ref}
-              className={cx(
-                  'bg-charcoal border border-ash/40',
-                  className
-              )}
+              className={cx('p-0 overflow-hidden w-full', className)}
+              isLoading={isLoading}
               {...rest}
           >
-            {/* Header */}
-            {(title || subtitle) && (
-                <div className="px-4 py-3 border-b border-ash/40">
-                  {title && (
-                      <h4 className="text-sm font-heading text-gold">{title}</h4>
-                  )}
-                  {subtitle && (
-                      <p className="text-xs text-silver/60 mt-0.5">{subtitle}</p>
-                  )}
-                </div>
-            )}
-
-            {/* Script content */}
-            <div
-                className="px-4 py-3 font-mono overflow-y-auto"
+            <Card.Header
+                title={title}
+                subtitle={subtitle}
+            />
+            <Card.Body
+                className="font-mono overflow-y-auto"
                 style={{maxHeight, ...style}}
             >
               {elements.map((element, index) => (
                   <ScriptElementRenderer key={index} element={element}/>
               ))}
-            </div>
-          </div>
+            </Card.Body>
+          </Card>
       )
     }
 )

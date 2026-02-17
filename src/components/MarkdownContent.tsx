@@ -102,7 +102,8 @@ function injectStreamingCursor(html: string, cursorClassName?: string): string {
 }
 
 export const MarkdownContent = React.forwardRef<HTMLDivElement, MarkdownContentProps>(
-    ({className, content, sanitizeConfig, isStreaming, cursorClassName, ...rest}, ref) => {
+    ({className, content, isMarkdown = true, sanitizeConfig, isStreaming, cursorClassName, ...rest},
+        ref) => {
       useDOMPurifySetup()
 
       const sanitizedHtml = useMemo(() => {
@@ -113,13 +114,15 @@ export const MarkdownContent = React.forwardRef<HTMLDivElement, MarkdownContentP
 
         // Convert markdown to HTML if requested
         let htmlContent: string
-        try {
-          // marked.parse can be sync or async, but for simple strings it's usually sync
-          // In latest marked versions, it returns a promise if not configured otherwise,
-          // but we can use marked.parse or just marked.parse if we know it's sync.
-          htmlContent = marked.parse(content) as string
-        } catch (e) {
-          console.error('Error parsing markdown:', e)
+        if (isMarkdown) {
+          try {
+            // marked.parse can be sync or async, but for simple strings it's usually sync
+            htmlContent = marked.parse(content) as string
+          } catch (e) {
+            console.error('Error parsing markdown:', e)
+            htmlContent = content
+          }
+        } else {
           htmlContent = content
         }
 

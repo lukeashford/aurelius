@@ -276,6 +276,14 @@ export {
   type PdfCardProps,
 } from './PdfCard'
 export {
+  TextCard,
+  type TextCardProps,
+} from './TextCard'
+export {
+  ArtifactCard,
+  type ArtifactCardProps,
+} from './ArtifactCard'
+export {
   SectionHeading, type SectionHeadingProps, type SectionHeadingLevel
 } from './SectionHeading'
 export {

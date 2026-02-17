@@ -100,6 +100,7 @@ Import from `@lukeashford/aurelius`:
 |-----------|-------|
 | Accordion | type, defaultValue, value, onValueChange, value, disabled |
 | Alert | variant (info, success, warning, error), title |
+| ArtifactCard | artifact, onExpand, isLoading |
 | AttachmentPreview | attachments, onRemove, removable, maxVisible |
 | AudioCard | src, title, subtitle, playing, controls, volume, muted, loop, mediaClassName, contentClassName, playerProps, height |
 | Avatar | src, alt, name, size (xs, sm, md, lg, xl, 2xl), status (online, offline, busy) |
@@ -107,7 +108,7 @@ Import from `@lukeashford/aurelius`:
 | BrandIcon | size (sm, md, lg), variant (solid, outline) |
 | Breadcrumb | separator, current |
 | Button | variant (primary, important, elevated, outlined, featured, ghost, danger), size (sm, md, lg, xl), loading |
-| Card | variant (default, elevated, outlined, ghost, featured), interactive, selected, noPadding, title, subtitle, action, align, src, alt, aspect, position, isVideo |
+| Card | variant (default, elevated, outlined, ghost, featured), interactive, selected, noPadding, isLoading, title, subtitle, action, align, aspect, position |
 | Checkbox | label |
 | Col | span, offset, order |
 | ColorSwatch | color, label |
@@ -128,7 +129,7 @@ Import from `@lukeashford/aurelius`:
 | Modal | isOpen, onClose, title, children, className |
 | Navbar | fixed, bordered, position, active, active |
 | Pagination | page, totalPages, onPageChange, siblingCount, showEdges |
-| PdfCard | url, title, subtitle, height, mediaClassName, contentClassName |
+| PdfCard | src, title, subtitle, height, mediaClassName, contentClassName |
 | Popover | children, trigger, position (top, bottom, left, right), align (start, center, end), open, onOpenChange, closeOnClickOutside |
 | Progress | value, max, size (sm, md, lg), variant (default, success, warning, error), showValue, formatValue, indeterminate |
 | Radio | label |
@@ -145,6 +146,7 @@ Import from `@lukeashford/aurelius`:
 | Switch | checked, defaultChecked, onCheckedChange, label |
 | Table | responsive, hoverable, selected, sortable, sortDirection |
 | Tabs | defaultValue, value, onValueChange, value, value, forceMount |
+| TextCard | content, title, subtitle, isMarkdown, maxHeight, contentClassName |
 | Textarea | error |
 | Toast | children, position (top-right, top-left, bottom-right, bottom-left, top-center, bottom-center), defaultDuration |
 | Tooltip | content, children, open, side (top, right, bottom, left) |
@@ -179,6 +181,14 @@ Import from `@lukeashford/aurelius`:
 - **onValueChange**: Callback when expanded items change
 - **value**: Unique identifier for this item
 - **disabled**: Disable this item
+
+**ArtifactCard**
+A dispatcher component that renders the appropriate specialist card
+based on the artifact type.
+
+- **artifact**: * The artifact object to display
+- **onExpand**: * Callback when the artifact should be expanded/opened
+- **isLoading**: * Whether the artifact is still loading
 
 **AttachmentPreview**
 - **AttachmentItem.id**: * Unique identifier
@@ -225,7 +235,7 @@ Import from `@lukeashford/aurelius`:
 **PdfCard**
 A card for displaying PDF documents with an embedded viewer.
 
-- **url**: * URL of the PDF file
+- **src**: * URL of the PDF file
 - **title**: * Title of the document
 - **subtitle**: * Subtitle or document metadata
 - **height**: * Height of the PDF viewer
@@ -281,6 +291,16 @@ Follows standard screenplay formatting conventions:
 - **value**: Unique identifier for this tab
 - **value**: Value matching the corresponding Tab
 - **forceMount**: Force the panel to stay mounted when inactive
+
+**TextCard**
+A card for displaying text content, supporting Markdown and HTML formatting.
+
+- **content**: * Text content to display (Markdown, HTML, or plain text)
+- **title**: * Optional title for the card
+- **subtitle**: * Optional subtitle or metadata
+- **isMarkdown**: * Whether the content should be treated as Markdown @default true
+- **maxHeight**: * Maximum height of the content area before scrolling @default '16rem'
+- **contentClassName**: * Optional class name for the content container
 
 **ArtifactsPanel**
 ArtifactsPanel displays rich content artifacts in a slide-in panel.
