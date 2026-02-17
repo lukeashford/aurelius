@@ -78,23 +78,6 @@ exports[`ArtifactsPanel matches snapshot when expanded with artifacts 1`] = `
       <div
         class="relative group cursor-pointer"
       >
-        <div
-          class="overflow-hidden"
-        >
-          <div
-            class="animate-pulse bg-ash w-full h-48"
-          />
-          <div
-            class="p-4 bg-charcoal border border-ash/40 border-t-0"
-          >
-            <div
-              class="animate-pulse bg-ash h-5 w-3/4 mb-2"
-            />
-            <div
-              class="animate-pulse bg-ash h-4 w-1/2"
-            />
-          </div>
-        </div>
         <button
           aria-label="Expand artifact"
           class="absolute top-2 right-2 z-10 p-1.5 bg-obsidian/80 text-silver hover:text-white hover:bg-obsidian opacity-0 group-hover:opacity-100 transition-opacity"
@@ -111,35 +94,43 @@ exports[`ArtifactsPanel matches snapshot when expanded with artifacts 1`] = `
           </svg>
         </button>
         <div
-          class="rounded-none bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden group w-full transition-opacity duration-300 opacity-0 absolute inset-0"
+          class="rounded-none relative transition-opacity duration-500 bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden w-full"
         >
           <div
-            class="relative overflow-hidden"
+            class="overflow-hidden relative border-b border-ash"
           >
             <img
               alt="Test image"
-              class="block max-w-full w-full h-full object-cover"
+              class="w-full h-full object-cover"
               src="https://example.com/image.jpg"
             />
           </div>
           <div
-            class="px-4 py-4"
+            class="px-6 py-4 border-b border-ash"
           >
-            <h4
-              class="text-lg font-semibold leading-tight"
+            <div
+              class="flex items-start justify-between gap-4"
             >
-              Image Title
-            </h4>
-            <p
-              class="text-sm text-silver leading-normal"
-            >
-              Image subtitle
-            </p>
+              <div
+                class="flex-1 min-w-0"
+              >
+                <h3
+                  class="text-lg font-semibold text-white m-0"
+                >
+                  Image Title
+                </h3>
+                <p
+                  class="text-sm text-silver mt-1 m-0"
+                >
+                  Image subtitle
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
       <div
-        class="relative group cursor-pointer p-4 bg-charcoal border border-ash/40"
+        class="relative group cursor-pointer"
       >
         <button
           aria-label="Expand artifact"
@@ -156,19 +147,40 @@ exports[`ArtifactsPanel matches snapshot when expanded with artifacts 1`] = `
             />
           </svg>
         </button>
-        <h4
-          class="text-sm font-semibold text-white mb-2"
-        >
-          Text Artifact
-        </h4>
         <div
-          class="prose prose-sm prose-invert max-h-48 overflow-y-auto"
+          class="rounded-none relative transition-opacity duration-500 bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden w-full"
         >
-          <p>
-            Some markdown content
-          </p>
-          
+          <div
+            class="px-6 py-4 border-b border-ash"
+          >
+            <div
+              class="flex items-start justify-between gap-4"
+            >
+              <div
+                class="flex-1 min-w-0"
+              >
+                <h3
+                  class="text-lg font-semibold text-white m-0"
+                >
+                  Text Artifact
+                </h3>
+              </div>
+            </div>
+          </div>
+          <div
+            class="px-6 py-4 overflow-y-auto"
+            style="max-height: 16rem;"
+          >
+            <div
+              class="prose prose-sm prose-invert max-w-none"
+            >
+              <p>
+                Some markdown content
+              </p>
+              
 
+            </div>
+          </div>
         </div>
       </div>
     </div>

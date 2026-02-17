@@ -7,7 +7,7 @@ export interface PdfCardProps extends Omit<CardProps, 'title'> {
   /**
    * URL of the PDF file
    */
-  url: string
+  src?: string
   /**
    * Title of the document
    */
@@ -36,7 +36,7 @@ export interface PdfCardProps extends Omit<CardProps, 'title'> {
 export const PdfCard = React.forwardRef<HTMLDivElement, PdfCardProps>(
     (
         {
-          url,
+          src,
           title,
           subtitle,
           height = '400px',
@@ -44,47 +44,41 @@ export const PdfCard = React.forwardRef<HTMLDivElement, PdfCardProps>(
           contentClassName,
           className,
           children,
+          isLoading,
           ...props
         },
         ref
     ) => {
       return (
-          <Card ref={ref} className={cx('p-0 overflow-hidden group w-full', className)} {...props}>
-            {/* Media container - PDF Viewer */}
-            <div
-                className={cx('relative w-full bg-obsidian', mediaClassName)}
+          <Card
+              ref={ref}
+              className={cx('p-0 overflow-hidden w-full', className)}
+              isLoading={isLoading}
+              {...props}
+          >
+            <Card.Media
+                className={cx('bg-obsidian', mediaClassName)}
                 style={{height}}
             >
-              <iframe
-                  src={`${url}#view=FitH`}
-                  title={typeof title === 'string' ? title : 'PDF Document'}
-                  className="w-full h-full border-0"
-              />
-            </div>
-
-            {/* Content section */}
-            {(title || subtitle || children) && (
-                <div className={cx('px-4 py-4 border-t border-ash', contentClassName)}>
-                  <div className="flex items-start gap-3">
-                    <div className="p-2 bg-ash/20 text-gold shrink-0">
-                      <FileText size={20}/>
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      {title && (
-                          <h4 className="text-sm font-semibold text-white truncate leading-tight">
-                            {title}
-                          </h4>
-                      )}
-                      {subtitle && (
-                          <p className="text-xs text-silver truncate mt-1 leading-normal">
-                            {subtitle}
-                          </p>
-                      )}
-                      {children}
-                    </div>
+              {src && (
+                  <iframe
+                      src={`${src}#view=FitH`}
+                      title={typeof title === 'string' ? title : 'PDF Document'}
+                      className="w-full h-full border-0"
+                  />
+              )}
+            </Card.Media>
+            <Card.Header
+                title={title}
+                subtitle={subtitle}
+                className={contentClassName}
+                action={
+                  <div className="p-2 bg-ash/20 text-gold shrink-0">
+                    <FileText size={20}/>
                   </div>
-                </div>
-            )}
+                }
+            />
+            {children && <Card.Body className={contentClassName}>{children}</Card.Body>}
           </Card>
       )
     }

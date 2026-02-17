@@ -1,14 +1,13 @@
 import React, {useCallback, useEffect, useState} from 'react'
 import {cx} from '../../utils'
-import {ImageCard} from '../ImageCard'
-import {VideoCard} from '../VideoCard'
+import {ArtifactCard} from '../ArtifactCard'
 import {AudioCard} from '../AudioCard'
+import {PdfCard} from '../PdfCard'
 import {ScriptCard} from '../ScriptCard'
+import {VideoCard} from '../VideoCard'
 import {MarkdownContent} from '../MarkdownContent'
-import {Skeleton} from '../Skeleton'
-import {ChevronRightIcon, CloseIcon, ExpandIcon, LayersIcon,} from '../icons'
+import {ChevronRightIcon, CloseIcon, LayersIcon,} from '../icons'
 import type {Artifact} from './hooks'
-import {PdfCard} from "../PdfCard";
 
 export interface ArtifactsPanelProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
@@ -39,72 +38,6 @@ export interface ArtifactsPanelProps extends React.HTMLAttributes<HTMLDivElement
    * Callback to start resizing
    */
   onResizeStart?: (e: React.MouseEvent) => void
-}
-
-/**
- * Render a skeleton placeholder for an artifact
- */
-function ArtifactSkeleton({type, fullWidth}: { type: Artifact['type']; fullWidth?: boolean }) {
-  const wrapperClass = fullWidth ? 'col-span-full' : ''
-
-  if (type === 'IMAGE') {
-    return (
-        <div className={cx('overflow-hidden', wrapperClass)}>
-          <Skeleton className="w-full h-48"/>
-          <div className="p-4 bg-charcoal border border-ash/40 border-t-0">
-            <Skeleton className="h-5 w-3/4 mb-2"/>
-            <Skeleton className="h-4 w-1/2"/>
-          </div>
-        </div>
-    )
-  }
-
-  if (type === 'VIDEO') {
-    return (
-        <div className={cx('overflow-hidden', wrapperClass)}>
-          <Skeleton className="w-full aspect-video"/>
-          <div className="p-4 bg-charcoal border border-ash/40 border-t-0">
-            <Skeleton className="h-5 w-3/4 mb-2"/>
-            <Skeleton className="h-4 w-1/2"/>
-          </div>
-        </div>
-    )
-  }
-
-  if (type === 'AUDIO' || type === 'PDF') {
-    return (
-        <div className={cx('overflow-hidden', wrapperClass)}>
-          <Skeleton className="w-full h-32"/>
-          <div className="p-4 bg-charcoal border border-ash/40 border-t-0">
-            <Skeleton className="h-5 w-3/4 mb-2"/>
-            <Skeleton className="h-4 w-1/2"/>
-          </div>
-        </div>
-    )
-  }
-
-  if (type === 'SCRIPT') {
-    return (
-        <div className={cx('p-4 bg-charcoal border border-ash/40 space-y-2', wrapperClass)}>
-          <Skeleton className="h-5 w-1/3 mb-4"/>
-          <Skeleton className="h-3 w-2/3"/>
-          <Skeleton className="h-3 w-full"/>
-          <Skeleton className="h-3 w-3/4"/>
-          <Skeleton className="h-3 w-full"/>
-          <Skeleton className="h-3 w-1/2"/>
-        </div>
-    )
-  }
-
-  // Text artifact skeleton
-  return (
-      <div className={cx('p-4 bg-charcoal border border-ash/40 space-y-2', wrapperClass)}>
-        <Skeleton className="h-5 w-1/2"/>
-        <Skeleton className="h-4 w-full"/>
-        <Skeleton className="h-4 w-full"/>
-        <Skeleton className="h-4 w-3/4"/>
-      </div>
-  )
 }
 
 /**
@@ -188,7 +121,7 @@ function ArtifactModal({
             )}
             {artifact.type === 'PDF' && (
                 <PdfCard
-                    url={artifact.url || ''}
+                    src={artifact.url || ''}
                     className="h-full border-0"
                 />
             )}
@@ -227,163 +160,13 @@ function ArtifactRenderer({
   isLoading?: boolean
   onExpand?: () => void
 }) {
-  const [imageLoaded, setImageLoaded] = useState(false)
-  const [minDelayPassed, setMinDelayPassed] = useState(false)
-
-  // Reset states when artifact changes and start minimum delay timer
-  useEffect(() => {
-    setImageLoaded(false)
-    setMinDelayPassed(false)
-
-    // Minimum skeleton display time (800ms) before revealing image
-    const timer = setTimeout(() => {
-      setMinDelayPassed(true)
-    }, 800)
-
-    return () => clearTimeout(timer)
-  }, [artifact.url, artifact.id])
-
-  // Full-width class for grid layout
-  const fullWidthClass = artifact.fullWidth ? 'col-span-full' : ''
-
-  // Show skeleton for pending artifacts or when loading
-  if (isLoading || artifact.isPending) {
-    return <ArtifactSkeleton type={artifact.type} fullWidth={artifact.fullWidth}/>
-  }
-
-  // Only show the actual content when both image is loaded AND minimum delay has passed
-  const showContent = artifact.type !== 'IMAGE' || (imageLoaded && minDelayPassed)
-
-  const expandButton = onExpand && (
-      <button
-          onClick={(e) => {
-            e.stopPropagation()
-            onExpand()
-          }}
-          className={cx(
-              'absolute top-2 right-2 z-10 p-1.5',
-              'bg-obsidian/80 text-silver hover:text-white hover:bg-obsidian',
-              'opacity-0 group-hover:opacity-100 transition-opacity'
-          )}
-          aria-label="Expand artifact"
-      >
-        <ExpandIcon className="w-4 h-4"/>
-      </button>
+  return (
+      <ArtifactCard
+          artifact={artifact}
+          isLoading={isLoading}
+          onExpand={onExpand}
+      />
   )
-
-  switch (artifact.type) {
-    case 'IMAGE':
-      return (
-          <div
-              className={cx('relative group cursor-pointer', fullWidthClass)}
-              onClick={onExpand}
-          >
-            {!showContent && <ArtifactSkeleton type="IMAGE"/>}
-            {expandButton}
-            <ImageCard
-                src={artifact.url || ''}
-                alt={artifact.alt || 'Artifact image'}
-                title={artifact.title}
-                subtitle={artifact.subtitle}
-                aspectRatio="landscape"
-                className={cx(
-                    'w-full transition-opacity duration-300',
-                    showContent ? 'opacity-100' : 'opacity-0 absolute inset-0'
-                )}
-                onLoad={() => setImageLoaded(true)}
-            />
-          </div>
-      )
-
-    case 'VIDEO':
-      return (
-          <div className={cx('relative group', fullWidthClass)}>
-            {expandButton}
-            <VideoCard
-                src={artifact.url || ''}
-                title={artifact.title}
-                subtitle={artifact.subtitle}
-                aspectRatio="video"
-                controls
-                className="w-full"
-            />
-          </div>
-      )
-
-    case 'AUDIO':
-      return (
-          <div className={cx('relative group', fullWidthClass)}>
-            {expandButton}
-            <AudioCard
-                src={artifact.url || ''}
-                title={artifact.title}
-                subtitle={artifact.subtitle}
-                controls
-                className="w-full"
-            />
-          </div>
-      )
-
-    case 'PDF':
-      return (
-          <div
-              className={cx('relative group cursor-pointer', fullWidthClass)}
-              onClick={onExpand}
-          >
-            {expandButton}
-            <PdfCard
-                url={artifact.url || ''}
-                title={artifact.title}
-                subtitle={artifact.subtitle}
-                className="w-full"
-            />
-          </div>
-      )
-
-    case 'SCRIPT':
-      return (
-          <div
-              className={cx('relative group cursor-pointer', fullWidthClass)}
-              onClick={onExpand}
-          >
-            {expandButton}
-            <ScriptCard
-                title={artifact.title}
-                subtitle={artifact.subtitle}
-                elements={artifact.scriptElements || []}
-                maxHeight="16rem"
-                className="w-full"
-            />
-          </div>
-      )
-
-    case 'TEXT':
-      return (
-          <div
-              className={cx(
-                  'relative group cursor-pointer p-4 bg-charcoal border border-ash/40',
-                  fullWidthClass
-              )}
-              onClick={onExpand}
-          >
-            {expandButton}
-            {artifact.title && (
-                <h4 className="text-sm font-semibold text-white mb-2">{artifact.title}</h4>
-            )}
-            <MarkdownContent
-                content={artifact.inlineContent || ''}
-                isMarkdown={artifact.mimeType === 'text/markdown'}
-                className={cx(
-                    "prose-sm prose-invert max-h-48 overflow-y-auto",
-                    artifact.mimeType === 'text/plain' && "whitespace-pre-wrap"
-                )}
-            />
-          </div>
-      )
-
-    default:
-      return null
-  }
 }
 
 /**
