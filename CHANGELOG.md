@@ -1,3 +1,10 @@
+## [2.19.0](https://github.com/lukeashford/aurelius/compare/v2.18.0...v2.19.0) (2026-02-18)
+
+### Features
+
+* **chat:** auto-open panel on significant artifacts or tasks changes ([87544b2](https://github.com/lukeashford/aurelius/commit/87544b277a85d929de75a08940c190d175c681a3))
+* **chat:** auto-open panel on significant artifacts or tasks changes ([#33](https://github.com/lukeashford/aurelius/issues/33)) ([761015b](https://github.com/lukeashford/aurelius/commit/761015bb05d7942099b7c5ee8eeda32e05e8ae9e))
+
 ## [2.18.0](https://github.com/lukeashford/aurelius/compare/v2.17.0...v2.18.0) (2026-02-18)
 
 ### Features
