@@ -186,6 +186,15 @@ Import from `@lukeashford/aurelius`:
 A dispatcher component that renders the appropriate specialist card
 based on the artifact type.
 
+- **Artifact.inlineContent**: * For text artifacts - the content (markdown, HTML, or plain text)
+- **Artifact.url**: * For artifacts that source from a URL (image, video, audio, pdf, file)
+- **Artifact.mimeType**: * The mime type of the content
+- **Artifact.alt**: * For image artifacts - alt text
+- **Artifact.title**: * Display title shown below the artifact
+- **Artifact.subtitle**: * Display subtitle shown below the title
+- **Artifact.isPending**: * Whether this artifact is still loading (shows skeleton)
+- **Artifact.fullWidth**: * Whether the artifact should span full width in the grid
+- **Artifact.scriptElements**: * For html artifacts - structured script elements (used by ScriptCard)
 - **artifact**: * The artifact object to display
 - **onExpand**: * Callback when the artifact should be expanded/opened
 - **isLoading**: * Whether the artifact is still loading
@@ -453,9 +462,11 @@ TodosList displays a structured list of tasks with status indicators.
 
 Features:
 - Nested tasks with indentation
-- Status indicators: done (checkmark), in_progress (snake animation), pending (empty), cancelled, failed
+- Status indicators: done (checkmark), in_progress (snake animation), pending (empty),
+cancelled, failed
 - Done tasks are crossed out with golden checkmark
-- Cancelled/failed tasks are crossed out with subtle styling and sorted to bottom of their local group
+- Cancelled/failed tasks are crossed out with subtle styling and sorted to bottom of their local
+group
 - Max 1/4 screen height with scroll
 - Subtasks appear when parent task is in_progress or done
 

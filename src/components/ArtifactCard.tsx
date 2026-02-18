@@ -1,13 +1,67 @@
 import React from 'react'
-import {Artifact} from './chat'
 import {ImageCard} from './ImageCard'
 import {VideoCard} from './VideoCard'
 import {AudioCard} from './AudioCard'
 import {PdfCard} from './PdfCard'
-import {ScriptCard} from './ScriptCard'
+import {ScriptCard, type ScriptElement} from './ScriptCard'
 import {TextCard} from './TextCard'
 import {ExpandIcon} from './icons'
 import {cx} from '../utils'
+
+/**
+ * Artifact types supported by the system
+ */
+export const ARTIFACT_TYPES = {
+  TEXT: 'TEXT',
+  IMAGE: 'IMAGE',
+  VIDEO: 'VIDEO',
+  AUDIO: 'AUDIO',
+  SCRIPT: 'SCRIPT',
+  PDF: 'PDF',
+} as const
+
+export type ArtifactType = typeof ARTIFACT_TYPES[keyof typeof ARTIFACT_TYPES]
+
+export interface Artifact {
+  id: string
+  type: ArtifactType
+  /**
+   * For text artifacts - the content (markdown, HTML, or plain text)
+   */
+  inlineContent?: string
+  /**
+   * For artifacts that source from a URL (image, video, audio, pdf, file)
+   */
+  url?: string
+  /**
+   * The mime type of the content
+   */
+  mimeType?: string
+  /**
+   * For image artifacts - alt text
+   */
+  alt?: string
+  /**
+   * Display title shown below the artifact
+   */
+  title?: string
+  /**
+   * Display subtitle shown below the title
+   */
+  subtitle?: string
+  /**
+   * Whether this artifact is still loading (shows skeleton)
+   */
+  isPending?: boolean
+  /**
+   * Whether the artifact should span full width in the grid
+   */
+  fullWidth?: boolean
+  /**
+   * For html artifacts - structured script elements (used by ScriptCard)
+   */
+  scriptElements?: ScriptElement[]
+}
 
 export interface ArtifactCardProps extends React.HTMLAttributes<HTMLDivElement> {
   /**

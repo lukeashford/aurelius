@@ -221,6 +221,7 @@ export {
   type TodosListProps,
   type Task,
   type TaskStatus,
+  TASK_STATUSES,
   type MessageActionsProps,
   type MessageActionsVariant,
   type ThinkingIndicatorProps,
@@ -229,8 +230,6 @@ export {
   type ConversationTree,
   type UseScrollAnchorOptions,
   type UseScrollAnchorReturn,
-  type Artifact,
-  type ArtifactType,
   type UseArtifactsReturn,
   // Utility functions
   createEmptyTree,
@@ -282,6 +281,9 @@ export {
 export {
   ArtifactCard,
   type ArtifactCardProps,
+  ARTIFACT_TYPES,
+  type ArtifactType,
+  type Artifact,
 } from './ArtifactCard'
 export {
   SectionHeading, type SectionHeadingProps, type SectionHeadingLevel
@@ -291,4 +293,5 @@ export {
   type ScriptCardProps,
   type ScriptElement,
   type ScriptElementType,
+  SCRIPT_ELEMENT_TYPES,
 } from './ScriptCard'
