@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useState} from 'react'
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import {cx} from '../../utils'
 import {ChatView, type ChatViewItem} from './ChatView'
 import {type Attachment, ChatInput} from './ChatInput'
@@ -6,8 +6,8 @@ import {type Conversation, ConversationSidebar} from './ConversationSidebar'
 import {ArtifactsPanel} from './ArtifactsPanel'
 import {type Task, TodosList} from './TodosList'
 import type {Artifact} from './hooks'
-import {type ConversationTree, getActivePathMessages, getSiblingInfo, switchBranch,} from './types'
 import {useResizable} from "./hooks";
+import {type ConversationTree, getActivePathMessages, getSiblingInfo, switchBranch,} from './types'
 
 export interface ChatMessage {
   /**
@@ -194,6 +194,8 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
     ) => {
       const [sidebarCollapsed, setSidebarCollapsed] = useState(initialSidebarCollapsed)
       const [internalPanelOpen, setInternalPanelOpen] = useState(false)
+      const prevArtifactsRef = useRef<Artifact[]>([])
+      const prevTasksRef = useRef<Task[]>([])
 
       const {
         width: sidebarWidth,
@@ -252,12 +254,49 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
         return artifacts.some((a) => a.isPending)
       }, [artifacts])
 
-      // Auto-open artifacts panel when artifacts are added (uncontrolled mode only)
-      React.useEffect(() => {
-        if (!isPanelControlled && artifacts.length > 0) {
+      // Auto-open artifacts panel when state "gets bigger" (uncontrolled mode only)
+      useEffect(() => {
+        if (isPanelControlled) {
+          return
+        }
+
+        const hasNewOrSignificantArtifact = artifacts.some(a => {
+          const p = prevArtifactsRef.current.find(prev => prev.id === a.id)
+          if (!p) {
+            return true
+          } // New artifact added
+          if (p.isPending && !a.isPending) {
+            return true
+          } // Artifact finished loading
+          if (p.title !== a.title || p.type !== a.type) {
+            return true
+          } // Major metadata change
+          return false
+        })
+
+        const hasNewOrUpdatedTask = (curr: Task[], prev: Task[]): boolean => {
+          return curr.some(c => {
+            const p = prev.find(x => x.id === c.id)
+            if (!p) {
+              return true
+            } // New task added
+            if (c.status !== p.status || c.label !== p.label) {
+              return true
+            } // Status or label changed
+            if (c.subtasks && hasNewOrUpdatedTask(c.subtasks, p?.subtasks || [])) {
+              return true
+            } // Subtask changed
+            return false
+          })
+        }
+
+        if (hasNewOrSignificantArtifact || hasNewOrUpdatedTask(tasks, prevTasksRef.current)) {
           setInternalPanelOpen(true)
         }
-      }, [artifacts.length, isPanelControlled])
+
+        prevArtifactsRef.current = artifacts
+        prevTasksRef.current = tasks
+      }, [artifacts, tasks, isPanelControlled])
 
       // Handle branch switching
       const handleBranchSwitch = useCallback(
