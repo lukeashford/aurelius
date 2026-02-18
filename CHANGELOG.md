@@ -1,3 +1,10 @@
+## [2.18.0](https://github.com/lukeashford/aurelius/compare/v2.17.0...v2.18.0) (2026-02-18)
+
+### Features
+
+* **core:** standardize artifact and task type definitions ([424c1f4](https://github.com/lukeashford/aurelius/commit/424c1f45297f4b933f548900cffdea3a760f53c8))
+* **core:** standardize artifact and task type definitions ([#32](https://github.com/lukeashford/aurelius/issues/32)) ([b2a6208](https://github.com/lukeashford/aurelius/commit/b2a6208da6bc8696a771e1d9ce7bfed935b61c3f))
+
 ## [2.17.0](https://github.com/lukeashford/aurelius/compare/v2.16.0...v2.17.0) (2026-02-17)
 
 ### Features
