@@ -28,6 +28,7 @@ export {
   type TodosListProps,
   type Task,
   type TaskStatus,
+  TASK_STATUSES,
 } from './TodosList'
 
 // New components

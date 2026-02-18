@@ -1,48 +1,7 @@
 import {useCallback, useState} from 'react'
-import type {ScriptElement} from '../../ScriptCard'
+import type {Artifact, ArtifactType} from '../../ArtifactCard'
 
-export type ArtifactType = 'TEXT' | 'IMAGE' | 'VIDEO' | 'AUDIO' | 'SCRIPT' | 'PDF'
-
-export interface Artifact {
-  id: string
-  type: ArtifactType
-  /**
-   * For text artifacts - the content (markdown, HTML, or plain text)
-   */
-  inlineContent?: string
-  /**
-   * For artifacts that source from a URL (image, video, audio, pdf, file)
-   */
-  url?: string
-  /**
-   * The mime type of the content
-   */
-  mimeType?: string
-  /**
-   * For image artifacts - alt text
-   */
-  alt?: string
-  /**
-   * Display title shown below the artifact
-   */
-  title?: string
-  /**
-   * Display subtitle shown below the title
-   */
-  subtitle?: string
-  /**
-   * Whether this artifact is still loading (shows skeleton)
-   */
-  isPending?: boolean
-  /**
-   * Whether the artifact should span full width in the grid
-   */
-  fullWidth?: boolean
-  /**
-   * For html artifacts - structured script elements (used by ScriptCard)
-   */
-  scriptElements?: ScriptElement[]
-}
+export type {Artifact, ArtifactType}
 
 export interface UseArtifactsReturn {
   /**

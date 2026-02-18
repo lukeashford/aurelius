@@ -6,15 +6,18 @@ import {Card, type CardProps} from './Card'
 /**
  * Script element types following standard screenplay format
  */
-export type ScriptElementType =
-    | 'scene-heading'
-    | 'action'
-    | 'character'
-    | 'dialogue'
-    | 'parenthetical'
-    | 'transition'
-    | 'title'
-    | 'subtitle'
+export const SCRIPT_ELEMENT_TYPES = {
+  SCENE_HEADING: 'scene-heading',
+  ACTION: 'action',
+  CHARACTER: 'character',
+  DIALOGUE: 'dialogue',
+  PARENTHETICAL: 'parenthetical',
+  TRANSITION: 'transition',
+  TITLE: 'title',
+  SUBTITLE: 'subtitle',
+} as const
+
+export type ScriptElementType = typeof SCRIPT_ELEMENT_TYPES[keyof typeof SCRIPT_ELEMENT_TYPES]
 
 /**
  * A single element in the script
