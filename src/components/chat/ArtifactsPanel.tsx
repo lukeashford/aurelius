@@ -128,7 +128,7 @@ function ArtifactModal({
             {artifact.type === 'TEXT' && (
                 <MarkdownContent
                     content={artifact.inlineContent || ''}
-                    isMarkdown={artifact.mimeType === 'text/markdown'}
+                    isMarkdown={artifact.mimeType !== 'text/plain'}
                     className={cx(
                         "prose prose-invert max-w-none",
                         artifact.mimeType === 'text/plain' && "whitespace-pre-wrap"
