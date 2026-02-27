@@ -1,4 +1,5 @@
 import React from 'react'
+import {type CardSlotLoading} from './Card'
 import {ImageCard} from './ImageCard'
 import {VideoCard} from './VideoCard'
 import {AudioCard} from './AudioCard'
@@ -7,6 +8,7 @@ import {ScriptCard, type ScriptElement} from './ScriptCard'
 import {TextCard} from './TextCard'
 import {ExpandIcon} from './icons'
 import {cx} from '../utils'
+import {deriveCardSlotLoading} from '../utils/artifactLoading'
 
 /**
  * Artifact types supported by the system
@@ -75,7 +77,7 @@ export interface ArtifactCardProps extends React.HTMLAttributes<HTMLDivElement> 
   /**
    * Whether the artifact is still loading
    */
-  isLoading?: boolean
+  loading?: CardSlotLoading
 }
 
 /**
@@ -83,11 +85,12 @@ export interface ArtifactCardProps extends React.HTMLAttributes<HTMLDivElement> 
  * based on the artifact type.
  */
 export const ArtifactCard = React.forwardRef<HTMLDivElement, ArtifactCardProps>(
-    ({artifact, onExpand, isLoading, className, ...props}, ref) => {
+    ({artifact, onExpand, loading, className, ...props}, ref) => {
+      const derivedLoading = deriveCardSlotLoading(artifact)
       const commonProps = {
         title: artifact.title,
         subtitle: artifact.subtitle,
-        isLoading: isLoading || artifact.isPending,
+        loading: loading || derivedLoading,
         className: 'w-full',
       }
 

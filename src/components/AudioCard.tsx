@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactPlayer from 'react-player'
 import {Music} from 'lucide-react'
-import {Card, type CardProps} from './Card'
+import {Card, type CardProps, type CardSlotLoading} from './Card'
 import {cx} from '../utils'
 
 export interface AudioCardProps extends Omit<CardProps, 'title'> {
@@ -17,6 +17,7 @@ export interface AudioCardProps extends Omit<CardProps, 'title'> {
   contentClassName?: string
   playerProps?: any
   height?: string | number
+  loading?: CardSlotLoading
 }
 
 export const AudioCard = React.forwardRef<HTMLDivElement, AudioCardProps>(
@@ -36,7 +37,7 @@ export const AudioCard = React.forwardRef<HTMLDivElement, AudioCardProps>(
           children,
           playerProps,
           height = '40px',
-          isLoading,
+          loading,
           ...props
         },
         ref
@@ -45,7 +46,7 @@ export const AudioCard = React.forwardRef<HTMLDivElement, AudioCardProps>(
           <Card
               ref={ref}
               className={cx('p-0 overflow-hidden w-full', className)}
-              isLoading={isLoading}
+              loading={loading}
               {...props}
           >
             <Card.Media className={cx('bg-obsidian py-8 flex flex-col items-center justify-center',

@@ -1,5 +1,5 @@
 import React from 'react'
-import {Card, type CardProps} from './Card'
+import {Card, type CardProps, type CardSlotLoading} from './Card'
 import {MarkdownContent} from './MarkdownContent'
 import {cx} from '../utils'
 
@@ -30,6 +30,7 @@ export interface TextCardProps extends Omit<CardProps, 'title'> {
    * Optional class name for the content container
    */
   contentClassName?: string
+  loading?: CardSlotLoading
 }
 
 /**
@@ -45,7 +46,7 @@ export const TextCard = React.forwardRef<HTMLDivElement, TextCardProps>(
           maxHeight = '16rem',
           contentClassName,
           className,
-          isLoading,
+          loading,
           ...props
         },
         ref
@@ -54,7 +55,7 @@ export const TextCard = React.forwardRef<HTMLDivElement, TextCardProps>(
           <Card
               ref={ref}
               className={cx('p-0 overflow-hidden w-full', className)}
-              isLoading={isLoading}
+              loading={loading}
               {...props}
           >
             <Card.Header

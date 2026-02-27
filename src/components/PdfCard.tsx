@@ -1,6 +1,6 @@
 import React from 'react'
 import {FileText} from 'lucide-react'
-import {Card, type CardProps} from './Card'
+import {Card, type CardProps, type CardSlotLoading} from './Card'
 import {cx} from '../utils'
 
 export interface PdfCardProps extends Omit<CardProps, 'title'> {
@@ -28,6 +28,7 @@ export interface PdfCardProps extends Omit<CardProps, 'title'> {
    * Optional class name for the content container
    */
   contentClassName?: string
+  loading?: CardSlotLoading
 }
 
 /**
@@ -44,7 +45,7 @@ export const PdfCard = React.forwardRef<HTMLDivElement, PdfCardProps>(
           contentClassName,
           className,
           children,
-          isLoading,
+          loading,
           ...props
         },
         ref
@@ -53,7 +54,7 @@ export const PdfCard = React.forwardRef<HTMLDivElement, PdfCardProps>(
           <Card
               ref={ref}
               className={cx('p-0 overflow-hidden w-full', className)}
-              isLoading={isLoading}
+              loading={loading}
               {...props}
           >
             <Card.Media

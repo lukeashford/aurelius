@@ -1,7 +1,7 @@
 import React from 'react'
 import {cx} from '../utils'
 
-import {Card, type CardProps} from './Card'
+import {Card, type CardProps, type CardSlotLoading} from './Card'
 
 /**
  * Script element types following standard screenplay format
@@ -52,6 +52,7 @@ export interface ScriptCardProps extends Omit<CardProps, 'title'> {
    * Maximum height before scrolling (default: 16rem / 256px)
    */
   maxHeight?: string
+  loading?: CardSlotLoading
 }
 
 /**
@@ -144,13 +145,13 @@ function ScriptElementRenderer({element}: { element: ScriptElement }) {
  * ```
  */
 export const ScriptCard = React.forwardRef<HTMLDivElement, ScriptCardProps>(
-    ({title, subtitle, elements, maxHeight = '16rem', className, style, isLoading, ...rest},
+    ({title, subtitle, elements, maxHeight = '16rem', className, style, loading, ...rest},
         ref) => {
       return (
           <Card
               ref={ref}
               className={cx('p-0 overflow-hidden w-full', className)}
-              isLoading={isLoading}
+              loading={loading}
               {...rest}
           >
             <Card.Header

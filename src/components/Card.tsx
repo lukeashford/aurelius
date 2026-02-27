@@ -5,20 +5,45 @@ import {Skeleton} from './Skeleton'
 
 export type CardVariant = 'default' | 'elevated' | 'outlined' | 'ghost' | 'featured'
 
-interface CardContextValue {
-  isLoading: boolean
+export type CardSlotLoading = {
+  header?: {
+    title?: boolean
+    subtitle?: boolean
+    action?: boolean
+  }
+  media?: boolean
+  body?: boolean
+  footer?: boolean
 }
 
-const CardContext = createContext<CardContextValue>({isLoading: false})
+interface CardContextValue {
+  loading?: CardSlotLoading
+}
+
+const CardContext = createContext<CardContextValue>({loading: undefined})
 
 const useCardContext = () => useContext(CardContext)
+
+export function slotLoading(
+    loading: CardSlotLoading | undefined,
+    path: 'media' | 'body' | 'footer' | ['header', 'title' | 'subtitle' | 'action']
+): boolean {
+  if (!loading) {
+    return false
+  }
+  if (Array.isArray(path)) {
+    const [section, field] = path
+    return !!(loading as any)[section]?.[field]
+  }
+  return !!(loading as any)[path]
+}
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   variant?: CardVariant
   interactive?: boolean
   selected?: boolean
   noPadding?: boolean
-  isLoading?: boolean
+  loading?: CardSlotLoading
 }
 
 const VARIANT_STYLES: Record<CardVariant, string> = {
@@ -36,7 +61,7 @@ const CardBase = React.forwardRef<HTMLDivElement, CardProps>(
           interactive = false,
           selected = false,
           noPadding = false,
-          isLoading = false,
+          loading,
           className,
           children,
           ...props
@@ -44,7 +69,7 @@ const CardBase = React.forwardRef<HTMLDivElement, CardProps>(
         ref
     ) => {
       return (
-          <CardContext.Provider value={{isLoading}}>
+          <CardContext.Provider value={{loading}}>
             <div
                 ref={ref}
                 className={cx(
@@ -82,11 +107,14 @@ export interface CardHeaderProps extends Omit<React.HTMLAttributes<HTMLDivElemen
 
 const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
     ({title, subtitle, action, className, children, ...props}, ref) => {
-      const {isLoading} = useCardContext()
+      const {loading} = useCardContext()
+      const titleIsLoading = slotLoading(loading, ['header', 'title'])
+      const subtitleIsLoading = slotLoading(loading, ['header', 'subtitle'])
+      const actionIsLoading = slotLoading(loading, ['header', 'action'])
 
       const hasContent = title || subtitle || action || children
 
-      if (!hasContent && !isLoading) {
+      if (!hasContent && !titleIsLoading && !subtitleIsLoading && !actionIsLoading) {
         return null
       }
 
@@ -96,30 +124,30 @@ const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
               className={cx('px-6 py-4 border-b border-ash', className)}
               {...props}
           >
-            {isLoading && !title && !subtitle ? (
-                <div className="flex flex-col gap-2">
-                  <Skeleton className="h-5 w-3/4"/>
-                  <Skeleton className="h-4 w-1/2"/>
-                </div>
-            ) : (title || subtitle || action) ? (
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1 min-w-0">
-                    {title ? (
-                        <h3 className="text-lg font-semibold text-white m-0">{title}</h3>
-                    ) : isLoading ? (
-                        <Skeleton className="h-5 w-3/4 mb-1"/>
-                    ) : null}
-                    {subtitle ? (
-                        <p className="text-sm text-silver mt-1 m-0">{subtitle}</p>
-                    ) : isLoading ? (
-                        <Skeleton className="h-4 w-1/2 mt-1"/>
-                    ) : null}
-                  </div>
-                  {action && <div className="shrink-0">{action}</div>}
-                </div>
-            ) : (
-                children
-            )}
+            {(title || subtitle || action || titleIsLoading || subtitleIsLoading || actionIsLoading)
+                ? (
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex-1 min-w-0">
+                        {title ? (
+                            <h3 className="text-lg font-semibold text-white m-0">{title}</h3>
+                        ) : titleIsLoading ? (
+                            <Skeleton className="h-5 w-3/4 mb-1"/>
+                        ) : null}
+                        {subtitle ? (
+                            <p className="text-sm text-silver mt-1 m-0">{subtitle}</p>
+                        ) : subtitleIsLoading ? (
+                            <Skeleton className="h-4 w-1/2 mt-1"/>
+                        ) : null}
+                      </div>
+                      {action ? (
+                          <div className="shrink-0">{action}</div>
+                      ) : actionIsLoading ? (
+                          <Skeleton className="h-8 w-8 shrink-0"/>
+                      ) : null}
+                    </div>
+                ) : (
+                    children
+                )}
           </div>
       )
     }
@@ -133,15 +161,16 @@ export interface CardBodyProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const CardBody = React.forwardRef<HTMLDivElement, CardBodyProps>(
     ({className, children, ...props}, ref) => {
-      const {isLoading} = useCardContext()
+      const {loading} = useCardContext()
+      const isBodyLoading = slotLoading(loading, 'body')
 
-      if (!children && !isLoading) {
+      if (!children && !isBodyLoading) {
         return null
       }
 
       return (
           <div ref={ref} className={cx('px-6 py-4', className)} {...props}>
-            {isLoading && !children ? (
+            {isBodyLoading ? (
                 <div className="space-y-2">
                   <Skeleton className="h-4 w-full"/>
                   <Skeleton className="h-4 w-full"/>
@@ -203,14 +232,15 @@ const CardMedia = React.forwardRef<HTMLDivElement, CardMediaProps>(
       children,
       ...props
     }, ref) => {
-      const {isLoading} = useCardContext()
+      const {loading} = useCardContext()
+      const isMediaLoading = slotLoading(loading, 'media')
       const aspectClass = aspect && aspect !== 'none' ? {
         video: 'aspect-video',
         square: 'aspect-square',
         wide: 'aspect-wide',
       }[aspect] : ''
 
-      if (!children && !isLoading) {
+      if (!children && !isMediaLoading) {
         return null
       }
 
@@ -226,7 +256,7 @@ const CardMedia = React.forwardRef<HTMLDivElement, CardMediaProps>(
               )}
               {...props}
           >
-            {isLoading && !children ? (
+            {isMediaLoading ? (
                 <Skeleton className="w-full h-full"/>
             ) : (
                 children

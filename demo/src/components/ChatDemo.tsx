@@ -394,7 +394,12 @@ export default function ChatDemo() {
 
     // If there's an artifact, schedule it first (shows skeleton)
     if (artifact) {
-      scheduleArtifact({id: artifact.id, type: artifact.type})
+      scheduleArtifact({
+        id: artifact.id,
+        type: artifact.type,
+        title: artifact.title,
+        subtitle: artifact.subtitle
+      })
     }
 
     // Split into tokens
@@ -511,7 +516,12 @@ export default function ChatDemo() {
           updateTask('task-analyze', {status: 'done'})
           updateTask('task-script', {status: 'in_progress'})
           // Schedule script artifact
-          scheduleArtifact({id: BRAND_ARTIFACTS.script.id, type: 'SCRIPT'})
+          scheduleArtifact({
+            id: BRAND_ARTIFACTS.script.id,
+            type: 'SCRIPT',
+            title: BRAND_ARTIFACTS.script.title,
+            subtitle: BRAND_ARTIFACTS.script.subtitle
+          })
         }
       },
 
@@ -554,7 +564,12 @@ export default function ChatDemo() {
       {
         time: 14000, action: () => {
           updateSubtask('task-pictures', 'subtask-hero', {status: 'in_progress'})
-          scheduleArtifact({id: BRAND_ARTIFACTS.hero.id, type: 'IMAGE'})
+          scheduleArtifact({
+            id: BRAND_ARTIFACTS.hero.id,
+            type: 'IMAGE',
+            title: BRAND_ARTIFACTS.hero.title,
+            subtitle: BRAND_ARTIFACTS.hero.subtitle
+          })
         }
       },
 
@@ -580,7 +595,12 @@ export default function ChatDemo() {
           updateSubtask('task-pictures', 'subtask-impossible', {status: 'failed'})
           // Start dog right after
           updateSubtask('task-pictures', 'subtask-dog', {status: 'in_progress'})
-          scheduleArtifact({id: BRAND_ARTIFACTS.dog.id, type: 'IMAGE'})
+          scheduleArtifact({
+            id: BRAND_ARTIFACTS.dog.id,
+            type: 'IMAGE',
+            title: BRAND_ARTIFACTS.dog.title,
+            subtitle: BRAND_ARTIFACTS.dog.subtitle
+          })
         }
       },
 
@@ -596,7 +616,12 @@ export default function ChatDemo() {
             subtitle: BRAND_ARTIFACTS.dog.subtitle,
           })
           updateSubtask('task-pictures', 'subtask-location', {status: 'in_progress'})
-          scheduleArtifact({id: BRAND_ARTIFACTS.location.id, type: 'IMAGE'})
+          scheduleArtifact({
+            id: BRAND_ARTIFACTS.location.id,
+            type: 'IMAGE',
+            title: BRAND_ARTIFACTS.location.title,
+            subtitle: BRAND_ARTIFACTS.location.subtitle
+          })
         }
       },
 
@@ -628,7 +653,12 @@ export default function ChatDemo() {
       {
         time: 28000, action: () => {
           updateTask('task-video', {status: 'in_progress'})
-          scheduleArtifact({id: BRAND_ARTIFACTS.video.id, type: 'VIDEO'})
+          scheduleArtifact({
+            id: BRAND_ARTIFACTS.video.id,
+            type: 'VIDEO',
+            title: BRAND_ARTIFACTS.video.title,
+            subtitle: BRAND_ARTIFACTS.video.subtitle
+          })
         }
       },
 
