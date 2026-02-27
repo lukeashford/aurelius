@@ -100,15 +100,15 @@ Import from `@lukeashford/aurelius`:
 |-----------|-------|
 | Accordion | type, defaultValue, value, onValueChange, value, disabled |
 | Alert | variant (info, success, warning, error), title |
-| ArtifactCard | artifact, onExpand, isLoading |
+| ArtifactCard | artifact, onExpand, loading |
 | AttachmentPreview | attachments, onRemove, removable, maxVisible |
-| AudioCard | src, title, subtitle, playing, controls, volume, muted, loop, mediaClassName, contentClassName, playerProps, height |
+| AudioCard | src, title, subtitle, playing, controls, volume, muted, loop, mediaClassName, contentClassName, playerProps, height, loading |
 | Avatar | src, alt, name, size (xs, sm, md, lg, xl, 2xl), status (online, offline, busy) |
 | Badge | variant (default, gold, success, error, warning, info) |
 | BrandIcon | size (sm, md, lg), variant (solid, outline) |
 | Breadcrumb | separator, current |
 | Button | variant (primary, important, elevated, outlined, featured, ghost, danger), size (sm, md, lg, xl), loading |
-| Card | variant (default, elevated, outlined, ghost, featured), interactive, selected, noPadding, isLoading, title, subtitle, action, align, aspect, position |
+| Card | variant (default, elevated, outlined, ghost, featured), interactive, selected, noPadding, loading, title, subtitle, action, align, aspect, position |
 | Checkbox | label |
 | Col | span, offset, order |
 | ColorSwatch | color, label |
@@ -118,7 +118,7 @@ Import from `@lukeashford/aurelius`:
 | Drawer | isOpen, onClose, position (left, right, top, bottom), title, size, children, className |
 | FileChip | name, size, type, status (pending, uploading, complete, error), previewUrl, onRemove, removable, error |
 | HelperText | error |
-| ImageCard | src, alt, title, subtitle, aspectRatio (${number}/${number}), objectFit, overlay, mediaClassName, contentClassName |
+| ImageCard | src, alt, title, subtitle, aspectRatio (${number}/${number}), objectFit, overlay, mediaClassName, contentClassName, loading |
 | Input | error, leadingIcon, trailingIcon |
 | InputGroup | children |
 | Label | required |
@@ -129,12 +129,12 @@ Import from `@lukeashford/aurelius`:
 | Modal | isOpen, onClose, title, children, className |
 | Navbar | fixed, bordered, position, active, active |
 | Pagination | page, totalPages, onPageChange, siblingCount, showEdges |
-| PdfCard | src, title, subtitle, height, mediaClassName, contentClassName |
+| PdfCard | src, title, subtitle, height, mediaClassName, contentClassName, loading |
 | Popover | children, trigger, position (top, bottom, left, right), align (start, center, end), open, onOpenChange, closeOnClickOutside |
 | Progress | value, max, size (sm, md, lg), variant (default, success, warning, error), showValue, formatValue, indeterminate |
 | Radio | label |
 | Row | gutter, gutterX, gutterY, justify (start, center, end, between, around, evenly), align (start, center, end, stretch, baseline) |
-| ScriptCard | title, subtitle, elements, maxHeight |
+| ScriptCard | title, subtitle, elements, maxHeight, loading |
 | SectionHeading | level (h2, h3) |
 | Select | error, options |
 | Skeleton | children |
@@ -146,12 +146,12 @@ Import from `@lukeashford/aurelius`:
 | Switch | checked, defaultChecked, onCheckedChange, label |
 | Table | responsive, hoverable, selected, sortable, sortDirection |
 | Tabs | defaultValue, value, onValueChange, value, value, forceMount |
-| TextCard | content, title, subtitle, isMarkdown, maxHeight, contentClassName |
+| TextCard | content, title, subtitle, isMarkdown, maxHeight, contentClassName, loading |
 | Textarea | error |
 | Toast | children, position (top-right, top-left, bottom-right, bottom-left, top-center, bottom-center), defaultDuration |
 | Tooltip | content, children, open, side (top, right, bottom, left) |
-| VideoCard | src, title, subtitle, aspectRatio (${number}/${number}), playing, controls, light, volume, muted, loop, mediaClassName, contentClassName, playerProps |
-| ArtifactsPanel | artifacts, isOpen, onClose, isLoading, width, widthPercent, onResizeStart, artifactCount, onExpand |
+| VideoCard | src, title, subtitle, aspectRatio (${number}/${number}), playing, controls, light, volume, muted, loop, mediaClassName, contentClassName, playerProps, loading |
+| ArtifactsPanel | artifacts, isOpen, onClose, loading, width, widthPercent, onResizeStart, artifactCount, onExpand |
 | BranchNavigator | current, total, onPrevious, onNext, size, showIcon |
 | ChatInput | position (centered, bottom), placeholder, helperText, onSubmit, disabled, animate, isStreaming, onStop, attachments, onAttachmentsChange, showAttachmentButton, acceptedFileTypes |
 | ChatInterface | messages, conversationTree, onTreeChange, conversations, onMessageSubmit, onEditMessage, onRetryMessage, onStop, onSelectConversation, onNewChat, isStreaming, isThinking, placeholder, emptyStateHelper, initialSidebarCollapsed, emptyState, showAttachmentButton, enableMessageActions, attachments, onAttachmentsChange, artifacts, isArtifactsPanelOpen, onArtifactsPanelOpenChange, tasks, tasksTitle |
@@ -197,7 +197,7 @@ based on the artifact type.
 - **Artifact.scriptElements**: * For html artifacts - structured script elements (used by ScriptCard)
 - **artifact**: * The artifact object to display
 - **onExpand**: * Callback when the artifact should be expanded/opened
-- **isLoading**: * Whether the artifact is still loading
+- **loading**: * Whether the artifact is still loading
 
 **AttachmentPreview**
 - **AttachmentItem.id**: * Unique identifier
@@ -323,7 +323,7 @@ Supports fullWidth artifacts that span all columns in the grid.
 - **artifacts**: * Array of artifacts to display
 - **isOpen**: * Whether the panel is visible
 - **onClose**: * Callback to close/collapse the panel
-- **isLoading**: * Whether artifacts are still loading (show skeletons)
+- **loading**: * Whether artifacts are still loading (show skeletons)
 - **width**: * Current width of the panel as CSS value (e.g., "50vw", "400px").
 - **widthPercent**: * Width as percentage of viewport (0-100) for column calculations.
 - **onResizeStart**: * Callback to start resizing

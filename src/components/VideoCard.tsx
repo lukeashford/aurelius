@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactPlayer from 'react-player'
-import {Card, type CardProps} from './Card'
+import {Card, type CardProps, type CardSlotLoading} from './Card'
 import {cx} from '../utils'
 
 export type VideoAspectRatioPreset = 'video' | 'cinema' | 'square'
@@ -20,6 +20,7 @@ export interface VideoCardProps extends Omit<CardProps, 'title'> {
   mediaClassName?: string
   contentClassName?: string
   playerProps?: any
+  loading?: CardSlotLoading
 }
 
 const ASPECT_RATIO_PRESETS: Record<VideoAspectRatioPreset, string> = {
@@ -53,7 +54,7 @@ export const VideoCard = React.forwardRef<HTMLDivElement, VideoCardProps>(
           className,
           children,
           playerProps,
-          isLoading,
+          loading,
           ...props
         },
         ref
@@ -62,7 +63,7 @@ export const VideoCard = React.forwardRef<HTMLDivElement, VideoCardProps>(
           <Card
               ref={ref}
               className={cx('p-0 overflow-hidden w-full', className)}
-              isLoading={isLoading}
+              loading={loading}
               {...props}
           >
             <Card.Media

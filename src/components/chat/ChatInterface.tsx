@@ -249,11 +249,6 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
         return -1
       }, [effectiveMessages])
 
-      // Check if any artifact is pending (for loading state)
-      const hasPendingArtifact = useMemo(() => {
-        return artifacts.some((a) => a.isPending)
-      }, [artifacts])
-
       // Auto-open artifacts panel when state "gets bigger" (uncontrolled mode only)
       useEffect(() => {
         if (isPanelControlled) {
@@ -460,7 +455,6 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
                     artifacts={artifacts}
                     isOpen={artifactsPanelOpen}
                     onClose={toggleArtifactsPanel}
-                    isLoading={isStreaming && hasPendingArtifact}
                     width={artifactsWidth}
                     widthPercent={artifactsWidthPercent}
                     onResizeStart={startResizingArtifacts}

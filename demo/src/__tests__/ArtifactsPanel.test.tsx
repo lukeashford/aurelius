@@ -137,7 +137,16 @@ describe('ArtifactsPanel', () => {
       },
     ]
     render(
-        <ArtifactsPanel artifacts={artifactWithPending} isOpen={true} isLoading={true}/>
+        <ArtifactsPanel artifacts={artifactWithPending} isOpen={true} loading={{
+          header: {
+            title: true,
+            subtitle: true,
+            action: true
+          },
+          media: true,
+          body: true,
+          footer: true
+        }}/>
     )
     // Skeleton elements should be present
     const skeletons = document.querySelectorAll('[class*="animate"]')

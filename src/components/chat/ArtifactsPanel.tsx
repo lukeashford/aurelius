@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react'
 import {cx} from '../../utils'
 import {ArtifactCard} from '../ArtifactCard'
+import {CardSlotLoading} from '../Card'
 import {AudioCard} from '../AudioCard'
 import {PdfCard} from '../PdfCard'
 import {ScriptCard} from '../ScriptCard'
@@ -25,7 +26,7 @@ export interface ArtifactsPanelProps extends React.HTMLAttributes<HTMLDivElement
   /**
    * Whether artifacts are still loading (show skeletons)
    */
-  isLoading?: boolean
+  loading?: CardSlotLoading
   /**
    * Current width of the panel as CSS value (e.g., "50vw", "400px").
    */
@@ -128,7 +129,7 @@ function ArtifactModal({
             {artifact.type === 'TEXT' && (
                 <MarkdownContent
                     content={artifact.inlineContent || ''}
-                    isMarkdown={artifact.mimeType === 'text/markdown'}
+                    isMarkdown={artifact.mimeType !== 'text/plain'}
                     className={cx(
                         "prose prose-invert max-w-none",
                         artifact.mimeType === 'text/plain' && "whitespace-pre-wrap"
@@ -153,17 +154,17 @@ function ArtifactModal({
  */
 function ArtifactRenderer({
   artifact,
-  isLoading,
+  loading,
   onExpand,
 }: {
   artifact: Artifact
-  isLoading?: boolean
+  loading?: CardSlotLoading
   onExpand?: () => void
 }) {
   return (
       <ArtifactCard
           artifact={artifact}
-          isLoading={isLoading}
+          loading={loading}
           onExpand={onExpand}
       />
   )
@@ -183,7 +184,7 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
       artifacts,
       isOpen = false,
       onClose,
-      isLoading = false,
+      loading,
       width,
       widthPercent,
       onResizeStart,
@@ -283,7 +284,7 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
                       columns === 2 && "grid-cols-2",
                       columns === 3 && "grid-cols-3"
                   )}>
-                {artifacts.length === 0 && !isLoading ? (
+                {artifacts.length === 0 && !loading ? (
                     <p className="text-xs text-silver/60 text-center py-8">
                       No artifacts to display
                     </p>
@@ -292,7 +293,7 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
                         <ArtifactRenderer
                             key={artifact.id}
                             artifact={artifact}
-                            isLoading={isLoading}
+                            loading={loading}
                             onExpand={() => setExpandedArtifact(artifact)}
                         />
                     ))

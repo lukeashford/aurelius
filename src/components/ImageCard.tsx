@@ -1,5 +1,5 @@
 import React from 'react'
-import {Card, type CardProps} from './Card'
+import {Card, type CardProps, type CardSlotLoading} from './Card'
 import {cx} from '../utils'
 
 export type AspectRatioPreset = 'landscape' | 'portrait' | 'square'
@@ -15,6 +15,7 @@ export interface ImageCardProps extends Omit<CardProps, 'title'> {
   overlay?: React.ReactNode
   mediaClassName?: string
   contentClassName?: string
+  loading?: CardSlotLoading
 }
 
 const ASPECT_RATIO_PRESETS: Record<AspectRatioPreset, string> = {
@@ -44,7 +45,7 @@ export const ImageCard = React.forwardRef<HTMLDivElement, ImageCardProps>(
           contentClassName,
           className,
           children,
-          isLoading,
+          loading,
           ...props
         },
         ref
@@ -53,29 +54,31 @@ export const ImageCard = React.forwardRef<HTMLDivElement, ImageCardProps>(
           <Card
               ref={ref}
               className={cx('p-0 overflow-hidden w-full', className)}
-              isLoading={isLoading}
+              loading={loading}
               {...props}
           >
             <Card.Media
                 className={mediaClassName}
                 style={{aspectRatio: resolveAspectRatio(aspectRatio)}}
             >
-              {src && (
-                  <img
-                      src={src}
-                      alt={alt}
-                      className={cx(
-                          'w-full h-full',
-                          objectFit === 'cover' ? 'object-cover' : 'object-contain'
-                      )}
-                  />
-              )}
-              {overlay && (
-                  <div
-                      className="absolute inset-0 bg-obsidian/80 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
-                    {overlay}
-                  </div>
-              )}
+              <>
+                {src && (
+                    <img
+                        src={src}
+                        alt={alt}
+                        className={cx(
+                            'w-full h-full',
+                            objectFit === 'cover' ? 'object-cover' : 'object-contain'
+                        )}
+                    />
+                )}
+                {overlay && (
+                    <div
+                        className="absolute inset-0 bg-obsidian/80 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+                      {overlay}
+                    </div>
+                )}
+              </>
             </Card.Media>
             <Card.Header
                 title={title}
