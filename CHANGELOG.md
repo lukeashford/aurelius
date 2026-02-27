@@ -1,3 +1,13 @@
+## [2.20.0](https://github.com/lukeashford/aurelius/compare/v2.19.0...v2.20.0) (2026-02-27)
+
+### Features
+
+* **components:** standardize prop naming for loading state ([951afd5](https://github.com/lukeashford/aurelius/commit/951afd5e23f093a7ba26b6c9a054c2489d5dd56a))
+
+### Bug Fixes
+
+* **chat:** adjust markdown detection for artifact mime types ([bd18155](https://github.com/lukeashford/aurelius/commit/bd181555b47d8f5c5267f3cdf9eb234a016a37a9))
+
 ## [2.19.0](https://github.com/lukeashford/aurelius/compare/v2.18.0...v2.19.0) (2026-02-18)
 
 ### Features
