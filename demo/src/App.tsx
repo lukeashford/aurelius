@@ -23,6 +23,7 @@ import NavigationSection from './sections/NavigationSection'
 import DataDisplaySection from './sections/DataDisplaySection'
 import ChatInterfaceSection from './sections/ChatInterfaceSection'
 import SpecialistCardsSection from './sections/SpecialistCardsSection'
+import ArtifactTreeSection from './sections/ArtifactTreeSection'
 import {Footer} from './components/Footer'
 import {LegalNotice} from './components/LegalNotice'
 import ChatDemo from './components/ChatDemo'
@@ -49,6 +50,7 @@ const nav = [
   {id: 'markdown', label: 'Markdown Content'},
   {id: 'cards', label: 'Cards'},
   {id: 'specialist-cards', label: 'Specialist Cards'},
+  {id: 'artifact-tree', label: 'Artifact Tree'},
   {id: 'image-cards', label: 'Image Cards'},
   {id: 'feedback', label: 'Feedback'},
   {id: 'streaming', label: 'Streaming Cursor'},
@@ -190,6 +192,10 @@ function MainLayout() {
 
           <section id="specialist-cards" className="space-y-4">
             <SpecialistCardsSection/>
+          </section>
+
+          <section id="artifact-tree" className="space-y-4">
+            <ArtifactTreeSection/>
           </section>
 
           <section id="image-cards" className="space-y-4">

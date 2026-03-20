@@ -101,6 +101,8 @@ Import from `@lukeashford/aurelius`:
 | Accordion | type, defaultValue, value, onValueChange, value, disabled |
 | Alert | variant (info, success, warning, error), title |
 | ArtifactCard | artifact, onExpand, loading |
+| ArtifactGroup | node, onClick |
+| ArtifactVariantStack | node, onVariantClick, onGroupClick |
 | AttachmentPreview | attachments, onRemove, removable, maxVisible |
 | AudioCard | src, title, subtitle, playing, controls, volume, muted, loop, mediaClassName, contentClassName, playerProps, height, loading |
 | Avatar | src, alt, name, size (xs, sm, md, lg, xl, 2xl), status (online, offline, busy) |
@@ -198,6 +200,23 @@ based on the artifact type.
 - **artifact**: * The artifact object to display
 - **onExpand**: * Callback when the artifact should be expanded/opened
 - **loading**: * Whether the artifact is still loading
+
+**ArtifactGroup**
+Renders a GROUP node as a stacked card — the first child is shown on top,
+with up to two offset layers behind it to indicate depth. A count badge
+shows the total number of items in the group.
+
+- **node**: * The GROUP node to display
+- **onClick**: * Called when the group is clicked (e.g. to navigate into it)
+
+**ArtifactVariantStack**
+Renders a VARIANT_SET node as a horizontal row of children inside a
+framing container. The chosen variant (if any) is highlighted; unchosen
+variants are slightly dimmed.
+
+- **node**: * The VARIANT_SET node to display
+- **onVariantClick**: * Called when a child variant is clicked (e.g. to select or expand it)
+- **onGroupClick**: * Called when a group child is clicked (navigate into it)
 
 **AttachmentPreview**
 - **AttachmentItem.id**: * Unique identifier
@@ -307,8 +326,8 @@ A card for displaying text content, supporting Markdown and HTML formatting.
 - **content**: * Text content to display (Markdown, HTML, or plain text)
 - **title**: * Optional title for the card
 - **subtitle**: * Optional subtitle or metadata
-- **isMarkdown**: * Whether the content should be treated as Markdown @default true
-- **maxHeight**: * Maximum height of the content area before scrolling @default '16rem'
+- **isMarkdown**: * Whether the content should be treated as Markdown @default true
+- **maxHeight**: * Maximum height of the content area before scrolling @default '16rem'
 - **contentClassName**: * Optional class name for the content container
 
 **ArtifactsPanel**

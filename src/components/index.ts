@@ -288,6 +288,21 @@ export {
 export {
   SectionHeading, type SectionHeadingProps, type SectionHeadingLevel
 } from './SectionHeading'
+
+// Artifact Tree
+export {
+  NODE_TYPES,
+  type NodeType,
+  type ArtifactNode,
+} from './ArtifactNode'
+export {
+  ArtifactGroup,
+  type ArtifactGroupProps,
+} from './ArtifactGroup'
+export {
+  ArtifactVariantStack,
+  type ArtifactVariantStackProps,
+} from './ArtifactVariantStack'
 export {
   ScriptCard,
   type ScriptCardProps,
