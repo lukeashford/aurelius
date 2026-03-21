@@ -82,7 +82,7 @@ export const ArtifactGroup = React.forwardRef<HTMLDivElement, ArtifactGroupProps
               {...props}
           >
             <Card noPadding>
-              <Card.Header title={node.label}/>
+              <Card.Header title={node.label} className="border-b-0"/>
               <Card.Body>
                 {/* Outer wrapper reserves space for the offset layers */}
                 <div style={{paddingRight: LAYER_OFFSET_2X, paddingBottom: LAYER_OFFSET_2X}}>
