@@ -37,10 +37,6 @@ export interface ArtifactNode {
    */
   artifact?: Artifact
   /**
-   * For VARIANT_SET — which child is the chosen variant
-   */
-  chosenVariantId?: string | null
-  /**
    * Child nodes (populated for GROUP and VARIANT_SET)
    */
   children: ArtifactNode[]

@@ -69,7 +69,7 @@ export const Modal = ({isOpen, onClose, title, children, className}: ModalProps)
             role="dialog"
             aria-modal="true"
             className={cx(
-                'bg-charcoal border border-gold/30 shadow-2xl z-50 w-full max-w-lg p-6 rounded-none relative',
+                'bg-charcoal border border-gold/30 shadow-2xl z-50 w-full max-w-lg p-6 rounded-none relative overflow-hidden',
                 className
             )}
             data-state="open"

@@ -2,7 +2,7 @@ import React from 'react'
 import {render, screen, fireEvent} from '@testing-library/react'
 import {ArtifactGroup, type ArtifactNode} from '@lukeashford/aurelius'
 
-const makeArtifactNode = (overrides: Partial<ArtifactNode> = {}): ArtifactNode => ({
+const makeGroupNode = (overrides: Partial<ArtifactNode> = {}): ArtifactNode => ({
   id: 'group-1',
   type: 'GROUP',
   name: 'storyboard',
@@ -55,56 +55,39 @@ const makeArtifactNode = (overrides: Partial<ArtifactNode> = {}): ArtifactNode =
 })
 
 describe('ArtifactGroup', () => {
-  it('renders the label and item count', () => {
-    render(<ArtifactGroup node={makeArtifactNode()}/>)
+  it('renders the label above the stack', () => {
+    render(<ArtifactGroup node={makeGroupNode()}/>)
     expect(screen.getByText('Storyboard')).toBeInTheDocument()
-    expect(screen.getByText('3 items')).toBeInTheDocument()
   })
 
-  it('renders the count badge when there are multiple children', () => {
-    const {container} = render(<ArtifactGroup node={makeArtifactNode()}/>)
+  it('renders the count badge as a square', () => {
+    const {container} = render(<ArtifactGroup node={makeGroupNode()}/>)
     const badge = container.querySelector('.bg-gold')
     expect(badge).toBeInTheDocument()
     expect(badge).toHaveTextContent('3')
+    // Should NOT have rounded-full (it's a square)
+    expect(badge).not.toHaveClass('rounded-full')
   })
 
-  it('does not render the count badge for a single child', () => {
-    const node = makeArtifactNode({
-      children: [makeArtifactNode().children[0]],
-    })
-    const {container} = render(<ArtifactGroup node={node}/>)
-    // The badge with bg-gold in the rounded-full position should not exist
-    const badges = container.querySelectorAll('.rounded-full.bg-gold')
-    expect(badges.length).toBe(0)
-  })
-
-  it('renders back layers for 3+ children', () => {
-    const {container} = render(<ArtifactGroup node={makeArtifactNode()}/>)
-    const layers = container.querySelectorAll('[aria-hidden="true"]')
-    expect(layers.length).toBe(2) // middle + back layer
-  })
-
-  it('renders only middle layer for 2 children', () => {
-    const node = makeArtifactNode({
-      children: makeArtifactNode().children.slice(0, 2),
+  it('always renders two back layers regardless of child count', () => {
+    // Even with 1 child, the group symbol always shows 3 stacked cards
+    const node = makeGroupNode({
+      children: [makeGroupNode().children[0]],
     })
     const {container} = render(<ArtifactGroup node={node}/>)
     const layers = container.querySelectorAll('[aria-hidden="true"]')
-    expect(layers.length).toBe(1) // middle layer only
+    expect(layers.length).toBe(2)
   })
 
-  it('renders no layers for 1 child', () => {
-    const node = makeArtifactNode({
-      children: [makeArtifactNode().children[0]],
-    })
-    const {container} = render(<ArtifactGroup node={node}/>)
+  it('renders two back layers for many children', () => {
+    const {container} = render(<ArtifactGroup node={makeGroupNode()}/>)
     const layers = container.querySelectorAll('[aria-hidden="true"]')
-    expect(layers.length).toBe(0)
+    expect(layers.length).toBe(2)
   })
 
   it('calls onClick with the node when clicked', () => {
     const onClick = jest.fn()
-    render(<ArtifactGroup node={makeArtifactNode()} onClick={onClick}/>)
+    render(<ArtifactGroup node={makeGroupNode()} onClick={onClick}/>)
     fireEvent.click(screen.getByRole('button'))
     expect(onClick).toHaveBeenCalledTimes(1)
     expect(onClick).toHaveBeenCalledWith(expect.objectContaining({id: 'group-1'}))
@@ -112,27 +95,26 @@ describe('ArtifactGroup', () => {
 
   it('calls onClick on Enter key', () => {
     const onClick = jest.fn()
-    render(<ArtifactGroup node={makeArtifactNode()} onClick={onClick}/>)
+    render(<ArtifactGroup node={makeGroupNode()} onClick={onClick}/>)
     fireEvent.keyDown(screen.getByRole('button'), {key: 'Enter'})
     expect(onClick).toHaveBeenCalledTimes(1)
   })
 
   it('calls onClick on Space key', () => {
     const onClick = jest.fn()
-    render(<ArtifactGroup node={makeArtifactNode()} onClick={onClick}/>)
+    render(<ArtifactGroup node={makeGroupNode()} onClick={onClick}/>)
     fireEvent.keyDown(screen.getByRole('button'), {key: ' '})
     expect(onClick).toHaveBeenCalledTimes(1)
   })
 
   it('renders an empty state when there are no children', () => {
-    const node = makeArtifactNode({children: []})
+    const node = makeGroupNode({children: []})
     render(<ArtifactGroup node={node}/>)
     expect(screen.getByText('Empty group')).toBeInTheDocument()
-    expect(screen.getByText('0 items')).toBeInTheDocument()
   })
 
   it('has an accessible label with the group name and count', () => {
-    render(<ArtifactGroup node={makeArtifactNode()}/>)
+    render(<ArtifactGroup node={makeGroupNode()}/>)
     expect(screen.getByRole('button')).toHaveAttribute(
         'aria-label',
         'Storyboard — 3 items'

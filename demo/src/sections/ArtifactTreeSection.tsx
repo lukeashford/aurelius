@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react'
+import React, {useState} from 'react'
 import {
   ArtifactGroup,
   ArtifactVariantStack,
@@ -102,7 +102,6 @@ const colorTreatments: ArtifactNode = {
   type: 'VARIANT_SET',
   name: 'protagonist_color',
   label: 'Protagonist — Color Treatments',
-  chosenVariantId: 'color-neon',
   children: [
     {
       id: 'color-neon',
@@ -178,7 +177,6 @@ const sceneBreakdown: ArtifactNode = {
       type: 'VARIANT_SET',
       name: 'lighting_options',
       label: 'Lighting Options',
-      chosenVariantId: null,
       children: [
         {
           id: 'light-practical',
@@ -235,7 +233,6 @@ const storyboardApproaches: ArtifactNode = {
   type: 'VARIANT_SET',
   name: 'storyboard_approaches',
   label: 'Storyboard Approaches',
-  chosenVariantId: null,
   children: [
     {
       id: 'approach-linear',
@@ -333,11 +330,6 @@ export default function ArtifactTreeSection() {
     setModalGroup(node)
   }
 
-  // Mock async handler — simulates a 1s backend round-trip
-  const handleChoose = useCallback(async (_child: ArtifactNode) => {
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-  }, [])
-
   return (
       <Section
           title="Artifact Tree"
@@ -356,18 +348,15 @@ export default function ArtifactTreeSection() {
             </div>
           </div>
 
-          {/* Variant Stack with chosen variant */}
+          {/* Variant Stack */}
           <div className="space-y-4">
-            <h4 className="font-semibold text-gold">Variant Stack (with chosen variant)</h4>
+            <h4 className="font-semibold text-gold">Variant Stack</h4>
             <p className="text-sm text-silver">
-              Children displayed side by side for comparison. &quot;Neon Noir&quot; is the chosen
-              variant (highlighted, others dimmed). Click the square checkbox to choose — it
-              spins for 1s to simulate a backend round-trip.
+              Children displayed side by side for comparison inside a framing container.
             </p>
             <div className="max-w-3xl">
               <ArtifactVariantStack
                   node={colorTreatments}
-                  onChoose={handleChoose}
                   onGroupClick={handleGroupClick}
               />
             </div>
@@ -378,7 +367,7 @@ export default function ArtifactTreeSection() {
             <h4 className="font-semibold text-gold">Nested — Group with Variant Set</h4>
             <p className="text-sm text-silver">
               A scene breakdown group that contains a mix of artifacts and a variant set (lighting
-              options the director hasn&apos;t decided on yet — both shown equally). Click to explore.
+              options). Click to explore.
             </p>
             <div className="max-w-xs">
               <ArtifactGroup node={sceneBreakdown} onClick={handleGroupClick}/>
@@ -389,13 +378,12 @@ export default function ArtifactTreeSection() {
           <div className="space-y-4">
             <h4 className="font-semibold text-gold">Variant Stack of Groups</h4>
             <p className="text-sm text-silver">
-              Two different storyboard approaches displayed side by side, no choice made yet.
+              Two different storyboard approaches displayed side by side.
               Each is itself a group that can be expanded.
             </p>
             <div className="max-w-2xl">
               <ArtifactVariantStack
                   node={storyboardApproaches}
-                  onChoose={handleChoose}
                   onGroupClick={handleGroupClick}
               />
             </div>
@@ -410,7 +398,7 @@ export default function ArtifactTreeSection() {
             className="max-w-4xl max-h-[90vh] flex flex-col"
         >
           {modalGroup && (
-              <div className="mt-4 space-y-4 overflow-y-auto pr-1">
+              <div className="mt-4 space-y-4 overflow-y-auto min-h-0 pr-1">
                 {modalGroup.children.map((child) => {
                   if (child.type === 'ARTIFACT' && child.artifact) {
                     return (
@@ -426,7 +414,6 @@ export default function ArtifactTreeSection() {
                         <ArtifactVariantStack
                             key={child.id}
                             node={child}
-                            onChoose={handleChoose}
                             onGroupClick={handleGroupClick}
                         />
                     )

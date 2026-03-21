@@ -102,7 +102,7 @@ Import from `@lukeashford/aurelius`:
 | Alert | variant (info, success, warning, error), title |
 | ArtifactCard | artifact, onExpand, loading |
 | ArtifactGroup | node, onClick |
-| ArtifactVariantStack | node, onChoose, onExpandArtifact, onGroupClick |
+| ArtifactVariantStack | node, onExpandArtifact, onGroupClick |
 | AttachmentPreview | attachments, onRemove, removable, maxVisible |
 | AudioCard | src, title, subtitle, playing, controls, volume, muted, loop, mediaClassName, contentClassName, playerProps, height, loading |
 | Avatar | src, alt, name, size (xs, sm, md, lg, xl, 2xl), status (online, offline, busy) |
@@ -203,22 +203,20 @@ based on the artifact type.
 
 **ArtifactGroup**
 Renders a GROUP node as a stacked card — the first child is shown on top,
-with up to two offset layers behind it to indicate depth. A count badge
-shows the total number of items in the group.
+with two offset layers behind it to indicate depth (always shown as a
+visual symbol for "group"). A square count badge shows the total items.
+Title appears above the stack.
 
 - **node**: * The GROUP node to display
 - **onClick**: * Called when the group is clicked (e.g. to navigate into it)
 
 **ArtifactVariantStack**
 Renders a VARIANT_SET node as a horizontal row of children inside a
-framing container. Each child has a square checkbox for choosing it as
-the selected variant. If a chosen variant is set, it is highlighted
-while unchosen variants are dimmed. When no variant is chosen, all
-children are shown equally. Children handle their own click behavior
-(expand for artifacts, navigate for groups).
+framing container. Children handle their own click behavior (expand
+for artifacts, navigate for groups). The variant stack is purely a
+layout wrapper — a frame that says "these belong together horizontally."
 
 - **node**: * The VARIANT_SET node to display
-- **onChoose**: * Called when a variant is chosen (the square checkbox). Returns a promise; the spinner shows until the promise resolves.
 - **onExpandArtifact**: * Passed through to ArtifactCard children for expand/open behavior
 - **onGroupClick**: * Passed through to ArtifactGroup children for navigation
 
