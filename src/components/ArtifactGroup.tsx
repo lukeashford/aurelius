@@ -2,6 +2,7 @@ import React from 'react'
 import {cx} from '../utils'
 import {type ArtifactNode} from './ArtifactNode'
 import {ArtifactCard} from './ArtifactCard'
+import {Card} from './Card'
 
 export interface ArtifactGroupProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onClick'> {
   /**
@@ -14,15 +15,15 @@ export interface ArtifactGroupProps extends Omit<React.HTMLAttributes<HTMLDivEle
   onClick?: (node: ArtifactNode) => void
 }
 
-// Fixed offset for each layer behind the front card (in px via Tailwind)
-const LAYER_OFFSET = '4px'
-const LAYER_OFFSET_2X = '8px'
+// Fixed offset for each layer behind the front card
+const LAYER_OFFSET = '8px'
+const LAYER_OFFSET_2X = '16px'
 
 /**
- * Renders a GROUP node as a stacked card — the first child is shown on top,
- * with two offset layers behind it to indicate depth (always shown as a
- * visual symbol for "group"). A square count badge shows the total items.
- * Title appears above the stack.
+ * Renders a GROUP node as a Card with the group label as title. Inside,
+ * the first child is shown on top with two offset layers behind it
+ * (always shown as a visual symbol for "group"). A square count badge
+ * shows the total items.
  */
 export const ArtifactGroup = React.forwardRef<HTMLDivElement, ArtifactGroupProps>(
     ({node, onClick, className, ...props}, ref) => {
@@ -80,42 +81,41 @@ export const ArtifactGroup = React.forwardRef<HTMLDivElement, ArtifactGroupProps
               aria-label={`${node.label} — ${count} items`}
               {...props}
           >
-            {/* Title */}
-            <div className="mb-2">
-              <span className="text-sm font-medium text-white truncate">{node.label}</span>
-            </div>
+            <Card noPadding>
+              <Card.Header title={node.label}/>
+              <Card.Body>
+                {/* Outer wrapper reserves space for the offset layers */}
+                <div style={{paddingRight: LAYER_OFFSET_2X, paddingBottom: LAYER_OFFSET_2X}}>
+                  <div className="relative">
+                    {/* Back layer */}
+                    <div
+                        className="absolute inset-0 bg-charcoal border border-ash/30 pointer-events-none"
+                        style={{transform: `translate(${LAYER_OFFSET_2X}, ${LAYER_OFFSET_2X})`}}
+                        aria-hidden="true"
+                    />
 
-            {/* Outer wrapper that includes the stack offset area in layout flow */}
-            <div style={{paddingRight: LAYER_OFFSET_2X, paddingBottom: LAYER_OFFSET_2X}}>
-              {/* Stack area — positioned relative for the layers */}
-              <div className="relative">
-                {/* Back layer */}
-                <div
-                    className="absolute inset-0 bg-charcoal border border-ash/30 pointer-events-none"
-                    style={{transform: `translate(${LAYER_OFFSET_2X}, ${LAYER_OFFSET_2X})`}}
-                    aria-hidden="true"
-                />
+                    {/* Middle layer */}
+                    <div
+                        className="absolute inset-0 bg-charcoal border border-ash/40 pointer-events-none"
+                        style={{transform: `translate(${LAYER_OFFSET}, ${LAYER_OFFSET})`}}
+                        aria-hidden="true"
+                    />
 
-                {/* Middle layer */}
-                <div
-                    className="absolute inset-0 bg-charcoal border border-ash/40 pointer-events-none"
-                    style={{transform: `translate(${LAYER_OFFSET}, ${LAYER_OFFSET})`}}
-                    aria-hidden="true"
-                />
+                    {/* Front card */}
+                    <div className="relative transition-transform duration-200 group-hover:-translate-y-0.5">
+                      {renderFrontContent()}
+                    </div>
 
-                {/* Front card */}
-                <div className="relative transition-transform duration-200 group-hover:-translate-y-0.5">
-                  {renderFrontContent()}
+                    {/* Count badge — square */}
+                    <div
+                        className="absolute -top-2 -right-2 z-10 min-w-6 h-6 px-1.5 flex items-center justify-center bg-gold text-obsidian text-xs font-bold"
+                    >
+                      {count}
+                    </div>
+                  </div>
                 </div>
-
-                {/* Count badge — square */}
-                <div
-                    className="absolute -top-2 -right-2 z-10 min-w-6 h-6 px-1.5 flex items-center justify-center bg-gold text-obsidian text-xs font-bold"
-                >
-                  {count}
-                </div>
-              </div>
-            </div>
+              </Card.Body>
+            </Card>
           </div>
       )
     }

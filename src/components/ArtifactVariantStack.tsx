@@ -4,6 +4,7 @@ import {type Artifact} from './ArtifactCard'
 import {type ArtifactNode} from './ArtifactNode'
 import {ArtifactCard} from './ArtifactCard'
 import {ArtifactGroup} from './ArtifactGroup'
+import {Card} from './Card'
 
 export interface ArtifactVariantStackProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
@@ -21,10 +22,10 @@ export interface ArtifactVariantStackProps extends React.HTMLAttributes<HTMLDivE
 }
 
 /**
- * Renders a VARIANT_SET node as a horizontal row of children inside a
- * framing container. Children handle their own click behavior (expand
- * for artifacts, navigate for groups). The variant stack is purely a
- * layout wrapper — a frame that says "these belong together horizontally."
+ * Renders a VARIANT_SET node as a Card with the set label as title.
+ * Children are displayed in a horizontal row inside the card body.
+ * Children handle their own click behavior (expand for artifacts,
+ * navigate for groups).
  */
 export const ArtifactVariantStack = React.forwardRef<HTMLDivElement, ArtifactVariantStackProps>(
     ({node, onExpandArtifact, onGroupClick, className, ...props}, ref) => {
@@ -66,24 +67,19 @@ export const ArtifactVariantStack = React.forwardRef<HTMLDivElement, ArtifactVar
       }
 
       return (
-          <div
+          <Card
               ref={ref}
-              className={cx(
-                  'border border-ash/40 bg-charcoal/30 p-3',
-                  className
-              )}
+              noPadding
+              className={cx('w-full', className)}
               {...props}
           >
-            {/* Header */}
-            <div className="mb-3">
-              <span className="text-sm font-medium text-white truncate">{node.label}</span>
-            </div>
-
-            {/* Horizontal row of children */}
-            <div className="flex gap-3">
-              {children.map(renderChild)}
-            </div>
-          </div>
+            <Card.Header title={node.label}/>
+            <Card.Body>
+              <div className="flex gap-3">
+                {children.map(renderChild)}
+              </div>
+            </Card.Body>
+          </Card>
       )
     }
 )

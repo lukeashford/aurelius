@@ -202,19 +202,19 @@ based on the artifact type.
 - **loading**: * Whether the artifact is still loading
 
 **ArtifactGroup**
-Renders a GROUP node as a stacked card — the first child is shown on top,
-with two offset layers behind it to indicate depth (always shown as a
-visual symbol for "group"). A square count badge shows the total items.
-Title appears above the stack.
+Renders a GROUP node as a Card with the group label as title. Inside,
+the first child is shown on top with two offset layers behind it
+(always shown as a visual symbol for "group"). A square count badge
+shows the total items.
 
 - **node**: * The GROUP node to display
 - **onClick**: * Called when the group is clicked (e.g. to navigate into it)
 
 **ArtifactVariantStack**
-Renders a VARIANT_SET node as a horizontal row of children inside a
-framing container. Children handle their own click behavior (expand
-for artifacts, navigate for groups). The variant stack is purely a
-layout wrapper — a frame that says "these belong together horizontally."
+Renders a VARIANT_SET node as a Card with the set label as title.
+Children are displayed in a horizontal row inside the card body.
+Children handle their own click behavior (expand for artifacts,
+navigate for groups).
 
 - **node**: * The VARIANT_SET node to display
 - **onExpandArtifact**: * Passed through to ArtifactCard children for expand/open behavior
