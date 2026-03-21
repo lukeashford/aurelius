@@ -102,7 +102,7 @@ Import from `@lukeashford/aurelius`:
 | Alert | variant (info, success, warning, error), title |
 | ArtifactCard | artifact, onExpand, loading |
 | ArtifactGroup | node, onClick |
-| ArtifactVariantStack | node, onVariantClick, onGroupClick |
+| ArtifactVariantStack | node, onChildClick |
 | AttachmentPreview | attachments, onRemove, removable, maxVisible |
 | AudioCard | src, title, subtitle, playing, controls, volume, muted, loop, mediaClassName, contentClassName, playerProps, height, loading |
 | Avatar | src, alt, name, size (xs, sm, md, lg, xl, 2xl), status (online, offline, busy) |
@@ -211,12 +211,12 @@ shows the total number of items in the group.
 
 **ArtifactVariantStack**
 Renders a VARIANT_SET node as a horizontal row of children inside a
-framing container. The chosen variant (if any) is highlighted; unchosen
-variants are slightly dimmed.
+framing container. If a chosen variant is set, it is highlighted with a
+gold ring and checkmark while unchosen variants are dimmed. When no
+variant is chosen, all children are shown equally.
 
 - **node**: * The VARIANT_SET node to display
-- **onVariantClick**: * Called when a child variant is clicked (e.g. to select or expand it)
-- **onGroupClick**: * Called when a group child is clicked (navigate into it)
+- **onChildClick**: * Called when a child is clicked (e.g. to select, expand, or navigate into it)
 
 **AttachmentPreview**
 - **AttachmentItem.id**: * Unique identifier

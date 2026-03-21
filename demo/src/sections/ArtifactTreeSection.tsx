@@ -8,6 +8,9 @@ import {
 } from '@lukeashford/aurelius'
 import Section from './Section'
 
+// Known working URL from SpecialistCardsSection
+const IMG = 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400'
+
 // --- Demo data ---
 
 const storyboardPanels: ArtifactNode = {
@@ -24,8 +27,8 @@ const storyboardPanels: ArtifactNode = {
       artifact: {
         id: 'a-panel-1',
         type: 'IMAGE',
-        url: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400',
-        alt: 'Opening shot — neon cityscape',
+        url: IMG,
+        alt: 'Opening shot',
         title: 'Panel 1 — Opening',
         subtitle: 'Wide establishing shot',
       },
@@ -39,7 +42,7 @@ const storyboardPanels: ArtifactNode = {
       artifact: {
         id: 'a-panel-2',
         type: 'IMAGE',
-        url: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=400',
+        url: IMG,
         alt: 'Protagonist close-up',
         title: 'Panel 2 — Protagonist',
         subtitle: 'Medium close-up',
@@ -54,7 +57,7 @@ const storyboardPanels: ArtifactNode = {
       artifact: {
         id: 'a-panel-3',
         type: 'IMAGE',
-        url: 'https://images.unsplash.com/photo-1549490349-8643362247b5?w=400',
+        url: IMG,
         alt: 'Chase sequence',
         title: 'Panel 3 — Chase',
         subtitle: 'Tracking shot through alley',
@@ -84,7 +87,7 @@ const storyboardPanels: ArtifactNode = {
       artifact: {
         id: 'a-panel-5',
         type: 'IMAGE',
-        url: 'https://images.unsplash.com/photo-1533158326339-7f3cf2404354?w=400',
+        url: IMG,
         alt: 'Final scene',
         title: 'Panel 5 — Resolution',
         subtitle: 'Wide shot — dawn breaking',
@@ -109,7 +112,7 @@ const colorTreatments: ArtifactNode = {
       artifact: {
         id: 'a-neon',
         type: 'IMAGE',
-        url: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=400',
+        url: IMG,
         alt: 'Neon noir color treatment',
         title: 'Neon Noir',
         subtitle: 'Cool blues and electric highlights',
@@ -124,7 +127,7 @@ const colorTreatments: ArtifactNode = {
       artifact: {
         id: 'a-warm',
         type: 'IMAGE',
-        url: 'https://images.unsplash.com/photo-1557672172-298e090bd0f1?w=400',
+        url: IMG,
         alt: 'Warm analog color treatment',
         title: 'Warm Analog',
         subtitle: 'Golden tones, film grain',
@@ -139,7 +142,7 @@ const colorTreatments: ArtifactNode = {
       artifact: {
         id: 'a-mono',
         type: 'IMAGE',
-        url: 'https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=400',
+        url: IMG,
         alt: 'Monochrome treatment',
         title: 'Monochrome',
         subtitle: 'High-contrast black & white',
@@ -185,7 +188,7 @@ const sceneBreakdown: ArtifactNode = {
           artifact: {
             id: 'a-practical',
             type: 'IMAGE',
-            url: 'https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?w=400',
+            url: IMG,
             alt: 'Practical lighting reference',
             title: 'Practical Lighting',
             subtitle: 'In-scene light sources only',
@@ -200,7 +203,7 @@ const sceneBreakdown: ArtifactNode = {
           artifact: {
             id: 'a-stylized',
             type: 'IMAGE',
-            url: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400',
+            url: IMG,
             alt: 'Stylized neon lighting reference',
             title: 'Stylized Neon',
             subtitle: 'Exaggerated color washes',
@@ -217,7 +220,7 @@ const sceneBreakdown: ArtifactNode = {
       artifact: {
         id: 'a-mood',
         type: 'IMAGE',
-        url: 'https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?w=400',
+        url: IMG,
         alt: 'Mood board collage',
         title: 'Mood Board',
         subtitle: 'Visual tone references',
@@ -248,7 +251,7 @@ const storyboardApproaches: ArtifactNode = {
           artifact: {
             id: 'a-lin-1',
             type: 'IMAGE',
-            url: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400',
+            url: IMG,
             alt: 'Linear opening',
             title: 'Opening',
           },
@@ -262,7 +265,7 @@ const storyboardApproaches: ArtifactNode = {
           artifact: {
             id: 'a-lin-2',
             type: 'IMAGE',
-            url: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=400',
+            url: IMG,
             alt: 'Linear middle',
             title: 'Middle',
           },
@@ -284,7 +287,7 @@ const storyboardApproaches: ArtifactNode = {
           artifact: {
             id: 'a-nl-1',
             type: 'IMAGE',
-            url: 'https://images.unsplash.com/photo-1549490349-8643362247b5?w=400',
+            url: IMG,
             alt: 'Non-linear flash-forward',
             title: 'Flash-forward',
           },
@@ -298,7 +301,7 @@ const storyboardApproaches: ArtifactNode = {
           artifact: {
             id: 'a-nl-2',
             type: 'IMAGE',
-            url: 'https://images.unsplash.com/photo-1533158326339-7f3cf2404354?w=400',
+            url: IMG,
             alt: 'Non-linear origin',
             title: 'Origin',
           },
@@ -312,7 +315,7 @@ const storyboardApproaches: ArtifactNode = {
           artifact: {
             id: 'a-nl-3',
             type: 'IMAGE',
-            url: 'https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?w=400',
+            url: IMG,
             alt: 'Non-linear resolution',
             title: 'Resolution',
           },
@@ -321,23 +324,6 @@ const storyboardApproaches: ArtifactNode = {
       ],
     },
   ],
-}
-
-// Single artifact for comparison
-const singleArtifact: ArtifactNode = {
-  id: 'single',
-  type: 'ARTIFACT',
-  name: 'concept_art',
-  label: 'Concept Art',
-  artifact: {
-    id: 'a-single',
-    type: 'IMAGE',
-    url: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=400',
-    alt: 'Standalone concept art',
-    title: 'Concept Art',
-    subtitle: 'Standalone artifact for comparison',
-  },
-  children: [],
 }
 
 export default function ArtifactTreeSection() {
@@ -353,15 +339,6 @@ export default function ArtifactTreeSection() {
           subtitle="Group and Variant Stack components for organizing artifacts into a navigable tree structure."
       >
         <div className="space-y-12">
-          {/* Single Artifact (baseline) */}
-          <div className="space-y-4">
-            <h4 className="font-semibold text-gold">Single Artifact</h4>
-            <p className="text-sm text-silver">A plain artifact card — the leaf node of the tree.</p>
-            <div className="max-w-xs">
-              <ArtifactCard artifact={singleArtifact.artifact!} className="w-full"/>
-            </div>
-          </div>
-
           {/* Group */}
           <div className="space-y-4">
             <h4 className="font-semibold text-gold">Group</h4>
@@ -374,11 +351,12 @@ export default function ArtifactTreeSection() {
             </div>
           </div>
 
-          {/* Variant Stack */}
+          {/* Variant Stack with chosen variant */}
           <div className="space-y-4">
-            <h4 className="font-semibold text-gold">Variant Stack</h4>
+            <h4 className="font-semibold text-gold">Variant Stack (with chosen variant)</h4>
             <p className="text-sm text-silver">
-              Children displayed side by side for comparison. &quot;Neon Noir&quot; is the chosen variant (highlighted with a checkmark).
+              Children displayed side by side for comparison. &quot;Neon Noir&quot; is the chosen
+              variant (highlighted with a checkmark, others dimmed).
             </p>
             <div className="max-w-3xl">
               <ArtifactVariantStack node={colorTreatments}/>
@@ -390,7 +368,7 @@ export default function ArtifactTreeSection() {
             <h4 className="font-semibold text-gold">Nested — Group with Variant Set</h4>
             <p className="text-sm text-silver">
               A scene breakdown group that contains a mix of artifacts and a variant set (lighting
-              options the director hasn&apos;t decided on yet). Click to explore.
+              options the director hasn&apos;t decided on yet — both shown equally). Click to explore.
             </p>
             <div className="max-w-xs">
               <ArtifactGroup node={sceneBreakdown} onClick={handleGroupClick}/>
@@ -401,13 +379,15 @@ export default function ArtifactTreeSection() {
           <div className="space-y-4">
             <h4 className="font-semibold text-gold">Variant Stack of Groups</h4>
             <p className="text-sm text-silver">
-              Two different storyboard approaches displayed side by side. Each is itself a group
-              that can be expanded.
+              Two different storyboard approaches displayed side by side, no choice made yet.
+              Each is itself a group that can be expanded.
             </p>
             <div className="max-w-2xl">
               <ArtifactVariantStack
                   node={storyboardApproaches}
-                  onGroupClick={handleGroupClick}
+                  onChildClick={(child) => {
+                    if (child.type === 'GROUP') handleGroupClick(child)
+                  }}
               />
             </div>
           </div>
@@ -437,7 +417,6 @@ export default function ArtifactTreeSection() {
                         <ArtifactVariantStack
                             key={child.id}
                             node={child}
-                            onGroupClick={handleGroupClick}
                         />
                     )
                   }

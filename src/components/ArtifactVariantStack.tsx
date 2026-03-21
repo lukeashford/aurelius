@@ -9,22 +9,19 @@ export interface ArtifactVariantStackProps extends React.HTMLAttributes<HTMLDivE
    */
   node: ArtifactNode
   /**
-   * Called when a child variant is clicked (e.g. to select or expand it)
+   * Called when a child is clicked (e.g. to select, expand, or navigate into it)
    */
-  onVariantClick?: (variant: ArtifactNode) => void
-  /**
-   * Called when a group child is clicked (navigate into it)
-   */
-  onGroupClick?: (node: ArtifactNode) => void
+  onChildClick?: (child: ArtifactNode) => void
 }
 
 /**
  * Renders a VARIANT_SET node as a horizontal row of children inside a
- * framing container. The chosen variant (if any) is highlighted; unchosen
- * variants are slightly dimmed.
+ * framing container. If a chosen variant is set, it is highlighted with a
+ * gold ring and checkmark while unchosen variants are dimmed. When no
+ * variant is chosen, all children are shown equally.
  */
 export const ArtifactVariantStack = React.forwardRef<HTMLDivElement, ArtifactVariantStackProps>(
-    ({node, onVariantClick, onGroupClick, className, ...props}, ref) => {
+    ({node, onChildClick, className, ...props}, ref) => {
       const children = node.children
       const chosenId = node.chosenVariantId
 
@@ -41,13 +38,13 @@ export const ArtifactVariantStack = React.forwardRef<HTMLDivElement, ArtifactVar
                       isDimmed && 'opacity-50',
                       isChosen && 'ring-1 ring-gold'
                   )}
-                  onClick={() => onVariantClick?.(child)}
+                  onClick={() => onChildClick?.(child)}
                   role="button"
                   tabIndex={0}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
                       e.preventDefault()
-                      onVariantClick?.(child)
+                      onChildClick?.(child)
                     }
                   }}
                   aria-label={child.label}
@@ -77,23 +74,13 @@ export const ArtifactVariantStack = React.forwardRef<HTMLDivElement, ArtifactVar
                     isDimmed && 'opacity-50',
                     isChosen && 'ring-1 ring-gold'
                 )}
-                onClick={() => {
-                  if (child.type === 'GROUP') {
-                    onGroupClick?.(child)
-                  } else {
-                    onVariantClick?.(child)
-                  }
-                }}
+                onClick={() => onChildClick?.(child)}
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault()
-                    if (child.type === 'GROUP') {
-                      onGroupClick?.(child)
-                    } else {
-                      onVariantClick?.(child)
-                    }
+                    onChildClick?.(child)
                   }
                 }}
                 aria-label={child.label}
