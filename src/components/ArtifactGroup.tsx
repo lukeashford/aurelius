@@ -81,40 +81,38 @@ export const ArtifactGroup = React.forwardRef<HTMLDivElement, ArtifactGroupProps
               aria-label={`${node.label} — ${count} items`}
               {...props}
           >
-            <Card noPadding>
-              <Card.Header title={node.label} className="border-b-0"/>
-              <Card.Body>
-                {/* Outer wrapper reserves space for the offset layers */}
-                <div style={{paddingRight: LAYER_OFFSET_2X, paddingBottom: LAYER_OFFSET_2X}}>
-                  <div className="relative">
-                    {/* Back layer */}
-                    <div
-                        className="absolute inset-0 bg-charcoal border border-ash/30 pointer-events-none"
-                        style={{transform: `translate(${LAYER_OFFSET_2X}, ${LAYER_OFFSET_2X})`}}
-                        aria-hidden="true"
-                    />
+            <Card noPadding className="p-5">
+              <h3 className="text-lg font-semibold text-white m-0 mb-4">{node.label}</h3>
+              {/* Outer wrapper reserves space for the offset layers */}
+              <div style={{paddingRight: LAYER_OFFSET_2X, paddingBottom: LAYER_OFFSET_2X}}>
+                <div className="relative">
+                  {/* Back layer */}
+                  <div
+                      className="absolute inset-0 bg-charcoal border border-ash/30 pointer-events-none"
+                      style={{transform: `translate(${LAYER_OFFSET_2X}, ${LAYER_OFFSET_2X})`}}
+                      aria-hidden="true"
+                  />
 
-                    {/* Middle layer */}
-                    <div
-                        className="absolute inset-0 bg-charcoal border border-ash/40 pointer-events-none"
-                        style={{transform: `translate(${LAYER_OFFSET}, ${LAYER_OFFSET})`}}
-                        aria-hidden="true"
-                    />
+                  {/* Middle layer */}
+                  <div
+                      className="absolute inset-0 bg-charcoal border border-ash/40 pointer-events-none"
+                      style={{transform: `translate(${LAYER_OFFSET}, ${LAYER_OFFSET})`}}
+                      aria-hidden="true"
+                  />
 
-                    {/* Front card */}
-                    <div className="relative transition-transform duration-200 group-hover:-translate-y-0.5">
-                      {renderFrontContent()}
-                    </div>
+                  {/* Front card */}
+                  <div className="relative transition-transform duration-200 group-hover:-translate-y-0.5">
+                    {renderFrontContent()}
+                  </div>
 
-                    {/* Count badge — square */}
-                    <div
-                        className="absolute -top-2 -right-2 z-10 min-w-6 h-6 px-1.5 flex items-center justify-center bg-gold text-obsidian text-xs font-bold"
-                    >
-                      {count}
-                    </div>
+                  {/* Count badge — square */}
+                  <div
+                      className="absolute -top-2 -right-2 z-10 min-w-6 h-6 px-1.5 flex items-center justify-center bg-gold text-obsidian text-xs font-bold"
+                  >
+                    {count}
                   </div>
                 </div>
-              </Card.Body>
+              </div>
             </Card>
           </div>
       )

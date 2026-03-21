@@ -70,15 +70,13 @@ export const ArtifactVariantStack = React.forwardRef<HTMLDivElement, ArtifactVar
           <Card
               ref={ref}
               noPadding
-              className={cx('w-full', className)}
+              className={cx('w-full p-5', className)}
               {...props}
           >
-            <Card.Header title={node.label} className="border-b-0"/>
-            <Card.Body>
-              <div className="flex gap-3">
-                {children.map(renderChild)}
-              </div>
-            </Card.Body>
+            <h3 className="text-lg font-semibold text-white m-0 mb-4">{node.label}</h3>
+            <div className="flex gap-3">
+              {children.map(renderChild)}
+            </div>
           </Card>
       )
     }
