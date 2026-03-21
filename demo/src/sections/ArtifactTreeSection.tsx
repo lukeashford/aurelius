@@ -407,10 +407,10 @@ export default function ArtifactTreeSection() {
             isOpen={modalGroup !== null}
             onClose={() => setModalGroup(null)}
             title={modalGroup?.label}
-            className="max-w-4xl"
+            className="max-w-4xl max-h-[90vh] flex flex-col"
         >
           {modalGroup && (
-              <div className="mt-4 space-y-4 max-h-96 overflow-y-auto pr-1">
+              <div className="mt-4 space-y-4 overflow-y-auto pr-1">
                 {modalGroup.children.map((child) => {
                   if (child.type === 'ARTIFACT' && child.artifact) {
                     return (
