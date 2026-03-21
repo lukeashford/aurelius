@@ -7,6 +7,7 @@ import {ArtifactsPanel} from './ArtifactsPanel'
 import {type Task, TodosList} from './TodosList'
 import type {Artifact} from './hooks'
 import {useResizable} from "./hooks";
+import type {ArtifactNode} from '../ArtifactNode'
 import {type ConversationTree, getActivePathMessages, getSiblingInfo, switchBranch,} from './types'
 
 export interface ChatMessage {
@@ -123,6 +124,11 @@ export interface ChatInterfaceProps extends Omit<React.HTMLAttributes<HTMLDivEle
    */
   artifacts?: Artifact[]
   /**
+   * Top-level artifact tree nodes for tree-aware navigation.
+   * When provided, the panel renders a navigable tree instead of a flat list.
+   */
+  artifactNodes?: ArtifactNode[]
+  /**
    * Whether the artifacts panel is currently open (controlled).
    */
   isArtifactsPanelOpen?: boolean
@@ -183,6 +189,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
           attachments: propsAttachments,
           onAttachmentsChange,
           artifacts = [],
+          artifactNodes,
           isArtifactsPanelOpen,
           onArtifactsPanelOpenChange,
           tasks = [],
@@ -285,13 +292,15 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
           })
         }
 
-        if (hasNewOrSignificantArtifact || hasNewOrUpdatedTask(tasks, prevTasksRef.current)) {
+        const hasNodes = artifactNodes && artifactNodes.length > 0
+
+        if (hasNewOrSignificantArtifact || hasNewOrUpdatedTask(tasks, prevTasksRef.current) || hasNodes) {
           setInternalPanelOpen(true)
         }
 
         prevArtifactsRef.current = artifacts
         prevTasksRef.current = tasks
-      }, [artifacts, tasks, isPanelControlled])
+      }, [artifacts, artifactNodes, tasks, isPanelControlled])
 
       // Handle branch switching
       const handleBranchSwitch = useCallback(
@@ -453,6 +462,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
               <div className="flex-1 min-h-0">
                 <ArtifactsPanel
                     artifacts={artifacts}
+                    nodes={artifactNodes}
                     isOpen={artifactsPanelOpen}
                     onClose={toggleArtifactsPanel}
                     width={artifactsWidth}

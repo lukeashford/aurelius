@@ -204,6 +204,7 @@ export {
   useScrollAnchor,
   useArtifacts,
   useResizable,
+  useArtifactTreeNavigation,
   // Types
   type ChatInterfaceProps,
   type ChatMessage,
@@ -231,6 +232,8 @@ export {
   type UseScrollAnchorOptions,
   type UseScrollAnchorReturn,
   type UseArtifactsReturn,
+  type BreadcrumbEntry,
+  type UseArtifactTreeNavigationReturn,
   // Utility functions
   createEmptyTree,
   addMessageToTree,

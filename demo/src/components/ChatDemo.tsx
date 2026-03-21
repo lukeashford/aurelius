@@ -3,6 +3,7 @@ import {useNavigate} from 'react-router-dom'
 import {
   addMessageToTree,
   type Attachment,
+  type ArtifactNode,
   ChatInterface,
   type Conversation,
   type ConversationTree,
@@ -263,6 +264,179 @@ const BRAND_ARTIFACTS = {
   },
 }
 
+// Artifact tree for the brand analysis demo
+const IMG = 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400'
+
+const BRAND_ARTIFACT_TREE: ArtifactNode[] = [
+  {
+    id: 'brand-script-node',
+    type: 'ARTIFACT',
+    name: 'brand_script',
+    label: 'Brand Video Script',
+    artifact: {
+      id: 'brand-script',
+      type: 'SCRIPT',
+      scriptElements: LUMINOVA_SCRIPT_ELEMENTS,
+      title: 'Luminova Coffee — Brand Video Script',
+      subtitle: '30-second spot • Directed by AI Creative',
+      fullWidth: true,
+    },
+    children: [],
+  },
+  {
+    id: 'storyboard-group',
+    type: 'GROUP',
+    name: 'storyboard',
+    label: 'Storyboard',
+    children: [
+      {
+        id: 'sb-panel-1',
+        type: 'ARTIFACT',
+        name: 'panel_1',
+        label: 'Panel 1 — Opening',
+        artifact: {
+          id: 'a-sb-1',
+          type: 'IMAGE',
+          url: IMG,
+          alt: 'Opening shot',
+          title: 'Panel 1 — Opening',
+          subtitle: 'Wide establishing shot',
+        },
+        children: [],
+      },
+      {
+        id: 'sb-panel-2',
+        type: 'ARTIFACT',
+        name: 'panel_2',
+        label: 'Panel 2 — Elena',
+        artifact: {
+          id: 'a-sb-2',
+          type: 'IMAGE',
+          url: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800',
+          alt: 'Elena the roaster',
+          title: 'Panel 2 — Elena',
+          subtitle: 'Medium close-up',
+        },
+        children: [],
+      },
+      {
+        id: 'sb-panel-3',
+        type: 'ARTIFACT',
+        name: 'panel_3',
+        label: 'Panel 3 — Bean',
+        artifact: {
+          id: 'a-sb-3',
+          type: 'IMAGE',
+          url: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800',
+          alt: 'Bean the dog',
+          title: 'Panel 3 — Bean',
+          subtitle: 'The loyal companion',
+        },
+        children: [],
+      },
+    ],
+  },
+  {
+    id: 'color-treatments',
+    type: 'VARIANT_SET',
+    name: 'color_treatments',
+    label: 'Color Treatments',
+    children: [
+      {
+        id: 'color-warm',
+        type: 'ARTIFACT',
+        name: 'warm',
+        label: 'Warm Analog',
+        artifact: {
+          id: 'a-color-warm',
+          type: 'IMAGE',
+          url: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800',
+          alt: 'Warm tones',
+          title: 'Warm Analog',
+          subtitle: 'Golden tones, film grain',
+        },
+        children: [],
+      },
+      {
+        id: 'color-neon',
+        type: 'ARTIFACT',
+        name: 'neon',
+        label: 'Neon Noir',
+        artifact: {
+          id: 'a-color-neon',
+          type: 'IMAGE',
+          url: IMG,
+          alt: 'Neon noir',
+          title: 'Neon Noir',
+          subtitle: 'Cool blues, electric highlights',
+        },
+        children: [],
+      },
+    ],
+  },
+  {
+    id: 'scene-breakdown',
+    type: 'GROUP',
+    name: 'scene_breakdown',
+    label: 'Scene Breakdown',
+    children: [
+      {
+        id: 'sb-script-notes',
+        type: 'ARTIFACT',
+        name: 'script_notes',
+        label: 'Script Notes',
+        artifact: {
+          id: 'a-script-notes',
+          type: 'TEXT',
+          inlineContent: '## Act I\n\n- **INT. ROASTERY — DAWN** — Elena begins her craft\n- **EXT. CAFÉ — MORNING** — Bean greets customers\n- **CLOSE-UP** — The perfect pour',
+          mimeType: 'text/markdown',
+          title: 'Script Notes',
+          subtitle: 'Scene breakdown',
+        },
+        children: [],
+      },
+      {
+        id: 'sb-lighting',
+        type: 'VARIANT_SET',
+        name: 'lighting_options',
+        label: 'Lighting Options',
+        children: [
+          {
+            id: 'light-practical',
+            type: 'ARTIFACT',
+            name: 'practical',
+            label: 'Practical',
+            artifact: {
+              id: 'a-light-practical',
+              type: 'IMAGE',
+              url: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=800',
+              alt: 'Practical lighting',
+              title: 'Practical Lighting',
+              subtitle: 'In-scene sources only',
+            },
+            children: [],
+          },
+          {
+            id: 'light-stylized',
+            type: 'ARTIFACT',
+            name: 'stylized',
+            label: 'Stylized',
+            artifact: {
+              id: 'a-light-stylized',
+              type: 'IMAGE',
+              url: IMG,
+              alt: 'Stylized neon',
+              title: 'Stylized Neon',
+              subtitle: 'Exaggerated color washes',
+            },
+            children: [],
+          },
+        ],
+      },
+    ],
+  },
+]
+
 // Initial tasks for brand analysis
 const INITIAL_BRAND_TASKS: Task[] = [
   {id: 'task-collect', label: 'Collect sources online', status: 'pending'},
@@ -315,6 +489,9 @@ export default function ChatDemo() {
 
   // Tasks state for the TodosList
   const [tasks, setTasks] = useState<Task[]>([])
+
+  // Artifact tree nodes for tree-aware panel
+  const [artifactNodes, setArtifactNodes] = useState<ArtifactNode[]>([])
 
   // Track attachments for mock upload simulation
   const [attachments, setAttachments] = useState<Attachment[]>([])
@@ -475,6 +652,7 @@ export default function ChatDemo() {
     // Reset state
     setTasks([...INITIAL_BRAND_TASKS])
     clearArtifacts()
+    setArtifactNodes(BRAND_ARTIFACT_TREE)
     setIsStreaming(true)
     setIsThinking(true)
 
@@ -886,6 +1064,7 @@ export default function ChatDemo() {
     const newId = `chat-${Date.now()}`
     setConversationTree(createEmptyTree())
     clearArtifacts()
+    setArtifactNodes([])
     setTasks([])
     responseIndexRef.current = 0
     setActiveConversationId(newId)
@@ -915,6 +1094,7 @@ export default function ChatDemo() {
     setActiveConversationId(id)
     responseIndexRef.current = 0
     clearArtifacts()
+    setArtifactNodes([])
     setTasks([])
 
     if (id === 'branching') {
@@ -1013,6 +1193,7 @@ export default function ChatDemo() {
               attachments={attachments}
               onAttachmentsChange={handleAttachmentsChange}
               artifacts={artifacts}
+              artifactNodes={artifactNodes}
               tasks={tasks}
               tasksTitle="Workflow Progress"
               placeholder="Send a message..."

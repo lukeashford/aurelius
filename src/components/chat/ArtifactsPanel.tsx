@@ -1,6 +1,8 @@
 import React, {useCallback, useEffect, useState} from 'react'
 import {cx} from '../../utils'
 import {ArtifactCard} from '../ArtifactCard'
+import {ArtifactGroup} from '../ArtifactGroup'
+import {ArtifactVariantStack} from '../ArtifactVariantStack'
 import {CardSlotLoading} from '../Card'
 import {AudioCard} from '../AudioCard'
 import {PdfCard} from '../PdfCard'
@@ -9,12 +11,22 @@ import {VideoCard} from '../VideoCard'
 import {MarkdownContent} from '../MarkdownContent'
 import {ChevronRightIcon, CloseIcon, LayersIcon,} from '../icons'
 import type {Artifact} from './hooks'
+import type {ArtifactNode} from '../ArtifactNode'
+import {useArtifactTreeNavigation} from './hooks/useArtifactTreeNavigation'
+
+const ZOOM_LEVELS = [0.25, 0.5, 0.75, 1.0] as const
 
 export interface ArtifactsPanelProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
-   * Array of artifacts to display
+   * Top-level tree nodes to display. When provided, the panel renders
+   * a navigable artifact tree instead of a flat list.
    */
-  artifacts: Artifact[]
+  nodes?: ArtifactNode[]
+  /**
+   * Array of flat artifacts to display (legacy/simple mode).
+   * Ignored when `nodes` is provided.
+   */
+  artifacts?: Artifact[]
   /**
    * Whether the panel is visible
    */
@@ -150,37 +162,68 @@ function ArtifactModal({
 }
 
 /**
- * Render an individual artifact based on its type
+ * Renders a single node according to its type.
  */
-function ArtifactRenderer({
-  artifact,
+function NodeRenderer({
+  node,
   loading,
-  onExpand,
+  onExpandArtifact,
+  onGroupClick,
 }: {
-  artifact: Artifact
+  node: ArtifactNode
   loading?: CardSlotLoading
-  onExpand?: () => void
+  onExpandArtifact: (artifact: Artifact) => void
+  onGroupClick: (node: ArtifactNode) => void
 }) {
-  return (
-      <ArtifactCard
-          artifact={artifact}
-          loading={loading}
-          onExpand={onExpand}
-      />
-  )
+  if (node.type === 'ARTIFACT' && node.artifact) {
+    return (
+        <ArtifactCard
+            artifact={node.artifact}
+            loading={loading}
+            onExpand={onExpandArtifact}
+        />
+    )
+  }
+
+  if (node.type === 'GROUP') {
+    return <ArtifactGroup node={node} onClick={onGroupClick}/>
+  }
+
+  if (node.type === 'VARIANT_SET') {
+    return (
+        <ArtifactVariantStack
+            node={node}
+            onExpandArtifact={onExpandArtifact}
+            onGroupClick={onGroupClick}
+        />
+    )
+  }
+
+  return null
 }
 
 /**
- * ArtifactsPanel displays rich content artifacts in a slide-in panel.
+ * Count total leaf nodes in a tree for the badge.
+ */
+function countNodes(nodes: ArtifactNode[]): number {
+  return nodes.length
+}
+
+/**
+ * ArtifactsPanel displays artifacts in a navigable tree panel.
  *
- * When collapsed, shows a thin strip with layers icon at top.
- * When expanded, shows chevron at top-right to collapse.
- * Click on artifacts to expand them to full screen modal.
+ * When provided with `nodes`, it renders a tree-aware, navigable panel
+ * where groups can be entered (breadcrumb navigation) and artifacts
+ * can be expanded to a full-screen modal.
  *
- * Supports fullWidth artifacts that span all columns in the grid.
+ * When provided with flat `artifacts`, it renders them in a simple grid.
+ *
+ * The panel supports zoom controls (0.25x–1x) and a collapsed state
+ * that shows a thin strip with a LayersIcon button.
  */
 export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelProps>(
     ({
+      nodes,
       artifacts,
       isOpen = false,
       onClose,
@@ -192,11 +235,38 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
       ...rest
     }, ref) => {
       const [expandedArtifact, setExpandedArtifact] = useState<Artifact | null>(null)
+      const [zoomIndex, setZoomIndex] = useState<number>(ZOOM_LEVELS.length - 1) // default 1.0
+
+      const treeNav = useArtifactTreeNavigation(nodes || [])
 
       // Determine number of columns based on percentage of viewport
-      // >55% viewport = 3 columns, >35% = 2 columns, else 1
       const columns = widthPercent && widthPercent > 55 ? 3 : widthPercent && widthPercent > 35 ? 2
           : 1
+
+      const isTreeMode = !!nodes && nodes.length > 0
+
+      // Badge count
+      const badgeCount = isTreeMode
+          ? countNodes(nodes!)
+          : (artifacts?.length || 0)
+
+      const handleExpandArtifact = useCallback((artifact: Artifact) => {
+        setExpandedArtifact(artifact)
+      }, [])
+
+      const handleGroupClick = useCallback((node: ArtifactNode) => {
+        treeNav.navigateInto(node)
+      }, [treeNav])
+
+      const zoomIn = useCallback(() => {
+        setZoomIndex(prev => Math.min(prev + 1, ZOOM_LEVELS.length - 1))
+      }, [])
+
+      const zoomOut = useCallback(() => {
+        setZoomIndex(prev => Math.max(prev - 1, 0))
+      }, [])
+
+      const currentZoom = ZOOM_LEVELS[zoomIndex]
 
       // Collapsed state: thin strip with layers icon at top
       if (!isOpen) {
@@ -221,10 +291,10 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
                   aria-label="Expand artifacts panel"
               >
                 <LayersIcon className="w-5 h-5"/>
-                {artifacts.length > 0 && (
+                {badgeCount > 0 && (
                     <span
-                        className="absolute -top-1 -right-1 w-4 h-4 bg-gold text-obsidian text-xs font-medium flex items-center justify-center rounded-full">
-                {artifacts.length}
+                        className="absolute -top-1 -right-1 w-4 h-4 bg-gold text-obsidian text-xs font-medium flex items-center justify-center">
+                {badgeCount}
               </span>
                 )}
               </button>
@@ -232,7 +302,7 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
         )
       }
 
-      // Expanded state: full panel with chevron collapse button
+      // Expanded state
       return (
           <>
             <div
@@ -254,7 +324,7 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
                   className={cx(
                       "absolute top-0 left-0 w-1 h-full cursor-col-resize z-50",
                       "hover:bg-gold/50 transition-colors",
-                      "after:absolute after:inset-y-0 after:-left-1 after:w-2" // Larger hit area
+                      "after:absolute after:inset-y-0 after:-left-1 after:w-2"
                   )}
               />
 
@@ -275,30 +345,125 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
                 </button>
               </div>
 
-              {/* Artifacts list */}
-              <div
-                  data-testid="artifacts-grid"
-                  className={cx(
-                      "flex-1 overflow-y-auto p-4",
-                      columns === 1 ? "space-y-4" : "grid gap-4",
-                      columns === 2 && "grid-cols-2",
-                      columns === 3 && "grid-cols-3"
-                  )}>
-                {artifacts.length === 0 && !loading ? (
-                    <p className="text-xs text-silver/60 text-center py-8">
-                      No artifacts to display
-                    </p>
-                ) : (
-                    artifacts.map((artifact) => (
-                        <ArtifactRenderer
-                            key={artifact.id}
-                            artifact={artifact}
-                            loading={loading}
-                            onExpand={() => setExpandedArtifact(artifact)}
-                        />
-                    ))
-                )}
+              {/* Breadcrumb trail (tree mode only, when not at root) */}
+              {isTreeMode && !treeNav.isAtRoot && (
+                  <nav
+                      className="flex items-center gap-1 px-4 py-2 border-b border-ash/40 shrink-0 overflow-x-auto text-xs"
+                      aria-label="Breadcrumb"
+                      data-testid="breadcrumb-nav"
+                  >
+                    {treeNav.breadcrumbs.map((crumb, i) => {
+                      const isLast = i === treeNav.breadcrumbs.length - 1
+                      return (
+                          <span key={i} className="flex items-center gap-1 shrink-0">
+                      {i > 0 && (
+                          <ChevronRightIcon className="w-3 h-3 text-silver/50" aria-hidden/>
+                      )}
+                            {isLast ? (
+                                <span className="text-gold font-medium">{crumb.label}</span>
+                            ) : (
+                                <button
+                                    onClick={() => treeNav.navigateTo(i)}
+                                    className="text-silver hover:text-white transition-colors"
+                                >
+                                  {crumb.label}
+                                </button>
+                            )}
+                    </span>
+                      )
+                    })}
+                  </nav>
+              )}
+
+              {/* Content area */}
+              <div className="flex-1 overflow-y-auto relative" data-testid="artifacts-scroll-area">
+                <div
+                    data-testid="artifacts-grid"
+                    className={cx(
+                        "p-4 origin-top-left",
+                        columns === 1 ? "space-y-4" : "grid gap-4",
+                        columns === 2 && "grid-cols-2",
+                        columns === 3 && "grid-cols-3"
+                    )}
+                    style={currentZoom !== 1 ? {
+                      transform: `scale(${currentZoom})`,
+                      width: `${100 / currentZoom}%`,
+                    } : undefined}
+                >
+                  {isTreeMode ? (
+                      treeNav.currentNodes.length === 0 ? (
+                          <p className="text-xs text-silver/60 text-center py-8">
+                            Empty group
+                          </p>
+                      ) : (
+                          treeNav.currentNodes.map((node) => (
+                              <NodeRenderer
+                                  key={node.id}
+                                  node={node}
+                                  loading={loading}
+                                  onExpandArtifact={handleExpandArtifact}
+                                  onGroupClick={handleGroupClick}
+                              />
+                          ))
+                      )
+                  ) : (
+                      (!artifacts || artifacts.length === 0) && !loading ? (
+                          <p className="text-xs text-silver/60 text-center py-8">
+                            No artifacts to display
+                          </p>
+                      ) : (
+                          artifacts?.map((artifact) => (
+                              <ArtifactCard
+                                  key={artifact.id}
+                                  artifact={artifact}
+                                  loading={loading}
+                                  onExpand={handleExpandArtifact}
+                              />
+                          ))
+                      )
+                  )}
+                </div>
               </div>
+
+              {/* Zoom controls */}
+              {isTreeMode && (
+                  <div
+                      className="absolute bottom-4 right-4 flex items-center gap-1 z-10"
+                      data-testid="zoom-controls"
+                  >
+                    <button
+                        onClick={zoomOut}
+                        disabled={zoomIndex === 0}
+                        className={cx(
+                            'w-7 h-7 flex items-center justify-center text-sm font-bold',
+                            'bg-charcoal border border-ash/40',
+                            zoomIndex === 0
+                                ? 'text-silver/30 cursor-not-allowed'
+                                : 'text-silver hover:text-gold hover:border-gold/40 transition-colors',
+                        )}
+                        aria-label="Zoom out"
+                    >
+                      −
+                    </button>
+                    <span className="text-xs text-silver w-10 text-center tabular-nums" data-testid="zoom-level">
+                      {Math.round(currentZoom * 100)}%
+                    </span>
+                    <button
+                        onClick={zoomIn}
+                        disabled={zoomIndex === ZOOM_LEVELS.length - 1}
+                        className={cx(
+                            'w-7 h-7 flex items-center justify-center text-sm font-bold',
+                            'bg-charcoal border border-ash/40',
+                            zoomIndex === ZOOM_LEVELS.length - 1
+                                ? 'text-silver/30 cursor-not-allowed'
+                                : 'text-silver hover:text-gold hover:border-gold/40 transition-colors',
+                        )}
+                        aria-label="Zoom in"
+                    >
+                      +
+                    </button>
+                  </div>
+              )}
             </div>
 
             {/* Modal for expanded artifact */}
@@ -346,7 +511,7 @@ export const ArtifactsPanelToggle = React.forwardRef<
         <LayersIcon className="w-5 h-5"/>
         {artifactCount > 0 && (
             <span
-                className="absolute -top-1 -right-1 w-4 h-4 bg-gold text-obsidian text-xs font-medium flex items-center justify-center rounded-full">
+                className="absolute -top-1 -right-1 w-4 h-4 bg-gold text-obsidian text-xs font-medium flex items-center justify-center">
           {artifactCount}
         </span>
         )}

@@ -153,10 +153,10 @@ Import from `@lukeashford/aurelius`:
 | Toast | children, position (top-right, top-left, bottom-right, bottom-left, top-center, bottom-center), defaultDuration |
 | Tooltip | content, children, open, side (top, right, bottom, left) |
 | VideoCard | src, title, subtitle, aspectRatio (${number}/${number}), playing, controls, light, volume, muted, loop, mediaClassName, contentClassName, playerProps, loading |
-| ArtifactsPanel | artifacts, isOpen, onClose, loading, width, widthPercent, onResizeStart, artifactCount, onExpand |
+| ArtifactsPanel | nodes, artifacts, isOpen, onClose, loading, width, widthPercent, onResizeStart, artifactCount, onExpand |
 | BranchNavigator | current, total, onPrevious, onNext, size, showIcon |
 | ChatInput | position (centered, bottom), placeholder, helperText, onSubmit, disabled, animate, isStreaming, onStop, attachments, onAttachmentsChange, showAttachmentButton, acceptedFileTypes |
-| ChatInterface | messages, conversationTree, onTreeChange, conversations, onMessageSubmit, onEditMessage, onRetryMessage, onStop, onSelectConversation, onNewChat, isStreaming, isThinking, placeholder, emptyStateHelper, initialSidebarCollapsed, emptyState, showAttachmentButton, enableMessageActions, attachments, onAttachmentsChange, artifacts, isArtifactsPanelOpen, onArtifactsPanelOpenChange, tasks, tasksTitle |
+| ChatInterface | messages, conversationTree, onTreeChange, conversations, onMessageSubmit, onEditMessage, onRetryMessage, onStop, onSelectConversation, onNewChat, isStreaming, isThinking, placeholder, emptyStateHelper, initialSidebarCollapsed, emptyState, showAttachmentButton, enableMessageActions, attachments, onAttachmentsChange, artifacts, artifactNodes, isArtifactsPanelOpen, onArtifactsPanelOpenChange, tasks, tasksTitle |
 | ChatView | messages, latestUserMessageIndex, isStreaming, isThinking, onScroll |
 | ConversationSidebar | conversations, isCollapsed, onSelectConversation, onNewChat, onToggleCollapse, width, onResizeStart, onExpand |
 | MessageActions | variant (user, assistant), content, onEdit, onRetry, isEditing, onEditingChange, editValue |
@@ -333,15 +333,19 @@ A card for displaying text content, supporting Markdown and HTML formatting.
 - **contentClassName**: * Optional class name for the content container
 
 **ArtifactsPanel**
-ArtifactsPanel displays rich content artifacts in a slide-in panel.
+ArtifactsPanel displays artifacts in a navigable tree panel.
 
-When collapsed, shows a thin strip with layers icon at top.
-When expanded, shows chevron at top-right to collapse.
-Click on artifacts to expand them to full screen modal.
+When provided with `nodes`, it renders a tree-aware, navigable panel
+where groups can be entered (breadcrumb navigation) and artifacts
+can be expanded to a full-screen modal.
 
-Supports fullWidth artifacts that span all columns in the grid.
+When provided with flat `artifacts`, it renders them in a simple grid.
 
-- **artifacts**: * Array of artifacts to display
+The panel supports zoom controls (0.25x–1x) and a collapsed state
+that shows a thin strip with a LayersIcon button.
+
+- **nodes**: * Top-level tree nodes to display. When provided, the panel renders a navigable artifact tree instead of a flat list.
+- **artifacts**: * Array of flat artifacts to display (legacy/simple mode). Ignored when `nodes` is provided.
 - **isOpen**: * Whether the panel is visible
 - **onClose**: * Callback to close/collapse the panel
 - **loading**: * Whether artifacts are still loading (show skeletons)
@@ -426,6 +430,7 @@ Artifacts are controlled externally via the useArtifacts hook:
 - **attachments**: * Current attachments for the chat input (controlled).
 - **onAttachmentsChange**: * Called when attachments are added or removed in the chat input.
 - **artifacts**: * Artifacts to display in the side panel. Best managed via the useArtifacts hook and passed here.
+- **artifactNodes**: * Top-level artifact tree nodes for tree-aware navigation. When provided, the panel renders a navigable tree instead of a flat list.
 - **isArtifactsPanelOpen**: * Whether the artifacts panel is currently open (controlled).
 - **onArtifactsPanelOpenChange**: * Called when the artifacts panel is opened or closed (controlled).
 - **tasks**: * Tasks to display in the todos list below the artifacts panel. Shows a list of tasks with status indicators.
