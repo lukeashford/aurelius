@@ -1,7 +1,12 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {cx} from '../utils'
+import {type Artifact} from './ArtifactCard'
 import {type ArtifactNode} from './ArtifactNode'
 import {ArtifactCard} from './ArtifactCard'
+import {ArtifactGroup} from './ArtifactGroup'
+import {CheckSquareIcon} from './icons/CheckSquareIcon'
+import {EmptySquareIcon} from './icons/EmptySquareIcon'
+import {SquareLoaderIcon} from './icons/SquareLoaderIcon'
 
 export interface ArtifactVariantStackProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
@@ -9,21 +14,66 @@ export interface ArtifactVariantStackProps extends React.HTMLAttributes<HTMLDivE
    */
   node: ArtifactNode
   /**
-   * Called when a child is clicked (e.g. to select, expand, or navigate into it)
+   * Called when a variant is chosen (the square checkbox). Returns a promise;
+   * the spinner shows until the promise resolves.
    */
-  onChildClick?: (child: ArtifactNode) => void
+  onChoose?: (child: ArtifactNode) => Promise<void>
+  /**
+   * Passed through to ArtifactCard children for expand/open behavior
+   */
+  onExpandArtifact?: (artifact: Artifact) => void
+  /**
+   * Passed through to ArtifactGroup children for navigation
+   */
+  onGroupClick?: (node: ArtifactNode) => void
 }
 
 /**
  * Renders a VARIANT_SET node as a horizontal row of children inside a
- * framing container. If a chosen variant is set, it is highlighted with a
- * gold ring and checkmark while unchosen variants are dimmed. When no
- * variant is chosen, all children are shown equally.
+ * framing container. Each child has a square checkbox for choosing it as
+ * the selected variant. If a chosen variant is set, it is highlighted
+ * while unchosen variants are dimmed. When no variant is chosen, all
+ * children are shown equally. Children handle their own click behavior
+ * (expand for artifacts, navigate for groups).
  */
 export const ArtifactVariantStack = React.forwardRef<HTMLDivElement, ArtifactVariantStackProps>(
-    ({node, onChildClick, className, ...props}, ref) => {
+    ({node, onChoose, onExpandArtifact, onGroupClick, className, ...props}, ref) => {
       const children = node.children
       const chosenId = node.chosenVariantId
+      const [loadingId, setLoadingId] = useState<string | null>(null)
+
+      const handleChoose = async (child: ArtifactNode, e: React.MouseEvent) => {
+        e.stopPropagation()
+        if (!onChoose || loadingId) return
+        setLoadingId(child.id)
+        try {
+          await onChoose(child)
+        } finally {
+          setLoadingId(null)
+        }
+      }
+
+      const renderChooseButton = (child: ArtifactNode) => {
+        const isChosen = chosenId === child.id
+        const isLoading = loadingId === child.id
+
+        return (
+            <button
+                className="absolute top-2 left-2 z-10 cursor-pointer"
+                onClick={(e) => handleChoose(child, e)}
+                aria-label={isChosen ? `${child.label} (chosen)` : `Choose ${child.label}`}
+                disabled={loadingId !== null}
+            >
+              {isLoading ? (
+                  <SquareLoaderIcon/>
+              ) : isChosen ? (
+                  <CheckSquareIcon/>
+              ) : (
+                  <EmptySquareIcon/>
+              )}
+            </button>
+        )
+      }
 
       const renderChild = (child: ArtifactNode) => {
         const isChosen = chosenId === child.id
@@ -34,78 +84,56 @@ export const ArtifactVariantStack = React.forwardRef<HTMLDivElement, ArtifactVar
               <div
                   key={child.id}
                   className={cx(
-                      'relative flex-1 min-w-0 cursor-pointer transition-opacity duration-200',
+                      'relative flex-1 min-w-0 transition-opacity duration-200',
                       isDimmed && 'opacity-50',
                       isChosen && 'ring-1 ring-gold'
                   )}
-                  onClick={() => onChildClick?.(child)}
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault()
-                      onChildClick?.(child)
-                    }
-                  }}
-                  aria-label={child.label}
-                  aria-pressed={isChosen}
               >
-                <ArtifactCard artifact={child.artifact} className="w-full"/>
-                {isChosen && (
-                    <div
-                        className="absolute top-2 left-2 z-10 w-5 h-5 flex items-center justify-center bg-gold text-obsidian rounded-full">
-                      <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                           strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                        <polyline points="20 6 9 17 4 12"/>
-                      </svg>
-                    </div>
-                )}
+                {onChoose && renderChooseButton(child)}
+                <ArtifactCard
+                    artifact={child.artifact}
+                    onExpand={onExpandArtifact}
+                    className="w-full"
+                />
                 <div className="mt-1 text-xs text-silver truncate">{child.label}</div>
               </div>
           )
         }
 
-        // Nested group or variant set placeholder
+        if (child.type === 'GROUP') {
+          return (
+              <div
+                  key={child.id}
+                  className={cx(
+                      'relative flex-1 min-w-0 transition-opacity duration-200',
+                      isDimmed && 'opacity-50',
+                      isChosen && 'ring-1 ring-gold'
+                  )}
+              >
+                {onChoose && renderChooseButton(child)}
+                <ArtifactGroup node={child} onClick={onGroupClick}/>
+              </div>
+          )
+        }
+
+        // Nested variant set placeholder
         return (
             <div
                 key={child.id}
                 className={cx(
-                    'relative flex-1 min-w-0 cursor-pointer transition-opacity duration-200',
+                    'relative flex-1 min-w-0 transition-opacity duration-200',
                     isDimmed && 'opacity-50',
                     isChosen && 'ring-1 ring-gold'
                 )}
-                onClick={() => onChildClick?.(child)}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault()
-                    onChildClick?.(child)
-                  }
-                }}
-                aria-label={child.label}
             >
+              {onChoose && renderChooseButton(child)}
               <div
                   className="aspect-video bg-graphite border border-gold/30 flex flex-col items-center justify-center gap-2 p-4">
-                <span className="text-xs text-silver uppercase tracking-wider">
-                  {child.type === 'GROUP' ? 'Group' : 'Variants'}
-                </span>
+                <span className="text-xs text-silver uppercase tracking-wider">Variants</span>
                 <span className="text-sm text-white font-semibold truncate max-w-full">
                   {child.label}
                 </span>
-                {child.type === 'GROUP' && (
-                    <span className="text-xs text-silver">{child.children.length} items</span>
-                )}
               </div>
-              {isChosen && (
-                  <div
-                      className="absolute top-2 left-2 z-10 w-5 h-5 flex items-center justify-center bg-gold text-obsidian rounded-full">
-                    <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                         strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="20 6 9 17 4 12"/>
-                    </svg>
-                  </div>
-              )}
               <div className="mt-1 text-xs text-silver truncate">{child.label}</div>
             </div>
         )

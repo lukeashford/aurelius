@@ -102,7 +102,7 @@ Import from `@lukeashford/aurelius`:
 | Alert | variant (info, success, warning, error), title |
 | ArtifactCard | artifact, onExpand, loading |
 | ArtifactGroup | node, onClick |
-| ArtifactVariantStack | node, onChildClick |
+| ArtifactVariantStack | node, onChoose, onExpandArtifact, onGroupClick |
 | AttachmentPreview | attachments, onRemove, removable, maxVisible |
 | AudioCard | src, title, subtitle, playing, controls, volume, muted, loop, mediaClassName, contentClassName, playerProps, height, loading |
 | Avatar | src, alt, name, size (xs, sm, md, lg, xl, 2xl), status (online, offline, busy) |
@@ -211,12 +211,16 @@ shows the total number of items in the group.
 
 **ArtifactVariantStack**
 Renders a VARIANT_SET node as a horizontal row of children inside a
-framing container. If a chosen variant is set, it is highlighted with a
-gold ring and checkmark while unchosen variants are dimmed. When no
-variant is chosen, all children are shown equally.
+framing container. Each child has a square checkbox for choosing it as
+the selected variant. If a chosen variant is set, it is highlighted
+while unchosen variants are dimmed. When no variant is chosen, all
+children are shown equally. Children handle their own click behavior
+(expand for artifacts, navigate for groups).
 
 - **node**: * The VARIANT_SET node to display
-- **onChildClick**: * Called when a child is clicked (e.g. to select, expand, or navigate into it)
+- **onChoose**: * Called when a variant is chosen (the square checkbox). Returns a promise; the spinner shows until the promise resolves.
+- **onExpandArtifact**: * Passed through to ArtifactCard children for expand/open behavior
+- **onGroupClick**: * Passed through to ArtifactGroup children for navigation
 
 **AttachmentPreview**
 - **AttachmentItem.id**: * Unique identifier

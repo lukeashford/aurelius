@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useCallback} from 'react'
 import {
   ArtifactGroup,
   ArtifactVariantStack,
@@ -333,6 +333,11 @@ export default function ArtifactTreeSection() {
     setModalGroup(node)
   }
 
+  // Mock async handler — simulates a 1s backend round-trip
+  const handleChoose = useCallback(async (_child: ArtifactNode) => {
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+  }, [])
+
   return (
       <Section
           title="Artifact Tree"
@@ -356,10 +361,15 @@ export default function ArtifactTreeSection() {
             <h4 className="font-semibold text-gold">Variant Stack (with chosen variant)</h4>
             <p className="text-sm text-silver">
               Children displayed side by side for comparison. &quot;Neon Noir&quot; is the chosen
-              variant (highlighted with a checkmark, others dimmed).
+              variant (highlighted, others dimmed). Click the square checkbox to choose — it
+              spins for 1s to simulate a backend round-trip.
             </p>
             <div className="max-w-3xl">
-              <ArtifactVariantStack node={colorTreatments}/>
+              <ArtifactVariantStack
+                  node={colorTreatments}
+                  onChoose={handleChoose}
+                  onGroupClick={handleGroupClick}
+              />
             </div>
           </div>
 
@@ -385,9 +395,8 @@ export default function ArtifactTreeSection() {
             <div className="max-w-2xl">
               <ArtifactVariantStack
                   node={storyboardApproaches}
-                  onChildClick={(child) => {
-                    if (child.type === 'GROUP') handleGroupClick(child)
-                  }}
+                  onChoose={handleChoose}
+                  onGroupClick={handleGroupClick}
               />
             </div>
           </div>
@@ -417,6 +426,8 @@ export default function ArtifactTreeSection() {
                         <ArtifactVariantStack
                             key={child.id}
                             node={child}
+                            onChoose={handleChoose}
+                            onGroupClick={handleGroupClick}
                         />
                     )
                   }
