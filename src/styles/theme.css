@@ -269,6 +269,21 @@
   }
 }
 
+@keyframes badge-ping {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgb(var(--gold-rgb) / 0.4);
+  }
+  40% {
+    transform: scale(1.15);
+    box-shadow: 0 0 0 6px rgb(var(--gold-rgb) / 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgb(var(--gold-rgb) / 0);
+  }
+}
+
 /* ===== BASE STYLES (applied via @layer base) ===== */
 @layer base {
   html {

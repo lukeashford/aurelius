@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {cx} from '../utils'
 import {type ArtifactNode} from './ArtifactNode'
 import {ArtifactCard} from './ArtifactCard'
@@ -30,6 +30,19 @@ export const ArtifactGroup = React.forwardRef<HTMLDivElement, ArtifactGroupProps
       const children = node.children
       const count = children.length
       const frontChild = children[0]
+
+      // Detect count changes and trigger badge animation
+      const prevCountRef = useRef(count)
+      const [badgePing, setBadgePing] = useState(false)
+
+      useEffect(() => {
+        if (count !== prevCountRef.current) {
+          prevCountRef.current = count
+          setBadgePing(true)
+          const timer = setTimeout(() => setBadgePing(false), 500)
+          return () => clearTimeout(timer)
+        }
+      }, [count])
 
       const handleClick = () => {
         if (onClick) {
@@ -108,6 +121,7 @@ export const ArtifactGroup = React.forwardRef<HTMLDivElement, ArtifactGroupProps
                   {/* Count badge — square */}
                   <div
                       className="absolute -top-2 -right-2 z-10 min-w-6 h-6 px-1.5 flex items-center justify-center bg-gold text-obsidian text-xs font-bold"
+                      style={badgePing ? {animation: 'badge-ping 0.5s ease-out'} : undefined}
                   >
                     {count}
                   </div>
