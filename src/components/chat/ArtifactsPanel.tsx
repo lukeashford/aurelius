@@ -9,7 +9,7 @@ import {PdfCard} from '../PdfCard'
 import {ScriptCard} from '../ScriptCard'
 import {VideoCard} from '../VideoCard'
 import {MarkdownContent} from '../MarkdownContent'
-import {ChevronRightIcon, CloseIcon, LayersIcon,} from '../icons'
+import {ChevronRightIcon, CloseIcon,} from '../icons'
 import type {Artifact} from './hooks'
 import type {ArtifactNode} from '../ArtifactNode'
 import {useArtifactTreeNavigation} from './hooks/useArtifactTreeNavigation'
@@ -28,29 +28,13 @@ export interface ArtifactsPanelProps extends React.HTMLAttributes<HTMLDivElement
    */
   artifacts?: Artifact[]
   /**
-   * Whether the panel is visible
-   */
-  isOpen?: boolean
-  /**
-   * Callback to close/collapse the panel
-   */
-  onClose?: () => void
-  /**
    * Whether artifacts are still loading (show skeletons)
    */
   loading?: CardSlotLoading
   /**
-   * Current width of the panel as CSS value (e.g., "50vw", "400px").
-   */
-  width?: string
-  /**
    * Width as percentage of viewport (0-100) for column calculations.
    */
   widthPercent?: number
-  /**
-   * Callback to start resizing
-   */
-  onResizeStart?: (e: React.MouseEvent) => void
 }
 
 /**
@@ -203,14 +187,11 @@ function NodeRenderer({
 }
 
 /**
- * Count total leaf nodes in a tree for the badge.
- */
-function countNodes(nodes: ArtifactNode[]): number {
-  return nodes.length
-}
-
-/**
  * ArtifactsPanel displays artifacts in a navigable tree panel.
+ *
+ * This is a content-only component — it fills whatever container it is
+ * placed in. Opening/closing and resizing are handled by the parent
+ * ToolPanelContainer and ToolSidebar.
  *
  * When provided with `nodes`, it renders a tree-aware, navigable panel
  * where groups can be entered (breadcrumb navigation) and artifacts
@@ -218,19 +199,14 @@ function countNodes(nodes: ArtifactNode[]): number {
  *
  * When provided with flat `artifacts`, it renders them in a simple grid.
  *
- * The panel supports zoom controls (0.25x–1x) and a collapsed state
- * that shows a thin strip with a LayersIcon button.
+ * Supports zoom controls (0.25x–1x) in tree mode.
  */
 export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelProps>(
     ({
       nodes,
       artifacts,
-      isOpen = false,
-      onClose,
       loading,
-      width,
       widthPercent,
-      onResizeStart,
       className,
       ...rest
     }, ref) => {
@@ -244,11 +220,6 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
           : 1
 
       const isTreeMode = !!nodes && nodes.length > 0
-
-      // Badge count
-      const badgeCount = isTreeMode
-          ? countNodes(nodes!)
-          : (artifacts?.length || 0)
 
       const handleExpandArtifact = useCallback((artifact: Artifact) => {
         setExpandedArtifact(artifact)
@@ -268,81 +239,21 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
 
       const currentZoom = ZOOM_LEVELS[zoomIndex]
 
-      // Collapsed state: thin strip with layers icon at top
-      if (!isOpen) {
-        return (
-            <div
-                ref={ref}
-                className={cx(
-                    'h-full bg-charcoal/80 border-l border-ash/40 flex flex-col items-center py-3',
-                    'w-12 shrink-0',
-                    className
-                )}
-                {...rest}
-            >
-              <button
-                  onClick={onClose}
-                  className={cx(
-                      'p-2',
-                      'text-silver hover:text-white hover:bg-ash/20',
-                      'transition-colors duration-150',
-                      'relative'
-                  )}
-                  aria-label="Expand artifacts panel"
-              >
-                <LayersIcon className="w-5 h-5"/>
-                {badgeCount > 0 && (
-                    <span
-                        className="absolute -top-1 -right-1 w-4 h-4 bg-gold text-obsidian text-xs font-medium flex items-center justify-center">
-                {badgeCount}
-              </span>
-                )}
-              </button>
-            </div>
-        )
-      }
-
-      // Expanded state
       return (
           <>
             <div
                 ref={ref}
                 data-testid="artifacts-panel"
                 className={cx(
-                    'h-full bg-charcoal/50 border-l border-ash/40 flex flex-col relative',
-                    !width && 'w-96',
-                    'shrink-0',
+                    'h-full flex flex-col relative',
                     className
                 )}
-                style={width ? {width} : undefined}
                 {...rest}
             >
-              {/* Resize handle */}
-              <div
-                  onMouseDown={onResizeStart}
-                  data-testid="artifacts-resize-handle"
-                  className={cx(
-                      "absolute top-0 left-0 w-1 h-full cursor-col-resize z-50",
-                      "hover:bg-gold/50 transition-colors",
-                      "after:absolute after:inset-y-0 after:-left-1 after:w-2"
-                  )}
-              />
-
-              {/* Header with title and collapse chevron */}
+              {/* Header with title */}
               <div
                   className="flex items-center justify-between p-4 border-b border-ash/40 shrink-0">
                 <h3 className="text-sm font-semibold text-white">Artifacts</h3>
-                <button
-                    onClick={onClose}
-                    className={cx(
-                        'p-1.5',
-                        'text-silver hover:text-white hover:bg-ash/20',
-                        'transition-colors duration-150'
-                    )}
-                    aria-label="Collapse artifacts panel"
-                >
-                  <ChevronRightIcon className="w-5 h-5"/>
-                </button>
               </div>
 
               {/* Breadcrumb trail (tree mode only, when not at root) */}
@@ -508,7 +419,18 @@ export const ArtifactsPanelToggle = React.forwardRef<
           aria-label="Expand artifacts panel"
           {...rest}
       >
-        <LayersIcon className="w-5 h-5"/>
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            className="w-5 h-5"
+        >
+          <path
+              fillRule="evenodd"
+              d="M2 4.5A1.5 1.5 0 013.5 3h13A1.5 1.5 0 0118 4.5v11a1.5 1.5 0 01-1.5 1.5h-13A1.5 1.5 0 012 15.5v-11zM4 5v1h1V5H4zm2 0v1h1V5H6zm7 0v1h1V5h-1zm2 0v1h1V5h-1zM4 14v1h1v-1H4zm2 0v1h1v-1H6zm7 0v1h1v-1h-1zm2 0v1h1v-1h-1zM8 8.118a.5.5 0 01.757-.429l4 2.382a.5.5 0 010 .858l-4 2.382A.5.5 0 018 12.882V8.118z"
+              clipRule="evenodd"
+          />
+        </svg>
         {artifactCount > 0 && (
             <span
                 className="absolute -top-1 -right-1 w-4 h-4 bg-gold text-obsidian text-xs font-medium flex items-center justify-center">

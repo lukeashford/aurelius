@@ -153,7 +153,7 @@ Import from `@lukeashford/aurelius`:
 | Toast | children, position (top-right, top-left, bottom-right, bottom-left, top-center, bottom-center), defaultDuration |
 | Tooltip | content, children, open, side (top, right, bottom, left) |
 | VideoCard | src, title, subtitle, aspectRatio (${number}/${number}), playing, controls, light, volume, muted, loop, mediaClassName, contentClassName, playerProps, loading |
-| ArtifactsPanel | nodes, artifacts, isOpen, onClose, loading, width, widthPercent, onResizeStart, artifactCount, onExpand |
+| ArtifactsPanel | nodes, artifacts, loading, widthPercent, artifactCount, onExpand |
 | BranchNavigator | current, total, onPrevious, onNext, size, showIcon |
 | ChatInput | position (centered, bottom), placeholder, helperText, onSubmit, disabled, animate, isStreaming, onStop, attachments, onAttachmentsChange, showAttachmentButton, acceptedFileTypes |
 | ChatInterface | messages, conversationTree, onTreeChange, conversations, onMessageSubmit, onEditMessage, onRetryMessage, onStop, onSelectConversation, onNewChat, isStreaming, isThinking, placeholder, emptyStateHelper, initialSidebarCollapsed, emptyState, showAttachmentButton, enableMessageActions, attachments, onAttachmentsChange, artifacts, artifactNodes, isArtifactsPanelOpen, onArtifactsPanelOpenChange, tasks, tasksTitle |
@@ -162,6 +162,8 @@ Import from `@lukeashford/aurelius`:
 | MessageActions | variant (user, assistant), content, onEdit, onRetry, isEditing, onEditingChange, editValue |
 | ThinkingIndicator | isVisible, phraseInterval, phrases |
 | TodosList | tasks, title |
+| ToolPanelContainer | topContent, bottomContent, width, onResizeStart |
+| ToolSidebar | tools, activeTools, onToggleTool, isAnyToolOpen |
 | CheckSquareIcon | children |
 | ChevronLeftIcon | children |
 | ChevronRightIcon | children |
@@ -171,6 +173,7 @@ Import from `@lukeashford/aurelius`:
 | ExpandIcon | children |
 | HistoryIcon | children |
 | LayersIcon | children |
+| MediaIcon | children |
 | PlusIcon | children |
 | SquareLoaderIcon | children |
 
@@ -335,23 +338,22 @@ A card for displaying text content, supporting Markdown and HTML formatting.
 **ArtifactsPanel**
 ArtifactsPanel displays artifacts in a navigable tree panel.
 
+This is a content-only component — it fills whatever container it is
+placed in. Opening/closing and resizing are handled by the parent
+ToolPanelContainer and ToolSidebar.
+
 When provided with `nodes`, it renders a tree-aware, navigable panel
 where groups can be entered (breadcrumb navigation) and artifacts
 can be expanded to a full-screen modal.
 
 When provided with flat `artifacts`, it renders them in a simple grid.
 
-The panel supports zoom controls (0.25x–1x) and a collapsed state
-that shows a thin strip with a LayersIcon button.
+Supports zoom controls (0.25x–1x) in tree mode.
 
 - **nodes**: * Top-level tree nodes to display. When provided, the panel renders a navigable artifact tree instead of a flat list.
 - **artifacts**: * Array of flat artifacts to display (legacy/simple mode). Ignored when `nodes` is provided.
-- **isOpen**: * Whether the panel is visible
-- **onClose**: * Callback to close/collapse the panel
 - **loading**: * Whether artifacts are still loading (show skeletons)
-- **width**: * Current width of the panel as CSS value (e.g., "50vw", "400px").
 - **widthPercent**: * Width as percentage of viewport (0-100) for column calculations.
-- **onResizeStart**: * Callback to start resizing
 
 **BranchNavigator**
 BranchNavigator provides a UI for switching between conversation branches.
@@ -394,7 +396,11 @@ ChatInterface is the main orchestrator for a full-featured chat experience.
 Features:
 - ConversationSidebar (left) — collapsible list of past conversations
 - ChatView (center) — main conversation area with smart scrolling
-- ArtifactsPanel (right) — controlled via useArtifacts hook
+- Tool panel system (right) — IntelliJ-style tool sidebar with:
+  - Top group: Chat History, Artifacts Panel (mutually exclusive)
+  - Bottom group: Todo List
+  - Vertical split with draggable divider when both groups are active
+  - Width-resizable tool content area
 - ChatInput — position-aware input that centers in empty state
 - Branching — support for conversation tree with branch navigation
 - Message Actions — copy, edit, retry
@@ -431,9 +437,9 @@ Artifacts are controlled externally via the useArtifacts hook:
 - **onAttachmentsChange**: * Called when attachments are added or removed in the chat input.
 - **artifacts**: * Artifacts to display in the side panel. Best managed via the useArtifacts hook and passed here.
 - **artifactNodes**: * Top-level artifact tree nodes for tree-aware navigation. When provided, the panel renders a navigable tree instead of a flat list.
-- **isArtifactsPanelOpen**: * Whether the artifacts panel is currently open (controlled).
+- **isArtifactsPanelOpen**: * Whether the artifacts panel is currently open (controlled). When set, maps to the tool panel system — opens the artifacts tool.
 - **onArtifactsPanelOpenChange**: * Called when the artifacts panel is opened or closed (controlled).
-- **tasks**: * Tasks to display in the todos list below the artifacts panel. Shows a list of tasks with status indicators.
+- **tasks**: * Tasks to display in the todos list tool panel. Shows a list of tasks with status indicators.
 - **tasksTitle**: * Title for the todos list @default "Tasks"
 
 **ChatView**
@@ -506,8 +512,43 @@ The component automatically sorts cancelled/failed tasks to the bottom of their 
 - **tasks**: * Array of tasks to display
 - **title**: * Title for the todos list @default "Tasks"
 
+**ToolPanelContainer**
+ToolPanelContainer manages the layout of one or two tool panels
+stacked vertically. When both top and bottom slots are filled, a
+height-adjustable divider appears between them.
+
+It also renders the width-resize handle on its left edge, identical
+to the previous ArtifactsPanel resize behavior.
+
+- **topContent**: * Content for the top tool slot (from the top group). When null, the bottom slot takes full height.
+- **bottomContent**: * Content for the bottom tool slot (from the bottom group). When null, the top slot takes full height.
+- **width**: * Panel width as CSS value (e.g., "50vw")
+- **onResizeStart**: * Callback to start horizontal resizing (width dragger)
+
+**ToolSidebar**
+ToolSidebar renders a vertical strip of tool icon buttons on the right
+side of the chat interface. It follows the IntelliJ pattern:
+
+- Top-aligned group and bottom-aligned group separated by a divider
+- Tools in the same group are mutually exclusive
+- Clicking an active tool closes it; clicking an inactive tool opens it
+- When any tool is open, the sidebar shrinks to 0.7x its normal width
+
+- **ToolDefinition.id**: * Unique identifier for this tool
+- **ToolDefinition.icon**: * Icon element shown in the sidebar button
+- **ToolDefinition.label**: * Accessible label for the button
+- **ToolDefinition.group**: * Which group the tool belongs to — tools in the same group are mutually exclusive (opening one closes the other).
+- **tools**: * Available tool definitions
+- **activeTools**: * Current state — which tool is open per group
+- **onToggleTool**: * Called when a tool button is clicked (toggle)
+- **isAnyToolOpen**: * Whether any tool is currently open — controls slim mode (0.7x width)
+
 **CrossSquareIcon**
 - **variant**: * Visual variant for different states - 'cancelled': subtle ash coloring - 'failed': error red coloring
+
+**MediaIcon**
+Media icon — a film frame with play triangle, representing video and media artifacts.
+
 
 **SquareLoaderIcon**
 Square loading spinner with "snake" animation.

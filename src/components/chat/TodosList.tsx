@@ -186,11 +186,10 @@ export const TodosList = React.forwardRef<HTMLDivElement, TodosListProps>(
           <div
               ref={ref}
               className={cx(
-                  'flex flex-col bg-charcoal/30 border-l border-ash/40',
+                  'flex flex-col h-full',
                   'overflow-hidden',
                   className
               )}
-              style={{maxHeight: '25vh'}}
               {...rest}
           >
             {/* Header */}
@@ -214,5 +213,18 @@ export const TodosList = React.forwardRef<HTMLDivElement, TodosListProps>(
 )
 
 TodosList.displayName = 'TodosList'
+
+/**
+ * Returns true when every task (and subtask, recursively) is in a
+ * terminal state: done, cancelled, or failed. Returns true for empty arrays.
+ */
+export function areAllTasksSettled(tasks: Task[]): boolean {
+  return tasks.every(t => {
+    const settled = t.status === 'done' || t.status === 'cancelled' || t.status === 'failed'
+    if (!settled) return false
+    if (t.subtasks && t.subtasks.length > 0) return areAllTasksSettled(t.subtasks)
+    return true
+  })
+}
 
 export default TodosList

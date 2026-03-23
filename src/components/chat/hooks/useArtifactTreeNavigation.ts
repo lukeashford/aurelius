@@ -44,7 +44,7 @@ export function useArtifactTreeNavigation(rootNodes: ArtifactNode[]): UseArtifac
   }, [rootNodes, stack])
 
   const breadcrumbs = useMemo<BreadcrumbEntry[]>(() => {
-    const entries: BreadcrumbEntry[] = [{label: 'Root', node: null}]
+    const entries: BreadcrumbEntry[] = [{label: 'Project', node: null}]
     for (const node of stack) {
       entries.push({label: node.label, node})
     }

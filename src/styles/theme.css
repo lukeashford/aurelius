@@ -284,6 +284,21 @@
   }
 }
 
+@keyframes badge-invert {
+  0% {
+    background-color: var(--color-gold);
+    color: var(--color-obsidian);
+  }
+  40% {
+    background-color: var(--color-obsidian);
+    color: var(--color-gold);
+  }
+  100% {
+    background-color: var(--color-gold);
+    color: var(--color-obsidian);
+  }
+}
+
 /* ===== BASE STYLES (applied via @layer base) ===== */
 @layer base {
   html {

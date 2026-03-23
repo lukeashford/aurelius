@@ -121,7 +121,7 @@ export const ArtifactGroup = React.forwardRef<HTMLDivElement, ArtifactGroupProps
                   {/* Count badge — square */}
                   <div
                       className="absolute -top-2 -right-2 z-10 min-w-6 h-6 px-1.5 flex items-center justify-center bg-gold text-obsidian text-xs font-bold"
-                      style={badgePing ? {animation: 'badge-ping 0.5s ease-out'} : undefined}
+                      style={badgePing ? {animation: 'badge-invert 0.6s ease-in-out'} : undefined}
                   >
                     {count}
                   </div>

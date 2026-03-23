@@ -3,7 +3,6 @@ import {fireEvent, render, screen} from '@testing-library/react'
 import {
   addMessageToTree,
   ChatInterface,
-  type ConversationTree,
   createEmptyTree,
 } from '@lukeashford/aurelius'
 
@@ -13,7 +12,7 @@ describe('ChatInterface', () => {
     {id: '2', title: 'Conversation 2', preview: 'World...', isActive: false},
   ]
 
-  const createTreeWithMessages = (): ConversationTree => {
+  const createTreeWithMessages = () => {
     let tree = createEmptyTree()
     tree = addMessageToTree(
         tree,
@@ -59,8 +58,8 @@ describe('ChatInterface', () => {
 
   it('renders messages when messages array is provided (flat mode)', () => {
     const messages = [
-      {id: '1', variant: 'user' as const, content: 'User message'},
-      {id: '2', variant: 'assistant' as const, content: 'Assistant response'},
+      {id: '1', variant: 'user', content: 'User message'},
+      {id: '2', variant: 'assistant', content: 'Assistant response'},
     ]
     render(<ChatInterface messages={messages}/>)
     expect(screen.getByText('User message')).toBeInTheDocument()
@@ -112,11 +111,12 @@ describe('ChatInterface', () => {
     expect(screen.getByRole('button', {name: /stop generation/i})).toBeInTheDocument()
   })
 
-  it('renders TodosList when tasks are provided and panel is open', () => {
+  it('renders TodosList when tasks are provided and artifacts tool is open', () => {
     const tasks = [
-      {id: '1', label: 'Task 1', status: 'in_progress' as const},
+      {id: '1', label: 'Task 1', status: 'in_progress'},
     ]
-    render(<ChatInterface tasks={tasks} isArtifactsPanelOpen={true}/>)
+    // Tasks auto-open the todos tool when tasks data arrives
+    render(<ChatInterface tasks={tasks}/>)
     expect(screen.getByText('Tasks')).toBeInTheDocument()
     expect(screen.getByText('Task 1')).toBeInTheDocument()
   })
@@ -138,7 +138,7 @@ describe('ChatInterface', () => {
 
   it('shows thinking indicator when isThinking is true', () => {
     const messagesWithUserLast = [
-      {id: '1', variant: 'user' as const, content: 'Hello'},
+      {id: '1', variant: 'user', content: 'Hello'},
     ]
     render(
         <ChatInterface
@@ -210,11 +210,11 @@ describe('ChatInterface', () => {
     expect(container.firstChild).toHaveClass('gap-4')
   })
 
-  it('passes artifacts to ArtifactsPanel', () => {
+  it('shows artifacts panel when artifacts tool is toggled via isArtifactsPanelOpen', () => {
     const mockArtifacts = [
       {
         id: '1',
-        type: 'IMAGE' as const,
+        type: 'IMAGE',
         url: 'https://example.com/image.jpg',
         title: 'Test Artifact',
       },
@@ -228,11 +228,11 @@ describe('ChatInterface', () => {
     expect(screen.getByText('Test Artifact')).toBeInTheDocument()
   })
 
-  it('shows artifacts panel when artifacts are provided and panel is open', () => {
+  it('shows artifacts panel header when open', () => {
     const mockArtifacts = [
       {
         id: '1',
-        type: 'IMAGE' as const,
+        type: 'IMAGE',
         url: 'https://example.com/image.jpg',
         title: 'Artifact Title',
       },
@@ -246,20 +246,11 @@ describe('ChatInterface', () => {
     expect(screen.getByText('Artifacts')).toBeInTheDocument()
   })
 
-  it('calls onArtifactsPanelOpenChange when panel toggle is clicked', () => {
-    const onPanelChange = jest.fn()
-    const mockArtifacts = [
-      {id: '1', type: 'IMAGE' as const, url: 'https://example.com/image.jpg'},
-    ]
-    render(
-        <ChatInterface
-            artifacts={mockArtifacts}
-            isArtifactsPanelOpen={true}
-            onArtifactsPanelOpenChange={onPanelChange}
-        />
-    )
-    fireEvent.click(screen.getByRole('button', {name: /collapse artifacts panel/i}))
-    expect(onPanelChange).toHaveBeenCalledWith(false)
+  it('renders tool sidebar with tool buttons', () => {
+    render(<ChatInterface/>)
+    expect(screen.getByRole('button', {name: /chat history/i})).toBeInTheDocument()
+    expect(screen.getByRole('button', {name: /artifacts/i})).toBeInTheDocument()
+    expect(screen.getByRole('button', {name: /tasks/i})).toBeInTheDocument()
   })
 
   it('enables message actions when enableMessageActions is true', () => {
@@ -276,9 +267,6 @@ describe('ChatInterface', () => {
         />
     )
 
-    // With enableMessageActions=true and callbacks provided,
-    // the actions should be rendered (though may be hidden until hover)
-    // We verify the component renders without error
     expect(screen.getByText('Hello!')).toBeInTheDocument()
     expect(screen.getByText('Hi there!')).toBeInTheDocument()
   })
@@ -293,7 +281,6 @@ describe('ChatInterface', () => {
         />
     )
 
-    // Actions should not be rendered
     expect(screen.queryByRole('button', {name: /edit message/i})).not.toBeInTheDocument()
     expect(screen.queryByRole('button', {name: /regenerate response/i})).not.toBeInTheDocument()
   })

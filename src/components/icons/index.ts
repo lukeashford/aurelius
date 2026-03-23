@@ -7,6 +7,7 @@ export {CloseIcon} from './CloseIcon'
 export {ExpandIcon} from './ExpandIcon'
 export {HistoryIcon} from './HistoryIcon'
 export {LayersIcon} from './LayersIcon'
+export {MediaIcon} from './MediaIcon'
 export {PlusIcon} from './PlusIcon'
 
 // Status indicator icons (used in TodosList and elsewhere)
