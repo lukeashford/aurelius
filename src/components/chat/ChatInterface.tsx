@@ -217,6 +217,9 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
         bottom: null,
       })
 
+      // Track tools the user has actively dismissed — auto-open won't reopen these
+      const dismissedToolsRef = useRef<Set<string>>(new Set())
+
       // Controlled vs uncontrolled: isArtifactsPanelOpen maps to the tool system
       const isPanelControlled = isArtifactsPanelOpen !== undefined
 
@@ -266,12 +269,24 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
         // Special case: controlled artifacts panel
         if (toolId === 'artifacts' && isPanelControlled) {
           const isCurrentlyOpen = activeTools.top === 'artifacts'
+          if (isCurrentlyOpen) {
+            dismissedToolsRef.current.add('artifacts')
+          } else {
+            dismissedToolsRef.current.delete('artifacts')
+          }
           onArtifactsPanelOpenChange?.(!isCurrentlyOpen)
           return
         }
 
         setInternalTools(prev => {
           const isCurrentlyOpen = prev[group] === toolId
+          if (isCurrentlyOpen) {
+            // User is actively closing — remember this so auto-open won't reopen
+            dismissedToolsRef.current.add(toolId)
+          } else {
+            // User is actively opening — clear dismissed state
+            dismissedToolsRef.current.delete(toolId)
+          }
           return {
             ...prev,
             [group]: isCurrentlyOpen ? null : toolId,
@@ -303,6 +318,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
       }, [effectiveMessages])
 
       // ── Auto-open tools when data arrives (uncontrolled mode) ─────
+      // Only auto-opens a tool if the user hasn't actively dismissed it.
       useEffect(() => {
         const hasNewOrSignificantArtifact = artifacts.some(a => {
           const p = prevArtifactsRef.current.find(prev => prev.id === a.id)
@@ -314,7 +330,9 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
 
         const hasNodes = artifactNodes && artifactNodes.length > 0
 
-        if (!isPanelControlled && (hasNewOrSignificantArtifact || hasNodes)) {
+        if (!isPanelControlled
+            && (hasNewOrSignificantArtifact || hasNodes)
+            && !dismissedToolsRef.current.has('artifacts')) {
           setInternalTools(prev => ({...prev, top: 'artifacts'}))
         }
 
@@ -328,7 +346,8 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
           })
         }
 
-        if (hasNewOrUpdatedTask(tasks, prevTasksRef.current)) {
+        if (hasNewOrUpdatedTask(tasks, prevTasksRef.current)
+            && !dismissedToolsRef.current.has('todos')) {
           setInternalTools(prev => ({...prev, bottom: 'todos'}))
         }
 
@@ -421,20 +440,6 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
         if (!toolId) return null
 
         switch (toolId) {
-          case 'history':
-            return (
-                <div className="h-full flex flex-col">
-                  <div className="flex items-center p-4 border-b border-ash/40 shrink-0">
-                    <h3 className="text-sm font-semibold text-white">Chat History</h3>
-                  </div>
-                  <div className="flex-1 overflow-y-auto p-4">
-                    <p className="text-xs text-silver/60 text-center py-8">
-                      History view coming soon
-                    </p>
-                  </div>
-                </div>
-            )
-
           case 'artifacts':
             return (
                 <ArtifactsPanel

@@ -133,7 +133,7 @@ export const ToolPanelContainer = React.forwardRef<HTMLDivElement, ToolPanelCont
                     onMouseDown={startHeightResize}
                     className={cx(
                         'h-1 cursor-row-resize z-50 shrink-0',
-                        'hover:bg-gold/50 transition-colors',
+                        'bg-ash/40 hover:bg-gold/50 transition-colors',
                         'relative',
                         'after:absolute after:-top-1 after:left-0 after:right-0 after:h-3'
                     )}
