@@ -348,8 +348,8 @@ can be expanded to a full-screen modal.
 
 When provided with flat `artifacts`, it renders them in a simple grid.
 
-Supports zoom controls (0.25x–1x) in tree mode. Zoom uses the CSS
-`zoom` property on the scroll viewport so the entire layout scales
+Supports zoom controls (0.25x–1x) in tree mode. Zoom uses CSS
+`transform: scale()` on the content wrapper so the entire layout scales
 uniformly — cards, images, gaps, and text all shrink as if the viewer
 is physically moving back from the content.
 

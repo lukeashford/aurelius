@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react'
+import React, {useCallback, useEffect, useRef, useState} from 'react'
 import {cx} from '../../utils'
 import {ArtifactCard} from '../ArtifactCard'
 import {ArtifactGroup} from '../ArtifactGroup'
@@ -195,8 +195,8 @@ function NodeRenderer({
  *
  * When provided with flat `artifacts`, it renders them in a simple grid.
  *
- * Supports zoom controls (0.25x–1x) in tree mode. Zoom uses the CSS
- * `zoom` property on the scroll viewport so the entire layout scales
+ * Supports zoom controls (0.25x–1x) in tree mode. Zoom uses CSS
+ * `transform: scale()` on the content wrapper so the entire layout scales
  * uniformly — cards, images, gaps, and text all shrink as if the viewer
  * is physically moving back from the content.
  */
@@ -232,6 +232,20 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
       }, [])
 
       const currentZoom = ZOOM_LEVELS[zoomIndex]
+
+      // Measure content height so the scroll container can shrink to match the scaled visual height
+      const contentRef = useRef<HTMLDivElement>(null)
+      const [contentHeight, setContentHeight] = useState<number | undefined>(undefined)
+
+      useEffect(() => {
+        const el = contentRef.current
+        if (!el) return
+        const observer = new ResizeObserver(([entry]) => {
+          setContentHeight(entry.contentRect.height)
+        })
+        observer.observe(el)
+        return () => observer.disconnect()
+      }, [])
 
       return (
           <>
@@ -322,12 +336,26 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
               <div
                   className="flex-1 overflow-auto relative"
                   data-testid="artifacts-scroll-area"
-                  style={currentZoom !== 1 ? { zoom: currentZoom } : undefined}
               >
+                {/* Sizer div: collapses to the scaled height so scrollbar tracks correctly */}
                 <div
-                    data-testid="artifacts-grid"
-                    className="p-4 space-y-4"
+                    style={currentZoom !== 1 && contentHeight !== undefined
+                        ? { height: contentHeight * currentZoom }
+                        : undefined
+                    }
                 >
+                  <div
+                      ref={contentRef}
+                      data-testid="artifacts-grid"
+                      className="p-4 space-y-4"
+                      style={currentZoom !== 1
+                          ? {
+                            transform: `scale(${currentZoom})`,
+                            transformOrigin: 'top center',
+                          }
+                          : undefined
+                      }
+                  >
                   {isTreeMode ? (
                       treeNav.currentNodes.length === 0 ? (
                           <p className="text-xs text-silver/60 text-center py-8">
@@ -360,6 +388,7 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
                           ))
                       )
                   )}
+                  </div>
                 </div>
               </div>
 
