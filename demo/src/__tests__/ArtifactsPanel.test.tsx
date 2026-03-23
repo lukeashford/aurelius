@@ -2,186 +2,237 @@ import React from 'react'
 import {fireEvent, render, screen} from '@testing-library/react'
 import {ArtifactsPanel} from '@lukeashford/aurelius'
 
-describe('ArtifactsPanel', () => {
-  const mockArtifacts = [
-    {
-      id: '1',
+const IMG = 'https://example.com/image.jpg'
+
+// --- Test data ---
+
+const mockArtifacts = [
+  {
+    id: '1',
+    type: 'IMAGE' as const,
+    url: IMG,
+    alt: 'Test image',
+    title: 'Image Title',
+    subtitle: 'Image subtitle',
+  },
+  {
+    id: '2',
+    type: 'TEXT' as const,
+    title: 'Text Artifact',
+    inlineContent: 'Some markdown content',
+  },
+]
+
+const mockNodes = [
+  {
+    id: 'art-1',
+    type: 'ARTIFACT' as const,
+    name: 'image_1',
+    label: 'Image One',
+    artifact: {
+      id: 'a-1',
       type: 'IMAGE' as const,
-      url: 'https://example.com/image.jpg',
-      alt: 'Test image',
-      title: 'Image Title',
-      subtitle: 'Image subtitle',
+      url: IMG,
+      alt: 'Test',
+      title: 'Artifact Image',
     },
-    {
-      id: '2',
-      type: 'TEXT' as const,
-      title: 'Text Artifact',
-      inlineContent: 'Some markdown content',
-    },
-  ]
+    children: [],
+  },
+  {
+    id: 'group-1',
+    type: 'GROUP' as const,
+    name: 'my_group',
+    label: 'My Group',
+    children: [
+      {
+        id: 'group-child-1',
+        type: 'ARTIFACT' as const,
+        name: 'child_image',
+        label: 'Child Image',
+        artifact: {
+          id: 'a-child-1',
+          type: 'IMAGE' as const,
+          url: IMG,
+          alt: 'Child',
+          title: 'Child Artifact',
+        },
+        children: [],
+      },
+      {
+        id: 'subgroup-1',
+        type: 'GROUP' as const,
+        name: 'sub_group',
+        label: 'Sub Group',
+        children: [
+          {
+            id: 'deep-child',
+            type: 'ARTIFACT' as const,
+            name: 'deep_image',
+            label: 'Deep Image',
+            artifact: {
+              id: 'a-deep',
+              type: 'IMAGE' as const,
+              url: IMG,
+              alt: 'Deep',
+              title: 'Deep Artifact',
+            },
+            children: [],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'variant-1',
+    type: 'VARIANT_SET' as const,
+    name: 'colors',
+    label: 'Color Treatments',
+    children: [
+      {
+        id: 'var-child-1',
+        type: 'ARTIFACT' as const,
+        name: 'warm',
+        label: 'Warm',
+        artifact: {
+          id: 'a-warm',
+          type: 'IMAGE' as const,
+          url: IMG,
+          alt: 'Warm',
+          title: 'Warm Treatment',
+        },
+        children: [],
+      },
+    ],
+  },
+]
 
-  it('renders without crashing', () => {
-    render(<ArtifactsPanel artifacts={[]}/>)
-    expect(document.body).toBeInTheDocument()
-  })
+describe('ArtifactsPanel', () => {
+  // ---- Content rendering ----
 
-  it('renders collapsed by default (isOpen=false)', () => {
+  it('renders with header', () => {
     render(<ArtifactsPanel artifacts={mockArtifacts}/>)
-    // Should show expand button, not the artifacts panel title
-    expect(screen.getByRole('button', {name: /expand artifacts panel/i})).toBeInTheDocument()
-    expect(screen.queryByText('Artifacts')).not.toBeInTheDocument()
-  })
-
-  it('renders expanded when isOpen is true', () => {
-    render(<ArtifactsPanel artifacts={mockArtifacts} isOpen={true}/>)
     expect(screen.getByText('Artifacts')).toBeInTheDocument()
   })
 
-  it('shows artifact count badge when collapsed with artifacts', () => {
-    render(<ArtifactsPanel artifacts={mockArtifacts} isOpen={false}/>)
-    expect(screen.getByText('2')).toBeInTheDocument()
-  })
-
-  it('calls onClose when expand button is clicked in collapsed state', () => {
-    const onClose = jest.fn()
-    render(
-        <ArtifactsPanel artifacts={mockArtifacts} isOpen={false} onClose={onClose}/>
-    )
-
-    fireEvent.click(screen.getByRole('button', {name: /expand artifacts panel/i}))
-    expect(onClose).toHaveBeenCalled()
-  })
-
-  it('calls onClose when collapse button is clicked in expanded state', () => {
-    const onClose = jest.fn()
-    render(
-        <ArtifactsPanel artifacts={mockArtifacts} isOpen={true} onClose={onClose}/>
-    )
-
-    fireEvent.click(screen.getByRole('button', {name: /collapse artifacts panel/i}))
-    expect(onClose).toHaveBeenCalled()
-  })
-
-  it('shows empty state when no artifacts and expanded', () => {
-    render(<ArtifactsPanel artifacts={[]} isOpen={true}/>)
+  it('shows empty state in flat mode', () => {
+    render(<ArtifactsPanel artifacts={[]}/>)
     expect(screen.getByText('No artifacts to display')).toBeInTheDocument()
   })
 
-  it('renders image artifact', () => {
-    const imageArtifact = [
-      {
-        id: '1',
-        type: 'IMAGE' as const,
-        url: 'https://example.com/image.jpg',
-        alt: 'Test image',
-        title: 'My Image',
-        subtitle: 'A test image',
-      },
-    ]
-    render(<ArtifactsPanel artifacts={imageArtifact} isOpen={true}/>)
-    expect(screen.getByText('My Image')).toBeInTheDocument()
+  it('renders artifacts in flat mode', () => {
+    render(<ArtifactsPanel artifacts={mockArtifacts}/>)
+    expect(screen.getByText('Image Title')).toBeInTheDocument()
+    expect(screen.getByText('Text Artifact')).toBeInTheDocument()
   })
 
-  it('renders text artifact with title', () => {
-    const textArtifact = [
-      {
-        id: '1',
-        type: 'TEXT' as const,
-        title: 'Documentation',
-        inlineContent: 'Some documentation content',
-      },
-    ]
-    render(<ArtifactsPanel artifacts={textArtifact} isOpen={true}/>)
-    expect(screen.getByText('Documentation')).toBeInTheDocument()
+  // ---- Tree mode ----
+
+  it('renders tree nodes when provided', () => {
+    render(<ArtifactsPanel nodes={mockNodes}/>)
+    expect(screen.getByText('Artifact Image')).toBeInTheDocument()
+    expect(screen.getByText('My Group')).toBeInTheDocument()
+    expect(screen.getByText('Color Treatments')).toBeInTheDocument()
   })
 
-  it('renders video artifact', () => {
-    const videoArtifact = [
-      {
-        id: '1',
-        type: 'VIDEO' as const,
-        url: 'https://example.com/video.mp4',
-        title: 'Demo Video',
-        subtitle: 'A demonstration',
-      },
-    ]
-    render(<ArtifactsPanel artifacts={videoArtifact} isOpen={true}/>)
-    expect(screen.getByText('Demo Video')).toBeInTheDocument()
+  it('does not show breadcrumbs at root level', () => {
+    render(<ArtifactsPanel nodes={mockNodes}/>)
+    expect(screen.queryByTestId('breadcrumb-nav')).not.toBeInTheDocument()
   })
 
-  it('renders script artifact (type: html)', () => {
-    const scriptArtifact = [
-      {
-        id: '1',
-        type: 'SCRIPT' as const,
-        title: 'Script Artifact',
-        scriptElements: [
-          {type: 'scene-heading' as const, content: 'INT. OFFICE - DAY'},
-          {type: 'dialogue' as const, content: 'Work, work, work.'},
-        ],
-      },
-    ]
-    render(<ArtifactsPanel artifacts={scriptArtifact} isOpen={true}/>)
-    expect(screen.getByText('Script Artifact')).toBeInTheDocument()
-    expect(screen.getByText('INT. OFFICE - DAY')).toBeInTheDocument()
-    expect(screen.getByText('Work, work, work.')).toBeInTheDocument()
+  it('navigates into a group on click', () => {
+    render(<ArtifactsPanel nodes={mockNodes}/>)
+    const groupButton = screen.getByRole('button', {name: /My Group/})
+    fireEvent.click(groupButton)
+    expect(screen.getByText('Child Artifact')).toBeInTheDocument()
+    expect(screen.getByTestId('breadcrumb-nav')).toBeInTheDocument()
+    expect(screen.getByText('Project')).toBeInTheDocument()
+    expect(screen.getByText('My Group')).toBeInTheDocument()
   })
 
-  it('shows skeleton when isLoading is true', () => {
-    const artifactWithPending = [
-      {
-        id: '1',
-        type: 'IMAGE' as const,
-        url: 'https://example.com/image.jpg',
-        isPending: true,
-      },
-    ]
-    render(
-        <ArtifactsPanel artifacts={artifactWithPending} isOpen={true} loading={{
-          header: {
-            title: true,
-            subtitle: true,
-            action: true
-          },
-          media: true,
-          body: true,
-          footer: true
-        }}/>
-    )
-    // Skeleton elements should be present
-    const skeletons = document.querySelectorAll('[class*="animate"]')
-    expect(skeletons.length).toBeGreaterThan(0)
+  it('navigates back via breadcrumb', () => {
+    render(<ArtifactsPanel nodes={mockNodes}/>)
+    fireEvent.click(screen.getByRole('button', {name: /My Group/}))
+    expect(screen.getByText('Child Artifact')).toBeInTheDocument()
+    fireEvent.click(screen.getByText('Project'))
+    expect(screen.getByText('Artifact Image')).toBeInTheDocument()
+    expect(screen.queryByTestId('breadcrumb-nav')).not.toBeInTheDocument()
   })
+
+  it('supports deep navigation with breadcrumb trail', () => {
+    render(<ArtifactsPanel nodes={mockNodes}/>)
+    fireEvent.click(screen.getByRole('button', {name: /My Group/}))
+    fireEvent.click(screen.getByRole('button', {name: /Sub Group/}))
+    expect(screen.getByText('Deep Artifact')).toBeInTheDocument()
+    const nav = screen.getByTestId('breadcrumb-nav')
+    expect(nav).toHaveTextContent('Project')
+    expect(nav).toHaveTextContent('My Group')
+    expect(nav).toHaveTextContent('Sub Group')
+  })
+
+  it('can jump to middle of breadcrumb trail', () => {
+    render(<ArtifactsPanel nodes={mockNodes}/>)
+    fireEvent.click(screen.getByRole('button', {name: /My Group/}))
+    fireEvent.click(screen.getByRole('button', {name: /Sub Group/}))
+    const buttons = screen.getByTestId('breadcrumb-nav').querySelectorAll('button')
+    fireEvent.click(buttons[1]) // My Group
+    expect(screen.getByText('Child Artifact')).toBeInTheDocument()
+  })
+
+  // ---- Zoom controls ----
+
+  it('shows zoom controls in tree mode', () => {
+    render(<ArtifactsPanel nodes={mockNodes}/>)
+    expect(screen.getByTestId('zoom-controls')).toBeInTheDocument()
+    expect(screen.getByText('100%')).toBeInTheDocument()
+  })
+
+  it('does not show zoom controls in flat mode', () => {
+    render(<ArtifactsPanel artifacts={mockArtifacts}/>)
+    expect(screen.queryByTestId('zoom-controls')).not.toBeInTheDocument()
+  })
+
+  it('zooms out on minus click', () => {
+    render(<ArtifactsPanel nodes={mockNodes}/>)
+    fireEvent.click(screen.getByRole('button', {name: /zoom out/i}))
+    expect(screen.getByTestId('zoom-level')).toHaveTextContent('75%')
+  })
+
+  it('zooms in after zooming out', () => {
+    render(<ArtifactsPanel nodes={mockNodes}/>)
+    fireEvent.click(screen.getByRole('button', {name: /zoom out/i}))
+    fireEvent.click(screen.getByRole('button', {name: /zoom out/i}))
+    expect(screen.getByTestId('zoom-level')).toHaveTextContent('50%')
+    fireEvent.click(screen.getByRole('button', {name: /zoom in/i}))
+    expect(screen.getByTestId('zoom-level')).toHaveTextContent('75%')
+  })
+
+  it('disables zoom in at max zoom', () => {
+    render(<ArtifactsPanel nodes={mockNodes}/>)
+    expect(screen.getByRole('button', {name: /zoom in/i})).toBeDisabled()
+  })
+
+  it('disables zoom out at min zoom', () => {
+    render(<ArtifactsPanel nodes={mockNodes}/>)
+    fireEvent.click(screen.getByRole('button', {name: /zoom out/i}))
+    fireEvent.click(screen.getByRole('button', {name: /zoom out/i}))
+    fireEvent.click(screen.getByRole('button', {name: /zoom out/i}))
+    expect(screen.getByTestId('zoom-level')).toHaveTextContent('25%')
+    expect(screen.getByRole('button', {name: /zoom out/i})).toBeDisabled()
+  })
+
+  // ---- CSS / Layout ----
 
   it('applies custom className', () => {
     const {container} = render(
-        <ArtifactsPanel
-            artifacts={mockArtifacts}
-            isOpen={true}
-            className="gap-4"
-        />
+        <ArtifactsPanel artifacts={mockArtifacts} className="gap-4"/>
     )
     expect(container.firstChild).toHaveClass('gap-4')
   })
 
-  it('matches snapshot when collapsed with artifacts', () => {
-    const {container} = render(
-        <ArtifactsPanel artifacts={mockArtifacts} isOpen={false}/>
-    )
-    expect(container).toMatchSnapshot()
-  })
+  // ---- Snapshots ----
 
-  it('matches snapshot when expanded with artifacts', () => {
-    const {container} = render(
-        <ArtifactsPanel artifacts={mockArtifacts} isOpen={true}/>
-    )
-    expect(container).toMatchSnapshot()
-  })
-
-  it('matches snapshot when expanded with no artifacts', () => {
-    const {container} = render(
-        <ArtifactsPanel artifacts={[]} isOpen={true}/>
-    )
+  it('matches snapshot with nodes', () => {
+    const {container} = render(<ArtifactsPanel nodes={mockNodes}/>)
     expect(container).toMatchSnapshot()
   })
 })

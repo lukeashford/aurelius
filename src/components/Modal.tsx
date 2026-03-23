@@ -69,7 +69,7 @@ export const Modal = ({isOpen, onClose, title, children, className}: ModalProps)
             role="dialog"
             aria-modal="true"
             className={cx(
-                'bg-charcoal border border-gold/30 shadow-2xl z-50 w-full max-w-lg p-6 rounded-none relative',
+                'bg-charcoal border border-gold/30 shadow-2xl z-50 w-full max-w-lg p-6 rounded-none relative flex flex-col',
                 className
             )}
             data-state="open"
@@ -83,7 +83,7 @@ export const Modal = ({isOpen, onClose, title, children, className}: ModalProps)
               <span className="sr-only">Close</span>
             </button>
           </div>
-          <div>{children}</div>
+          <div className="overflow-y-auto min-h-0">{children}</div>
         </div>
       </div>
   )

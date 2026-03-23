@@ -25,11 +25,22 @@ export {
 } from './ArtifactsPanel'
 export {
   TodosList,
+  areAllTasksSettled,
   type TodosListProps,
   type Task,
   type TaskStatus,
   TASK_STATUSES,
 } from './TodosList'
+export {
+  ToolSidebar,
+  type ToolSidebarProps,
+  type ToolDefinition,
+  type ToolPanelState,
+} from './ToolSidebar'
+export {
+  ToolPanelContainer,
+  type ToolPanelContainerProps,
+} from './ToolPanelContainer'
 
 // New components
 export {
@@ -64,9 +75,12 @@ export {
   useScrollAnchor,
   useArtifacts,
   useResizable,
+  useArtifactTreeNavigation,
   type UseScrollAnchorOptions,
   type UseScrollAnchorReturn,
   type Artifact,
   type ArtifactType,
   type UseArtifactsReturn,
+  type BreadcrumbEntry,
+  type UseArtifactTreeNavigationReturn,
 } from './hooks'

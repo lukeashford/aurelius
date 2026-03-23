@@ -3,6 +3,7 @@ import {useNavigate} from 'react-router-dom'
 import {
   addMessageToTree,
   type Attachment,
+  type ArtifactNode,
   ChatInterface,
   type Conversation,
   type ConversationTree,
@@ -197,70 +198,211 @@ const BRAND_ANALYSIS_INTRO = `<p>I'll help you create a comprehensive brand vide
 <li>Collecting sources about coffee industry trends and competitor analysis</li>
 <li>Analyzing the data to understand brand positioning</li>
 <li>Writing a compelling video script</li>
-<li>Generating visual assets (hero character, location, brand mascot)</li>
-<li>Producing the final video compilation</li>
+<li>Generating storyboard panels for the key scenes</li>
+<li>Exploring color treatment options</li>
+<li>Building a detailed scene breakdown</li>
 </ol>
-<p>Watch the tasks panel on the right to see my progress. Let's begin!</p>`
+<p>Watch the tasks and artifacts panels to see everything stream in. Let's begin!</p>`
 
-const BRAND_ANALYSIS_PROGRESS = `<p>Great progress! I've completed the research and analysis phases.</p>
+const BRAND_ANALYSIS_SCRIPT_DONE = `<p>Great progress! I've completed the research and analysis phases.</p>
 <p>The script is now ready — you can see it in the artifacts panel. It tells the story of Elena, an artisan roaster, and her loyal companion Bean (a golden retriever).</p>
-<p>Now I'm generating the visual assets to bring this story to life...</p>`
+<p>Now I'll generate the storyboard panels to visualize each scene...</p>`
 
-const BRAND_ANALYSIS_IMAGES = `<p>The visual assets are coming together!</p>
-<p>I've created:</p>
-<ul>
-<li><strong>Elena</strong> — Our hero character, the passionate artisan roaster</li>
-<li><strong>Bean</strong> — The adorable golden retriever brand mascot</li>
-<li><strong>The Roastery</strong> — A warm, inviting café location</li>
-</ul>
-<p>Now compiling everything into the final video...</p>`
+const BRAND_ANALYSIS_STORYBOARD_DONE = `<p>The storyboard is taking shape! Watch the panel — each panel lands as it's generated.</p>
+<p>Next up: exploring color treatments for the visual identity...</p>`
 
-const BRAND_ANALYSIS_COMPLETE = `<p>The brand video for <strong>Luminova Coffee</strong> is complete!</p>
-<p>Check out all the artifacts in the panel — the script, character images, and the final video.</p>
-<p>The video captures the essence of the brand: artisanal quality, warmth, and the joy of a perfect cup of coffee.</p>
-<p><em>Note: One image generation was cancelled as we decided to focus on the main dog character. An impossible task also failed — watch how it was sorted to the bottom of its group automatically.</em></p>`
+const BRAND_ANALYSIS_COMPLETE = `<p>The creative package for <strong>Luminova Coffee</strong> is complete!</p>
+<p>Explore the artifacts panel — click into the <strong>Storyboard</strong> group to see all panels, compare the <strong>Color Treatments</strong> side by side, and drill into the <strong>Scene Breakdown</strong> to see script notes and lighting options.</p>
+<p>Everything is organized into a navigable tree. Use the breadcrumbs to jump between levels.</p>`
 
-// Brand analysis artifacts
-const BRAND_ARTIFACTS = {
-  script: {
+// ============================================================================
+// Artifact tree node data — individual pieces assembled incrementally
+// ============================================================================
+
+const IMG = 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400'
+
+// Script (standalone artifact at root level)
+const SCRIPT_NODE: ArtifactNode = {
+  id: 'brand-script-node',
+  type: 'ARTIFACT',
+  name: 'brand_script',
+  label: 'Brand Video Script',
+  artifact: {
     id: 'brand-script',
-    type: 'SCRIPT' as const,
+    type: 'SCRIPT',
     scriptElements: LUMINOVA_SCRIPT_ELEMENTS,
     title: 'Luminova Coffee — Brand Video Script',
     subtitle: '30-second spot • Directed by AI Creative',
     fullWidth: true,
   },
-  hero: {
-    id: 'brand-hero',
-    type: 'IMAGE' as const,
-    url: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800',
-    alt: 'Elena the artisan roaster',
-    title: 'Elena — Hero Character',
-    subtitle: 'The passionate artisan roaster',
+  children: [],
+}
+
+// Storyboard group — starts empty, panels stream in one by one
+const STORYBOARD_PANELS: ArtifactNode[] = [
+  {
+    id: 'sb-panel-1',
+    type: 'ARTIFACT',
+    name: 'panel_1',
+    label: 'Panel 1 — Opening',
+    artifact: {
+      id: 'a-sb-1',
+      type: 'IMAGE',
+      url: IMG,
+      alt: 'Opening shot',
+      title: 'Panel 1 — Opening',
+      subtitle: 'Wide establishing shot',
+    },
+    children: [],
   },
-  dog: {
-    id: 'brand-dog',
-    type: 'IMAGE' as const,
-    url: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800',
-    alt: 'Bean the golden retriever',
-    title: 'Bean — Brand Mascot',
-    subtitle: 'The loyal café companion',
+  {
+    id: 'sb-panel-2',
+    type: 'ARTIFACT',
+    name: 'panel_2',
+    label: 'Panel 2 — Elena',
+    artifact: {
+      id: 'a-sb-2',
+      type: 'IMAGE',
+      url: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800',
+      alt: 'Elena the roaster',
+      title: 'Panel 2 — Elena',
+      subtitle: 'Medium close-up',
+    },
+    children: [],
   },
-  location: {
-    id: 'brand-location',
-    type: 'IMAGE' as const,
-    url: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=800',
-    alt: 'Cozy artisan roastery',
-    title: 'The Roastery',
-    subtitle: 'Warm, inviting café atmosphere',
+  {
+    id: 'sb-panel-3',
+    type: 'ARTIFACT',
+    name: 'panel_3',
+    label: 'Panel 3 — Bean',
+    artifact: {
+      id: 'a-sb-3',
+      type: 'IMAGE',
+      url: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800',
+      alt: 'Bean the dog',
+      title: 'Panel 3 — Bean',
+      subtitle: 'The loyal companion',
+    },
+    children: [],
   },
-  video: {
-    id: 'brand-video',
-    type: 'VIDEO' as const,
-    url: 'https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_1mb.mp4',
-    title: 'Luminova Coffee — Final Video',
-    subtitle: '30-second brand spot',
+]
+
+// Color treatment children — stream into variant set one by one
+const COLOR_CHILDREN: ArtifactNode[] = [
+  {
+    id: 'color-warm',
+    type: 'ARTIFACT',
+    name: 'warm',
+    label: 'Warm Analog',
+    artifact: {
+      id: 'a-color-warm',
+      type: 'IMAGE',
+      url: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800',
+      alt: 'Warm tones',
+      title: 'Warm Analog',
+      subtitle: 'Golden tones, film grain',
+    },
+    children: [],
   },
+  {
+    id: 'color-neon',
+    type: 'ARTIFACT',
+    name: 'neon',
+    label: 'Neon Noir',
+    artifact: {
+      id: 'a-color-neon',
+      type: 'IMAGE',
+      url: IMG,
+      alt: 'Neon noir',
+      title: 'Neon Noir',
+      subtitle: 'Cool blues, electric highlights',
+    },
+    children: [],
+  },
+  {
+    id: 'color-mono',
+    type: 'ARTIFACT',
+    name: 'mono',
+    label: 'Monochrome',
+    artifact: {
+      id: 'a-color-mono',
+      type: 'IMAGE',
+      url: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=800',
+      alt: 'Monochrome',
+      title: 'Monochrome',
+      subtitle: 'High-contrast black & white',
+    },
+    children: [],
+  },
+]
+
+// Scene breakdown children
+const SCENE_SCRIPT_NOTES: ArtifactNode = {
+  id: 'sb-script-notes',
+  type: 'ARTIFACT',
+  name: 'script_notes',
+  label: 'Script Notes',
+  artifact: {
+    id: 'a-script-notes',
+    type: 'TEXT',
+    inlineContent: '## Act I\n\n- **INT. ROASTERY — DAWN** — Elena begins her craft\n- **EXT. CAFÉ — MORNING** — Bean greets customers\n- **CLOSE-UP** — The perfect pour',
+    mimeType: 'text/markdown',
+    title: 'Script Notes',
+    subtitle: 'Scene breakdown',
+  },
+  children: [],
+}
+
+const LIGHTING_CHILDREN: ArtifactNode[] = [
+  {
+    id: 'light-practical',
+    type: 'ARTIFACT',
+    name: 'practical',
+    label: 'Practical',
+    artifact: {
+      id: 'a-light-practical',
+      type: 'IMAGE',
+      url: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=800',
+      alt: 'Practical lighting',
+      title: 'Practical Lighting',
+      subtitle: 'In-scene sources only',
+    },
+    children: [],
+  },
+  {
+    id: 'light-stylized',
+    type: 'ARTIFACT',
+    name: 'stylized',
+    label: 'Stylized',
+    artifact: {
+      id: 'a-light-stylized',
+      type: 'IMAGE',
+      url: IMG,
+      alt: 'Stylized neon',
+      title: 'Stylized Neon',
+      subtitle: 'Exaggerated color washes',
+    },
+    children: [],
+  },
+]
+
+/**
+ * Immutably add a child to a node identified by parentId within a tree.
+ * Returns a new tree array with the updated parent.
+ */
+function addChildToNode(tree: ArtifactNode[], parentId: string, child: ArtifactNode): ArtifactNode[] {
+  return tree.map(node => {
+    if (node.id === parentId) {
+      return {...node, children: [...node.children, child]}
+    }
+    if (node.children.length > 0) {
+      const updatedChildren = addChildToNode(node.children, parentId, child)
+      if (updatedChildren !== node.children) {
+        return {...node, children: updatedChildren}
+      }
+    }
+    return node
+  })
 }
 
 // Initial tasks for brand analysis
@@ -268,9 +410,9 @@ const INITIAL_BRAND_TASKS: Task[] = [
   {id: 'task-collect', label: 'Collect sources online', status: 'pending'},
   {id: 'task-analyze', label: 'Analyze sources', status: 'pending'},
   {id: 'task-script', label: 'Generate script', status: 'pending'},
-  {id: 'task-pictures', label: 'Generate pictures', status: 'pending'},
-  {id: 'task-video', label: 'Generate short video from pictures', status: 'pending'},
-  {id: 'task-impossible', label: 'Do something impossible', status: 'pending'},
+  {id: 'task-storyboard', label: 'Generate storyboard panels', status: 'pending'},
+  {id: 'task-colors', label: 'Generate color treatments', status: 'pending'},
+  {id: 'task-scene', label: 'Build scene breakdown', status: 'pending'},
 ]
 
 // Mock conversation history
@@ -315,6 +457,9 @@ export default function ChatDemo() {
 
   // Tasks state for the TodosList
   const [tasks, setTasks] = useState<Task[]>([])
+
+  // Artifact tree nodes for tree-aware panel
+  const [artifactNodes, setArtifactNodes] = useState<ArtifactNode[]>([])
 
   // Track attachments for mock upload simulation
   const [attachments, setAttachments] = useState<Attachment[]>([])
@@ -475,8 +620,17 @@ export default function ChatDemo() {
     // Reset state
     setTasks([...INITIAL_BRAND_TASKS])
     clearArtifacts()
+    setArtifactNodes([])
     setIsStreaming(true)
     setIsThinking(true)
+
+    // Helper: add a top-level node to the tree
+    const pushNode = (node: ArtifactNode) =>
+        setArtifactNodes(prev => [...prev, node])
+
+    // Helper: add a child to a parent node inside the tree
+    const pushChild = (parentId: string, child: ArtifactNode) =>
+        setArtifactNodes(prev => addChildToNode(prev, parentId, child))
 
     // Add user message
     const userMessageId = generateId()
@@ -491,7 +645,7 @@ export default function ChatDemo() {
 
     // Timeline of events (all times in ms from start)
     const timeline = [
-      // Intro response and start first task
+      // Intro response, start research
       {
         time: 1500, action: () => {
           setIsThinking(false)
@@ -503,191 +657,166 @@ export default function ChatDemo() {
       },
 
       // Complete collect, start analyze
-      {
-        time: 5000, action: () => {
+      {time: 5000, action: () => {
           updateTask('task-collect', {status: 'done'})
           updateTask('task-analyze', {status: 'in_progress'})
-        }
-      },
+        }},
 
-      // Complete analyze, start script
-      {
-        time: 8000, action: () => {
+      // Complete analyze, start script generation
+      {time: 8000, action: () => {
           updateTask('task-analyze', {status: 'done'})
           updateTask('task-script', {status: 'in_progress'})
-          // Schedule script artifact
-          scheduleArtifact({
-            id: BRAND_ARTIFACTS.script.id,
-            type: 'SCRIPT',
-            title: BRAND_ARTIFACTS.script.title,
-            subtitle: BRAND_ARTIFACTS.script.subtitle
-          })
-        }
-      },
+        }},
 
-      // Complete script with artifact, start pictures task with subtasks
-      {
-        time: 12000, action: () => {
+      // Script done — add script node to tree
+      {time: 11000, action: () => {
           updateTask('task-script', {status: 'done'})
-          showArtifact(BRAND_ARTIFACTS.script.id, {
-            type: 'SCRIPT',
-            scriptElements: BRAND_ARTIFACTS.script.scriptElements,
-            title: BRAND_ARTIFACTS.script.title,
-            subtitle: BRAND_ARTIFACTS.script.subtitle,
-            fullWidth: BRAND_ARTIFACTS.script.fullWidth,
-          })
-
-          // Start pictures task with subtasks
-          // Subtasks: a (hero), b (impossible - will fail), c (dog), d (location)
-          updateTask('task-pictures', {status: 'in_progress'})
-          addSubtasks('task-pictures', [
-            {id: 'subtask-hero', label: 'Hero character', status: 'pending'},
-            {
-              id: 'subtask-impossible',
-              label: 'Materialize actual coffee (impossible)',
-              status: 'pending'
-            },
-            {id: 'subtask-dog', label: 'Dog mascot', status: 'pending'},
-            {id: 'subtask-location', label: 'Location', status: 'pending'},
-            {id: 'subtask-dog2', label: 'Another dog picture', status: 'pending'},
-          ])
+          pushNode(SCRIPT_NODE)
 
           // Stream progress message
           setIsStreaming(true)
-          streamResponse(BRAND_ANALYSIS_PROGRESS, null, () => {
+          streamResponse(BRAND_ANALYSIS_SCRIPT_DONE, null, () => {
             setIsStreaming(false)
           })
-        }
-      },
+        }},
 
-      // Start generating hero image (subtask a)
-      {
-        time: 14000, action: () => {
-          updateSubtask('task-pictures', 'subtask-hero', {status: 'in_progress'})
-          scheduleArtifact({
-            id: BRAND_ARTIFACTS.hero.id,
-            type: 'IMAGE',
-            title: BRAND_ARTIFACTS.hero.title,
-            subtitle: BRAND_ARTIFACTS.hero.subtitle
-          })
-        }
-      },
+      // ---- Storyboard: group appears empty, then panels land 1s apart ----
 
-      // Complete hero, start impossible task (subtask b)
-      {
-        time: 17000, action: () => {
-          updateSubtask('task-pictures', 'subtask-hero', {status: 'done'})
-          showArtifact(BRAND_ARTIFACTS.hero.id, {
-            type: 'IMAGE',
-            url: BRAND_ARTIFACTS.hero.url,
-            alt: BRAND_ARTIFACTS.hero.alt,
-            title: BRAND_ARTIFACTS.hero.title,
-            subtitle: BRAND_ARTIFACTS.hero.subtitle,
+      // Start storyboard task, add empty group
+      {time: 13000, action: () => {
+          updateTask('task-storyboard', {status: 'in_progress'})
+          addSubtasks('task-storyboard', [
+            {id: 'sub-sb-1', label: 'Panel 1 — Opening', status: 'pending'},
+            {id: 'sub-sb-2', label: 'Panel 2 — Elena', status: 'pending'},
+            {id: 'sub-sb-3', label: 'Panel 3 — Bean', status: 'pending'},
+          ])
+          pushNode({
+            id: 'storyboard-group',
+            type: 'GROUP',
+            name: 'storyboard',
+            label: 'Storyboard',
+            children: [],
           })
-          // Start impossible task
-          updateSubtask('task-pictures', 'subtask-impossible', {status: 'in_progress'})
-        }
-      },
+        }},
 
-      // FAIL impossible task - watch it sort to bottom automatically!
-      {
-        time: 19000, action: () => {
-          updateSubtask('task-pictures', 'subtask-impossible', {status: 'failed'})
-          // Start dog right after
-          updateSubtask('task-pictures', 'subtask-dog', {status: 'in_progress'})
-          scheduleArtifact({
-            id: BRAND_ARTIFACTS.dog.id,
-            type: 'IMAGE',
-            title: BRAND_ARTIFACTS.dog.title,
-            subtitle: BRAND_ARTIFACTS.dog.subtitle
-          })
-        }
-      },
+      // Panel 1 lands
+      {time: 14000, action: () => {
+          updateSubtask('task-storyboard', 'sub-sb-1', {status: 'in_progress'})
+        }},
+      {time: 15000, action: () => {
+          updateSubtask('task-storyboard', 'sub-sb-1', {status: 'done'})
+          pushChild('storyboard-group', STORYBOARD_PANELS[0])
+        }},
 
-      // Complete dog, start location
-      {
-        time: 22000, action: () => {
-          updateSubtask('task-pictures', 'subtask-dog', {status: 'done'})
-          showArtifact(BRAND_ARTIFACTS.dog.id, {
-            type: 'IMAGE',
-            url: BRAND_ARTIFACTS.dog.url,
-            alt: BRAND_ARTIFACTS.dog.alt,
-            title: BRAND_ARTIFACTS.dog.title,
-            subtitle: BRAND_ARTIFACTS.dog.subtitle,
-          })
-          updateSubtask('task-pictures', 'subtask-location', {status: 'in_progress'})
-          scheduleArtifact({
-            id: BRAND_ARTIFACTS.location.id,
-            type: 'IMAGE',
-            title: BRAND_ARTIFACTS.location.title,
-            subtitle: BRAND_ARTIFACTS.location.subtitle
-          })
-        }
-      },
+      // Panel 2 lands
+      {time: 15500, action: () => {
+          updateSubtask('task-storyboard', 'sub-sb-2', {status: 'in_progress'})
+        }},
+      {time: 16500, action: () => {
+          updateSubtask('task-storyboard', 'sub-sb-2', {status: 'done'})
+          pushChild('storyboard-group', STORYBOARD_PANELS[1])
+        }},
 
-      // Complete location, cancel duplicate dog, complete pictures task
-      {
-        time: 25000, action: () => {
-          updateSubtask('task-pictures', 'subtask-location', {status: 'done'})
-          showArtifact(BRAND_ARTIFACTS.location.id, {
-            type: 'IMAGE',
-            url: BRAND_ARTIFACTS.location.url,
-            alt: BRAND_ARTIFACTS.location.alt,
-            title: BRAND_ARTIFACTS.location.title,
-            subtitle: BRAND_ARTIFACTS.location.subtitle,
-          })
-          // Cancel the duplicate dog picture
-          updateSubtask('task-pictures', 'subtask-dog2', {status: 'cancelled'})
-          // Complete pictures task (subtasks remain visible!)
-          updateTask('task-pictures', {status: 'done'})
+      // Panel 3 lands
+      {time: 17000, action: () => {
+          updateSubtask('task-storyboard', 'sub-sb-3', {status: 'in_progress'})
+        }},
+      {time: 18000, action: () => {
+          updateSubtask('task-storyboard', 'sub-sb-3', {status: 'done'})
+          pushChild('storyboard-group', STORYBOARD_PANELS[2])
+          updateTask('task-storyboard', {status: 'done'})
 
-          // Send images complete message
+          // Stream progress
           setIsStreaming(true)
-          streamResponse(BRAND_ANALYSIS_IMAGES, null, () => {
+          streamResponse(BRAND_ANALYSIS_STORYBOARD_DONE, null, () => {
             setIsStreaming(false)
           })
-        }
-      },
+        }},
 
-      // Start video generation
-      {
-        time: 28000, action: () => {
-          updateTask('task-video', {status: 'in_progress'})
-          scheduleArtifact({
-            id: BRAND_ARTIFACTS.video.id,
-            type: 'VIDEO',
-            title: BRAND_ARTIFACTS.video.title,
-            subtitle: BRAND_ARTIFACTS.video.subtitle
+      // ---- Color treatments: variant set appears, children stream in ----
+
+      {time: 20000, action: () => {
+          updateTask('task-colors', {status: 'in_progress'})
+          addSubtasks('task-colors', [
+            {id: 'sub-color-1', label: 'Warm Analog', status: 'pending'},
+            {id: 'sub-color-2', label: 'Neon Noir', status: 'pending'},
+            {id: 'sub-color-3', label: 'Monochrome', status: 'pending'},
+          ])
+          pushNode({
+            id: 'color-treatments',
+            type: 'VARIANT_SET',
+            name: 'color_treatments',
+            label: 'Color Treatments',
+            children: [],
           })
-        }
-      },
+        }},
 
-      // Complete video, start impossible task
-      {
-        time: 32000, action: () => {
-          updateTask('task-video', {status: 'done'})
-          showArtifact(BRAND_ARTIFACTS.video.id, {
-            type: 'VIDEO',
-            url: BRAND_ARTIFACTS.video.url,
-            title: BRAND_ARTIFACTS.video.title,
-            subtitle: BRAND_ARTIFACTS.video.subtitle,
+      {time: 21000, action: () => {
+          updateSubtask('task-colors', 'sub-color-1', {status: 'done'})
+          pushChild('color-treatments', COLOR_CHILDREN[0])
+        }},
+
+      {time: 22000, action: () => {
+          updateSubtask('task-colors', 'sub-color-2', {status: 'done'})
+          pushChild('color-treatments', COLOR_CHILDREN[1])
+        }},
+
+      {time: 23000, action: () => {
+          updateSubtask('task-colors', 'sub-color-3', {status: 'done'})
+          pushChild('color-treatments', COLOR_CHILDREN[2])
+          updateTask('task-colors', {status: 'done'})
+        }},
+
+      // ---- Scene breakdown: group → script notes → lighting variant set ----
+
+      {time: 24000, action: () => {
+          updateTask('task-scene', {status: 'in_progress'})
+          addSubtasks('task-scene', [
+            {id: 'sub-scene-notes', label: 'Script notes', status: 'pending'},
+            {id: 'sub-scene-lighting', label: 'Lighting options', status: 'pending'},
+          ])
+          pushNode({
+            id: 'scene-breakdown',
+            type: 'GROUP',
+            name: 'scene_breakdown',
+            label: 'Scene Breakdown',
+            children: [],
           })
-          updateTask('task-impossible', {status: 'in_progress'})
-        }
-      },
+        }},
 
-      // Fail impossible task, send completion message
-      {
-        time: 35000, action: () => {
-          updateTask('task-impossible', {status: 'failed'})
+      // Script notes land
+      {time: 25000, action: () => {
+          updateSubtask('task-scene', 'sub-scene-notes', {status: 'done'})
+          pushChild('scene-breakdown', SCENE_SCRIPT_NOTES)
+        }},
 
-          // Send final message
+      // Lighting variant set appears empty, then children land
+      {time: 26000, action: () => {
+          updateSubtask('task-scene', 'sub-scene-lighting', {status: 'in_progress'})
+          pushChild('scene-breakdown', {
+            id: 'sb-lighting',
+            type: 'VARIANT_SET',
+            name: 'lighting_options',
+            label: 'Lighting Options',
+            children: [],
+          })
+        }},
+
+      {time: 27000, action: () => {
+          pushChild('sb-lighting', LIGHTING_CHILDREN[0])
+        }},
+
+      {time: 28000, action: () => {
+          pushChild('sb-lighting', LIGHTING_CHILDREN[1])
+          updateSubtask('task-scene', 'sub-scene-lighting', {status: 'done'})
+          updateTask('task-scene', {status: 'done'})
+
+          // Final message
           setIsStreaming(true)
           streamResponse(BRAND_ANALYSIS_COMPLETE, null, () => {
             setIsStreaming(false)
           })
-        }
-      },
+        }},
     ]
 
     // Schedule all timeline events
@@ -695,8 +824,7 @@ export default function ChatDemo() {
       const timeoutId = setTimeout(action, time)
       brandWorkflowRef.current.push(timeoutId)
     })
-  }, [clearArtifacts, scheduleArtifact, showArtifact, streamResponse, updateTask, updateSubtask,
-    addSubtasks])
+  }, [clearArtifacts, streamResponse, updateTask, updateSubtask, addSubtasks])
 
   // Handle stop generation
   const handleStop = useCallback(() => {
@@ -886,6 +1014,7 @@ export default function ChatDemo() {
     const newId = `chat-${Date.now()}`
     setConversationTree(createEmptyTree())
     clearArtifacts()
+    setArtifactNodes([])
     setTasks([])
     responseIndexRef.current = 0
     setActiveConversationId(newId)
@@ -915,6 +1044,7 @@ export default function ChatDemo() {
     setActiveConversationId(id)
     responseIndexRef.current = 0
     clearArtifacts()
+    setArtifactNodes([])
     setTasks([])
 
     if (id === 'branching') {
@@ -1013,6 +1143,7 @@ export default function ChatDemo() {
               attachments={attachments}
               onAttachmentsChange={handleAttachmentsChange}
               artifacts={artifacts}
+              artifactNodes={artifactNodes}
               tasks={tasks}
               tasksTitle="Workflow Progress"
               placeholder="Send a message..."

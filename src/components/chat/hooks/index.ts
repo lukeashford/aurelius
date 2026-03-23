@@ -11,3 +11,8 @@ export {
   useAdaptiveSpacer, type UseAdaptiveSpacerOptions, type UseAdaptiveSpacerReturn
 } from './useAdaptiveSpacer'
 export {useResizable} from './useResizable'
+export {
+  useArtifactTreeNavigation,
+  type BreadcrumbEntry,
+  type UseArtifactTreeNavigationReturn,
+} from './useArtifactTreeNavigation'

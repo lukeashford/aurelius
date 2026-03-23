@@ -214,36 +214,71 @@ exports[`ChatInterface matches snapshot in empty state 1`] = `
       </div>
     </div>
     <div
-      class="h-full flex flex-col shrink-0"
+      class="h-full w-9 bg-charcoal/80 border-l border-ash/40 flex flex-col items-center shrink-0 py-2"
     >
       <div
-        class="flex-1 min-h-0"
+        class="flex flex-col items-center gap-1"
       >
-        <div
-          class="bg-charcoal/80 border-l border-ash/40 flex flex-col items-center py-3 w-12 shrink-0 h-full"
+        <button
+          aria-label="Artifacts"
+          aria-pressed="false"
+          class="w-8 h-8 flex items-center justify-center transition-colors duration-150 text-silver hover:text-white hover:bg-ash/20"
         >
-          <button
-            aria-label="Expand artifacts panel"
-            class="p-2 text-silver hover:text-white hover:bg-ash/20 transition-colors duration-150 relative"
+          <span
+            class="w-4 h-4 block"
           >
             <svg
-              class="w-5 h-5"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M3.196 12.87l-.825.483a.75.75 0 000 1.294l7.25 4.25a.75.75 0 00.758 0l7.25-4.25a.75.75 0 000-1.294l-.825-.484-5.666 3.322a2.25 2.25 0 01-2.276 0L3.196 12.87z"
-              />
-              <path
-                d="M3.196 8.87l-.825.483a.75.75 0 000 1.294l7.25 4.25a.75.75 0 00.758 0l7.25-4.25a.75.75 0 000-1.294l-.825-.484-5.666 3.322a2.25 2.25 0 01-2.276 0L3.196 8.87z"
-              />
-              <path
-                d="M10.38 1.103a.75.75 0 00-.76 0l-7.25 4.25a.75.75 0 000 1.294l7.25 4.25a.75.75 0 00.76 0l7.25-4.25a.75.75 0 000-1.294l-7.25-4.25z"
+                clip-rule="evenodd"
+                d="M2 4.5A1.5 1.5 0 013.5 3h13A1.5 1.5 0 0118 4.5v11a1.5 1.5 0 01-1.5 1.5h-13A1.5 1.5 0 012 15.5v-11zM4 5v1h1V5H4zm2 0v1h1V5H6zm7 0v1h1V5h-1zm2 0v1h1V5h-1zM4 14v1h1v-1H4zm2 0v1h1v-1H6zm7 0v1h1v-1h-1zm2 0v1h1v-1h-1zM8 8.118a.5.5 0 01.757-.429l4 2.382a.5.5 0 010 .858l-4 2.382A.5.5 0 018 12.882V8.118z"
+                fill-rule="evenodd"
               />
             </svg>
-          </button>
-        </div>
+          </span>
+        </button>
+      </div>
+      <div
+        class="flex-1 flex items-center justify-center"
+      >
+        <div
+          class="w-5 border-t border-ash/30"
+        />
+      </div>
+      <div
+        class="flex flex-col items-center gap-1"
+      >
+        <button
+          aria-label="Tasks"
+          aria-pressed="false"
+          class="w-8 h-8 flex items-center justify-center transition-colors duration-150 text-silver hover:text-white hover:bg-ash/20"
+        >
+          <span
+            class="w-4 h-4 block"
+          >
+            <div
+              class="relative w-4 h-4 flex-shrink-0 border-2 border-gold bg-gold/10"
+            >
+              <svg
+                class="absolute inset-0 w-full h-full p-0.5"
+                fill="none"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  class="text-gold"
+                  d="M3 8l3 3 7-7"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                />
+              </svg>
+            </div>
+          </span>
+        </button>
       </div>
     </div>
   </div>
@@ -502,36 +537,71 @@ exports[`ChatInterface matches snapshot while streaming 1`] = `
       </div>
     </div>
     <div
-      class="h-full flex flex-col shrink-0"
+      class="h-full w-9 bg-charcoal/80 border-l border-ash/40 flex flex-col items-center shrink-0 py-2"
     >
       <div
-        class="flex-1 min-h-0"
+        class="flex flex-col items-center gap-1"
       >
-        <div
-          class="bg-charcoal/80 border-l border-ash/40 flex flex-col items-center py-3 w-12 shrink-0 h-full"
+        <button
+          aria-label="Artifacts"
+          aria-pressed="false"
+          class="w-8 h-8 flex items-center justify-center transition-colors duration-150 text-silver hover:text-white hover:bg-ash/20"
         >
-          <button
-            aria-label="Expand artifacts panel"
-            class="p-2 text-silver hover:text-white hover:bg-ash/20 transition-colors duration-150 relative"
+          <span
+            class="w-4 h-4 block"
           >
             <svg
-              class="w-5 h-5"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M3.196 12.87l-.825.483a.75.75 0 000 1.294l7.25 4.25a.75.75 0 00.758 0l7.25-4.25a.75.75 0 000-1.294l-.825-.484-5.666 3.322a2.25 2.25 0 01-2.276 0L3.196 12.87z"
-              />
-              <path
-                d="M3.196 8.87l-.825.483a.75.75 0 000 1.294l7.25 4.25a.75.75 0 00.758 0l7.25-4.25a.75.75 0 000-1.294l-.825-.484-5.666 3.322a2.25 2.25 0 01-2.276 0L3.196 8.87z"
-              />
-              <path
-                d="M10.38 1.103a.75.75 0 00-.76 0l-7.25 4.25a.75.75 0 000 1.294l7.25 4.25a.75.75 0 00.76 0l7.25-4.25a.75.75 0 000-1.294l-7.25-4.25z"
+                clip-rule="evenodd"
+                d="M2 4.5A1.5 1.5 0 013.5 3h13A1.5 1.5 0 0118 4.5v11a1.5 1.5 0 01-1.5 1.5h-13A1.5 1.5 0 012 15.5v-11zM4 5v1h1V5H4zm2 0v1h1V5H6zm7 0v1h1V5h-1zm2 0v1h1V5h-1zM4 14v1h1v-1H4zm2 0v1h1v-1H6zm7 0v1h1v-1h-1zm2 0v1h1v-1h-1zM8 8.118a.5.5 0 01.757-.429l4 2.382a.5.5 0 010 .858l-4 2.382A.5.5 0 018 12.882V8.118z"
+                fill-rule="evenodd"
               />
             </svg>
-          </button>
-        </div>
+          </span>
+        </button>
+      </div>
+      <div
+        class="flex-1 flex items-center justify-center"
+      >
+        <div
+          class="w-5 border-t border-ash/30"
+        />
+      </div>
+      <div
+        class="flex flex-col items-center gap-1"
+      >
+        <button
+          aria-label="Tasks"
+          aria-pressed="false"
+          class="w-8 h-8 flex items-center justify-center transition-colors duration-150 text-silver hover:text-white hover:bg-ash/20"
+        >
+          <span
+            class="w-4 h-4 block"
+          >
+            <div
+              class="relative w-4 h-4 flex-shrink-0 border-2 border-gold bg-gold/10"
+            >
+              <svg
+                class="absolute inset-0 w-full h-full p-0.5"
+                fill="none"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  class="text-gold"
+                  d="M3 8l3 3 7-7"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                />
+              </svg>
+            </div>
+          </span>
+        </button>
       </div>
     </div>
   </div>
@@ -843,36 +913,71 @@ exports[`ChatInterface matches snapshot with messages 1`] = `
       </div>
     </div>
     <div
-      class="h-full flex flex-col shrink-0"
+      class="h-full w-9 bg-charcoal/80 border-l border-ash/40 flex flex-col items-center shrink-0 py-2"
     >
       <div
-        class="flex-1 min-h-0"
+        class="flex flex-col items-center gap-1"
       >
-        <div
-          class="bg-charcoal/80 border-l border-ash/40 flex flex-col items-center py-3 w-12 shrink-0 h-full"
+        <button
+          aria-label="Artifacts"
+          aria-pressed="false"
+          class="w-8 h-8 flex items-center justify-center transition-colors duration-150 text-silver hover:text-white hover:bg-ash/20"
         >
-          <button
-            aria-label="Expand artifacts panel"
-            class="p-2 text-silver hover:text-white hover:bg-ash/20 transition-colors duration-150 relative"
+          <span
+            class="w-4 h-4 block"
           >
             <svg
-              class="w-5 h-5"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M3.196 12.87l-.825.483a.75.75 0 000 1.294l7.25 4.25a.75.75 0 00.758 0l7.25-4.25a.75.75 0 000-1.294l-.825-.484-5.666 3.322a2.25 2.25 0 01-2.276 0L3.196 12.87z"
-              />
-              <path
-                d="M3.196 8.87l-.825.483a.75.75 0 000 1.294l7.25 4.25a.75.75 0 00.758 0l7.25-4.25a.75.75 0 000-1.294l-.825-.484-5.666 3.322a2.25 2.25 0 01-2.276 0L3.196 8.87z"
-              />
-              <path
-                d="M10.38 1.103a.75.75 0 00-.76 0l-7.25 4.25a.75.75 0 000 1.294l7.25 4.25a.75.75 0 00.76 0l7.25-4.25a.75.75 0 000-1.294l-7.25-4.25z"
+                clip-rule="evenodd"
+                d="M2 4.5A1.5 1.5 0 013.5 3h13A1.5 1.5 0 0118 4.5v11a1.5 1.5 0 01-1.5 1.5h-13A1.5 1.5 0 012 15.5v-11zM4 5v1h1V5H4zm2 0v1h1V5H6zm7 0v1h1V5h-1zm2 0v1h1V5h-1zM4 14v1h1v-1H4zm2 0v1h1v-1H6zm7 0v1h1v-1h-1zm2 0v1h1v-1h-1zM8 8.118a.5.5 0 01.757-.429l4 2.382a.5.5 0 010 .858l-4 2.382A.5.5 0 018 12.882V8.118z"
+                fill-rule="evenodd"
               />
             </svg>
-          </button>
-        </div>
+          </span>
+        </button>
+      </div>
+      <div
+        class="flex-1 flex items-center justify-center"
+      >
+        <div
+          class="w-5 border-t border-ash/30"
+        />
+      </div>
+      <div
+        class="flex flex-col items-center gap-1"
+      >
+        <button
+          aria-label="Tasks"
+          aria-pressed="false"
+          class="w-8 h-8 flex items-center justify-center transition-colors duration-150 text-silver hover:text-white hover:bg-ash/20"
+        >
+          <span
+            class="w-4 h-4 block"
+          >
+            <div
+              class="relative w-4 h-4 flex-shrink-0 border-2 border-gold bg-gold/10"
+            >
+              <svg
+                class="absolute inset-0 w-full h-full p-0.5"
+                fill="none"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  class="text-gold"
+                  d="M3 8l3 3 7-7"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                />
+              </svg>
+            </div>
+          </span>
+        </button>
       </div>
     </div>
   </div>

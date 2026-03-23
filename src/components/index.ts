@@ -169,6 +169,7 @@ export {
   ExpandIcon,
   HistoryIcon,
   LayersIcon,
+  MediaIcon,
   PlusIcon,
   CheckSquareIcon,
   EmptySquareIcon,
@@ -198,12 +199,16 @@ export {
   ArtifactsPanel,
   ArtifactsPanelToggle,
   TodosList,
+  areAllTasksSettled,
+  ToolSidebar,
+  ToolPanelContainer,
   MessageActions,
   ThinkingIndicator,
   BranchNavigator,
   useScrollAnchor,
   useArtifacts,
   useResizable,
+  useArtifactTreeNavigation,
   // Types
   type ChatInterfaceProps,
   type ChatMessage,
@@ -222,6 +227,10 @@ export {
   type Task,
   type TaskStatus,
   TASK_STATUSES,
+  type ToolSidebarProps,
+  type ToolDefinition,
+  type ToolPanelState,
+  type ToolPanelContainerProps,
   type MessageActionsProps,
   type MessageActionsVariant,
   type ThinkingIndicatorProps,
@@ -231,6 +240,8 @@ export {
   type UseScrollAnchorOptions,
   type UseScrollAnchorReturn,
   type UseArtifactsReturn,
+  type BreadcrumbEntry,
+  type UseArtifactTreeNavigationReturn,
   // Utility functions
   createEmptyTree,
   addMessageToTree,
@@ -288,6 +299,21 @@ export {
 export {
   SectionHeading, type SectionHeadingProps, type SectionHeadingLevel
 } from './SectionHeading'
+
+// Artifact Tree
+export {
+  NODE_TYPES,
+  type NodeType,
+  type ArtifactNode,
+} from './ArtifactNode'
+export {
+  ArtifactGroup,
+  type ArtifactGroupProps,
+} from './ArtifactGroup'
+export {
+  ArtifactVariantStack,
+  type ArtifactVariantStackProps,
+} from './ArtifactVariantStack'
 export {
   ScriptCard,
   type ScriptCardProps,

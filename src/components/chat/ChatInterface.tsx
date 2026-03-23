@@ -4,10 +4,14 @@ import {ChatView, type ChatViewItem} from './ChatView'
 import {type Attachment, ChatInput} from './ChatInput'
 import {type Conversation, ConversationSidebar} from './ConversationSidebar'
 import {ArtifactsPanel} from './ArtifactsPanel'
-import {type Task, TodosList} from './TodosList'
+import {type Task, TodosList, areAllTasksSettled} from './TodosList'
+import {ToolSidebar, type ToolDefinition, type ToolPanelState} from './ToolSidebar'
+import {ToolPanelContainer} from './ToolPanelContainer'
 import type {Artifact} from './hooks'
-import {useResizable} from "./hooks";
-import {type ConversationTree, getActivePathMessages, getSiblingInfo, switchBranch,} from './types'
+import {useResizable} from './hooks'
+import type {ArtifactNode} from '../ArtifactNode'
+import {type ConversationTree, getActivePathMessages, getSiblingInfo, switchBranch} from './types'
+import {MediaIcon, CheckSquareIcon, SquareLoaderIcon} from '../icons'
 
 export interface ChatMessage {
   /**
@@ -123,7 +127,13 @@ export interface ChatInterfaceProps extends Omit<React.HTMLAttributes<HTMLDivEle
    */
   artifacts?: Artifact[]
   /**
+   * Top-level artifact tree nodes for tree-aware navigation.
+   * When provided, the panel renders a navigable tree instead of a flat list.
+   */
+  artifactNodes?: ArtifactNode[]
+  /**
    * Whether the artifacts panel is currently open (controlled).
+   * When set, maps to the tool panel system — opens the artifacts tool.
    */
   isArtifactsPanelOpen?: boolean
   /**
@@ -131,7 +141,7 @@ export interface ChatInterfaceProps extends Omit<React.HTMLAttributes<HTMLDivEle
    */
   onArtifactsPanelOpenChange?: (open: boolean) => void
   /**
-   * Tasks to display in the todos list below the artifacts panel.
+   * Tasks to display in the todos list tool panel.
    * Shows a list of tasks with status indicators.
    */
   tasks?: Task[]
@@ -148,7 +158,11 @@ export interface ChatInterfaceProps extends Omit<React.HTMLAttributes<HTMLDivEle
  * Features:
  * - ConversationSidebar (left) — collapsible list of past conversations
  * - ChatView (center) — main conversation area with smart scrolling
- * - ArtifactsPanel (right) — controlled via useArtifacts hook
+ * - Tool panel system (right) — IntelliJ-style tool sidebar with:
+ *   - Top group: Chat History, Artifacts Panel (mutually exclusive)
+ *   - Bottom group: Todo List
+ *   - Vertical split with draggable divider when both groups are active
+ *   - Width-resizable tool content area
  * - ChatInput — position-aware input that centers in empty state
  * - Branching — support for conversation tree with branch navigation
  * - Message Actions — copy, edit, retry
@@ -183,6 +197,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
           attachments: propsAttachments,
           onAttachmentsChange,
           artifacts = [],
+          artifactNodes,
           isArtifactsPanelOpen,
           onArtifactsPanelOpenChange,
           tasks = [],
@@ -193,10 +208,35 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
         ref
     ) => {
       const [sidebarCollapsed, setSidebarCollapsed] = useState(initialSidebarCollapsed)
-      const [internalPanelOpen, setInternalPanelOpen] = useState(false)
       const prevArtifactsRef = useRef<Artifact[]>([])
       const prevTasksRef = useRef<Task[]>([])
 
+      // ── Tool panel state ──────────────────────────────────────────
+      const [internalTools, setInternalTools] = useState<ToolPanelState>({
+        top: null,
+        bottom: null,
+      })
+
+      // Track tools the user has actively dismissed — auto-open won't reopen these
+      const dismissedToolsRef = useRef<Set<string>>(new Set())
+
+      // Controlled vs uncontrolled: isArtifactsPanelOpen maps to the tool system
+      const isPanelControlled = isArtifactsPanelOpen !== undefined
+
+      // Derive effective tool state
+      const activeTools: ToolPanelState = useMemo(() => {
+        if (isPanelControlled) {
+          return {
+            top: isArtifactsPanelOpen ? 'artifacts' : internalTools.top,
+            bottom: internalTools.bottom,
+          }
+        }
+        return internalTools
+      }, [isPanelControlled, isArtifactsPanelOpen, internalTools])
+
+      const isAnyToolOpen = activeTools.top !== null || activeTools.bottom !== null
+
+      // ── Resizable panels ──────────────────────────────────────────
       const {
         width: sidebarWidth,
         startResizing: startResizingSidebar
@@ -208,9 +248,8 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
       })
 
       const {
-        width: artifactsWidth,
-        widthPercent: artifactsWidthPercent,
-        startResizing: startResizingArtifacts
+        width: toolsWidth,
+        startResizing: startResizingTools
       } = useResizable({
         initialWidthPercent: 50,
         minWidthPercent: 25,
@@ -218,14 +257,45 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
         direction: 'left'
       })
 
-      // Controlled vs uncontrolled artifacts panel
-      const isPanelControlled = isArtifactsPanelOpen !== undefined
-      const artifactsPanelOpen = isPanelControlled ? isArtifactsPanelOpen : internalPanelOpen
+      // ── Toggle a tool ─────────────────────────────────────────────
+      const toggleTool = useCallback((toolId: string) => {
+        // Find the tool's group
+        const toolDef = TOOL_DEFINITIONS.find(t => t.id === toolId)
+        if (!toolDef) return
 
-      // Determine if we're using tree mode or flat mode
+        const group = toolDef.group
+
+        // Special case: controlled artifacts panel
+        if (toolId === 'artifacts' && isPanelControlled) {
+          const isCurrentlyOpen = activeTools.top === 'artifacts'
+          if (isCurrentlyOpen) {
+            dismissedToolsRef.current.add('artifacts')
+          } else {
+            dismissedToolsRef.current.delete('artifacts')
+          }
+          onArtifactsPanelOpenChange?.(!isCurrentlyOpen)
+          return
+        }
+
+        setInternalTools(prev => {
+          const isCurrentlyOpen = prev[group] === toolId
+          if (isCurrentlyOpen) {
+            // User is actively closing — remember this so auto-open won't reopen
+            dismissedToolsRef.current.add(toolId)
+          } else {
+            // User is actively opening — clear dismissed state
+            dismissedToolsRef.current.delete(toolId)
+          }
+          return {
+            ...prev,
+            [group]: isCurrentlyOpen ? null : toolId,
+          }
+        })
+      }, [isPanelControlled, activeTools.top, onArtifactsPanelOpenChange])
+
+      // ── Messages ──────────────────────────────────────────────────
       const isTreeMode = !!conversationTree
 
-      // Get messages from tree or use flat array
       const effectiveMessages: ChatMessage[] = useMemo(() => {
         if (isTreeMode && conversationTree) {
           const pathNodes = getActivePathMessages(conversationTree)
@@ -239,76 +309,64 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
         return messages
       }, [isTreeMode, conversationTree, messages])
 
-      // Track the latest user message index for scroll anchoring
       const latestUserMessageIndex = useMemo(() => {
         for (let i = effectiveMessages.length - 1; i >= 0; i--) {
-          if (effectiveMessages[i].variant === 'user') {
-            return i
-          }
+          if (effectiveMessages[i].variant === 'user') return i
         }
         return -1
       }, [effectiveMessages])
 
-      // Auto-open artifacts panel when state "gets bigger" (uncontrolled mode only)
+      // ── Auto-open tools when data arrives (uncontrolled mode) ─────
+      // Only auto-opens a tool if the user hasn't actively dismissed it.
       useEffect(() => {
-        if (isPanelControlled) {
-          return
-        }
-
         const hasNewOrSignificantArtifact = artifacts.some(a => {
           const p = prevArtifactsRef.current.find(prev => prev.id === a.id)
-          if (!p) {
-            return true
-          } // New artifact added
-          if (p.isPending && !a.isPending) {
-            return true
-          } // Artifact finished loading
-          if (p.title !== a.title || p.type !== a.type) {
-            return true
-          } // Major metadata change
+          if (!p) return true
+          if (p.isPending && !a.isPending) return true
+          if (p.title !== a.title || p.type !== a.type) return true
           return false
         })
+
+        const hasNodes = artifactNodes && artifactNodes.length > 0
+
+        if (!isPanelControlled
+            && (hasNewOrSignificantArtifact || hasNodes)
+            && !dismissedToolsRef.current.has('artifacts')) {
+          setInternalTools(prev => ({...prev, top: 'artifacts'}))
+        }
 
         const hasNewOrUpdatedTask = (curr: Task[], prev: Task[]): boolean => {
           return curr.some(c => {
             const p = prev.find(x => x.id === c.id)
-            if (!p) {
-              return true
-            } // New task added
-            if (c.status !== p.status || c.label !== p.label) {
-              return true
-            } // Status or label changed
-            if (c.subtasks && hasNewOrUpdatedTask(c.subtasks, p?.subtasks || [])) {
-              return true
-            } // Subtask changed
+            if (!p) return true
+            if (c.status !== p.status || c.label !== p.label) return true
+            if (c.subtasks && hasNewOrUpdatedTask(c.subtasks, p?.subtasks || [])) return true
             return false
           })
         }
 
-        if (hasNewOrSignificantArtifact || hasNewOrUpdatedTask(tasks, prevTasksRef.current)) {
-          setInternalPanelOpen(true)
+        if (hasNewOrUpdatedTask(tasks, prevTasksRef.current)
+            && !dismissedToolsRef.current.has('todos')) {
+          setInternalTools(prev => ({...prev, bottom: 'todos'}))
         }
 
         prevArtifactsRef.current = artifacts
         prevTasksRef.current = tasks
-      }, [artifacts, tasks, isPanelControlled])
+      }, [artifacts, artifactNodes, tasks, isPanelControlled])
 
-      // Handle branch switching
+      // ── Branch switching ──────────────────────────────────────────
       const handleBranchSwitch = useCallback(
           (nodeId: string, direction: 'prev' | 'next') => {
-            if (!isTreeMode || !conversationTree || !onTreeChange) {
-              return
-            }
+            if (!isTreeMode || !conversationTree || !onTreeChange) return
             const newTree = switchBranch(conversationTree, nodeId, direction)
             onTreeChange(newTree)
           },
           [isTreeMode, conversationTree, onTreeChange]
       )
 
-      // Build the messages array for display
+      // ── Display messages ──────────────────────────────────────────
       const displayMessages: ChatViewItem[] = useMemo(() => {
         return effectiveMessages.map((msg) => {
-          // Get branch info if in tree mode
           let branchInfo = undefined
           if (isTreeMode && conversationTree) {
             const siblingInfo = getSiblingInfo(conversationTree, msg.id)
@@ -322,7 +380,6 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
             }
           }
 
-          // Build actions config
           const actions = enableMessageActions
               ? {
                 showCopy: true,
@@ -335,11 +392,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
               }
               : undefined
 
-          return {
-            ...msg,
-            branchInfo,
-            actions,
-          }
+          return {...msg, branchInfo, actions}
         })
       }, [effectiveMessages, isTreeMode, conversationTree, enableMessageActions,
         onEditMessage, onRetryMessage, handleBranchSwitch])
@@ -352,18 +405,61 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
       )
 
       const toggleSidebar = useCallback(() => {
-        setSidebarCollapsed((prev) => !prev)
+        setSidebarCollapsed(prev => !prev)
       }, [])
 
-      const toggleArtifactsPanel = useCallback(() => {
-        if (isPanelControlled) {
-          onArtifactsPanelOpenChange?.(!artifactsPanelOpen)
-        } else {
-          setInternalPanelOpen((prev) => !prev)
-        }
-      }, [isPanelControlled, artifactsPanelOpen, onArtifactsPanelOpenChange])
-
       const isEmpty = effectiveMessages.length === 0
+
+      // ── Tool definitions ──────────────────────────────────────────
+      const allSettled = tasks.length === 0 || areAllTasksSettled(tasks)
+
+      const toolDefinitions: ToolDefinition[] = useMemo(() => [
+        {
+          id: 'artifacts',
+          icon: <MediaIcon/>,
+          label: 'Artifacts',
+          group: 'top' as const,
+        },
+        {
+          id: 'todos',
+          icon: allSettled ? <CheckSquareIcon/> : <SquareLoaderIcon/>,
+          label: 'Tasks',
+          group: 'bottom' as const,
+        },
+      ], [allSettled])
+
+      // ── Render tool content for a given slot ──────────────────────
+      const renderToolContent = (toolId: string | null) => {
+        if (!toolId) return null
+
+        switch (toolId) {
+          case 'artifacts':
+            return (
+                <ArtifactsPanel
+                    artifacts={artifacts}
+                    nodes={artifactNodes}
+                    className="h-full"
+                />
+            )
+
+          case 'todos':
+            return tasks.length > 0
+                ? <TodosList tasks={tasks} title={tasksTitle} className="h-full"/>
+                : (
+                    <div className="h-full flex flex-col">
+                      <div className="flex items-center p-4 border-b border-ash/40 shrink-0">
+                        <h3 className="text-xs font-medium text-white">Tasks</h3>
+                      </div>
+                      <div className="flex-1 flex items-center justify-center">
+                        <p className="text-xs text-silver/60">No tasks</p>
+                      </div>
+                    </div>
+                )
+
+          default:
+            return null
+        }
+      }
 
       return (
           <div
@@ -447,33 +543,30 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
               </div>
             </div>
 
-            {/* Right panel: Artifacts and Tasks */}
-            <div className="h-full flex flex-col shrink-0">
-              {/* Artifacts panel - takes remaining space */}
-              <div className="flex-1 min-h-0">
-                <ArtifactsPanel
-                    artifacts={artifacts}
-                    isOpen={artifactsPanelOpen}
-                    onClose={toggleArtifactsPanel}
-                    width={artifactsWidth}
-                    widthPercent={artifactsWidthPercent}
-                    onResizeStart={startResizingArtifacts}
-                    className="h-full"
+            {/* Right panel: Tool content + Tool sidebar */}
+            {isAnyToolOpen && (
+                <ToolPanelContainer
+                    topContent={renderToolContent(activeTools.top)}
+                    bottomContent={renderToolContent(activeTools.bottom)}
+                    width={toolsWidth}
+                    onResizeStart={startResizingTools}
                 />
-              </div>
+            )}
 
-              {/* Tasks list - below artifacts, max 1/4 screen height */}
-              {tasks.length > 0 && artifactsPanelOpen && (
-                  <TodosList
-                      tasks={tasks}
-                      title={tasksTitle}
-                      style={{width: artifactsWidth}}
-                  />
-              )}
-            </div>
+            <ToolSidebar
+                tools={toolDefinitions}
+                activeTools={activeTools}
+                onToggleTool={toggleTool}
+            />
           </div>
       )
     }
 )
 
 ChatInterface.displayName = 'ChatInterface'
+
+// Static tool definitions used for group lookup in toggleTool
+const TOOL_DEFINITIONS: ToolDefinition[] = [
+  {id: 'artifacts', icon: null, label: 'Artifacts', group: 'top'},
+  {id: 'todos', icon: null, label: 'Tasks', group: 'bottom'},
+]
