@@ -395,7 +395,7 @@ export default function ArtifactTreeSection() {
             isOpen={modalGroup !== null}
             onClose={() => setModalGroup(null)}
             title={modalGroup?.label}
-            className="max-w-4xl max-h-[90vh] flex flex-col"
+            className="max-w-4xl max-h-screen flex flex-col"
         >
           {modalGroup && (
               <div className="mt-4 space-y-4 overflow-y-auto min-h-0 pr-1">

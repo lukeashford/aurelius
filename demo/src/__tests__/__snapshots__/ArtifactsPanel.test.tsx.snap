@@ -1,0 +1,247 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ArtifactsPanel matches snapshot with nodes 1`] = `
+<div>
+  <div
+    class="h-full flex flex-col relative"
+    data-testid="artifacts-panel"
+  >
+    <div
+      class="flex items-center justify-between p-4 border-b border-ash/40 shrink-0"
+    >
+      <h3
+        class="text-sm font-semibold text-white"
+      >
+        Artifacts
+      </h3>
+    </div>
+    <div
+      class="flex-1 overflow-auto relative"
+      data-testid="artifacts-scroll-area"
+    >
+      <div
+        class="p-4 space-y-4 origin-top-left"
+        data-testid="artifacts-grid"
+      >
+        <div
+          class="relative group cursor-pointer"
+        >
+          <button
+            aria-label="Expand artifact"
+            class="absolute top-2 right-2 z-10 p-1.5 bg-obsidian/80 text-silver hover:text-white hover:bg-obsidian opacity-0 group-hover:opacity-100 transition-opacity"
+          >
+            <svg
+              class="w-4 h-4"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M13.28 7.78l3.22-3.22v2.69a.75.75 0 001.5 0v-4.5a.75.75 0 00-.75-.75h-4.5a.75.75 0 000 1.5h2.69l-3.22 3.22a.75.75 0 001.06 1.06zM2 17.25v-4.5a.75.75 0 011.5 0v2.69l3.22-3.22a.75.75 0 011.06 1.06L4.56 16.5h2.69a.75.75 0 010 1.5h-4.5a.75.75 0 01-.75-.75z"
+              />
+            </svg>
+          </button>
+          <div
+            class="rounded-none relative transition-opacity duration-500 bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden w-full"
+          >
+            <div
+              class="overflow-hidden relative border-b border-ash"
+            >
+              <img
+                alt="Test"
+                class="w-full h-full object-cover"
+                src="https://example.com/image.jpg"
+              />
+            </div>
+            <div
+              class="px-6 py-4 border-b border-ash"
+            >
+              <div
+                class="flex items-start justify-between gap-4"
+              >
+                <div
+                  class="flex-1 min-w-0"
+                >
+                  <h3
+                    class="text-lg font-semibold text-white m-0"
+                  >
+                    Artifact Image
+                  </h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          aria-label="My Group — 2 items"
+          class="cursor-pointer group"
+          role="button"
+          tabindex="0"
+        >
+          <div
+            class="rounded-none relative transition-opacity duration-500 bg-charcoal shadow-sm border border-gold/30 p-5"
+          >
+            <h3
+              class="text-lg font-semibold text-white m-0 mb-4"
+            >
+              My Group
+            </h3>
+            <div
+              style="padding-right: 16px; padding-bottom: 16px;"
+            >
+              <div
+                class="relative"
+              >
+                <div
+                  aria-hidden="true"
+                  class="absolute inset-0 bg-charcoal border border-ash/30 pointer-events-none"
+                  style="transform: translate(16px, 16px);"
+                />
+                <div
+                  aria-hidden="true"
+                  class="absolute inset-0 bg-charcoal border border-ash/40 pointer-events-none"
+                  style="transform: translate(8px, 8px);"
+                />
+                <div
+                  class="relative transition-transform duration-200 group-hover:-translate-y-0.5"
+                >
+                  <div
+                    class="relative group w-full"
+                  >
+                    <div
+                      class="rounded-none relative transition-opacity duration-500 bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden w-full"
+                    >
+                      <div
+                        class="overflow-hidden relative border-b border-ash"
+                      >
+                        <img
+                          alt="Child"
+                          class="w-full h-full object-cover"
+                          src="https://example.com/image.jpg"
+                        />
+                      </div>
+                      <div
+                        class="px-6 py-4 border-b border-ash"
+                      >
+                        <div
+                          class="flex items-start justify-between gap-4"
+                        >
+                          <div
+                            class="flex-1 min-w-0"
+                          >
+                            <h3
+                              class="text-lg font-semibold text-white m-0"
+                            >
+                              Child Artifact
+                            </h3>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="absolute -top-2 -right-2 z-10 min-w-6 h-6 px-1.5 flex items-center justify-center bg-gold text-obsidian text-xs font-bold"
+                >
+                  2
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="rounded-none relative transition-opacity duration-500 bg-charcoal shadow-sm border border-gold/30 w-full p-5"
+        >
+          <h3
+            class="text-lg font-semibold text-white m-0 mb-4"
+          >
+            Color Treatments
+          </h3>
+          <div
+            class="flex gap-3"
+          >
+            <div
+              class="flex-1 min-w-0"
+            >
+              <div
+                class="relative group cursor-pointer w-full"
+              >
+                <button
+                  aria-label="Expand artifact"
+                  class="absolute top-2 right-2 z-10 p-1.5 bg-obsidian/80 text-silver hover:text-white hover:bg-obsidian opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  <svg
+                    class="w-4 h-4"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M13.28 7.78l3.22-3.22v2.69a.75.75 0 001.5 0v-4.5a.75.75 0 00-.75-.75h-4.5a.75.75 0 000 1.5h2.69l-3.22 3.22a.75.75 0 001.06 1.06zM2 17.25v-4.5a.75.75 0 011.5 0v2.69l3.22-3.22a.75.75 0 011.06 1.06L4.56 16.5h2.69a.75.75 0 010 1.5h-4.5a.75.75 0 01-.75-.75z"
+                    />
+                  </svg>
+                </button>
+                <div
+                  class="rounded-none relative transition-opacity duration-500 bg-charcoal shadow-sm border border-gold/30 p-0 overflow-hidden w-full"
+                >
+                  <div
+                    class="overflow-hidden relative border-b border-ash"
+                  >
+                    <img
+                      alt="Warm"
+                      class="w-full h-full object-cover"
+                      src="https://example.com/image.jpg"
+                    />
+                  </div>
+                  <div
+                    class="px-6 py-4 border-b border-ash"
+                  >
+                    <div
+                      class="flex items-start justify-between gap-4"
+                    >
+                      <div
+                        class="flex-1 min-w-0"
+                      >
+                        <h3
+                          class="text-lg font-semibold text-white m-0"
+                        >
+                          Warm Treatment
+                        </h3>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="absolute bottom-4 right-4 flex items-center gap-1 z-10"
+      data-testid="zoom-controls"
+    >
+      <button
+        aria-label="Zoom out"
+        class="w-7 h-7 flex items-center justify-center text-sm font-bold bg-charcoal border border-ash/40 text-silver hover:text-gold hover:border-gold/40 transition-colors"
+      >
+        −
+      </button>
+      <span
+        class="text-xs text-silver w-10 text-center tabular-nums"
+        data-testid="zoom-level"
+      >
+        100
+        %
+      </span>
+      <button
+        aria-label="Zoom in"
+        class="w-7 h-7 flex items-center justify-center text-sm font-bold bg-charcoal border border-ash/40 text-silver/30 cursor-not-allowed"
+        disabled=""
+      >
+        +
+      </button>
+    </div>
+  </div>
+</div>
+`;

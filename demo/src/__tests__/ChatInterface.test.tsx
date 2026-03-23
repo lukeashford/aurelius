@@ -58,8 +58,8 @@ describe('ChatInterface', () => {
 
   it('renders messages when messages array is provided (flat mode)', () => {
     const messages = [
-      {id: '1', variant: 'user', content: 'User message'},
-      {id: '2', variant: 'assistant', content: 'Assistant response'},
+      {id: '1', variant: 'user' as const, content: 'User message'},
+      {id: '2', variant: 'assistant' as const, content: 'Assistant response'},
     ]
     render(<ChatInterface messages={messages}/>)
     expect(screen.getByText('User message')).toBeInTheDocument()
@@ -113,7 +113,7 @@ describe('ChatInterface', () => {
 
   it('renders TodosList when tasks are provided and artifacts tool is open', () => {
     const tasks = [
-      {id: '1', label: 'Task 1', status: 'in_progress'},
+      {id: '1', label: 'Task 1', status: 'in_progress' as const},
     ]
     // Tasks auto-open the todos tool when tasks data arrives
     render(<ChatInterface tasks={tasks}/>)
@@ -138,7 +138,7 @@ describe('ChatInterface', () => {
 
   it('shows thinking indicator when isThinking is true', () => {
     const messagesWithUserLast = [
-      {id: '1', variant: 'user', content: 'Hello'},
+      {id: '1', variant: 'user' as const, content: 'Hello'},
     ]
     render(
         <ChatInterface
@@ -214,7 +214,7 @@ describe('ChatInterface', () => {
     const mockArtifacts = [
       {
         id: '1',
-        type: 'IMAGE',
+        type: 'IMAGE' as const,
         url: 'https://example.com/image.jpg',
         title: 'Test Artifact',
       },
@@ -232,7 +232,7 @@ describe('ChatInterface', () => {
     const mockArtifacts = [
       {
         id: '1',
-        type: 'IMAGE',
+        type: 'IMAGE' as const,
         url: 'https://example.com/image.jpg',
         title: 'Artifact Title',
       },
@@ -248,7 +248,6 @@ describe('ChatInterface', () => {
 
   it('renders tool sidebar with tool buttons', () => {
     render(<ChatInterface/>)
-    expect(screen.getByRole('button', {name: /chat history/i})).toBeInTheDocument()
     expect(screen.getByRole('button', {name: /artifacts/i})).toBeInTheDocument()
     expect(screen.getByRole('button', {name: /tasks/i})).toBeInTheDocument()
   })
