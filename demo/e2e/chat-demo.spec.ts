@@ -346,8 +346,8 @@ test.describe('Chat Demo', () => {
       const panelTitle = page.getByRole('heading', {name: 'Artifacts'})
       await expect(panelTitle).toBeVisible({timeout: 15000})
 
-      // Click collapse button
-      await page.getByRole('button', {name: /collapse artifacts panel/i}).click()
+      // Click the Artifacts toggle button in the tool sidebar to collapse the panel
+      await page.getByRole('button', {name: 'Artifacts'}).click()
 
       // Panel title should not be visible
       await expect(panelTitle).not.toBeVisible()
