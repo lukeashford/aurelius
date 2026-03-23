@@ -195,7 +195,10 @@ function NodeRenderer({
  *
  * When provided with flat `artifacts`, it renders them in a simple grid.
  *
- * Supports zoom controls (0.25x–1x) in tree mode.
+ * Supports zoom controls (0.25x–1x) in tree mode. Zoom uses the CSS
+ * `zoom` property on the scroll viewport so the entire layout scales
+ * uniformly — cards, images, gaps, and text all shrink as if the viewer
+ * is physically moving back from the content.
  */
 export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelProps>(
     ({
@@ -241,10 +244,48 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
                 )}
                 {...rest}
             >
-              {/* Header with title */}
+              {/* Header with title and zoom controls */}
               <div
                   className="flex items-center justify-between p-4 border-b border-ash/40 shrink-0">
                 <h3 className="text-sm font-semibold text-white">Artifacts</h3>
+                {isTreeMode && (
+                    <div
+                        className="flex items-center gap-0.5"
+                        data-testid="zoom-controls"
+                    >
+                      <button
+                          onClick={zoomOut}
+                          disabled={zoomIndex === 0}
+                          className={cx(
+                              'w-6 h-6 flex items-center justify-center text-xs font-bold',
+                              'bg-charcoal border border-ash/40',
+                              zoomIndex === 0
+                                  ? 'text-silver/30 cursor-not-allowed'
+                                  : 'text-silver hover:text-gold hover:border-gold/40 transition-colors',
+                          )}
+                          aria-label="Zoom out"
+                      >
+                        −
+                      </button>
+                      <span className="text-xs text-silver w-8 text-center tabular-nums" data-testid="zoom-level">
+                        {Math.round(currentZoom * 100)}%
+                      </span>
+                      <button
+                          onClick={zoomIn}
+                          disabled={zoomIndex === ZOOM_LEVELS.length - 1}
+                          className={cx(
+                              'w-6 h-6 flex items-center justify-center text-xs font-bold',
+                              'bg-charcoal border border-ash/40',
+                              zoomIndex === ZOOM_LEVELS.length - 1
+                                  ? 'text-silver/30 cursor-not-allowed'
+                                  : 'text-silver hover:text-gold hover:border-gold/40 transition-colors',
+                          )}
+                          aria-label="Zoom in"
+                      >
+                        +
+                      </button>
+                    </div>
+                )}
               </div>
 
               {/* Breadcrumb trail (tree mode only, when not at root) */}
@@ -278,15 +319,14 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
               )}
 
               {/* Content area — single column, natural widths, scrollable */}
-              <div className="flex-1 overflow-auto relative" data-testid="artifacts-scroll-area">
+              <div
+                  className="flex-1 overflow-auto relative"
+                  data-testid="artifacts-scroll-area"
+                  style={currentZoom !== 1 ? { zoom: currentZoom } : undefined}
+              >
                 <div
                     data-testid="artifacts-grid"
-                    className="p-4 space-y-4 origin-top-left"
-                    style={currentZoom !== 1 ? {
-                      transform: `scale(${currentZoom})`,
-                      transformOrigin: 'top left',
-                      width: `${100 / currentZoom}%`,
-                    } : undefined}
+                    className="p-4 space-y-4"
                 >
                   {isTreeMode ? (
                       treeNav.currentNodes.length === 0 ? (
@@ -323,45 +363,6 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
                 </div>
               </div>
 
-              {/* Zoom controls */}
-              {isTreeMode && (
-                  <div
-                      className="absolute bottom-4 right-4 flex items-center gap-1 z-10"
-                      data-testid="zoom-controls"
-                  >
-                    <button
-                        onClick={zoomOut}
-                        disabled={zoomIndex === 0}
-                        className={cx(
-                            'w-7 h-7 flex items-center justify-center text-sm font-bold',
-                            'bg-charcoal border border-ash/40',
-                            zoomIndex === 0
-                                ? 'text-silver/30 cursor-not-allowed'
-                                : 'text-silver hover:text-gold hover:border-gold/40 transition-colors',
-                        )}
-                        aria-label="Zoom out"
-                    >
-                      −
-                    </button>
-                    <span className="text-xs text-silver w-10 text-center tabular-nums" data-testid="zoom-level">
-                      {Math.round(currentZoom * 100)}%
-                    </span>
-                    <button
-                        onClick={zoomIn}
-                        disabled={zoomIndex === ZOOM_LEVELS.length - 1}
-                        className={cx(
-                            'w-7 h-7 flex items-center justify-center text-sm font-bold',
-                            'bg-charcoal border border-ash/40',
-                            zoomIndex === ZOOM_LEVELS.length - 1
-                                ? 'text-silver/30 cursor-not-allowed'
-                                : 'text-silver hover:text-gold hover:border-gold/40 transition-colors',
-                        )}
-                        aria-label="Zoom in"
-                    >
-                      +
-                    </button>
-                  </div>
-              )}
             </div>
 
             {/* Modal for expanded artifact */}

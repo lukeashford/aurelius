@@ -14,13 +14,38 @@ exports[`ArtifactsPanel matches snapshot with nodes 1`] = `
       >
         Artifacts
       </h3>
+      <div
+        class="flex items-center gap-0.5"
+        data-testid="zoom-controls"
+      >
+        <button
+          aria-label="Zoom out"
+          class="w-6 h-6 flex items-center justify-center text-xs font-bold bg-charcoal border border-ash/40 text-silver hover:text-gold hover:border-gold/40 transition-colors"
+        >
+          −
+        </button>
+        <span
+          class="text-xs text-silver w-8 text-center tabular-nums"
+          data-testid="zoom-level"
+        >
+          100
+          %
+        </span>
+        <button
+          aria-label="Zoom in"
+          class="w-6 h-6 flex items-center justify-center text-xs font-bold bg-charcoal border border-ash/40 text-silver/30 cursor-not-allowed"
+          disabled=""
+        >
+          +
+        </button>
+      </div>
     </div>
     <div
       class="flex-1 overflow-auto relative"
       data-testid="artifacts-scroll-area"
     >
       <div
-        class="p-4 space-y-4 origin-top-left"
+        class="p-4 space-y-4"
         data-testid="artifacts-grid"
       >
         <div
@@ -216,31 +241,6 @@ exports[`ArtifactsPanel matches snapshot with nodes 1`] = `
           </div>
         </div>
       </div>
-    </div>
-    <div
-      class="absolute bottom-4 right-4 flex items-center gap-1 z-10"
-      data-testid="zoom-controls"
-    >
-      <button
-        aria-label="Zoom out"
-        class="w-7 h-7 flex items-center justify-center text-sm font-bold bg-charcoal border border-ash/40 text-silver hover:text-gold hover:border-gold/40 transition-colors"
-      >
-        −
-      </button>
-      <span
-        class="text-xs text-silver w-10 text-center tabular-nums"
-        data-testid="zoom-level"
-      >
-        100
-        %
-      </span>
-      <button
-        aria-label="Zoom in"
-        class="w-7 h-7 flex items-center justify-center text-sm font-bold bg-charcoal border border-ash/40 text-silver/30 cursor-not-allowed"
-        disabled=""
-      >
-        +
-      </button>
     </div>
   </div>
 </div>

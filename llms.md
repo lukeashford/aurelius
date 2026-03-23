@@ -348,7 +348,10 @@ can be expanded to a full-screen modal.
 
 When provided with flat `artifacts`, it renders them in a simple grid.
 
-Supports zoom controls (0.25x–1x) in tree mode.
+Supports zoom controls (0.25x–1x) in tree mode. Zoom uses the CSS
+`zoom` property on the scroll viewport so the entire layout scales
+uniformly — cards, images, gaps, and text all shrink as if the viewer
+is physically moving back from the content.
 
 - **nodes**: * Top-level tree nodes to display. When provided, the panel renders a navigable artifact tree instead of a flat list.
 - **artifacts**: * Array of flat artifacts to display (legacy/simple mode). Ignored when `nodes` is provided.
