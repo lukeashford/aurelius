@@ -1,3 +1,26 @@
+## [2.21.0](https://github.com/lukeashford/aurelius/compare/v2.20.0...v2.21.0) (2026-03-23)
+
+### Features
+
+* add tree-aware navigation to ArtifactsPanel ([8fb6ce5](https://github.com/lukeashford/aurelius/commit/8fb6ce54da317a5183b8a3d359f27f55d07f99cf))
+* **components:** add ArtifactGroup and ArtifactVariantStack components ([c38dfb0](https://github.com/lukeashford/aurelius/commit/c38dfb0acabce129eead3a10091d3ee5e279481c))
+* **components:** add onChoose with async spinner, tests for artifact tree ([2facf33](https://github.com/lukeashford/aurelius/commit/2facf338be2739621c8bb8d4009bce6c8fcabfdf))
+* intellij-style tool panel system with sidebar, height dragger, and animations ([c5075c4](https://github.com/lukeashford/aurelius/commit/c5075c4ed5f51d7b9486f78347966bae3fe5f16f))
+* sequential artifact tree streaming and group badge animation ([c8bb36a](https://github.com/lukeashford/aurelius/commit/c8bb36a1b3509a241c3401e77614a1d6e4f7d48c))
+
+### Bug Fixes
+
+* **components:** fix group stack layering and modal height ([41b959a](https://github.com/lukeashford/aurelius/commit/41b959ac0a736af22708bd880b3856e7799856eb))
+* **components:** fix modal scroll, remove header separator (wip) ([985cca7](https://github.com/lukeashford/aurelius/commit/985cca70c514702d6c1dc4f4138bbe30a3f5aaf1))
+* **components:** replace Card.Header with plain h3 to remove separator ([9ac01f5](https://github.com/lukeashford/aurelius/commit/9ac01f512bf1cda18265444e5087e04d32c453f7))
+* **components:** simplify ArtifactVariantStack API and clean up demo ([047b38b](https://github.com/lukeashford/aurelius/commit/047b38bfec18e8ee468b9937c6ccd634923590cb))
+* remove history button, constant sidebar width, single-column artifacts ([f77c8fb](https://github.com/lukeashford/aurelius/commit/f77c8fb53ba3437a11631c1db0679f5267bd2335))
+* remove history placeholder, visible height dragger, respect user-dismissed tools ([3e759dc](https://github.com/lukeashford/aurelius/commit/3e759dc266c4a95ee538eea9454fca337539c8eb))
+* resolve test type errors, stale assertions, and demo lint issue ([d205ee0](https://github.com/lukeashford/aurelius/commit/d205ee03e1a497170692728ecce7f8b23ebd4fbe))
+* use correct button selector in collapse artifacts panel test ([f8f8f20](https://github.com/lukeashford/aurelius/commit/f8f8f200101cce21fb929a686bb0995fefae6707))
+* use correct button selector in collapse artifacts panel test ([#35](https://github.com/lukeashford/aurelius/issues/35)) ([3a9683b](https://github.com/lukeashford/aurelius/commit/3a9683b5adebba0923b703def0fa906c853d3ffe))
+* use transform scale for true artifact zoom instead of CSS zoom ([f78f1f8](https://github.com/lukeashford/aurelius/commit/f78f1f8658f288917d6bbb7328e16fd348182228))
+
 ## [2.20.0](https://github.com/lukeashford/aurelius/compare/v2.19.0...v2.20.0) (2026-02-27)
 
 ### Features
