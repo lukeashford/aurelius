@@ -153,7 +153,7 @@ Import from `@lukeashford/aurelius`:
 | Toast | children, position (top-right, top-left, bottom-right, bottom-left, top-center, bottom-center), defaultDuration |
 | Tooltip | content, children, open, side (top, right, bottom, left) |
 | VideoCard | src, title, subtitle, aspectRatio (${number}/${number}), playing, controls, light, volume, muted, loop, mediaClassName, contentClassName, playerProps, loading |
-| ArtifactsPanel | nodes, artifacts, loading, widthPercent, artifactCount, onExpand |
+| ArtifactsPanel | nodes, artifacts, loading, artifactCount, onExpand |
 | BranchNavigator | current, total, onPrevious, onNext, size, showIcon |
 | ChatInput | position (centered, bottom), placeholder, helperText, onSubmit, disabled, animate, isStreaming, onStop, attachments, onAttachmentsChange, showAttachmentButton, acceptedFileTypes |
 | ChatInterface | messages, conversationTree, onTreeChange, conversations, onMessageSubmit, onEditMessage, onRetryMessage, onStop, onSelectConversation, onNewChat, isStreaming, isThinking, placeholder, emptyStateHelper, initialSidebarCollapsed, emptyState, showAttachmentButton, enableMessageActions, attachments, onAttachmentsChange, artifacts, artifactNodes, isArtifactsPanelOpen, onArtifactsPanelOpenChange, tasks, tasksTitle |
@@ -163,7 +163,7 @@ Import from `@lukeashford/aurelius`:
 | ThinkingIndicator | isVisible, phraseInterval, phrases |
 | TodosList | tasks, title |
 | ToolPanelContainer | topContent, bottomContent, width, onResizeStart |
-| ToolSidebar | tools, activeTools, onToggleTool, isAnyToolOpen |
+| ToolSidebar | tools, activeTools, onToggleTool |
 | CheckSquareIcon | children |
 | ChevronLeftIcon | children |
 | ChevronRightIcon | children |
@@ -353,7 +353,6 @@ Supports zoom controls (0.25x–1x) in tree mode.
 - **nodes**: * Top-level tree nodes to display. When provided, the panel renders a navigable artifact tree instead of a flat list.
 - **artifacts**: * Array of flat artifacts to display (legacy/simple mode). Ignored when `nodes` is provided.
 - **loading**: * Whether artifacts are still loading (show skeletons)
-- **widthPercent**: * Width as percentage of viewport (0-100) for column calculations.
 
 **BranchNavigator**
 BranchNavigator provides a UI for switching between conversation branches.
@@ -532,7 +531,7 @@ side of the chat interface. It follows the IntelliJ pattern:
 - Top-aligned group and bottom-aligned group separated by a divider
 - Tools in the same group are mutually exclusive
 - Clicking an active tool closes it; clicking an inactive tool opens it
-- When any tool is open, the sidebar shrinks to 0.7x its normal width
+- Constant slim width regardless of tool panel state
 
 - **ToolDefinition.id**: * Unique identifier for this tool
 - **ToolDefinition.icon**: * Icon element shown in the sidebar button
@@ -541,7 +540,6 @@ side of the chat interface. It follows the IntelliJ pattern:
 - **tools**: * Available tool definitions
 - **activeTools**: * Current state — which tool is open per group
 - **onToggleTool**: * Called when a tool button is clicked (toggle)
-- **isAnyToolOpen**: * Whether any tool is currently open — controls slim mode (0.7x width)
 
 **CrossSquareIcon**
 - **variant**: * Visual variant for different states - 'cancelled': subtle ash coloring - 'failed': error red coloring

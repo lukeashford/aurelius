@@ -45,10 +45,6 @@ export interface ToolSidebarProps extends React.HTMLAttributes<HTMLDivElement> {
    * Called when a tool button is clicked (toggle)
    */
   onToggleTool: (toolId: string) => void
-  /**
-   * Whether any tool is currently open — controls slim mode (0.7x width)
-   */
-  isAnyToolOpen: boolean
 }
 
 /**
@@ -58,10 +54,10 @@ export interface ToolSidebarProps extends React.HTMLAttributes<HTMLDivElement> {
  * - Top-aligned group and bottom-aligned group separated by a divider
  * - Tools in the same group are mutually exclusive
  * - Clicking an active tool closes it; clicking an inactive tool opens it
- * - When any tool is open, the sidebar shrinks to 0.7x its normal width
+ * - Constant slim width regardless of tool panel state
  */
 export const ToolSidebar = React.forwardRef<HTMLDivElement, ToolSidebarProps>(
-    ({tools, activeTools, onToggleTool, isAnyToolOpen, className, ...rest}, ref) => {
+    ({tools, activeTools, onToggleTool, className, ...rest}, ref) => {
       const topTools = tools.filter(t => t.group === 'top')
       const bottomTools = tools.filter(t => t.group === 'bottom')
 
@@ -78,8 +74,7 @@ export const ToolSidebar = React.forwardRef<HTMLDivElement, ToolSidebarProps>(
                 key={tool.id}
                 onClick={() => onToggleTool(tool.id)}
                 className={cx(
-                    'flex items-center justify-center transition-colors duration-150',
-                    isAnyToolOpen ? 'w-8 h-8' : 'w-10 h-10',
+                    'w-8 h-8 flex items-center justify-center transition-colors duration-150',
                     active
                         ? 'bg-gold/15 text-gold border border-gold/30'
                         : 'text-silver hover:text-white hover:bg-ash/20'
@@ -87,7 +82,7 @@ export const ToolSidebar = React.forwardRef<HTMLDivElement, ToolSidebarProps>(
                 aria-label={tool.label}
                 aria-pressed={active}
             >
-              <span className={cx(isAnyToolOpen ? 'w-4 h-4' : 'w-5 h-5', 'block')}>
+              <span className="w-4 h-4 block">
                 {tool.icon}
               </span>
             </button>
@@ -98,9 +93,7 @@ export const ToolSidebar = React.forwardRef<HTMLDivElement, ToolSidebarProps>(
           <div
               ref={ref}
               className={cx(
-                  'h-full bg-charcoal/80 border-l border-ash/40 flex flex-col items-center shrink-0',
-                  'transition-all duration-200',
-                  isAnyToolOpen ? 'w-9 py-2' : 'w-12 py-3',
+                  'h-full w-9 bg-charcoal/80 border-l border-ash/40 flex flex-col items-center shrink-0 py-2',
                   className
               )}
               {...rest}

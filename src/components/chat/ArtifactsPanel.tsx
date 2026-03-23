@@ -31,10 +31,6 @@ export interface ArtifactsPanelProps extends React.HTMLAttributes<HTMLDivElement
    * Whether artifacts are still loading (show skeletons)
    */
   loading?: CardSlotLoading
-  /**
-   * Width as percentage of viewport (0-100) for column calculations.
-   */
-  widthPercent?: number
 }
 
 /**
@@ -206,7 +202,6 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
       nodes,
       artifacts,
       loading,
-      widthPercent,
       className,
       ...rest
     }, ref) => {
@@ -214,10 +209,6 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
       const [zoomIndex, setZoomIndex] = useState<number>(ZOOM_LEVELS.length - 1) // default 1.0
 
       const treeNav = useArtifactTreeNavigation(nodes || [])
-
-      // Determine number of columns based on percentage of viewport
-      const columns = widthPercent && widthPercent > 55 ? 3 : widthPercent && widthPercent > 35 ? 2
-          : 1
 
       const isTreeMode = !!nodes && nodes.length > 0
 
@@ -286,18 +277,14 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
                   </nav>
               )}
 
-              {/* Content area */}
-              <div className="flex-1 overflow-y-auto relative" data-testid="artifacts-scroll-area">
+              {/* Content area — single column, natural widths, scrollable */}
+              <div className="flex-1 overflow-auto relative" data-testid="artifacts-scroll-area">
                 <div
                     data-testid="artifacts-grid"
-                    className={cx(
-                        "p-4 origin-top-left",
-                        columns === 1 ? "space-y-4" : "grid gap-4",
-                        columns === 2 && "grid-cols-2",
-                        columns === 3 && "grid-cols-3"
-                    )}
+                    className="p-4 space-y-4 origin-top-left"
                     style={currentZoom !== 1 ? {
                       transform: `scale(${currentZoom})`,
+                      transformOrigin: 'top left',
                       width: `${100 / currentZoom}%`,
                     } : undefined}
                 >

@@ -11,7 +11,7 @@ import type {Artifact} from './hooks'
 import {useResizable} from './hooks'
 import type {ArtifactNode} from '../ArtifactNode'
 import {type ConversationTree, getActivePathMessages, getSiblingInfo, switchBranch} from './types'
-import {HistoryIcon, MediaIcon, CheckSquareIcon, SquareLoaderIcon} from '../icons'
+import {MediaIcon, CheckSquareIcon, SquareLoaderIcon} from '../icons'
 
 export interface ChatMessage {
   /**
@@ -249,7 +249,6 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
 
       const {
         width: toolsWidth,
-        widthPercent: toolsWidthPercent,
         startResizing: startResizingTools
       } = useResizable({
         initialWidthPercent: 50,
@@ -416,12 +415,6 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
 
       const toolDefinitions: ToolDefinition[] = useMemo(() => [
         {
-          id: 'history',
-          icon: <HistoryIcon/>,
-          label: 'Chat History',
-          group: 'top' as const,
-        },
-        {
           id: 'artifacts',
           icon: <MediaIcon/>,
           label: 'Artifacts',
@@ -445,7 +438,6 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
                 <ArtifactsPanel
                     artifacts={artifacts}
                     nodes={artifactNodes}
-                    widthPercent={toolsWidthPercent}
                     className="h-full"
                 />
             )
@@ -565,7 +557,6 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
                 tools={toolDefinitions}
                 activeTools={activeTools}
                 onToggleTool={toggleTool}
-                isAnyToolOpen={isAnyToolOpen}
             />
           </div>
       )
@@ -576,7 +567,6 @@ ChatInterface.displayName = 'ChatInterface'
 
 // Static tool definitions used for group lookup in toggleTool
 const TOOL_DEFINITIONS: ToolDefinition[] = [
-  {id: 'history', icon: null, label: 'Chat History', group: 'top'},
   {id: 'artifacts', icon: null, label: 'Artifacts', group: 'top'},
   {id: 'todos', icon: null, label: 'Tasks', group: 'bottom'},
 ]
