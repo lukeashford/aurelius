@@ -1,3 +1,17 @@
+## [3.0.0](https://github.com/lukeashford/aurelius/compare/v2.21.0...v3.0.0) (2026-03-25)
+
+### ⚠ BREAKING CHANGES
+
+* `artifacts` prop removed from ArtifactsPanel and
+ChatInterface. `useArtifacts` hook removed. Use `artifactNodes` with
+`ArtifactNode[]` tree structure instead.
+
+https://claude.ai/code/session_0159cN1G8652uSjLRFT4SRvJ
+
+### Features
+
+* remove flat artifacts API, require artifact tree nodes ([48a5209](https://github.com/lukeashford/aurelius/commit/48a5209ed88ae4b03d9904bf7d8daa8c8017245a))
+
 ## [2.21.0](https://github.com/lukeashford/aurelius/compare/v2.20.0...v2.21.0) (2026-03-23)
 
 ### Features
