@@ -18,15 +18,9 @@ const ZOOM_LEVELS = [0.25, 0.5, 0.75, 1.0] as const
 
 export interface ArtifactsPanelProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
-   * Top-level tree nodes to display. When provided, the panel renders
-   * a navigable artifact tree instead of a flat list.
+   * Top-level tree nodes to display in the navigable artifact tree.
    */
   nodes?: ArtifactNode[]
-  /**
-   * Array of flat artifacts to display (legacy/simple mode).
-   * Ignored when `nodes` is provided.
-   */
-  artifacts?: Artifact[]
   /**
    * Whether artifacts are still loading (show skeletons)
    */
@@ -189,21 +183,17 @@ function NodeRenderer({
  * placed in. Opening/closing and resizing are handled by the parent
  * ToolPanelContainer and ToolSidebar.
  *
- * When provided with `nodes`, it renders a tree-aware, navigable panel
- * where groups can be entered (breadcrumb navigation) and artifacts
+ * Groups can be entered (breadcrumb navigation) and artifact nodes
  * can be expanded to a full-screen modal.
  *
- * When provided with flat `artifacts`, it renders them in a simple grid.
- *
- * Supports zoom controls (0.25x–1x) in tree mode. Zoom uses CSS
- * `transform: scale()` on the content wrapper so the entire layout scales
- * uniformly — cards, images, gaps, and text all shrink as if the viewer
- * is physically moving back from the content.
+ * Supports zoom controls (0.25x–1x). Zoom uses CSS `transform: scale()`
+ * on the content wrapper so the entire layout scales uniformly — cards,
+ * images, gaps, and text all shrink as if the viewer is physically
+ * moving back from the content.
  */
 export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelProps>(
     ({
       nodes,
-      artifacts,
       loading,
       className,
       ...rest
@@ -213,7 +203,7 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
 
       const treeNav = useArtifactTreeNavigation(nodes || [])
 
-      const isTreeMode = !!nodes && nodes.length > 0
+      const hasNodes = !!nodes && nodes.length > 0
 
       const handleExpandArtifact = useCallback((artifact: Artifact) => {
         setExpandedArtifact(artifact)
@@ -262,7 +252,7 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
               <div
                   className="flex items-center justify-between p-4 border-b border-ash/40 shrink-0">
                 <h3 className="text-sm font-semibold text-white">Artifacts</h3>
-                {isTreeMode && (
+                {hasNodes && (
                     <div
                         className="flex items-center gap-0.5"
                         data-testid="zoom-controls"
@@ -303,7 +293,7 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
               </div>
 
               {/* Breadcrumb trail (tree mode only, when not at root) */}
-              {isTreeMode && !treeNav.isAtRoot && (
+              {hasNodes && !treeNav.isAtRoot && (
                   <nav
                       className="flex items-center gap-1 px-4 py-2 border-b border-ash/40 shrink-0 overflow-x-auto text-xs"
                       aria-label="Breadcrumb"
@@ -356,37 +346,20 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
                           : undefined
                       }
                   >
-                  {isTreeMode ? (
-                      treeNav.currentNodes.length === 0 ? (
-                          <p className="text-xs text-silver/60 text-center py-8">
-                            Empty group
-                          </p>
-                      ) : (
-                          treeNav.currentNodes.map((node) => (
-                              <NodeRenderer
-                                  key={node.id}
-                                  node={node}
-                                  loading={loading}
-                                  onExpandArtifact={handleExpandArtifact}
-                                  onGroupClick={handleGroupClick}
-                              />
-                          ))
-                      )
+                  {treeNav.currentNodes.length === 0 ? (
+                      <p className="text-xs text-silver/60 text-center py-8">
+                        {hasNodes ? 'Empty group' : 'No artifacts to display'}
+                      </p>
                   ) : (
-                      (!artifacts || artifacts.length === 0) && !loading ? (
-                          <p className="text-xs text-silver/60 text-center py-8">
-                            No artifacts to display
-                          </p>
-                      ) : (
-                          artifacts?.map((artifact) => (
-                              <ArtifactCard
-                                  key={artifact.id}
-                                  artifact={artifact}
-                                  loading={loading}
-                                  onExpand={handleExpandArtifact}
-                              />
-                          ))
-                      )
+                      treeNav.currentNodes.map((node) => (
+                          <NodeRenderer
+                              key={node.id}
+                              node={node}
+                              loading={loading}
+                              onExpandArtifact={handleExpandArtifact}
+                              onGroupClick={handleGroupClick}
+                          />
+                      ))
                   )}
                   </div>
                 </div>

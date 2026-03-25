@@ -6,23 +6,6 @@ const IMG = 'https://example.com/image.jpg'
 
 // --- Test data ---
 
-const mockArtifacts = [
-  {
-    id: '1',
-    type: 'IMAGE' as const,
-    url: IMG,
-    alt: 'Test image',
-    title: 'Image Title',
-    subtitle: 'Image subtitle',
-  },
-  {
-    id: '2',
-    type: 'TEXT' as const,
-    title: 'Text Artifact',
-    inlineContent: 'Some markdown content',
-  },
-]
-
 const mockNodes = [
   {
     id: 'art-1',
@@ -110,19 +93,18 @@ describe('ArtifactsPanel', () => {
   // ---- Content rendering ----
 
   it('renders with header', () => {
-    render(<ArtifactsPanel artifacts={mockArtifacts}/>)
+    render(<ArtifactsPanel nodes={mockNodes}/>)
     expect(screen.getByText('Artifacts')).toBeInTheDocument()
   })
 
-  it('shows empty state in flat mode', () => {
-    render(<ArtifactsPanel artifacts={[]}/>)
+  it('shows empty state when no nodes provided', () => {
+    render(<ArtifactsPanel/>)
     expect(screen.getByText('No artifacts to display')).toBeInTheDocument()
   })
 
-  it('renders artifacts in flat mode', () => {
-    render(<ArtifactsPanel artifacts={mockArtifacts}/>)
-    expect(screen.getByText('Image Title')).toBeInTheDocument()
-    expect(screen.getByText('Text Artifact')).toBeInTheDocument()
+  it('shows empty state for empty nodes array', () => {
+    render(<ArtifactsPanel nodes={[]}/>)
+    expect(screen.getByText('No artifacts to display')).toBeInTheDocument()
   })
 
   // ---- Tree mode ----
@@ -180,14 +162,14 @@ describe('ArtifactsPanel', () => {
 
   // ---- Zoom controls ----
 
-  it('shows zoom controls in tree mode', () => {
+  it('shows zoom controls when nodes are provided', () => {
     render(<ArtifactsPanel nodes={mockNodes}/>)
     expect(screen.getByTestId('zoom-controls')).toBeInTheDocument()
     expect(screen.getByText('100%')).toBeInTheDocument()
   })
 
-  it('does not show zoom controls in flat mode', () => {
-    render(<ArtifactsPanel artifacts={mockArtifacts}/>)
+  it('does not show zoom controls when no nodes provided', () => {
+    render(<ArtifactsPanel/>)
     expect(screen.queryByTestId('zoom-controls')).not.toBeInTheDocument()
   })
 
@@ -224,7 +206,7 @@ describe('ArtifactsPanel', () => {
 
   it('applies custom className', () => {
     const {container} = render(
-        <ArtifactsPanel artifacts={mockArtifacts} className="gap-4"/>
+        <ArtifactsPanel nodes={mockNodes} className="gap-4"/>
     )
     expect(container.firstChild).toHaveClass('gap-4')
   })

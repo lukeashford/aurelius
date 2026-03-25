@@ -2,11 +2,9 @@ export {
   useScrollAnchor, type UseScrollAnchorOptions, type UseScrollAnchorReturn
 } from './useScrollAnchor'
 export {
-  useArtifacts,
   type Artifact,
   type ArtifactType,
-  type UseArtifactsReturn,
-} from './useArtifacts'
+} from '../../ArtifactCard'
 export {
   useAdaptiveSpacer, type UseAdaptiveSpacerOptions, type UseAdaptiveSpacerReturn
 } from './useAdaptiveSpacer'

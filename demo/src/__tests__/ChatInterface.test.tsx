@@ -211,17 +211,24 @@ describe('ChatInterface', () => {
   })
 
   it('shows artifacts panel when artifacts tool is toggled via isArtifactsPanelOpen', () => {
-    const mockArtifacts = [
+    const mockNodes = [
       {
-        id: '1',
-        type: 'IMAGE' as const,
-        url: 'https://example.com/image.jpg',
-        title: 'Test Artifact',
+        id: 'node-1',
+        type: 'ARTIFACT' as const,
+        name: 'test_artifact',
+        label: 'Test Artifact',
+        artifact: {
+          id: '1',
+          type: 'IMAGE' as const,
+          url: 'https://example.com/image.jpg',
+          title: 'Test Artifact',
+        },
+        children: [],
       },
     ]
     render(
         <ChatInterface
-            artifacts={mockArtifacts}
+            artifactNodes={mockNodes}
             isArtifactsPanelOpen={true}
         />
     )
@@ -229,17 +236,24 @@ describe('ChatInterface', () => {
   })
 
   it('shows artifacts panel header when open', () => {
-    const mockArtifacts = [
+    const mockNodes = [
       {
-        id: '1',
-        type: 'IMAGE' as const,
-        url: 'https://example.com/image.jpg',
-        title: 'Artifact Title',
+        id: 'node-1',
+        type: 'ARTIFACT' as const,
+        name: 'artifact_title',
+        label: 'Artifact Title',
+        artifact: {
+          id: '1',
+          type: 'IMAGE' as const,
+          url: 'https://example.com/image.jpg',
+          title: 'Artifact Title',
+        },
+        children: [],
       },
     ]
     render(
         <ChatInterface
-            artifacts={mockArtifacts}
+            artifactNodes={mockNodes}
             isArtifactsPanelOpen={true}
         />
     )
