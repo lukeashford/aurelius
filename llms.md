@@ -153,10 +153,10 @@ Import from `@lukeashford/aurelius`:
 | Toast | children, position (top-right, top-left, bottom-right, bottom-left, top-center, bottom-center), defaultDuration |
 | Tooltip | content, children, open, side (top, right, bottom, left) |
 | VideoCard | src, title, subtitle, aspectRatio (${number}/${number}), playing, controls, light, volume, muted, loop, mediaClassName, contentClassName, playerProps, loading |
-| ArtifactsPanel | nodes, artifacts, loading, artifactCount, onExpand |
+| ArtifactsPanel | nodes, loading, artifactCount, onExpand |
 | BranchNavigator | current, total, onPrevious, onNext, size, showIcon |
 | ChatInput | position (centered, bottom), placeholder, helperText, onSubmit, disabled, animate, isStreaming, onStop, attachments, onAttachmentsChange, showAttachmentButton, acceptedFileTypes |
-| ChatInterface | messages, conversationTree, onTreeChange, conversations, onMessageSubmit, onEditMessage, onRetryMessage, onStop, onSelectConversation, onNewChat, isStreaming, isThinking, placeholder, emptyStateHelper, initialSidebarCollapsed, emptyState, showAttachmentButton, enableMessageActions, attachments, onAttachmentsChange, artifacts, artifactNodes, isArtifactsPanelOpen, onArtifactsPanelOpenChange, tasks, tasksTitle |
+| ChatInterface | messages, conversationTree, onTreeChange, conversations, onMessageSubmit, onEditMessage, onRetryMessage, onStop, onSelectConversation, onNewChat, isStreaming, isThinking, placeholder, emptyStateHelper, initialSidebarCollapsed, emptyState, showAttachmentButton, enableMessageActions, attachments, onAttachmentsChange, artifactNodes, isArtifactsPanelOpen, onArtifactsPanelOpenChange, tasks, tasksTitle |
 | ChatView | messages, latestUserMessageIndex, isStreaming, isThinking, onScroll |
 | ConversationSidebar | conversations, isCollapsed, onSelectConversation, onNewChat, onToggleCollapse, width, onResizeStart, onExpand |
 | MessageActions | variant (user, assistant), content, onEdit, onRetry, isEditing, onEditingChange, editValue |
@@ -342,19 +342,15 @@ This is a content-only component — it fills whatever container it is
 placed in. Opening/closing and resizing are handled by the parent
 ToolPanelContainer and ToolSidebar.
 
-When provided with `nodes`, it renders a tree-aware, navigable panel
-where groups can be entered (breadcrumb navigation) and artifacts
+Groups can be entered (breadcrumb navigation) and artifact nodes
 can be expanded to a full-screen modal.
 
-When provided with flat `artifacts`, it renders them in a simple grid.
+Supports zoom controls (0.25x–1x). Zoom uses CSS `transform: scale()`
+on the content wrapper so the entire layout scales uniformly — cards,
+images, gaps, and text all shrink as if the viewer is physically
+moving back from the content.
 
-Supports zoom controls (0.25x–1x) in tree mode. Zoom uses CSS
-`transform: scale()` on the content wrapper so the entire layout scales
-uniformly — cards, images, gaps, and text all shrink as if the viewer
-is physically moving back from the content.
-
-- **nodes**: * Top-level tree nodes to display. When provided, the panel renders a navigable artifact tree instead of a flat list.
-- **artifacts**: * Array of flat artifacts to display (legacy/simple mode). Ignored when `nodes` is provided.
+- **nodes**: * Top-level tree nodes to display in the navigable artifact tree.
 - **loading**: * Whether artifacts are still loading (show skeletons)
 
 **BranchNavigator**
@@ -408,10 +404,8 @@ Features:
 - Message Actions — copy, edit, retry
 - Thinking Indicator — shown between user message and response
 
-Artifacts are controlled externally via the useArtifacts hook:
-- scheduleArtifact() — adds artifact with loading skeleton
-- showArtifact() — reveals artifact content
-- removeArtifact() — removes artifact on failure
+Artifacts are supplied as a tree of ArtifactNode objects via the
+artifactNodes prop.
 
 - **ChatMessage.id**: * Unique identifier for the message
 - **ChatMessage.variant**: * Whether the message is from the user or the assistant
@@ -437,8 +431,7 @@ Artifacts are controlled externally via the useArtifacts hook:
 - **enableMessageActions**: * Whether to enable message-level actions (copy, edit, retry).
 - **attachments**: * Current attachments for the chat input (controlled).
 - **onAttachmentsChange**: * Called when attachments are added or removed in the chat input.
-- **artifacts**: * Artifacts to display in the side panel. Best managed via the useArtifacts hook and passed here.
-- **artifactNodes**: * Top-level artifact tree nodes for tree-aware navigation. When provided, the panel renders a navigable tree instead of a flat list.
+- **artifactNodes**: * Top-level artifact tree nodes for the artifacts panel.
 - **isArtifactsPanelOpen**: * Whether the artifacts panel is currently open (controlled). When set, maps to the tool panel system — opens the artifacts tool.
 - **onArtifactsPanelOpenChange**: * Called when the artifacts panel is opened or closed (controlled).
 - **tasks**: * Tasks to display in the todos list tool panel. Shows a list of tasks with status indicators.
@@ -575,42 +568,6 @@ import { Button, Card, Input, Badge } from '@lukeashford/aurelius'
 ## Hooks
 
 Import hooks from `@lukeashford/aurelius`:
-
-### useArtifacts
-
-Hook for managing artifacts in the ChatInterface.
-
-Provides methods to control the artifacts panel programmatically,
-designed for event-driven architectures like SSE streams.
-
-**Returns:** `UseArtifactsReturn`
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `artifacts` | `Artifact[]` | Current list of artifacts |
-| `scheduleArtifact` | `(artifact: Omit<Artifact, 'isPending'>) => void` | Schedule a new artifact (adds to list with isPending=true, shows skeleton). |
-| `showArtifact` | `(artifactId: string, artifact: Omit<Artifact, 'id' | 'isPending'>) => void` | Show an artifact (updates existing or adds new with isPending=false). |
-| `removeArtifact` | `(artifactId: string) => void` | Remove an artifact from the list. |
-| `clearArtifacts` | `() => void` | Clear all artifacts |
-
-**Example:**
-
-```tsx
-const { artifacts, scheduleArtifact, showArtifact, removeArtifact } = useArtifacts()
-
-// When SSE operator.started event arrives
-scheduleArtifact({ id: operatorId, type: 'IMAGE' })
-
-// When SSE artifact.created event arrives
-showArtifact(artifactId, {
-  type: 'IMAGE',
-  url: 'https://example.com/image.png',
-  title: 'Generated Image',
-})
-
-// When SSE operator.failed event arrives
-removeArtifact(operatorId)
-```
 
 ### useScrollAnchor
 

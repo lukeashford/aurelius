@@ -42,7 +42,6 @@ export {
   type ToolPanelContainerProps,
 } from './ToolPanelContainer'
 
-// New components
 export {
   MessageActions, type MessageActionsProps, type MessageActionsVariant
 } from './MessageActions'
@@ -73,14 +72,12 @@ export {
 // Hooks
 export {
   useScrollAnchor,
-  useArtifacts,
   useResizable,
   useArtifactTreeNavigation,
   type UseScrollAnchorOptions,
   type UseScrollAnchorReturn,
   type Artifact,
   type ArtifactType,
-  type UseArtifactsReturn,
   type BreadcrumbEntry,
   type UseArtifactTreeNavigationReturn,
 } from './hooks'

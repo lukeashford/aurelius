@@ -12,7 +12,6 @@ import {
   type ScriptElement,
   type Task,
   updateNodeContent,
-  useArtifacts,
 } from '@lukeashford/aurelius'
 
 // Mock response content for the first message (no artifacts)
@@ -33,13 +32,20 @@ const SECOND_RESPONSE = `<p>Great! Now I'll show you the artifacts panel with so
 <p>You can collapse or expand the artifacts panel at any time. Try sending more messages to see how the interface responds!</p>`
 
 // Artifact data for second response
-const SECOND_ARTIFACT = {
+const SECOND_ARTIFACT_NODE: ArtifactNode = {
   id: 'artifact-1',
-  type: 'IMAGE' as const,
-  url: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800',
-  alt: 'Code visualization',
-  title: 'Component Architecture',
-  subtitle: 'A visual guide to structuring your React components',
+  type: 'ARTIFACT',
+  name: 'component_architecture',
+  label: 'Component Architecture',
+  artifact: {
+    id: 'artifact-1',
+    type: 'IMAGE',
+    url: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800',
+    alt: 'Code visualization',
+    title: 'Component Architecture',
+    subtitle: 'A visual guide to structuring your React components',
+  },
+  children: [],
 }
 
 // Slow response for stop demo
@@ -53,17 +59,24 @@ const SLOW_RESPONSE = `<p>This is a deliberately slow response to demonstrate th
 <p>You can stop me anytime!</p>`
 
 // Additional responses with artifacts
-const ADDITIONAL_RESPONSES = [
+const ADDITIONAL_RESPONSES: { content: string; artifactNode: ArtifactNode | null }[] = [
   {
     content: `<p>Here's another artifact with a different image!</p>
 <p>The artifacts panel stacks multiple items vertically with smooth transitions.</p>`,
-    artifact: {
+    artifactNode: {
       id: 'artifact-2',
-      type: 'IMAGE' as const,
-      url: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800',
-      alt: 'Developer workspace',
-      title: 'Modern Development',
-      subtitle: 'Setting up an efficient workspace',
+      type: 'ARTIFACT',
+      name: 'modern_development',
+      label: 'Modern Development',
+      artifact: {
+        id: 'artifact-2',
+        type: 'IMAGE',
+        url: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800',
+        alt: 'Developer workspace',
+        title: 'Modern Development',
+        subtitle: 'Setting up an efficient workspace',
+      },
+      children: [],
     },
   },
   {
@@ -75,18 +88,25 @@ const ADDITIONAL_RESPONSES = [
 <li>No jarring auto-scroll during generation</li>
 </ol>
 <p>This mimics the behavior of modern chat interfaces like Claude and ChatGPT.</p>`,
-    artifact: null,
+    artifactNode: null,
   },
   {
     content: `<p>Let me show you one more artifact!</p>
 <p>Each artifact can have a title and subtitle for context. The panel supports scrolling when content overflows.</p>`,
-    artifact: {
+    artifactNode: {
       id: 'artifact-3',
-      type: 'IMAGE' as const,
-      url: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800',
-      alt: 'Coding session',
-      title: 'Development in Action',
-      subtitle: 'Building with modern tools and frameworks',
+      type: 'ARTIFACT',
+      name: 'development_in_action',
+      label: 'Development in Action',
+      artifact: {
+        id: 'artifact-3',
+        type: 'IMAGE',
+        url: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800',
+        alt: 'Coding session',
+        title: 'Development in Action',
+        subtitle: 'Building with modern tools and frameworks',
+      },
+      children: [],
     },
   },
 ]
@@ -452,8 +472,7 @@ export default function ChatDemo() {
   const currentMessageIdRef = useRef<string | null>(null)
   const brandWorkflowRef = useRef<NodeJS.Timeout[]>([])
 
-  // Use the artifacts hook for controlling the artifacts panel
-  const {artifacts, scheduleArtifact, showArtifact, removeArtifact, clearArtifacts} = useArtifacts()
+  // Artifact nodes for the tree-aware panel (simple + brand workflow)
 
   // Tasks state for the TodosList
   const [tasks, setTasks] = useState<Task[]>([])
@@ -527,24 +546,23 @@ export default function ChatDemo() {
     ))
   }, [])
 
-  // Simulate streaming a response with optional artifact
+  // Simulate streaming a response with optional artifact node
   const streamResponse = useCallback((
       response: string,
-      artifact: typeof SECOND_ARTIFACT | null,
+      artifactNode: ArtifactNode | null,
       onComplete: () => void,
       slow = false
   ) => {
     const messageId = generateId()
     currentMessageIdRef.current = messageId
 
-    // If there's an artifact, schedule it first (shows skeleton)
-    if (artifact) {
-      scheduleArtifact({
-        id: artifact.id,
-        type: artifact.type,
-        title: artifact.title,
-        subtitle: artifact.subtitle
-      })
+    // If there's an artifact node, add it with isPending on the inner artifact
+    if (artifactNode && artifactNode.artifact) {
+      const pendingNode: ArtifactNode = {
+        ...artifactNode,
+        artifact: {...artifactNode.artifact, isPending: true},
+      }
+      setArtifactNodes(prev => [...prev, pendingNode])
     }
 
     // Split into tokens
@@ -594,22 +612,18 @@ export default function ChatDemo() {
         }
         setConversationTree((prev) => updateNodeContent(prev, messageId, tokens.join(''), false))
 
-        // Show the artifact with full data
-        if (artifact) {
-          showArtifact(artifact.id, {
-            type: artifact.type,
-            url: artifact.url,
-            alt: artifact.alt,
-            title: artifact.title,
-            subtitle: artifact.subtitle,
-          })
+        // Reveal the artifact (clear isPending)
+        if (artifactNode) {
+          setArtifactNodes(prev =>
+              prev.map(n => n.id === artifactNode.id ? artifactNode : n)
+          )
         }
 
         currentMessageIdRef.current = null
         onComplete()
       }
     }, interval)
-  }, [scheduleArtifact, showArtifact])
+  }, [])
 
   // Run the brand analysis workflow
   const runBrandAnalysisWorkflow = useCallback(() => {
@@ -619,7 +633,6 @@ export default function ChatDemo() {
 
     // Reset state
     setTasks([...INITIAL_BRAND_TASKS])
-    clearArtifacts()
     setArtifactNodes([])
     setIsStreaming(true)
     setIsThinking(true)
@@ -824,7 +837,7 @@ export default function ChatDemo() {
       const timeoutId = setTimeout(action, time)
       brandWorkflowRef.current.push(timeoutId)
     })
-  }, [clearArtifacts, streamResponse, updateTask, updateSubtask, addSubtasks])
+  }, [streamResponse, updateTask, updateSubtask, addSubtasks])
 
   // Handle stop generation
   const handleStop = useCallback(() => {
@@ -849,16 +862,12 @@ export default function ChatDemo() {
       currentMessageIdRef.current = null
     }
 
-    // If there are pending artifacts, remove them
-    artifacts.forEach((a) => {
-      if (a.isPending) {
-        removeArtifact(a.id)
-      }
-    })
+    // Remove any pending artifact nodes
+    setArtifactNodes(prev => prev.filter(n => !n.artifact?.isPending))
 
     setIsStreaming(false)
     setIsThinking(false)
-  }, [artifacts, removeArtifact])
+  }, [])
 
   // Handle message submission
   const handleSubmit = useCallback(
@@ -891,7 +900,7 @@ export default function ChatDemo() {
           setIsThinking(false)
 
           let response: string
-          let artifact: typeof SECOND_ARTIFACT | null = null
+          let artifactNode: ArtifactNode | null = null
           let slow = false
 
           // Check for specific demo triggers
@@ -903,17 +912,17 @@ export default function ChatDemo() {
             response = FIRST_RESPONSE
           } else if (responseIndexRef.current === 1) {
             response = SECOND_RESPONSE
-            artifact = SECOND_ARTIFACT
+            artifactNode = SECOND_ARTIFACT_NODE
           } else {
             const additionalIndex = (responseIndexRef.current - 2) % ADDITIONAL_RESPONSES.length
             const additional = ADDITIONAL_RESPONSES[additionalIndex]
             response = additional.content
-            artifact = additional.artifact
+            artifactNode = additional.artifactNode
           }
 
           responseIndexRef.current++
 
-          streamResponse(response, artifact, () => {
+          streamResponse(response, artifactNode, () => {
             setIsStreaming(false)
           }, slow)
         }, thinkingDelay)
@@ -1013,7 +1022,6 @@ export default function ChatDemo() {
   const handleNewChat = useCallback(() => {
     const newId = `chat-${Date.now()}`
     setConversationTree(createEmptyTree())
-    clearArtifacts()
     setArtifactNodes([])
     setTasks([])
     responseIndexRef.current = 0
@@ -1030,7 +1038,7 @@ export default function ChatDemo() {
     setConversations((prev) =>
         [newChat, ...prev.map((c) => ({...c, isActive: false}))].slice(0, 6)
     )
-  }, [clearArtifacts])
+  }, [])
 
   // Handle conversation selection
   const handleSelectConversation = useCallback((id: string) => {
@@ -1043,7 +1051,6 @@ export default function ChatDemo() {
 
     setActiveConversationId(id)
     responseIndexRef.current = 0
-    clearArtifacts()
     setArtifactNodes([])
     setTasks([])
 
@@ -1064,7 +1071,7 @@ export default function ChatDemo() {
     setConversations((prev) =>
         prev.map((c) => ({...c, isActive: c.id === id}))
     )
-  }, [activeConversationId, clearArtifacts, handleStop, runBrandAnalysisWorkflow])
+  }, [activeConversationId, handleStop, runBrandAnalysisWorkflow])
 
   const handleBack = useCallback(() => {
     navigate('/')
@@ -1142,7 +1149,6 @@ export default function ChatDemo() {
               isThinking={isThinking}
               attachments={attachments}
               onAttachmentsChange={handleAttachmentsChange}
-              artifacts={artifacts}
               artifactNodes={artifactNodes}
               tasks={tasks}
               tasksTitle="Workflow Progress"

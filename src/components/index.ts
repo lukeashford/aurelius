@@ -206,7 +206,6 @@ export {
   ThinkingIndicator,
   BranchNavigator,
   useScrollAnchor,
-  useArtifacts,
   useResizable,
   useArtifactTreeNavigation,
   // Types
@@ -239,7 +238,6 @@ export {
   type ConversationTree,
   type UseScrollAnchorOptions,
   type UseScrollAnchorReturn,
-  type UseArtifactsReturn,
   type BreadcrumbEntry,
   type UseArtifactTreeNavigationReturn,
   // Utility functions

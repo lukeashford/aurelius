@@ -7,7 +7,6 @@ import {ArtifactsPanel} from './ArtifactsPanel'
 import {type Task, TodosList, areAllTasksSettled} from './TodosList'
 import {ToolSidebar, type ToolDefinition, type ToolPanelState} from './ToolSidebar'
 import {ToolPanelContainer} from './ToolPanelContainer'
-import type {Artifact} from './hooks'
 import {useResizable} from './hooks'
 import type {ArtifactNode} from '../ArtifactNode'
 import {type ConversationTree, getActivePathMessages, getSiblingInfo, switchBranch} from './types'
@@ -122,13 +121,7 @@ export interface ChatInterfaceProps extends Omit<React.HTMLAttributes<HTMLDivEle
    */
   onAttachmentsChange?: (attachments: Attachment[]) => void
   /**
-   * Artifacts to display in the side panel.
-   * Best managed via the useArtifacts hook and passed here.
-   */
-  artifacts?: Artifact[]
-  /**
-   * Top-level artifact tree nodes for tree-aware navigation.
-   * When provided, the panel renders a navigable tree instead of a flat list.
+   * Top-level artifact tree nodes for the artifacts panel.
    */
   artifactNodes?: ArtifactNode[]
   /**
@@ -168,10 +161,8 @@ export interface ChatInterfaceProps extends Omit<React.HTMLAttributes<HTMLDivEle
  * - Message Actions — copy, edit, retry
  * - Thinking Indicator — shown between user message and response
  *
- * Artifacts are controlled externally via the useArtifacts hook:
- * - scheduleArtifact() — adds artifact with loading skeleton
- * - showArtifact() — reveals artifact content
- * - removeArtifact() — removes artifact on failure
+ * Artifacts are supplied as a tree of ArtifactNode objects via the
+ * artifactNodes prop.
  */
 export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps>(
     (
@@ -196,7 +187,6 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
           enableMessageActions = true,
           attachments: propsAttachments,
           onAttachmentsChange,
-          artifacts = [],
           artifactNodes,
           isArtifactsPanelOpen,
           onArtifactsPanelOpenChange,
@@ -208,7 +198,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
         ref
     ) => {
       const [sidebarCollapsed, setSidebarCollapsed] = useState(initialSidebarCollapsed)
-      const prevArtifactsRef = useRef<Artifact[]>([])
+      const prevArtifactNodesRef = useRef<ArtifactNode[]>([])
       const prevTasksRef = useRef<Task[]>([])
 
       // ── Tool panel state ──────────────────────────────────────────
@@ -319,18 +309,14 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
       // ── Auto-open tools when data arrives (uncontrolled mode) ─────
       // Only auto-opens a tool if the user hasn't actively dismissed it.
       useEffect(() => {
-        const hasNewOrSignificantArtifact = artifacts.some(a => {
-          const p = prevArtifactsRef.current.find(prev => prev.id === a.id)
-          if (!p) return true
-          if (p.isPending && !a.isPending) return true
-          if (p.title !== a.title || p.type !== a.type) return true
-          return false
-        })
+        const nodes = artifactNodes || []
+        const prevNodes = prevArtifactNodesRef.current
 
-        const hasNodes = artifactNodes && artifactNodes.length > 0
+        const hasNewOrChangedNode = nodes.length !== prevNodes.length
+            || nodes.some((n, i) => n.id !== prevNodes[i]?.id)
 
         if (!isPanelControlled
-            && (hasNewOrSignificantArtifact || hasNodes)
+            && hasNewOrChangedNode && nodes.length > 0
             && !dismissedToolsRef.current.has('artifacts')) {
           setInternalTools(prev => ({...prev, top: 'artifacts'}))
         }
@@ -350,9 +336,9 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
           setInternalTools(prev => ({...prev, bottom: 'todos'}))
         }
 
-        prevArtifactsRef.current = artifacts
+        prevArtifactNodesRef.current = nodes
         prevTasksRef.current = tasks
-      }, [artifacts, artifactNodes, tasks, isPanelControlled])
+      }, [artifactNodes, tasks, isPanelControlled])
 
       // ── Branch switching ──────────────────────────────────────────
       const handleBranchSwitch = useCallback(
@@ -436,7 +422,6 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
           case 'artifacts':
             return (
                 <ArtifactsPanel
-                    artifacts={artifacts}
                     nodes={artifactNodes}
                     className="h-full"
                 />
