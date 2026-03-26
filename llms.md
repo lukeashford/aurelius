@@ -392,13 +392,16 @@ Features:
 ChatInterface is the main orchestrator for a full-featured chat experience.
 
 Features:
-- ConversationSidebar (left) — collapsible list of past conversations
+- ConversationSidebar (far left) — collapsible list of past conversations
 - ChatView (center) — main conversation area with smart scrolling
-- Tool panel system (right) — IntelliJ-style tool sidebar with:
-  - Top group: Chat History, Artifacts Panel (mutually exclusive)
-  - Bottom group: Todo List
-  - Vertical split with draggable divider when both groups are active
-  - Width-resizable tool content area
+- Dual tool sidebar system — IntelliJ-style tool sidebars on left and right:
+  - Left sidebar: History (top-left) + consumer tools (bottom-left)
+  - Right sidebar: Artifacts (top-right) + Tasks (bottom-right) + consumer tools
+  - Tools in the same group are mutually exclusive
+  - Both panels can be open simultaneously — chat area shrinks to accommodate
+  - Each panel is independently width-resizable
+  - Vertical split with draggable divider when both slots in a panel are active
+- Consumer tools via `tools` prop — provide icon, label, group, and content
 - ChatInput — position-aware input that centers in empty state
 - Branching — support for conversation tree with branch navigation
 - Message Actions — copy, edit, retry
@@ -436,7 +439,7 @@ artifactNodes prop.
 - **onArtifactsPanelOpenChange**: * Called when the artifacts panel is opened or closed (controlled).
 - **tasks**: * Tasks to display in the todos list tool panel. Shows a list of tasks with status indicators.
 - **tasksTitle**: * Title for the todos list @default "Tasks"
-- **tools**: * Additional tools to add to the sidebars. Each tool specifies its group (top-left, bottom-left, top-right, bottom-right) and provides its own icon and content.
+- **tools**: * Additional tools to add to the tool sidebars. Each ExternalToolDefinition provides an id, icon, label, group ('top-left' | 'bottom-left' | 'top-right' | 'bottom-right'), and content (ReactNode) to render when opened. Tools in the same group are mutually exclusive. Built-in tools occupy: History (top-left), Artifacts (top-right), Tasks (bottom-right). Consumer tools are added alongside these.
 
 **ChatView**
 ChatView displays a conversation thread with smart scrolling behavior.

@@ -31,7 +31,9 @@ export interface ToolDefinition {
 }
 
 /**
- * Consumer-provided tool definition with content.
+ * Consumer-provided tool definition passed via ChatInterface's `tools` prop.
+ * Defines a custom tool with its sidebar icon and the panel content to
+ * render when the tool is opened.
  */
 export interface ExternalToolDefinition {
   /**
