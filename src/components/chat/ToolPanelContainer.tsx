@@ -20,6 +20,10 @@ export interface ToolPanelContainerProps extends React.HTMLAttributes<HTMLDivEle
    * Callback to start horizontal resizing (width dragger)
    */
   onResizeStart?: (e: React.MouseEvent) => void
+  /**
+   * Which side this panel is on — controls border and resize handle position
+   */
+  side?: 'left' | 'right'
 }
 
 /**
@@ -31,7 +35,7 @@ export interface ToolPanelContainerProps extends React.HTMLAttributes<HTMLDivEle
  * to the previous ArtifactsPanel resize behavior.
  */
 export const ToolPanelContainer = React.forwardRef<HTMLDivElement, ToolPanelContainerProps>(
-    ({topContent, bottomContent, width, onResizeStart, className, ...rest}, ref) => {
+    ({topContent, bottomContent, width, onResizeStart, side = 'right', className, ...rest}, ref) => {
       const [topPercent, setTopPercent] = useState(60)
       const [isResizingHeight, setIsResizingHeight] = useState(false)
       const containerRef = useRef<HTMLDivElement>(null)
@@ -101,19 +105,22 @@ export const ToolPanelContainer = React.forwardRef<HTMLDivElement, ToolPanelCont
                 else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node
               }}
               className={cx(
-                  'h-full bg-charcoal/50 border-l border-ash/40 flex flex-col relative shrink-0',
+                  'h-full bg-charcoal/50 flex flex-col relative shrink-0',
+                  side === 'left' ? 'border-r border-ash/40' : 'border-l border-ash/40',
                   className
               )}
               style={width ? {width} : undefined}
               {...rest}
           >
-            {/* Width resize handle (left edge) */}
+            {/* Width resize handle */}
             <div
                 onMouseDown={onResizeStart}
                 className={cx(
-                    'absolute top-0 left-0 w-1 h-full cursor-col-resize z-50',
+                    'absolute top-0 w-1 h-full cursor-col-resize z-50',
                     'hover:bg-gold/50 transition-colors',
-                    'after:absolute after:inset-y-0 after:-left-1 after:w-2'
+                    side === 'left'
+                        ? 'right-0 after:absolute after:inset-y-0 after:-right-1 after:w-2'
+                        : 'left-0 after:absolute after:inset-y-0 after:-left-1 after:w-2'
                 )}
             />
 

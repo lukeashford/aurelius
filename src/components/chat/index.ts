@@ -35,7 +35,9 @@ export {
   ToolSidebar,
   type ToolSidebarProps,
   type ToolDefinition,
+  type ExternalToolDefinition,
   type ToolPanelState,
+  type ToolGroup,
 } from './ToolSidebar'
 export {
   ToolPanelContainer,

@@ -156,14 +156,14 @@ Import from `@lukeashford/aurelius`:
 | ArtifactsPanel | nodes, loading, artifactCount, onExpand |
 | BranchNavigator | current, total, onPrevious, onNext, size, showIcon |
 | ChatInput | position (centered, bottom), placeholder, helperText, onSubmit, disabled, animate, isStreaming, onStop, attachments, onAttachmentsChange, showAttachmentButton, acceptedFileTypes |
-| ChatInterface | messages, conversationTree, onTreeChange, conversations, onMessageSubmit, onEditMessage, onRetryMessage, onStop, onSelectConversation, onNewChat, isStreaming, isThinking, placeholder, emptyStateHelper, initialSidebarCollapsed, emptyState, showAttachmentButton, enableMessageActions, attachments, onAttachmentsChange, artifactNodes, isArtifactsPanelOpen, onArtifactsPanelOpenChange, tasks, tasksTitle |
+| ChatInterface | messages, conversationTree, onTreeChange, conversations, onMessageSubmit, onEditMessage, onRetryMessage, onStop, onSelectConversation, onNewChat, isStreaming, isThinking, placeholder, emptyStateHelper, initialSidebarCollapsed, emptyState, showAttachmentButton, enableMessageActions, attachments, onAttachmentsChange, artifactNodes, isArtifactsPanelOpen, onArtifactsPanelOpenChange, tasks, tasksTitle, tools |
 | ChatView | messages, latestUserMessageIndex, isStreaming, isThinking, onScroll |
 | ConversationSidebar | conversations, isCollapsed, onSelectConversation, onNewChat, onToggleCollapse, width, onResizeStart, onExpand |
 | MessageActions | variant (user, assistant), content, onEdit, onRetry, isEditing, onEditingChange, editValue |
 | ThinkingIndicator | isVisible, phraseInterval, phrases |
 | TodosList | tasks, title |
-| ToolPanelContainer | topContent, bottomContent, width, onResizeStart |
-| ToolSidebar | tools, activeTools, onToggleTool |
+| ToolPanelContainer | topContent, bottomContent, width, onResizeStart, side |
+| ToolSidebar | tools, activeTools, onToggleTool, side |
 | CheckSquareIcon | children |
 | ChevronLeftIcon | children |
 | ChevronRightIcon | children |
@@ -436,6 +436,7 @@ artifactNodes prop.
 - **onArtifactsPanelOpenChange**: * Called when the artifacts panel is opened or closed (controlled).
 - **tasks**: * Tasks to display in the todos list tool panel. Shows a list of tasks with status indicators.
 - **tasksTitle**: * Title for the todos list @default "Tasks"
+- **tools**: * Additional tools to add to the sidebars. Each tool specifies its group (top-left, bottom-left, top-right, bottom-right) and provides its own icon and content.
 
 **ChatView**
 ChatView displays a conversation thread with smart scrolling behavior.
@@ -519,23 +520,31 @@ to the previous ArtifactsPanel resize behavior.
 - **bottomContent**: * Content for the bottom tool slot (from the bottom group). When null, the top slot takes full height.
 - **width**: * Panel width as CSS value (e.g., "50vw")
 - **onResizeStart**: * Callback to start horizontal resizing (width dragger)
+- **side**: * Which side this panel is on — controls border and resize handle position
 
 **ToolSidebar**
-ToolSidebar renders a vertical strip of tool icon buttons on the right
+ToolSidebar renders a vertical strip of tool icon buttons on either
 side of the chat interface. It follows the IntelliJ pattern:
 
 - Top-aligned group and bottom-aligned group separated by a divider
 - Tools in the same group are mutually exclusive
 - Clicking an active tool closes it; clicking an inactive tool opens it
 - Constant slim width regardless of tool panel state
+- Can be placed on left or right side via the `side` prop
 
 - **ToolDefinition.id**: * Unique identifier for this tool
 - **ToolDefinition.icon**: * Icon element shown in the sidebar button
 - **ToolDefinition.label**: * Accessible label for the button
 - **ToolDefinition.group**: * Which group the tool belongs to — tools in the same group are mutually exclusive (opening one closes the other).
+- **ExternalToolDefinition.id**: * Unique identifier for this tool
+- **ExternalToolDefinition.icon**: * Icon element shown in the sidebar button
+- **ExternalToolDefinition.label**: * Accessible label for the button
+- **ExternalToolDefinition.group**: * Which group the tool belongs to
+- **ExternalToolDefinition.content**: * Content to render when the tool is open
 - **tools**: * Available tool definitions
 - **activeTools**: * Current state — which tool is open per group
 - **onToggleTool**: * Called when a tool button is clicked (toggle)
+- **side**: * Which side this sidebar is on — controls border direction
 
 **CrossSquareIcon**
 - **variant**: * Visual variant for different states - 'cancelled': subtle ash coloring - 'failed': error red coloring

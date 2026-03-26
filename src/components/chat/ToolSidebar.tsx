@@ -2,6 +2,12 @@ import React from 'react'
 import {cx} from '../../utils'
 
 /**
+ * Position group for a tool — combines vertical position (top/bottom)
+ * with sidebar side (left/right).
+ */
+export type ToolGroup = 'top-left' | 'bottom-left' | 'top-right' | 'bottom-right'
+
+/**
  * Describes a tool that can be toggled from the sidebar.
  */
 export interface ToolDefinition {
@@ -21,15 +27,43 @@ export interface ToolDefinition {
    * Which group the tool belongs to — tools in the same group
    * are mutually exclusive (opening one closes the other).
    */
-  group: 'top' | 'bottom'
+  group: ToolGroup
+}
+
+/**
+ * Consumer-provided tool definition with content.
+ */
+export interface ExternalToolDefinition {
+  /**
+   * Unique identifier for this tool
+   */
+  id: string
+  /**
+   * Icon element shown in the sidebar button
+   */
+  icon: React.ReactNode
+  /**
+   * Accessible label for the button
+   */
+  label: string
+  /**
+   * Which group the tool belongs to
+   */
+  group: ToolGroup
+  /**
+   * Content to render when the tool is open
+   */
+  content: React.ReactNode
 }
 
 /**
  * Tracks which tool is open in each group (null = none).
  */
 export interface ToolPanelState {
-  top: string | null
-  bottom: string | null
+  'top-left': string | null
+  'bottom-left': string | null
+  'top-right': string | null
+  'bottom-right': string | null
 }
 
 export interface ToolSidebarProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -45,21 +79,26 @@ export interface ToolSidebarProps extends React.HTMLAttributes<HTMLDivElement> {
    * Called when a tool button is clicked (toggle)
    */
   onToggleTool: (toolId: string) => void
+  /**
+   * Which side this sidebar is on — controls border direction
+   */
+  side: 'left' | 'right'
 }
 
 /**
- * ToolSidebar renders a vertical strip of tool icon buttons on the right
+ * ToolSidebar renders a vertical strip of tool icon buttons on either
  * side of the chat interface. It follows the IntelliJ pattern:
  *
  * - Top-aligned group and bottom-aligned group separated by a divider
  * - Tools in the same group are mutually exclusive
  * - Clicking an active tool closes it; clicking an inactive tool opens it
  * - Constant slim width regardless of tool panel state
+ * - Can be placed on left or right side via the `side` prop
  */
 export const ToolSidebar = React.forwardRef<HTMLDivElement, ToolSidebarProps>(
-    ({tools, activeTools, onToggleTool, className, ...rest}, ref) => {
-      const topTools = tools.filter(t => t.group === 'top')
-      const bottomTools = tools.filter(t => t.group === 'bottom')
+    ({tools, activeTools, onToggleTool, side, className, ...rest}, ref) => {
+      const topTools = tools.filter(t => t.group === `top-${side}`)
+      const bottomTools = tools.filter(t => t.group === `bottom-${side}`)
 
       const isActive = (toolId: string) => {
         const tool = tools.find(t => t.id === toolId)
@@ -93,7 +132,8 @@ export const ToolSidebar = React.forwardRef<HTMLDivElement, ToolSidebarProps>(
           <div
               ref={ref}
               className={cx(
-                  'h-full w-9 bg-charcoal/80 border-l border-ash/40 flex flex-col items-center shrink-0 py-2',
+                  'h-full w-9 bg-charcoal/80 flex flex-col items-center shrink-0 py-2',
+                  side === 'left' ? 'border-r border-ash/40' : 'border-l border-ash/40',
                   className
               )}
               {...rest}

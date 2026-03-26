@@ -5,12 +5,12 @@ import {type Attachment, ChatInput} from './ChatInput'
 import {type Conversation, ConversationSidebar} from './ConversationSidebar'
 import {ArtifactsPanel} from './ArtifactsPanel'
 import {type Task, TodosList, areAllTasksSettled} from './TodosList'
-import {ToolSidebar, type ToolDefinition, type ToolPanelState} from './ToolSidebar'
+import {ToolSidebar, type ToolDefinition, type ToolPanelState, type ExternalToolDefinition, type ToolGroup} from './ToolSidebar'
 import {ToolPanelContainer} from './ToolPanelContainer'
 import {useResizable} from './hooks'
 import type {ArtifactNode} from '../ArtifactNode'
 import {type ConversationTree, getActivePathMessages, getSiblingInfo, switchBranch} from './types'
-import {MediaIcon, CheckSquareIcon, SquareLoaderIcon} from '../icons'
+import {MediaIcon, CheckSquareIcon, SquareLoaderIcon, HistoryIcon} from '../icons'
 
 export interface ChatMessage {
   /**
@@ -143,6 +143,12 @@ export interface ChatInterfaceProps extends Omit<React.HTMLAttributes<HTMLDivEle
    * @default "Tasks"
    */
   tasksTitle?: string
+  /**
+   * Additional tools to add to the sidebars.
+   * Each tool specifies its group (top-left, bottom-left, top-right, bottom-right)
+   * and provides its own icon and content.
+   */
+  tools?: ExternalToolDefinition[]
 }
 
 /**
@@ -192,6 +198,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
           onArtifactsPanelOpenChange,
           tasks = [],
           tasksTitle,
+          tools: externalTools = [],
           className,
           ...rest
         },
@@ -203,8 +210,10 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
 
       // ── Tool panel state ──────────────────────────────────────────
       const [internalTools, setInternalTools] = useState<ToolPanelState>({
-        top: null,
-        bottom: null,
+        'top-left': null,
+        'bottom-left': null,
+        'top-right': null,
+        'bottom-right': null,
       })
 
       // Track tools the user has actively dismissed — auto-open won't reopen these
@@ -217,14 +226,15 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
       const activeTools: ToolPanelState = useMemo(() => {
         if (isPanelControlled) {
           return {
-            top: isArtifactsPanelOpen ? 'artifacts' : internalTools.top,
-            bottom: internalTools.bottom,
+            ...internalTools,
+            'top-right': isArtifactsPanelOpen ? 'artifacts' : internalTools['top-right'],
           }
         }
         return internalTools
       }, [isPanelControlled, isArtifactsPanelOpen, internalTools])
 
-      const isAnyToolOpen = activeTools.top !== null || activeTools.bottom !== null
+      const isLeftPanelOpen = activeTools['top-left'] !== null || activeTools['bottom-left'] !== null
+      const isRightPanelOpen = activeTools['top-right'] !== null || activeTools['bottom-right'] !== null
 
       // ── Resizable panels ──────────────────────────────────────────
       const {
@@ -238,8 +248,8 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
       })
 
       const {
-        width: toolsWidth,
-        startResizing: startResizingTools
+        width: rightToolsWidth,
+        startResizing: startResizingRightTools
       } = useResizable({
         initialWidthPercent: 50,
         minWidthPercent: 25,
@@ -247,17 +257,46 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
         direction: 'left'
       })
 
+      const {
+        width: leftToolsWidth,
+        startResizing: startResizingLeftTools
+      } = useResizable({
+        initialWidthPercent: 25,
+        minWidthPercent: 15,
+        maxWidthPercent: 40,
+        direction: 'right'
+      })
+
+      // ── Tool definitions ──────────────────────────────────────────
+      const allSettled = tasks.length === 0 || areAllTasksSettled(tasks)
+
+      // ── Merged tool definitions (built-in + external) ──────────────
+      const allToolDefinitions: ToolDefinition[] = useMemo(() => {
+        const builtIn: ToolDefinition[] = [
+          {id: 'history', icon: <HistoryIcon/>, label: 'History', group: 'top-left'},
+          {id: 'artifacts', icon: <MediaIcon/>, label: 'Artifacts', group: 'top-right'},
+          {
+            id: 'todos',
+            icon: allSettled ? <CheckSquareIcon/> : <SquareLoaderIcon/>,
+            label: 'Tasks',
+            group: 'bottom-right',
+          },
+        ]
+        const external: ToolDefinition[] = externalTools.map(({content: _content, ...def}) => def)
+        return [...builtIn, ...external]
+      }, [allSettled, externalTools])
+
       // ── Toggle a tool ─────────────────────────────────────────────
       const toggleTool = useCallback((toolId: string) => {
         // Find the tool's group
-        const toolDef = TOOL_DEFINITIONS.find(t => t.id === toolId)
+        const toolDef = allToolDefinitions.find(t => t.id === toolId)
         if (!toolDef) return
 
         const group = toolDef.group
 
         // Special case: controlled artifacts panel
         if (toolId === 'artifacts' && isPanelControlled) {
-          const isCurrentlyOpen = activeTools.top === 'artifacts'
+          const isCurrentlyOpen = activeTools['top-right'] === 'artifacts'
           if (isCurrentlyOpen) {
             dismissedToolsRef.current.add('artifacts')
           } else {
@@ -270,10 +309,8 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
         setInternalTools(prev => {
           const isCurrentlyOpen = prev[group] === toolId
           if (isCurrentlyOpen) {
-            // User is actively closing — remember this so auto-open won't reopen
             dismissedToolsRef.current.add(toolId)
           } else {
-            // User is actively opening — clear dismissed state
             dismissedToolsRef.current.delete(toolId)
           }
           return {
@@ -281,7 +318,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
             [group]: isCurrentlyOpen ? null : toolId,
           }
         })
-      }, [isPanelControlled, activeTools.top, onArtifactsPanelOpenChange])
+      }, [allToolDefinitions, isPanelControlled, activeTools, onArtifactsPanelOpenChange])
 
       // ── Messages ──────────────────────────────────────────────────
       const isTreeMode = !!conversationTree
@@ -318,7 +355,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
         if (!isPanelControlled
             && hasNewOrChangedNode && nodes.length > 0
             && !dismissedToolsRef.current.has('artifacts')) {
-          setInternalTools(prev => ({...prev, top: 'artifacts'}))
+          setInternalTools(prev => ({...prev, 'top-right': 'artifacts'}))
         }
 
         const hasNewOrUpdatedTask = (curr: Task[], prev: Task[]): boolean => {
@@ -333,7 +370,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
 
         if (hasNewOrUpdatedTask(tasks, prevTasksRef.current)
             && !dismissedToolsRef.current.has('todos')) {
-          setInternalTools(prev => ({...prev, bottom: 'todos'}))
+          setInternalTools(prev => ({...prev, 'bottom-right': 'todos'}))
         }
 
         prevArtifactNodesRef.current = nodes
@@ -396,29 +433,63 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
 
       const isEmpty = effectiveMessages.length === 0
 
-      // ── Tool definitions ──────────────────────────────────────────
-      const allSettled = tasks.length === 0 || areAllTasksSettled(tasks)
-
-      const toolDefinitions: ToolDefinition[] = useMemo(() => [
-        {
-          id: 'artifacts',
-          icon: <MediaIcon/>,
-          label: 'Artifacts',
-          group: 'top' as const,
-        },
-        {
-          id: 'todos',
-          icon: allSettled ? <CheckSquareIcon/> : <SquareLoaderIcon/>,
-          label: 'Tasks',
-          group: 'bottom' as const,
-        },
-      ], [allSettled])
+      // ── Derived: which sides have tools ─────────────────────────
+      const leftToolDefs = useMemo(
+          () => allToolDefinitions.filter(t => t.group === 'top-left' || t.group === 'bottom-left'),
+          [allToolDefinitions]
+      )
+      const rightToolDefs = useMemo(
+          () => allToolDefinitions.filter(t => t.group === 'top-right' || t.group === 'bottom-right'),
+          [allToolDefinitions]
+      )
+      const hasLeftTools = leftToolDefs.length > 0
+      const hasRightTools = rightToolDefs.length > 0
 
       // ── Render tool content for a given slot ──────────────────────
       const renderToolContent = (toolId: string | null) => {
         if (!toolId) return null
 
         switch (toolId) {
+          case 'history':
+            return (
+                <div className="h-full flex flex-col">
+                  <div className="flex items-center p-4 border-b border-ash/40 shrink-0">
+                    <h3 className="text-xs font-medium text-white">History</h3>
+                  </div>
+                  <div className="flex-1 overflow-y-auto py-2">
+                    {conversations.length === 0 ? (
+                        <p className="px-4 py-2 text-xs text-silver/60">No conversations yet</p>
+                    ) : (
+                        <div className="space-y-1 px-2">
+                          {conversations.map((conversation) => (
+                              <button
+                                  key={conversation.id}
+                                  onClick={() => onSelectConversation?.(conversation.id)}
+                                  className={cx(
+                                      'w-full px-3 py-2 text-left',
+                                      'transition-colors duration-150',
+                                      conversation.isActive
+                                          ? 'bg-ash/40 text-white'
+                                          : 'text-silver hover:bg-ash/20 hover:text-white'
+                                  )}
+                              >
+                                <p className="text-sm font-medium truncate">{conversation.title}</p>
+                                {conversation.preview && (
+                                    <p className="text-xs text-silver/60 truncate mt-0.5">
+                                      {conversation.preview}
+                                    </p>
+                                )}
+                                {conversation.timestamp && (
+                                    <p className="text-xs text-silver/40 mt-1">{conversation.timestamp}</p>
+                                )}
+                              </button>
+                          ))}
+                        </div>
+                    )}
+                  </div>
+                </div>
+            )
+
           case 'artifacts':
             return (
                 <ArtifactsPanel
@@ -441,8 +512,11 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
                     </div>
                 )
 
-          default:
-            return null
+          default: {
+            // External tool — render its content
+            const externalTool = externalTools.find(t => t.id === toolId)
+            return externalTool?.content ?? null
+          }
         }
       }
 
@@ -452,7 +526,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
               className={cx('flex h-full w-full bg-obsidian overflow-hidden', className)}
               {...rest}
           >
-            {/* Sidebar */}
+            {/* Conversation sidebar */}
             <ConversationSidebar
                 conversations={conversations}
                 isCollapsed={sidebarCollapsed}
@@ -462,6 +536,27 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
                 width={sidebarWidth}
                 onResizeStart={startResizingSidebar}
             />
+
+            {/* Left tool sidebar */}
+            {hasLeftTools && (
+                <ToolSidebar
+                    tools={leftToolDefs}
+                    activeTools={activeTools}
+                    onToggleTool={toggleTool}
+                    side="left"
+                />
+            )}
+
+            {/* Left tool panel */}
+            {isLeftPanelOpen && (
+                <ToolPanelContainer
+                    topContent={renderToolContent(activeTools['top-left'])}
+                    bottomContent={renderToolContent(activeTools['bottom-left'])}
+                    width={leftToolsWidth}
+                    onResizeStart={startResizingLeftTools}
+                    side="left"
+                />
+            )}
 
             {/* Main content area */}
             <div className="flex-1 flex flex-col min-w-0 relative">
@@ -528,30 +623,29 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
               </div>
             </div>
 
-            {/* Right panel: Tool content + Tool sidebar */}
-            {isAnyToolOpen && (
+            {/* Right tool panel */}
+            {isRightPanelOpen && (
                 <ToolPanelContainer
-                    topContent={renderToolContent(activeTools.top)}
-                    bottomContent={renderToolContent(activeTools.bottom)}
-                    width={toolsWidth}
-                    onResizeStart={startResizingTools}
+                    topContent={renderToolContent(activeTools['top-right'])}
+                    bottomContent={renderToolContent(activeTools['bottom-right'])}
+                    width={rightToolsWidth}
+                    onResizeStart={startResizingRightTools}
+                    side="right"
                 />
             )}
 
-            <ToolSidebar
-                tools={toolDefinitions}
-                activeTools={activeTools}
-                onToggleTool={toggleTool}
-            />
+            {/* Right tool sidebar */}
+            {hasRightTools && (
+                <ToolSidebar
+                    tools={rightToolDefs}
+                    activeTools={activeTools}
+                    onToggleTool={toggleTool}
+                    side="right"
+                />
+            )}
           </div>
       )
     }
 )
 
 ChatInterface.displayName = 'ChatInterface'
-
-// Static tool definitions used for group lookup in toggleTool
-const TOOL_DEFINITIONS: ToolDefinition[] = [
-  {id: 'artifacts', icon: null, label: 'Artifacts', group: 'top'},
-  {id: 'todos', icon: null, label: 'Tasks', group: 'bottom'},
-]
