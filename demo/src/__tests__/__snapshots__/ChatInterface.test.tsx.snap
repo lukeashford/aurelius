@@ -92,6 +92,45 @@ exports[`ChatInterface matches snapshot in empty state 1`] = `
       </div>
     </div>
     <div
+      class="h-full w-9 bg-charcoal/80 flex flex-col items-center shrink-0 py-2 border-r border-ash/40"
+    >
+      <div
+        class="flex flex-col items-center gap-1"
+      >
+        <button
+          aria-label="History"
+          aria-pressed="false"
+          class="w-8 h-8 flex items-center justify-center transition-colors duration-150 text-silver hover:text-white hover:bg-ash/20"
+        >
+          <span
+            class="w-4 h-4 block"
+          >
+            <svg
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                clip-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </span>
+        </button>
+      </div>
+      <div
+        class="flex-1 flex items-center justify-center"
+      >
+        <div
+          class="w-5 border-t border-ash/30"
+        />
+      </div>
+      <div
+        class="flex flex-col items-center gap-1"
+      />
+    </div>
+    <div
       class="flex-1 flex flex-col min-w-0 relative"
     >
       <div
@@ -214,7 +253,7 @@ exports[`ChatInterface matches snapshot in empty state 1`] = `
       </div>
     </div>
     <div
-      class="h-full w-9 bg-charcoal/80 border-l border-ash/40 flex flex-col items-center shrink-0 py-2"
+      class="h-full w-9 bg-charcoal/80 flex flex-col items-center shrink-0 py-2 border-l border-ash/40"
     >
       <div
         class="flex flex-col items-center gap-1"
@@ -348,6 +387,45 @@ exports[`ChatInterface matches snapshot while streaming 1`] = `
           No conversations yet
         </p>
       </div>
+    </div>
+    <div
+      class="h-full w-9 bg-charcoal/80 flex flex-col items-center shrink-0 py-2 border-r border-ash/40"
+    >
+      <div
+        class="flex flex-col items-center gap-1"
+      >
+        <button
+          aria-label="History"
+          aria-pressed="false"
+          class="w-8 h-8 flex items-center justify-center transition-colors duration-150 text-silver hover:text-white hover:bg-ash/20"
+        >
+          <span
+            class="w-4 h-4 block"
+          >
+            <svg
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                clip-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </span>
+        </button>
+      </div>
+      <div
+        class="flex-1 flex items-center justify-center"
+      >
+        <div
+          class="w-5 border-t border-ash/30"
+        />
+      </div>
+      <div
+        class="flex flex-col items-center gap-1"
+      />
     </div>
     <div
       class="flex-1 flex flex-col min-w-0 relative"
@@ -537,7 +615,7 @@ exports[`ChatInterface matches snapshot while streaming 1`] = `
       </div>
     </div>
     <div
-      class="h-full w-9 bg-charcoal/80 border-l border-ash/40 flex flex-col items-center shrink-0 py-2"
+      class="h-full w-9 bg-charcoal/80 flex flex-col items-center shrink-0 py-2 border-l border-ash/40"
     >
       <div
         class="flex flex-col items-center gap-1"
@@ -698,6 +776,45 @@ exports[`ChatInterface matches snapshot with messages 1`] = `
           </button>
         </div>
       </div>
+    </div>
+    <div
+      class="h-full w-9 bg-charcoal/80 flex flex-col items-center shrink-0 py-2 border-r border-ash/40"
+    >
+      <div
+        class="flex flex-col items-center gap-1"
+      >
+        <button
+          aria-label="History"
+          aria-pressed="false"
+          class="w-8 h-8 flex items-center justify-center transition-colors duration-150 text-silver hover:text-white hover:bg-ash/20"
+        >
+          <span
+            class="w-4 h-4 block"
+          >
+            <svg
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                clip-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </span>
+        </button>
+      </div>
+      <div
+        class="flex-1 flex items-center justify-center"
+      >
+        <div
+          class="w-5 border-t border-ash/30"
+        />
+      </div>
+      <div
+        class="flex flex-col items-center gap-1"
+      />
     </div>
     <div
       class="flex-1 flex flex-col min-w-0 relative"
@@ -913,7 +1030,7 @@ exports[`ChatInterface matches snapshot with messages 1`] = `
       </div>
     </div>
     <div
-      class="h-full w-9 bg-charcoal/80 border-l border-ash/40 flex flex-col items-center shrink-0 py-2"
+      class="h-full w-9 bg-charcoal/80 flex flex-col items-center shrink-0 py-2 border-l border-ash/40"
     >
       <div
         class="flex flex-col items-center gap-1"

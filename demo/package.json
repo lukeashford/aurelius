@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@eslint/css": "^0.9.0",
-    "@playwright/test": "^1.55.1",
+    "@playwright/test": "1.56.0",
     "@poupe/eslint-plugin-tailwindcss": "^0.2.4",
     "@tailwindcss/vite": "^4.1.17",
     "@testing-library/dom": "^10.4.1",
