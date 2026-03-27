@@ -1,3 +1,13 @@
+## [3.1.0](https://github.com/lukeashford/aurelius/compare/v3.0.0...v3.1.0) (2026-03-27)
+
+### Features
+
+* add dual sidebar tool system with external tool support ([06e2ddf](https://github.com/lukeashford/aurelius/commit/06e2ddfd9fdb2e7feef15853ad29a52366b8f1dc))
+
+### Bug Fixes
+
+* update snapshots and pin playwright for dual sidebar layout ([a0ea88e](https://github.com/lukeashford/aurelius/commit/a0ea88e4bf68260486bc2540845419b3ac98ea2d))
+
 ## [3.0.0](https://github.com/lukeashford/aurelius/compare/v2.21.0...v3.0.0) (2026-03-25)
 
 ### ⚠ BREAKING CHANGES
