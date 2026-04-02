@@ -438,6 +438,13 @@ const INITIAL_BRAND_TASKS: Task[] = [
 // Mock conversation history
 const MOCK_CONVERSATIONS: Conversation[] = [
   {
+    id: 'brand-analysis',
+    title: 'Brand Analysis Demo',
+    preview: 'Luminova Coffee campaign...',
+    timestamp: 'Pinned',
+    isActive: false
+  },
+  {
     id: '1',
     title: 'Interactive Demo',
     preview: 'Try all features...',
@@ -448,13 +455,6 @@ const MOCK_CONVERSATIONS: Conversation[] = [
     id: 'branching',
     title: 'Branching Demo',
     preview: 'Explore alternate paths...',
-    timestamp: 'Pinned',
-    isActive: false
-  },
-  {
-    id: 'brand-analysis',
-    title: 'Brand Analysis Demo',
-    preview: 'Luminova Coffee campaign...',
     timestamp: 'Pinned',
     isActive: false
   },

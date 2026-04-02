@@ -200,20 +200,20 @@ test.describe('Chat Demo', () => {
 
   test.describe('Conversation Sidebar', () => {
     test('can collapse sidebar', async ({page}) => {
-      const collapseButton = page.getByRole('button', {name: /collapse sidebar/i})
-      await collapseButton.click()
+      const historyButton = page.getByRole('button', {name: /history/i})
+      await historyButton.click()
 
       // Sidebar content should be hidden
       await expect(page.getByText('Interactive Demo')).not.toBeVisible()
-      await expect(page.getByRole('button', {name: /expand sidebar/i})).toBeVisible()
+      await expect(historyButton).toBeVisible()
     })
 
     test('can expand sidebar after collapsing', async ({page}) => {
       // Collapse first
-      await page.getByRole('button', {name: /collapse sidebar/i}).click()
+      await page.getByRole('button', {name: /history/i}).click()
 
       // Then expand
-      await page.getByRole('button', {name: /expand sidebar/i}).click()
+      await page.getByRole('button', {name: /history/i}).click()
 
       // Content should be visible again
       await expect(page.getByText('Interactive Demo')).toBeVisible()
@@ -362,7 +362,9 @@ test.describe('Chat Demo', () => {
     test('buttons have proper labels', async ({page}) => {
       await expect(page.getByRole('button', {name: /send message/i})).toBeVisible()
       await expect(page.getByRole('button', {name: /attach file/i})).toBeVisible()
-      await expect(page.getByRole('button', {name: /collapse sidebar/i})).toBeVisible()
+      await expect(page.getByRole('button', {name: /history/i})).toBeVisible()
+      await expect(page.getByRole('button', {name: /artifacts/i})).toBeVisible()
+      await expect(page.getByRole('button', {name: /tasks/i})).toBeVisible()
     })
 
     test('sidebar has proper navigation structure', async ({page}) => {

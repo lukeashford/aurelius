@@ -163,6 +163,7 @@ export {Stepper, type StepperProps, type Step, type StepStatus} from './Stepper'
 
 // Icons
 export {
+  ChatBubbleIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
   CloseIcon,
@@ -194,8 +195,6 @@ export {
   ChatInterface,
   ChatView,
   ChatInput,
-  ConversationSidebar,
-  CollapsedSidebarToggle,
   ArtifactsPanel,
   ArtifactsPanelToggle,
   TodosList,
@@ -217,9 +216,7 @@ export {
   type ChatInputPosition,
   type Attachment,
   type AttachmentStatus,
-  type ConversationSidebarProps,
   type Conversation,
-  type CollapsedSidebarToggleProps,
   type ArtifactsPanelProps,
   type ArtifactsPanelToggleProps,
   type TodosListProps,

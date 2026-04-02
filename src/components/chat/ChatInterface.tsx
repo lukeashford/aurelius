@@ -2,15 +2,19 @@ import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import {cx} from '../../utils'
 import {ChatView, type ChatViewItem} from './ChatView'
 import {type Attachment, ChatInput} from './ChatInput'
-import {type Conversation, ConversationSidebar} from './ConversationSidebar'
 import {ArtifactsPanel} from './ArtifactsPanel'
-import {type Task, TodosList, areAllTasksSettled} from './TodosList'
-import {ToolSidebar, type ToolDefinition, type ToolPanelState, type ExternalToolDefinition, type ToolGroup} from './ToolSidebar'
+import {areAllTasksSettled, type Task, TodosList} from './TodosList'
+import {
+  type ExternalToolDefinition,
+  type ToolDefinition,
+  type ToolPanelState,
+  ToolSidebar
+} from './ToolSidebar'
 import {ToolPanelContainer} from './ToolPanelContainer'
 import {useResizable} from './hooks'
 import type {ArtifactNode} from '../ArtifactNode'
 import {type ConversationTree, getActivePathMessages, getSiblingInfo, switchBranch} from './types'
-import {MediaIcon, CheckSquareIcon, SquareLoaderIcon, HistoryIcon} from '../icons'
+import {ChatBubbleIcon, CheckSquareIcon, MediaIcon, SquareLoaderIcon} from '../icons'
 
 export interface ChatMessage {
   /**
@@ -29,6 +33,14 @@ export interface ChatMessage {
    * Whether the message is currently streaming
    */
   isStreaming?: boolean
+}
+
+export interface Conversation {
+  id: string
+  title: string
+  preview?: string
+  timestamp?: string
+  isActive?: boolean
 }
 
 export interface ChatInterfaceProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onSubmit'> {
@@ -96,10 +108,6 @@ export interface ChatInterfaceProps extends Omit<React.HTMLAttributes<HTMLDivEle
    */
   emptyStateHelper?: React.ReactNode
   /**
-   * Whether the sidebar should be initially collapsed.
-   */
-  initialSidebarCollapsed?: boolean
-  /**
    * Custom content to show when the conversation is empty.
    * Overrides the default centered input and helper text.
    */
@@ -157,10 +165,9 @@ export interface ChatInterfaceProps extends Omit<React.HTMLAttributes<HTMLDivEle
  * ChatInterface is the main orchestrator for a full-featured chat experience.
  *
  * Features:
- * - ConversationSidebar (far left) — collapsible list of past conversations
  * - ChatView (center) — main conversation area with smart scrolling
  * - Dual tool sidebar system — IntelliJ-style tool sidebars on left and right:
- *   - Left sidebar: History (top-left) + consumer tools (bottom-left)
+ *   - Left sidebar: History (top-left, conversation list + new chat) + consumer tools (bottom-left)
  *   - Right sidebar: Artifacts (top-right) + Tasks (bottom-right) + consumer tools
  *   - Tools in the same group are mutually exclusive
  *   - Both panels can be open simultaneously — chat area shrinks to accommodate
@@ -192,7 +199,6 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
           isThinking = false,
           placeholder = 'Send a message...',
           emptyStateHelper = "Let's talk.",
-          initialSidebarCollapsed = false,
           emptyState,
           showAttachmentButton = true,
           enableMessageActions = true,
@@ -209,13 +215,12 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
         },
         ref
     ) => {
-      const [sidebarCollapsed, setSidebarCollapsed] = useState(initialSidebarCollapsed)
       const prevArtifactNodesRef = useRef<ArtifactNode[]>([])
       const prevTasksRef = useRef<Task[]>([])
 
       // ── Tool panel state ──────────────────────────────────────────
       const [internalTools, setInternalTools] = useState<ToolPanelState>({
-        'top-left': null,
+        'top-left': 'history',
         'bottom-left': null,
         'top-right': null,
         'bottom-right': null,
@@ -238,20 +243,12 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
         return internalTools
       }, [isPanelControlled, isArtifactsPanelOpen, internalTools])
 
-      const isLeftPanelOpen = activeTools['top-left'] !== null || activeTools['bottom-left'] !== null
-      const isRightPanelOpen = activeTools['top-right'] !== null || activeTools['bottom-right'] !== null
+      const isLeftPanelOpen = activeTools['top-left'] !== null || activeTools['bottom-left']
+          !== null
+      const isRightPanelOpen = activeTools['top-right'] !== null || activeTools['bottom-right']
+          !== null
 
       // ── Resizable panels ──────────────────────────────────────────
-      const {
-        width: sidebarWidth,
-        startResizing: startResizingSidebar
-      } = useResizable({
-        initialWidthPercent: 15,
-        minWidthPercent: 12,
-        maxWidthPercent: 25,
-        direction: 'right'
-      })
-
       const {
         width: rightToolsWidth,
         startResizing: startResizingRightTools
@@ -278,7 +275,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
       // ── Merged tool definitions (built-in + external) ──────────────
       const allToolDefinitions: ToolDefinition[] = useMemo(() => {
         const builtIn: ToolDefinition[] = [
-          {id: 'history', icon: <HistoryIcon/>, label: 'History', group: 'top-left'},
+          {id: 'history', icon: <ChatBubbleIcon/>, label: 'History', group: 'top-left'},
           {id: 'artifacts', icon: <MediaIcon/>, label: 'Artifacts', group: 'top-right'},
           {
             id: 'todos',
@@ -295,7 +292,9 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
       const toggleTool = useCallback((toolId: string) => {
         // Find the tool's group
         const toolDef = allToolDefinitions.find(t => t.id === toolId)
-        if (!toolDef) return
+        if (!toolDef) {
+          return
+        }
 
         const group = toolDef.group
 
@@ -343,7 +342,9 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
 
       const latestUserMessageIndex = useMemo(() => {
         for (let i = effectiveMessages.length - 1; i >= 0; i--) {
-          if (effectiveMessages[i].variant === 'user') return i
+          if (effectiveMessages[i].variant === 'user') {
+            return i
+          }
         }
         return -1
       }, [effectiveMessages])
@@ -366,9 +367,15 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
         const hasNewOrUpdatedTask = (curr: Task[], prev: Task[]): boolean => {
           return curr.some(c => {
             const p = prev.find(x => x.id === c.id)
-            if (!p) return true
-            if (c.status !== p.status || c.label !== p.label) return true
-            if (c.subtasks && hasNewOrUpdatedTask(c.subtasks, p?.subtasks || [])) return true
+            if (!p) {
+              return true
+            }
+            if (c.status !== p.status || c.label !== p.label) {
+              return true
+            }
+            if (c.subtasks && hasNewOrUpdatedTask(c.subtasks, p?.subtasks || [])) {
+              return true
+            }
             return false
           })
         }
@@ -385,7 +392,9 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
       // ── Branch switching ──────────────────────────────────────────
       const handleBranchSwitch = useCallback(
           (nodeId: string, direction: 'prev' | 'next') => {
-            if (!isTreeMode || !conversationTree || !onTreeChange) return
+            if (!isTreeMode || !conversationTree || !onTreeChange) {
+              return
+            }
             const newTree = switchBranch(conversationTree, nodeId, direction)
             onTreeChange(newTree)
           },
@@ -432,10 +441,6 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
           [onMessageSubmit]
       )
 
-      const toggleSidebar = useCallback(() => {
-        setSidebarCollapsed(prev => !prev)
-      }, [])
-
       const isEmpty = effectiveMessages.length === 0
 
       // ── Derived: which sides have tools ─────────────────────────
@@ -444,7 +449,8 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
           [allToolDefinitions]
       )
       const rightToolDefs = useMemo(
-          () => allToolDefinitions.filter(t => t.group === 'top-right' || t.group === 'bottom-right'),
+          () => allToolDefinitions.filter(
+              t => t.group === 'top-right' || t.group === 'bottom-right'),
           [allToolDefinitions]
       )
       const hasLeftTools = leftToolDefs.length > 0
@@ -452,14 +458,40 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
 
       // ── Render tool content for a given slot ──────────────────────
       const renderToolContent = (toolId: string | null) => {
-        if (!toolId) return null
+        if (!toolId) {
+          return null
+        }
 
         switch (toolId) {
           case 'history':
             return (
                 <div className="h-full flex flex-col">
-                  <div className="flex items-center p-4 border-b border-ash/40 shrink-0">
+                  <div
+                      className="flex items-center justify-between p-4 border-b border-ash/40 shrink-0">
                     <h3 className="text-xs font-medium text-white">History</h3>
+                    {onNewChat && (
+                        <button
+                            onClick={onNewChat}
+                            className={cx(
+                                'flex px-3 py-1.5',
+                                'bg-gold/10 hover:bg-gold/20 text-gold',
+                                'border border-gold/30',
+                                'text-xs font-medium',
+                                'transition-colors duration-200'
+                            )}
+                        >
+                          <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                              className="w-4 h-4"
+                          >
+                            <path
+                                d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z"/>
+                          </svg>
+                          New Chat
+                        </button>
+                    )}
                   </div>
                   <div className="flex-1 overflow-y-auto py-2">
                     {conversations.length === 0 ? (
@@ -531,17 +563,6 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
               className={cx('flex h-full w-full bg-obsidian overflow-hidden', className)}
               {...rest}
           >
-            {/* Conversation sidebar */}
-            <ConversationSidebar
-                conversations={conversations}
-                isCollapsed={sidebarCollapsed}
-                onSelectConversation={onSelectConversation}
-                onNewChat={onNewChat}
-                onToggleCollapse={toggleSidebar}
-                width={sidebarWidth}
-                onResizeStart={startResizingSidebar}
-            />
-
             {/* Left tool sidebar */}
             {hasLeftTools && (
                 <ToolSidebar
