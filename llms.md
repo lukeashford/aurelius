@@ -332,8 +332,8 @@ A card for displaying text content, supporting Markdown and HTML formatting.
 - **content**: * Text content to display (Markdown, HTML, or plain text)
 - **title**: * Optional title for the card
 - **subtitle**: * Optional subtitle or metadata
-- **isMarkdown**: * Whether the content should be treated as Markdown @default true
-- **maxHeight**: * Maximum height of the content area before scrolling @default '16rem'
+- **isMarkdown**: * Whether the content should be treated as Markdown @default true
+- **maxHeight**: * Maximum height of the content area before scrolling @default '16rem'
 - **contentClassName**: * Optional class name for the content container
 
 **ArtifactsPanel**

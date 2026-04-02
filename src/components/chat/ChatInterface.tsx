@@ -4,13 +4,18 @@ import {ChatView, type ChatViewItem} from './ChatView'
 import {type Attachment, ChatInput} from './ChatInput'
 import type {Conversation} from './ConversationSidebar'
 import {ArtifactsPanel} from './ArtifactsPanel'
-import {type Task, TodosList, areAllTasksSettled} from './TodosList'
-import {ToolSidebar, type ToolDefinition, type ToolPanelState, type ExternalToolDefinition, type ToolGroup} from './ToolSidebar'
+import {areAllTasksSettled, type Task, TodosList} from './TodosList'
+import {
+  type ExternalToolDefinition,
+  type ToolDefinition,
+  type ToolPanelState,
+  ToolSidebar
+} from './ToolSidebar'
 import {ToolPanelContainer} from './ToolPanelContainer'
 import {useResizable} from './hooks'
 import type {ArtifactNode} from '../ArtifactNode'
 import {type ConversationTree, getActivePathMessages, getSiblingInfo, switchBranch} from './types'
-import {MediaIcon, CheckSquareIcon, SquareLoaderIcon, ChatBubbleIcon} from '../icons'
+import {ChatBubbleIcon, CheckSquareIcon, MediaIcon, SquareLoaderIcon} from '../icons'
 
 export interface ChatMessage {
   /**
@@ -208,7 +213,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
 
       // ── Tool panel state ──────────────────────────────────────────
       const [internalTools, setInternalTools] = useState<ToolPanelState>({
-        'top-left': null,
+        'top-left': 'history',
         'bottom-left': null,
         'top-right': null,
         'bottom-right': null,
@@ -231,8 +236,10 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
         return internalTools
       }, [isPanelControlled, isArtifactsPanelOpen, internalTools])
 
-      const isLeftPanelOpen = activeTools['top-left'] !== null || activeTools['bottom-left'] !== null
-      const isRightPanelOpen = activeTools['top-right'] !== null || activeTools['bottom-right'] !== null
+      const isLeftPanelOpen = activeTools['top-left'] !== null || activeTools['bottom-left']
+          !== null
+      const isRightPanelOpen = activeTools['top-right'] !== null || activeTools['bottom-right']
+          !== null
 
       // ── Resizable panels ──────────────────────────────────────────
       const {
@@ -278,7 +285,9 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
       const toggleTool = useCallback((toolId: string) => {
         // Find the tool's group
         const toolDef = allToolDefinitions.find(t => t.id === toolId)
-        if (!toolDef) return
+        if (!toolDef) {
+          return
+        }
 
         const group = toolDef.group
 
@@ -326,7 +335,9 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
 
       const latestUserMessageIndex = useMemo(() => {
         for (let i = effectiveMessages.length - 1; i >= 0; i--) {
-          if (effectiveMessages[i].variant === 'user') return i
+          if (effectiveMessages[i].variant === 'user') {
+            return i
+          }
         }
         return -1
       }, [effectiveMessages])
@@ -349,9 +360,15 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
         const hasNewOrUpdatedTask = (curr: Task[], prev: Task[]): boolean => {
           return curr.some(c => {
             const p = prev.find(x => x.id === c.id)
-            if (!p) return true
-            if (c.status !== p.status || c.label !== p.label) return true
-            if (c.subtasks && hasNewOrUpdatedTask(c.subtasks, p?.subtasks || [])) return true
+            if (!p) {
+              return true
+            }
+            if (c.status !== p.status || c.label !== p.label) {
+              return true
+            }
+            if (c.subtasks && hasNewOrUpdatedTask(c.subtasks, p?.subtasks || [])) {
+              return true
+            }
             return false
           })
         }
@@ -368,7 +385,9 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
       // ── Branch switching ──────────────────────────────────────────
       const handleBranchSwitch = useCallback(
           (nodeId: string, direction: 'prev' | 'next') => {
-            if (!isTreeMode || !conversationTree || !onTreeChange) return
+            if (!isTreeMode || !conversationTree || !onTreeChange) {
+              return
+            }
             const newTree = switchBranch(conversationTree, nodeId, direction)
             onTreeChange(newTree)
           },
@@ -423,7 +442,8 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
           [allToolDefinitions]
       )
       const rightToolDefs = useMemo(
-          () => allToolDefinitions.filter(t => t.group === 'top-right' || t.group === 'bottom-right'),
+          () => allToolDefinitions.filter(
+              t => t.group === 'top-right' || t.group === 'bottom-right'),
           [allToolDefinitions]
       )
       const hasLeftTools = leftToolDefs.length > 0
@@ -431,25 +451,37 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
 
       // ── Render tool content for a given slot ──────────────────────
       const renderToolContent = (toolId: string | null) => {
-        if (!toolId) return null
+        if (!toolId) {
+          return null
+        }
 
         switch (toolId) {
           case 'history':
             return (
                 <div className="h-full flex flex-col">
-                  <div className="flex items-center justify-between p-4 border-b border-ash/40 shrink-0">
+                  <div
+                      className="flex items-center justify-between p-4 border-b border-ash/40 shrink-0">
                     <h3 className="text-xs font-medium text-white">History</h3>
                     {onNewChat && (
                         <button
                             onClick={onNewChat}
                             className={cx(
-                                'px-3 py-1.5',
+                                'flex px-3 py-1.5',
                                 'bg-gold/10 hover:bg-gold/20 text-gold',
                                 'border border-gold/30',
                                 'text-xs font-medium',
                                 'transition-colors duration-200'
                             )}
                         >
+                          <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                              className="w-4 h-4"
+                          >
+                            <path
+                                d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z"/>
+                          </svg>
                           New Chat
                         </button>
                     )}

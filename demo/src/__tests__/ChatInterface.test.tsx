@@ -1,10 +1,6 @@
 import React from 'react'
 import {fireEvent, render, screen} from '@testing-library/react'
-import {
-  addMessageToTree,
-  ChatInterface,
-  createEmptyTree,
-} from '@lukeashford/aurelius'
+import {addMessageToTree, ChatInterface, createEmptyTree,} from '@lukeashford/aurelius'
 
 describe('ChatInterface', () => {
   const mockConversations = [
@@ -81,8 +77,7 @@ describe('ChatInterface', () => {
     const onNewChat = jest.fn()
     render(<ChatInterface conversations={mockConversations} onNewChat={onNewChat}/>)
 
-    // Open the history tool panel
-    fireEvent.click(screen.getByRole('button', {name: /history/i}))
+    // History panel is open by default
     fireEvent.click(screen.getByText('New Chat'))
     expect(onNewChat).toHaveBeenCalled()
   })
@@ -96,8 +91,7 @@ describe('ChatInterface', () => {
         />
     )
 
-    // Open the history tool panel
-    fireEvent.click(screen.getByRole('button', {name: /history/i}))
+    // History panel is open by default
     fireEvent.click(screen.getByText('Conversation 2'))
     expect(onSelectConversation).toHaveBeenCalledWith('2')
   })
@@ -174,16 +168,16 @@ describe('ChatInterface', () => {
     expect(screen.getByRole('textbox')).toBeDisabled()
   })
 
-  it('shows conversations when history tool is opened', () => {
+  it('shows conversations by default in open history tool', () => {
     render(<ChatInterface conversations={mockConversations}/>)
 
-    // History panel is closed by default — conversations not visible
-    expect(screen.queryByText('Conversation 1')).not.toBeInTheDocument()
-
-    // Open the history tool panel
-    fireEvent.click(screen.getByRole('button', {name: /history/i}))
+    // History panel is open by default
     expect(screen.getByText('Conversation 1')).toBeInTheDocument()
     expect(screen.getByText('Conversation 2')).toBeInTheDocument()
+
+    // Can be closed
+    fireEvent.click(screen.getByRole('button', {name: /history/i}))
+    expect(screen.queryByText('Conversation 1')).not.toBeInTheDocument()
   })
 
   it('renders custom placeholder', () => {
