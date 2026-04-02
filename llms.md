@@ -158,7 +158,6 @@ Import from `@lukeashford/aurelius`:
 | ChatInput | position (centered, bottom), placeholder, helperText, onSubmit, disabled, animate, isStreaming, onStop, attachments, onAttachmentsChange, showAttachmentButton, acceptedFileTypes |
 | ChatInterface | messages, conversationTree, onTreeChange, conversations, onMessageSubmit, onEditMessage, onRetryMessage, onStop, onSelectConversation, onNewChat, isStreaming, isThinking, placeholder, emptyStateHelper, emptyState, showAttachmentButton, enableMessageActions, attachments, onAttachmentsChange, artifactNodes, isArtifactsPanelOpen, onArtifactsPanelOpenChange, tasks, tasksTitle, tools |
 | ChatView | messages, latestUserMessageIndex, isStreaming, isThinking, onScroll |
-| ConversationSidebar | conversations, isCollapsed, onSelectConversation, onNewChat, onToggleCollapse, width, onResizeStart, onExpand |
 | MessageActions | variant (user, assistant), content, onEdit, onRetry, isEditing, onEditingChange, editValue |
 | ThinkingIndicator | isVisible, phraseInterval, phrases |
 | TodosList | tasks, title |
@@ -455,20 +454,6 @@ Key behaviors:
 - **isStreaming**: * Whether the assistant is currently streaming a response
 - **isThinking**: * Whether to show the thinking indicator (between user message and response)
 - **onScroll**: * Callback when the user scrolls manually
-
-**ConversationSidebar**
-ConversationSidebar displays a collapsible list of past conversations.
-
-When collapsed, shows a thin strip with history icon at top.
-When expanded, shows chevron at top-left to collapse.
-
-- **conversations**: * List of conversations to display
-- **isCollapsed**: * Whether the sidebar is collapsed
-- **onSelectConversation**: * Callback when a conversation is selected
-- **onNewChat**: * Callback when "New Chat" is clicked
-- **onToggleCollapse**: * Callback to toggle collapse state
-- **width**: * Current width of the sidebar (when expanded). Accepts CSS width value (e.g., "15vw", "256px").
-- **onResizeStart**: * Callback to start resizing
 
 **MessageActions**
 - **variant**: * Whether this is for a user or assistant message

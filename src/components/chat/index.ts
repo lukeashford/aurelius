@@ -1,5 +1,10 @@
 // Main orchestrator
-export {ChatInterface, type ChatInterfaceProps, type ChatMessage} from './ChatInterface'
+export {
+  ChatInterface,
+  type ChatInterfaceProps,
+  type ChatMessage,
+  type Conversation
+} from './ChatInterface'
 
 // Core components
 export {ChatView, type ChatViewProps, type ChatViewItem} from './ChatView'
@@ -10,13 +15,6 @@ export {
   type Attachment,
   type AttachmentStatus
 } from './ChatInput'
-export {
-  ConversationSidebar,
-  CollapsedSidebarToggle,
-  type ConversationSidebarProps,
-  type Conversation,
-  type CollapsedSidebarToggleProps,
-} from './ConversationSidebar'
 export {
   ArtifactsPanel,
   ArtifactsPanelToggle,

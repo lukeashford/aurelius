@@ -2,7 +2,6 @@ import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import {cx} from '../../utils'
 import {ChatView, type ChatViewItem} from './ChatView'
 import {type Attachment, ChatInput} from './ChatInput'
-import type {Conversation} from './ConversationSidebar'
 import {ArtifactsPanel} from './ArtifactsPanel'
 import {areAllTasksSettled, type Task, TodosList} from './TodosList'
 import {
@@ -34,6 +33,14 @@ export interface ChatMessage {
    * Whether the message is currently streaming
    */
   isStreaming?: boolean
+}
+
+export interface Conversation {
+  id: string
+  title: string
+  preview?: string
+  timestamp?: string
+  isActive?: boolean
 }
 
 export interface ChatInterfaceProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onSubmit'> {
