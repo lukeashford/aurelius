@@ -163,6 +163,7 @@ export {Stepper, type StepperProps, type Step, type StepStatus} from './Stepper'
 
 // Icons
 export {
+  ChatBubbleIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
   CloseIcon,

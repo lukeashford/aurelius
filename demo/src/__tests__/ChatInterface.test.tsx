@@ -44,9 +44,9 @@ describe('ChatInterface', () => {
     expect(screen.getByText('Start a conversation')).toBeInTheDocument()
   })
 
-  it('renders conversation sidebar', () => {
+  it('renders history tool button in left sidebar', () => {
     render(<ChatInterface conversations={mockConversations}/>)
-    expect(screen.getByRole('button', {name: /collapse sidebar/i})).toBeInTheDocument()
+    expect(screen.getByRole('button', {name: /history/i})).toBeInTheDocument()
   })
 
   it('renders messages when conversationTree is provided', () => {
@@ -77,15 +77,17 @@ describe('ChatInterface', () => {
     expect(onMessageSubmit).toHaveBeenCalledWith('Test message', undefined)
   })
 
-  it('calls onNewChat when New Chat is clicked', () => {
+  it('calls onNewChat when New Chat is clicked in history panel', () => {
     const onNewChat = jest.fn()
     render(<ChatInterface conversations={mockConversations} onNewChat={onNewChat}/>)
 
+    // Open the history tool panel
+    fireEvent.click(screen.getByRole('button', {name: /history/i}))
     fireEvent.click(screen.getByText('New Chat'))
     expect(onNewChat).toHaveBeenCalled()
   })
 
-  it('calls onSelectConversation when a conversation is selected', () => {
+  it('calls onSelectConversation when a conversation is selected in history panel', () => {
     const onSelectConversation = jest.fn()
     render(
         <ChatInterface
@@ -94,6 +96,8 @@ describe('ChatInterface', () => {
         />
     )
 
+    // Open the history tool panel
+    fireEvent.click(screen.getByRole('button', {name: /history/i}))
     fireEvent.click(screen.getByText('Conversation 2'))
     expect(onSelectConversation).toHaveBeenCalledWith('2')
   })
@@ -170,15 +174,16 @@ describe('ChatInterface', () => {
     expect(screen.getByRole('textbox')).toBeDisabled()
   })
 
-  it('starts with sidebar collapsed when initialSidebarCollapsed is true', () => {
-    render(
-        <ChatInterface
-            conversations={mockConversations}
-            initialSidebarCollapsed={true}
-        />
-    )
-    expect(screen.getByRole('button', {name: /expand sidebar/i})).toBeInTheDocument()
+  it('shows conversations when history tool is opened', () => {
+    render(<ChatInterface conversations={mockConversations}/>)
+
+    // History panel is closed by default — conversations not visible
     expect(screen.queryByText('Conversation 1')).not.toBeInTheDocument()
+
+    // Open the history tool panel
+    fireEvent.click(screen.getByRole('button', {name: /history/i}))
+    expect(screen.getByText('Conversation 1')).toBeInTheDocument()
+    expect(screen.getByText('Conversation 2')).toBeInTheDocument()
   })
 
   it('renders custom placeholder', () => {

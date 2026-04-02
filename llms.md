@@ -156,7 +156,7 @@ Import from `@lukeashford/aurelius`:
 | ArtifactsPanel | nodes, loading, artifactCount, onExpand |
 | BranchNavigator | current, total, onPrevious, onNext, size, showIcon |
 | ChatInput | position (centered, bottom), placeholder, helperText, onSubmit, disabled, animate, isStreaming, onStop, attachments, onAttachmentsChange, showAttachmentButton, acceptedFileTypes |
-| ChatInterface | messages, conversationTree, onTreeChange, conversations, onMessageSubmit, onEditMessage, onRetryMessage, onStop, onSelectConversation, onNewChat, isStreaming, isThinking, placeholder, emptyStateHelper, initialSidebarCollapsed, emptyState, showAttachmentButton, enableMessageActions, attachments, onAttachmentsChange, artifactNodes, isArtifactsPanelOpen, onArtifactsPanelOpenChange, tasks, tasksTitle, tools |
+| ChatInterface | messages, conversationTree, onTreeChange, conversations, onMessageSubmit, onEditMessage, onRetryMessage, onStop, onSelectConversation, onNewChat, isStreaming, isThinking, placeholder, emptyStateHelper, emptyState, showAttachmentButton, enableMessageActions, attachments, onAttachmentsChange, artifactNodes, isArtifactsPanelOpen, onArtifactsPanelOpenChange, tasks, tasksTitle, tools |
 | ChatView | messages, latestUserMessageIndex, isStreaming, isThinking, onScroll |
 | ConversationSidebar | conversations, isCollapsed, onSelectConversation, onNewChat, onToggleCollapse, width, onResizeStart, onExpand |
 | MessageActions | variant (user, assistant), content, onEdit, onRetry, isEditing, onEditingChange, editValue |
@@ -164,6 +164,7 @@ Import from `@lukeashford/aurelius`:
 | TodosList | tasks, title |
 | ToolPanelContainer | topContent, bottomContent, width, onResizeStart, side |
 | ToolSidebar | tools, activeTools, onToggleTool, side |
+| ChatBubbleIcon | children |
 | CheckSquareIcon | children |
 | ChevronLeftIcon | children |
 | ChevronRightIcon | children |
@@ -392,10 +393,9 @@ Features:
 ChatInterface is the main orchestrator for a full-featured chat experience.
 
 Features:
-- ConversationSidebar (far left) — collapsible list of past conversations
 - ChatView (center) — main conversation area with smart scrolling
 - Dual tool sidebar system — IntelliJ-style tool sidebars on left and right:
-  - Left sidebar: History (top-left) + consumer tools (bottom-left)
+  - Left sidebar: History (top-left, conversation list + new chat) + consumer tools (bottom-left)
   - Right sidebar: Artifacts (top-right) + Tasks (bottom-right) + consumer tools
   - Tools in the same group are mutually exclusive
   - Both panels can be open simultaneously — chat area shrinks to accommodate
@@ -428,7 +428,6 @@ artifactNodes prop.
 - **isThinking**: * Whether to show the thinking indicator. Typically shown after a user message but before the first streaming token.
 - **placeholder**: * Placeholder text for the main chat input.
 - **emptyStateHelper**: * Helper text shown in the empty state (when there are no messages).
-- **initialSidebarCollapsed**: * Whether the sidebar should be initially collapsed.
 - **emptyState**: * Custom content to show when the conversation is empty. Overrides the default centered input and helper text.
 - **showAttachmentButton**: * Whether to show the attachment (paperclip) button in the input.
 - **enableMessageActions**: * Whether to enable message-level actions (copy, edit, retry).

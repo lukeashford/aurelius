@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import {cx} from '../../utils'
 import {ChatView, type ChatViewItem} from './ChatView'
 import {type Attachment, ChatInput} from './ChatInput'
-import {type Conversation, ConversationSidebar} from './ConversationSidebar'
+import type {Conversation} from './ConversationSidebar'
 import {ArtifactsPanel} from './ArtifactsPanel'
 import {type Task, TodosList, areAllTasksSettled} from './TodosList'
 import {ToolSidebar, type ToolDefinition, type ToolPanelState, type ExternalToolDefinition, type ToolGroup} from './ToolSidebar'
@@ -10,7 +10,7 @@ import {ToolPanelContainer} from './ToolPanelContainer'
 import {useResizable} from './hooks'
 import type {ArtifactNode} from '../ArtifactNode'
 import {type ConversationTree, getActivePathMessages, getSiblingInfo, switchBranch} from './types'
-import {MediaIcon, CheckSquareIcon, SquareLoaderIcon, HistoryIcon} from '../icons'
+import {MediaIcon, CheckSquareIcon, SquareLoaderIcon, ChatBubbleIcon} from '../icons'
 
 export interface ChatMessage {
   /**
@@ -96,10 +96,6 @@ export interface ChatInterfaceProps extends Omit<React.HTMLAttributes<HTMLDivEle
    */
   emptyStateHelper?: React.ReactNode
   /**
-   * Whether the sidebar should be initially collapsed.
-   */
-  initialSidebarCollapsed?: boolean
-  /**
    * Custom content to show when the conversation is empty.
    * Overrides the default centered input and helper text.
    */
@@ -157,10 +153,9 @@ export interface ChatInterfaceProps extends Omit<React.HTMLAttributes<HTMLDivEle
  * ChatInterface is the main orchestrator for a full-featured chat experience.
  *
  * Features:
- * - ConversationSidebar (far left) — collapsible list of past conversations
  * - ChatView (center) — main conversation area with smart scrolling
  * - Dual tool sidebar system — IntelliJ-style tool sidebars on left and right:
- *   - Left sidebar: History (top-left) + consumer tools (bottom-left)
+ *   - Left sidebar: History (top-left, conversation list + new chat) + consumer tools (bottom-left)
  *   - Right sidebar: Artifacts (top-right) + Tasks (bottom-right) + consumer tools
  *   - Tools in the same group are mutually exclusive
  *   - Both panels can be open simultaneously — chat area shrinks to accommodate
@@ -192,7 +187,6 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
           isThinking = false,
           placeholder = 'Send a message...',
           emptyStateHelper = "Let's talk.",
-          initialSidebarCollapsed = false,
           emptyState,
           showAttachmentButton = true,
           enableMessageActions = true,
@@ -209,7 +203,6 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
         },
         ref
     ) => {
-      const [sidebarCollapsed, setSidebarCollapsed] = useState(initialSidebarCollapsed)
       const prevArtifactNodesRef = useRef<ArtifactNode[]>([])
       const prevTasksRef = useRef<Task[]>([])
 
@@ -243,16 +236,6 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
 
       // ── Resizable panels ──────────────────────────────────────────
       const {
-        width: sidebarWidth,
-        startResizing: startResizingSidebar
-      } = useResizable({
-        initialWidthPercent: 15,
-        minWidthPercent: 12,
-        maxWidthPercent: 25,
-        direction: 'right'
-      })
-
-      const {
         width: rightToolsWidth,
         startResizing: startResizingRightTools
       } = useResizable({
@@ -278,7 +261,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
       // ── Merged tool definitions (built-in + external) ──────────────
       const allToolDefinitions: ToolDefinition[] = useMemo(() => {
         const builtIn: ToolDefinition[] = [
-          {id: 'history', icon: <HistoryIcon/>, label: 'History', group: 'top-left'},
+          {id: 'history', icon: <ChatBubbleIcon/>, label: 'History', group: 'top-left'},
           {id: 'artifacts', icon: <MediaIcon/>, label: 'Artifacts', group: 'top-right'},
           {
             id: 'todos',
@@ -432,10 +415,6 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
           [onMessageSubmit]
       )
 
-      const toggleSidebar = useCallback(() => {
-        setSidebarCollapsed(prev => !prev)
-      }, [])
-
       const isEmpty = effectiveMessages.length === 0
 
       // ── Derived: which sides have tools ─────────────────────────
@@ -458,8 +437,22 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
           case 'history':
             return (
                 <div className="h-full flex flex-col">
-                  <div className="flex items-center p-4 border-b border-ash/40 shrink-0">
+                  <div className="flex items-center justify-between p-4 border-b border-ash/40 shrink-0">
                     <h3 className="text-xs font-medium text-white">History</h3>
+                    {onNewChat && (
+                        <button
+                            onClick={onNewChat}
+                            className={cx(
+                                'px-3 py-1.5',
+                                'bg-gold/10 hover:bg-gold/20 text-gold',
+                                'border border-gold/30',
+                                'text-xs font-medium',
+                                'transition-colors duration-200'
+                            )}
+                        >
+                          New Chat
+                        </button>
+                    )}
                   </div>
                   <div className="flex-1 overflow-y-auto py-2">
                     {conversations.length === 0 ? (
@@ -531,17 +524,6 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
               className={cx('flex h-full w-full bg-obsidian overflow-hidden', className)}
               {...rest}
           >
-            {/* Conversation sidebar */}
-            <ConversationSidebar
-                conversations={conversations}
-                isCollapsed={sidebarCollapsed}
-                onSelectConversation={onSelectConversation}
-                onNewChat={onNewChat}
-                onToggleCollapse={toggleSidebar}
-                width={sidebarWidth}
-                onResizeStart={startResizingSidebar}
-            />
-
             {/* Left tool sidebar */}
             {hasLeftTools && (
                 <ToolSidebar

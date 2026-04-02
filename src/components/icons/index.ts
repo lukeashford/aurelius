@@ -1,6 +1,7 @@
 // Aurelius Design System - Icon Components
 // These icons follow the lucide-react pattern for consistency
 
+export {ChatBubbleIcon} from './ChatBubbleIcon'
 export {ChevronLeftIcon} from './ChevronLeftIcon'
 export {ChevronRightIcon} from './ChevronRightIcon'
 export {CloseIcon} from './CloseIcon'

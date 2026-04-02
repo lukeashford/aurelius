@@ -6,92 +6,6 @@ exports[`ChatInterface matches snapshot in empty state 1`] = `
     class="flex h-full w-full bg-obsidian overflow-hidden"
   >
     <div
-      class="h-full bg-charcoal/80 border-r border-ash/40 flex flex-col relative group flex-shrink-0"
-      data-testid="conversation-sidebar"
-      style="width: 15vw;"
-    >
-      <div
-        class="absolute top-0 right-0 w-1 h-full cursor-col-resize z-50 hover:bg-gold/50 transition-colors after:absolute after:inset-y-0 after:-right-1 after:w-2"
-        data-testid="sidebar-resize-handle"
-      />
-      <div
-        class="p-3 border-b border-ash/40 flex-shrink-0 flex items-center gap-2"
-      >
-        <button
-          aria-label="Collapse sidebar"
-          class="p-1.5 text-silver hover:text-white hover:bg-ash/20 transition-colors duration-150"
-        >
-          <svg
-            class="w-5 h-5"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              clip-rule="evenodd"
-              d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
-              fill-rule="evenodd"
-            />
-          </svg>
-        </button>
-        <button
-          class="flex-1 px-3 py-2 bg-gold/10 hover:bg-gold/20 text-gold border border-gold/30 flex items-center justify-center gap-2 transition-colors duration-200"
-        >
-          <svg
-            class="w-4 h-4"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z"
-            />
-          </svg>
-          <span
-            class="text-sm font-medium"
-          >
-            New Chat
-          </span>
-        </button>
-      </div>
-      <div
-        class="flex-1 overflow-y-auto py-2"
-      >
-        <div
-          class="space-y-1 px-2"
-        >
-          <button
-            class="w-full px-3 py-2 text-left transition-colors duration-150 bg-ash/40 text-white"
-          >
-            <p
-              class="text-sm font-medium truncate"
-            >
-              Conversation 1
-            </p>
-            <p
-              class="text-xs text-silver/60 truncate mt-0.5"
-            >
-              Hello...
-            </p>
-          </button>
-          <button
-            class="w-full px-3 py-2 text-left transition-colors duration-150 text-silver hover:bg-ash/20 hover:text-white"
-          >
-            <p
-              class="text-sm font-medium truncate"
-            >
-              Conversation 2
-            </p>
-            <p
-              class="text-xs text-silver/60 truncate mt-0.5"
-            >
-              World...
-            </p>
-          </button>
-        </div>
-      </div>
-    </div>
-    <div
       class="h-full w-9 bg-charcoal/80 flex flex-col items-center shrink-0 py-2 border-r border-ash/40"
     >
       <div
@@ -111,9 +25,7 @@ exports[`ChatInterface matches snapshot in empty state 1`] = `
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                clip-rule="evenodd"
-                d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z"
-                fill-rule="evenodd"
+                d="M2 3h16v11H6l-4 3V3z"
               />
             </svg>
           </span>
@@ -330,65 +242,6 @@ exports[`ChatInterface matches snapshot while streaming 1`] = `
     class="flex h-full w-full bg-obsidian overflow-hidden"
   >
     <div
-      class="h-full bg-charcoal/80 border-r border-ash/40 flex flex-col relative group flex-shrink-0"
-      data-testid="conversation-sidebar"
-      style="width: 15vw;"
-    >
-      <div
-        class="absolute top-0 right-0 w-1 h-full cursor-col-resize z-50 hover:bg-gold/50 transition-colors after:absolute after:inset-y-0 after:-right-1 after:w-2"
-        data-testid="sidebar-resize-handle"
-      />
-      <div
-        class="p-3 border-b border-ash/40 flex-shrink-0 flex items-center gap-2"
-      >
-        <button
-          aria-label="Collapse sidebar"
-          class="p-1.5 text-silver hover:text-white hover:bg-ash/20 transition-colors duration-150"
-        >
-          <svg
-            class="w-5 h-5"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              clip-rule="evenodd"
-              d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
-              fill-rule="evenodd"
-            />
-          </svg>
-        </button>
-        <button
-          class="flex-1 px-3 py-2 bg-gold/10 hover:bg-gold/20 text-gold border border-gold/30 flex items-center justify-center gap-2 transition-colors duration-200"
-        >
-          <svg
-            class="w-4 h-4"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z"
-            />
-          </svg>
-          <span
-            class="text-sm font-medium"
-          >
-            New Chat
-          </span>
-        </button>
-      </div>
-      <div
-        class="flex-1 overflow-y-auto py-2"
-      >
-        <p
-          class="px-4 py-2 text-sm text-silver/60"
-        >
-          No conversations yet
-        </p>
-      </div>
-    </div>
-    <div
       class="h-full w-9 bg-charcoal/80 flex flex-col items-center shrink-0 py-2 border-r border-ash/40"
     >
       <div
@@ -408,9 +261,7 @@ exports[`ChatInterface matches snapshot while streaming 1`] = `
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                clip-rule="evenodd"
-                d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z"
-                fill-rule="evenodd"
+                d="M2 3h16v11H6l-4 3V3z"
               />
             </svg>
           </span>
@@ -692,92 +543,6 @@ exports[`ChatInterface matches snapshot with messages 1`] = `
     class="flex h-full w-full bg-obsidian overflow-hidden"
   >
     <div
-      class="h-full bg-charcoal/80 border-r border-ash/40 flex flex-col relative group flex-shrink-0"
-      data-testid="conversation-sidebar"
-      style="width: 15vw;"
-    >
-      <div
-        class="absolute top-0 right-0 w-1 h-full cursor-col-resize z-50 hover:bg-gold/50 transition-colors after:absolute after:inset-y-0 after:-right-1 after:w-2"
-        data-testid="sidebar-resize-handle"
-      />
-      <div
-        class="p-3 border-b border-ash/40 flex-shrink-0 flex items-center gap-2"
-      >
-        <button
-          aria-label="Collapse sidebar"
-          class="p-1.5 text-silver hover:text-white hover:bg-ash/20 transition-colors duration-150"
-        >
-          <svg
-            class="w-5 h-5"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              clip-rule="evenodd"
-              d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
-              fill-rule="evenodd"
-            />
-          </svg>
-        </button>
-        <button
-          class="flex-1 px-3 py-2 bg-gold/10 hover:bg-gold/20 text-gold border border-gold/30 flex items-center justify-center gap-2 transition-colors duration-200"
-        >
-          <svg
-            class="w-4 h-4"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z"
-            />
-          </svg>
-          <span
-            class="text-sm font-medium"
-          >
-            New Chat
-          </span>
-        </button>
-      </div>
-      <div
-        class="flex-1 overflow-y-auto py-2"
-      >
-        <div
-          class="space-y-1 px-2"
-        >
-          <button
-            class="w-full px-3 py-2 text-left transition-colors duration-150 bg-ash/40 text-white"
-          >
-            <p
-              class="text-sm font-medium truncate"
-            >
-              Conversation 1
-            </p>
-            <p
-              class="text-xs text-silver/60 truncate mt-0.5"
-            >
-              Hello...
-            </p>
-          </button>
-          <button
-            class="w-full px-3 py-2 text-left transition-colors duration-150 text-silver hover:bg-ash/20 hover:text-white"
-          >
-            <p
-              class="text-sm font-medium truncate"
-            >
-              Conversation 2
-            </p>
-            <p
-              class="text-xs text-silver/60 truncate mt-0.5"
-            >
-              World...
-            </p>
-          </button>
-        </div>
-      </div>
-    </div>
-    <div
       class="h-full w-9 bg-charcoal/80 flex flex-col items-center shrink-0 py-2 border-r border-ash/40"
     >
       <div
@@ -797,9 +562,7 @@ exports[`ChatInterface matches snapshot with messages 1`] = `
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                clip-rule="evenodd"
-                d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z"
-                fill-rule="evenodd"
+                d="M2 3h16v11H6l-4 3V3z"
               />
             </svg>
           </span>
