@@ -1,3 +1,14 @@
+## [3.2.0](https://github.com/lukeashford/aurelius/compare/v3.1.0...v3.2.0) (2026-04-02)
+
+### Features
+
+* **chat:** make history panel open by default ([d998077](https://github.com/lukeashford/aurelius/commit/d998077fcac3ed14c1f6124149ea2ffe692db329))
+* **chat:** remove deprecated ConversationSidebar component ([207750a](https://github.com/lukeashford/aurelius/commit/207750a878dc6a10f95b95ed5f2e131298aa1921))
+
+### Bug Fixes
+
+* remove redundant ConversationSidebar, use History tool panel for chat history ([7c876f9](https://github.com/lukeashford/aurelius/commit/7c876f9425f279766ef0bccca1e58b5e4c8b37fc))
+
 ## [3.1.0](https://github.com/lukeashford/aurelius/compare/v3.0.0...v3.1.0) (2026-03-27)
 
 ### Features
