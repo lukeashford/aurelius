@@ -47,7 +47,7 @@ exports[`ChatInterface matches snapshot in empty state 1`] = `
       style="width: 25vw;"
     >
       <div
-        class="absolute top-0 w-1 h-full cursor-col-resize z-50 hover:bg-gold/50 transition-colors right-0 after:absolute after:inset-y-0 after:-right-1 after:w-2"
+        class="absolute top-0 w-1 h-full cursor-col-resize z-30 hover:bg-gold/50 transition-colors right-0 after:absolute after:inset-y-0 after:-right-1 after:w-2"
       />
       <div
         class="min-h-0 overflow-hidden flex flex-col"
@@ -345,7 +345,7 @@ exports[`ChatInterface matches snapshot while streaming 1`] = `
       style="width: 25vw;"
     >
       <div
-        class="absolute top-0 w-1 h-full cursor-col-resize z-50 hover:bg-gold/50 transition-colors right-0 after:absolute after:inset-y-0 after:-right-1 after:w-2"
+        class="absolute top-0 w-1 h-full cursor-col-resize z-30 hover:bg-gold/50 transition-colors right-0 after:absolute after:inset-y-0 after:-right-1 after:w-2"
       />
       <div
         class="min-h-0 overflow-hidden flex flex-col"
@@ -681,7 +681,7 @@ exports[`ChatInterface matches snapshot with messages 1`] = `
       style="width: 25vw;"
     >
       <div
-        class="absolute top-0 w-1 h-full cursor-col-resize z-50 hover:bg-gold/50 transition-colors right-0 after:absolute after:inset-y-0 after:-right-1 after:w-2"
+        class="absolute top-0 w-1 h-full cursor-col-resize z-30 hover:bg-gold/50 transition-colors right-0 after:absolute after:inset-y-0 after:-right-1 after:w-2"
       />
       <div
         class="min-h-0 overflow-hidden flex flex-col"

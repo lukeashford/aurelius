@@ -35,7 +35,8 @@ export interface ToolPanelContainerProps extends React.HTMLAttributes<HTMLDivEle
  * to the previous ArtifactsPanel resize behavior.
  */
 export const ToolPanelContainer = React.forwardRef<HTMLDivElement, ToolPanelContainerProps>(
-    ({topContent, bottomContent, width, onResizeStart, side = 'right', className, ...rest}, ref) => {
+    ({topContent, bottomContent, width, onResizeStart, side = 'right', className, ...rest},
+        ref) => {
       const [topPercent, setTopPercent] = useState(60)
       const [isResizingHeight, setIsResizingHeight] = useState(false)
       const containerRef = useRef<HTMLDivElement>(null)
@@ -57,10 +58,14 @@ export const ToolPanelContainer = React.forwardRef<HTMLDivElement, ToolPanelCont
 
       const resizeHeight = useCallback(
           (e: MouseEvent) => {
-            if (!isResizingHeight || lastY.current === null || !containerRef.current) return
+            if (!isResizingHeight || lastY.current === null || !containerRef.current) {
+              return
+            }
 
             const containerHeight = containerRef.current.getBoundingClientRect().height
-            if (containerHeight === 0) return
+            if (containerHeight === 0) {
+              return
+            }
 
             const deltaY = e.clientY - lastY.current
             const deltaPercent = (deltaY / containerHeight) * 100
@@ -101,8 +106,11 @@ export const ToolPanelContainer = React.forwardRef<HTMLDivElement, ToolPanelCont
               ref={(node) => {
                 // Merge forwarded ref and internal ref
                 (containerRef as React.MutableRefObject<HTMLDivElement | null>).current = node
-                if (typeof ref === 'function') ref(node)
-                else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node
+                if (typeof ref === 'function') {
+                  ref(node)
+                } else if (ref) {
+                  (ref as React.MutableRefObject<HTMLDivElement | null>).current = node
+                }
               }}
               className={cx(
                   'h-full bg-charcoal/50 flex flex-col relative shrink-0',
@@ -116,7 +124,7 @@ export const ToolPanelContainer = React.forwardRef<HTMLDivElement, ToolPanelCont
             <div
                 onMouseDown={onResizeStart}
                 className={cx(
-                    'absolute top-0 w-1 h-full cursor-col-resize z-50',
+                    'absolute top-0 w-1 h-full cursor-col-resize z-30',
                     'hover:bg-gold/50 transition-colors',
                     side === 'left'
                         ? 'right-0 after:absolute after:inset-y-0 after:-right-1 after:w-2'
@@ -139,7 +147,7 @@ export const ToolPanelContainer = React.forwardRef<HTMLDivElement, ToolPanelCont
                 <div
                     onMouseDown={startHeightResize}
                     className={cx(
-                        'h-1 cursor-row-resize z-50 shrink-0',
+                        'h-1 cursor-row-resize z-30 shrink-0',
                         'bg-ash/40 hover:bg-gold/50 transition-colors',
                         'relative',
                         'after:absolute after:-top-1 after:left-0 after:right-0 after:h-3'
