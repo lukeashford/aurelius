@@ -1,3 +1,9 @@
+## [3.2.1](https://github.com/lukeashford/aurelius/compare/v3.2.0...v3.2.1) (2026-04-06)
+
+### Bug Fixes
+
+* **chat:** update z-index for resize handles to prevent overlap issues ([7da42d2](https://github.com/lukeashford/aurelius/commit/7da42d264831cee22035395007d09cc45fbd250b))
+
 ## [3.2.0](https://github.com/lukeashford/aurelius/compare/v3.1.0...v3.2.0) (2026-04-02)
 
 ### Features
