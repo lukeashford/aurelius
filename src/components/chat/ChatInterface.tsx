@@ -152,6 +152,12 @@ export interface ChatInterfaceProps extends Omit<React.HTMLAttributes<HTMLDivEle
    */
   tasksTitle?: string
   /**
+   * Called when the "Stop All Tasks" button is clicked in the tasks panel.
+   * Only shown when at least one task has in_progress status.
+   * The consumer app decides what stopping means (cancel API calls, mark tasks cancelled, etc.).
+   */
+  onStopAllTasks?: () => void
+  /**
    * Additional tools to add to the tool sidebars. Each ExternalToolDefinition provides
    * an id, icon, label, group ('top-left' | 'bottom-left' | 'top-right' | 'bottom-right'),
    * and content (ReactNode) to render when opened. Tools in the same group are mutually
@@ -209,6 +215,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
           onArtifactsPanelOpenChange,
           tasks = [],
           tasksTitle,
+          onStopAllTasks,
           tools: externalTools = [],
           className,
           ...rest
@@ -537,7 +544,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
 
           case 'todos':
             return tasks.length > 0
-                ? <TodosList tasks={tasks} title={tasksTitle} className="h-full"/>
+                ? <TodosList tasks={tasks} title={tasksTitle} onStopAllTasks={onStopAllTasks} className="h-full"/>
                 : (
                     <div className="h-full flex flex-col">
                       <div className="flex items-center p-4 border-b border-ash/40 shrink-0">

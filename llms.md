@@ -156,11 +156,11 @@ Import from `@lukeashford/aurelius`:
 | ArtifactsPanel | nodes, loading, artifactCount, onExpand |
 | BranchNavigator | current, total, onPrevious, onNext, size, showIcon |
 | ChatInput | position (centered, bottom), placeholder, helperText, onSubmit, disabled, animate, isStreaming, onStop, attachments, onAttachmentsChange, showAttachmentButton, acceptedFileTypes |
-| ChatInterface | messages, conversationTree, onTreeChange, conversations, onMessageSubmit, onEditMessage, onRetryMessage, onStop, onSelectConversation, onNewChat, isStreaming, isThinking, placeholder, emptyStateHelper, emptyState, showAttachmentButton, enableMessageActions, attachments, onAttachmentsChange, artifactNodes, isArtifactsPanelOpen, onArtifactsPanelOpenChange, tasks, tasksTitle, tools |
+| ChatInterface | messages, conversationTree, onTreeChange, conversations, onMessageSubmit, onEditMessage, onRetryMessage, onStop, onSelectConversation, onNewChat, isStreaming, isThinking, placeholder, emptyStateHelper, emptyState, showAttachmentButton, enableMessageActions, attachments, onAttachmentsChange, artifactNodes, isArtifactsPanelOpen, onArtifactsPanelOpenChange, tasks, tasksTitle, onStopAllTasks, tools |
 | ChatView | messages, latestUserMessageIndex, isStreaming, isThinking, onScroll |
 | MessageActions | variant (user, assistant), content, onEdit, onRetry, isEditing, onEditingChange, editValue |
 | ThinkingIndicator | isVisible, phraseInterval, phrases |
-| TodosList | tasks, title |
+| TodosList | tasks, title, onStopAllTasks |
 | ToolPanelContainer | topContent, bottomContent, width, onResizeStart, side |
 | ToolSidebar | tools, activeTools, onToggleTool, side |
 | ChatBubbleIcon | children |
@@ -331,8 +331,8 @@ A card for displaying text content, supporting Markdown and HTML formatting.
 - **content**: * Text content to display (Markdown, HTML, or plain text)
 - **title**: * Optional title for the card
 - **subtitle**: * Optional subtitle or metadata
-- **isMarkdown**: * Whether the content should be treated as Markdown @default true
-- **maxHeight**: * Maximum height of the content area before scrolling @default '16rem'
+- **isMarkdown**: * Whether the content should be treated as Markdown @default true
+- **maxHeight**: * Maximum height of the content area before scrolling @default '16rem'
 - **contentClassName**: * Optional class name for the content container
 
 **ArtifactsPanel**
@@ -437,6 +437,7 @@ artifactNodes prop.
 - **onArtifactsPanelOpenChange**: * Called when the artifacts panel is opened or closed (controlled).
 - **tasks**: * Tasks to display in the todos list tool panel. Shows a list of tasks with status indicators.
 - **tasksTitle**: * Title for the todos list @default "Tasks"
+- **onStopAllTasks**: * Called when the "Stop All Tasks" button is clicked in the tasks panel. Only shown when at least one task has in_progress status. The consumer app decides what stopping means (cancel API calls, mark tasks cancelled, etc.).
 - **tools**: * Additional tools to add to the tool sidebars. Each ExternalToolDefinition provides an id, icon, label, group ('top-left' | 'bottom-left' | 'top-right' | 'bottom-right'), and content (ReactNode) to render when opened. Tools in the same group are mutually exclusive. Built-in tools occupy: History (top-left), Artifacts (top-right), Tasks (bottom-right). Consumer tools are added alongside these.
 
 **ChatView**
@@ -473,27 +474,13 @@ but has not yet started streaming tokens. It cycles through flavorful "thinking"
 - **phrases**: * Custom phrases to cycle through (defaults to built-in phrases)
 
 **TodosList**
-TodosList displays a structured list of tasks with status indicators.
-
-Features:
-- Nested tasks with indentation
-- Status indicators: done (checkmark), in_progress (snake animation), pending (empty),
-cancelled, failed
-- Done tasks are crossed out with golden checkmark
-- Cancelled/failed tasks are crossed out with subtle styling and sorted to bottom of their local
-group
-- Max 1/4 screen height with scroll
-- Subtasks appear when parent task is in_progress or done
-
-The component automatically sorts cancelled/failed tasks to the bottom of their local group
-(not globally), so just changing a task's status will reorder it appropriately.
-
 - **Task.id**: * Unique identifier for the task
 - **Task.label**: * Task description text
 - **Task.status**: * Current status of the task
 - **Task.subtasks**: * Optional subtasks (shown when parent is in_progress or done)
 - **tasks**: * Array of tasks to display
 - **title**: * Title for the todos list @default "Tasks"
+- **onStopAllTasks**: * Called when the "Stop All Tasks" button is clicked. Only shown when at least one task is in_progress. The consumer decides what stopping means (cancel API calls, mark cancelled, etc.).
 
 **ToolPanelContainer**
 ToolPanelContainer manages the layout of one or two tool panels

@@ -1,4 +1,5 @@
 import React, {useMemo} from 'react'
+import {Square} from 'lucide-react'
 import {cx} from '../../utils'
 import {CheckSquareIcon, CrossSquareIcon, EmptySquareIcon, SquareLoaderIcon,} from '../icons'
 
@@ -41,6 +42,12 @@ export interface TodosListProps extends React.HTMLAttributes<HTMLDivElement> {
    * @default "Tasks"
    */
   title?: string
+  /**
+   * Called when the "Stop All Tasks" button is clicked.
+   * Only shown when at least one task is in_progress.
+   * The consumer decides what stopping means (cancel API calls, mark cancelled, etc.).
+   */
+  onStopAllTasks?: () => void
 }
 
 /**
@@ -150,8 +157,19 @@ function TaskItem({task, depth = 0}: { task: Task; depth?: number }) {
  * The component automatically sorts cancelled/failed tasks to the bottom of their local group
  * (not globally), so just changing a task's status will reorder it appropriately.
  */
+/**
+ * Returns true when any task (or subtask, recursively) has in_progress status.
+ */
+function hasInProgressTask(tasks: Task[]): boolean {
+  return tasks.some(t => {
+    if (t.status === 'in_progress') return true
+    if (t.subtasks && t.subtasks.length > 0) return hasInProgressTask(t.subtasks)
+    return false
+  })
+}
+
 export const TodosList = React.forwardRef<HTMLDivElement, TodosListProps>(
-    ({tasks, title = 'Tasks', className, ...rest}, ref) => {
+    ({tasks, title = 'Tasks', onStopAllTasks, className, ...rest}, ref) => {
       const sortedTasks = useMemo(() => sortTasks(tasks), [tasks])
 
       // Count completed tasks (recursively)
@@ -177,6 +195,8 @@ export const TodosList = React.forwardRef<HTMLDivElement, TodosListProps>(
         }
         return count
       }
+
+      const showStopButton = !!onStopAllTasks && hasInProgressTask(tasks)
 
       if (tasks.length === 0) {
         return null
@@ -207,6 +227,26 @@ export const TodosList = React.forwardRef<HTMLDivElement, TodosListProps>(
                   <TaskItem key={task.id} task={task}/>
               ))}
             </div>
+
+            {/* Stop All Tasks button */}
+            {showStopButton && (
+                <div className="px-4 py-2 border-t border-ash/40 flex-shrink-0">
+                  <button
+                      type="button"
+                      onClick={onStopAllTasks}
+                      className={cx(
+                          'w-full flex items-center justify-center gap-2 px-3 py-1.5',
+                          'bg-error/10 hover:bg-error/20 text-error',
+                          'border border-error/30',
+                          'text-xs font-medium',
+                          'transition-colors duration-200'
+                      )}
+                  >
+                    <Square className="w-3 h-3 fill-current"/>
+                    Stop All Tasks
+                  </button>
+                </div>
+            )}
           </div>
       )
     }
