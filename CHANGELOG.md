@@ -1,3 +1,10 @@
+## [3.3.0](https://github.com/lukeashford/aurelius/compare/v3.2.1...v3.3.0) (2026-04-08)
+
+### Features
+
+* **chat:** add onStopAllTasks callback to TodosList and ChatInterface ([2d010a0](https://github.com/lukeashford/aurelius/commit/2d010a0e3a5da0c2879d206356eca28a7ac4b93d))
+* **demo:** wire onStopAllTasks into ChatDemo ([76d4b83](https://github.com/lukeashford/aurelius/commit/76d4b833748088cb8921b32b198f01328631ce6d))
+
 ## [3.2.1](https://github.com/lukeashford/aurelius/compare/v3.2.0...v3.2.1) (2026-04-06)
 
 ### Bug Fixes
