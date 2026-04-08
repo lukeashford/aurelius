@@ -839,6 +839,17 @@ export default function ChatDemo() {
     })
   }, [streamResponse, updateTask, updateSubtask, addSubtasks])
 
+  // Handle stop all tasks — cancels any in-progress tasks and subtasks
+  const handleStopAllTasks = useCallback(() => {
+    const cancelInProgress = (taskList: Task[]): Task[] =>
+        taskList.map(t => ({
+          ...t,
+          status: (t.status === 'in_progress' || t.status === 'pending') ? 'cancelled' as const : t.status,
+          subtasks: t.subtasks ? cancelInProgress(t.subtasks) : undefined,
+        }))
+    setTasks(cancelInProgress)
+  }, [])
+
   // Handle stop generation
   const handleStop = useCallback(() => {
     if (streamIntervalRef.current) {
@@ -1152,6 +1163,7 @@ export default function ChatDemo() {
               artifactNodes={artifactNodes}
               tasks={tasks}
               tasksTitle="Workflow Progress"
+              onStopAllTasks={handleStopAllTasks}
               placeholder="Send a message..."
               emptyStateHelper={getEmptyStateHelper()}
               showAttachmentButton={true}
