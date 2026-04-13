@@ -155,8 +155,12 @@ export interface ChatInterfaceProps extends Omit<React.HTMLAttributes<HTMLDivEle
    * Called when the "Stop All Tasks" button is clicked in the tasks panel.
    * Only shown when at least one task has in_progress status.
    * The consumer app decides what stopping means (cancel API calls, mark tasks cancelled, etc.).
+   *
+   * May return a Promise. While the Promise is pending, the button becomes
+   * disabled and displays a spinner with "Stopping tasks" so the user knows
+   * the stop request is in flight.
    */
-  onStopAllTasks?: () => void
+  onStopAllTasks?: () => void | Promise<void>
   /**
    * Additional tools to add to the tool sidebars. Each ExternalToolDefinition provides
    * an id, icon, label, group ('top-left' | 'bottom-left' | 'top-right' | 'bottom-right'),

@@ -331,8 +331,8 @@ A card for displaying text content, supporting Markdown and HTML formatting.
 - **content**: * Text content to display (Markdown, HTML, or plain text)
 - **title**: * Optional title for the card
 - **subtitle**: * Optional subtitle or metadata
-- **isMarkdown**: * Whether the content should be treated as Markdown @default true
-- **maxHeight**: * Maximum height of the content area before scrolling @default '16rem'
+- **isMarkdown**: * Whether the content should be treated as Markdown @default true
+- **maxHeight**: * Maximum height of the content area before scrolling @default '16rem'
 - **contentClassName**: * Optional class name for the content container
 
 **ArtifactsPanel**
@@ -437,7 +437,7 @@ artifactNodes prop.
 - **onArtifactsPanelOpenChange**: * Called when the artifacts panel is opened or closed (controlled).
 - **tasks**: * Tasks to display in the todos list tool panel. Shows a list of tasks with status indicators.
 - **tasksTitle**: * Title for the todos list @default "Tasks"
-- **onStopAllTasks**: * Called when the "Stop All Tasks" button is clicked in the tasks panel. Only shown when at least one task has in_progress status. The consumer app decides what stopping means (cancel API calls, mark tasks cancelled, etc.).
+- **onStopAllTasks**: * Called when the "Stop All Tasks" button is clicked in the tasks panel. Only shown when at least one task has in_progress status. The consumer app decides what stopping means (cancel API calls, mark tasks cancelled, etc.). * May return a Promise. While the Promise is pending, the button becomes disabled and displays a spinner with "Stopping tasks" so the user knows the stop request is in flight.
 - **tools**: * Additional tools to add to the tool sidebars. Each ExternalToolDefinition provides an id, icon, label, group ('top-left' | 'bottom-left' | 'top-right' | 'bottom-right'), and content (ReactNode) to render when opened. Tools in the same group are mutually exclusive. Built-in tools occupy: History (top-left), Artifacts (top-right), Tasks (bottom-right). Consumer tools are added alongside these.
 
 **ChatView**
@@ -480,7 +480,7 @@ but has not yet started streaming tokens. It cycles through flavorful "thinking"
 - **Task.subtasks**: * Optional subtasks (shown when parent is in_progress or done)
 - **tasks**: * Array of tasks to display
 - **title**: * Title for the todos list @default "Tasks"
-- **onStopAllTasks**: * Called when the "Stop All Tasks" button is clicked. Only shown when at least one task is in_progress. The consumer decides what stopping means (cancel API calls, mark cancelled, etc.).
+- **onStopAllTasks**: * Called when the "Stop All Tasks" button is clicked. Only shown when at least one task is in_progress. The consumer decides what stopping means (cancel API calls, mark cancelled, etc.). * May return a Promise. While the Promise is pending, the button becomes disabled and displays a spinner with "Stopping tasks" to give the user feedback that the stop request is in flight.
 
 **ToolPanelContainer**
 ToolPanelContainer manages the layout of one or two tool panels

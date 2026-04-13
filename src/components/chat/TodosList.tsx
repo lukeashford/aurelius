@@ -1,5 +1,5 @@
-import React, {useMemo} from 'react'
-import {Square} from 'lucide-react'
+import React, {useCallback, useMemo, useState} from 'react'
+import {Loader2, Square} from 'lucide-react'
 import {cx} from '../../utils'
 import {CheckSquareIcon, CrossSquareIcon, EmptySquareIcon, SquareLoaderIcon,} from '../icons'
 
@@ -46,8 +46,12 @@ export interface TodosListProps extends React.HTMLAttributes<HTMLDivElement> {
    * Called when the "Stop All Tasks" button is clicked.
    * Only shown when at least one task is in_progress.
    * The consumer decides what stopping means (cancel API calls, mark cancelled, etc.).
+   *
+   * May return a Promise. While the Promise is pending, the button becomes
+   * disabled and displays a spinner with "Stopping tasks" to give the user
+   * feedback that the stop request is in flight.
    */
-  onStopAllTasks?: () => void
+  onStopAllTasks?: () => void | Promise<void>
 }
 
 /**
@@ -171,6 +175,17 @@ function hasInProgressTask(tasks: Task[]): boolean {
 export const TodosList = React.forwardRef<HTMLDivElement, TodosListProps>(
     ({tasks, title = 'Tasks', onStopAllTasks, className, ...rest}, ref) => {
       const sortedTasks = useMemo(() => sortTasks(tasks), [tasks])
+      const [isStopping, setIsStopping] = useState(false)
+
+      const handleStopClick = useCallback(async () => {
+        if (!onStopAllTasks || isStopping) return
+        try {
+          setIsStopping(true)
+          await onStopAllTasks()
+        } finally {
+          setIsStopping(false)
+        }
+      }, [onStopAllTasks, isStopping])
 
       // Count completed tasks (recursively)
       const countCompleted = (taskList: Task[]): number => {
@@ -196,7 +211,9 @@ export const TodosList = React.forwardRef<HTMLDivElement, TodosListProps>(
         return count
       }
 
-      const showStopButton = !!onStopAllTasks && hasInProgressTask(tasks)
+      // Keep the button mounted while a stop is in flight, even if tasks have
+      // already flipped out of in_progress synchronously.
+      const showStopButton = !!onStopAllTasks && (hasInProgressTask(tasks) || isStopping)
 
       if (tasks.length === 0) {
         return null
@@ -233,17 +250,32 @@ export const TodosList = React.forwardRef<HTMLDivElement, TodosListProps>(
                 <div className="px-4 py-2 border-t border-ash/40 flex-shrink-0">
                   <button
                       type="button"
-                      onClick={onStopAllTasks}
+                      onClick={handleStopClick}
+                      disabled={isStopping}
+                      aria-busy={isStopping}
+                      aria-label={isStopping ? 'Stopping tasks' : 'Stop all tasks'}
                       className={cx(
                           'w-full flex items-center justify-center gap-2 px-3 py-1.5',
-                          'bg-error/10 hover:bg-error/20 text-error',
+                          'bg-error/10 text-error',
                           'border border-error/30',
                           'text-xs font-medium',
-                          'transition-colors duration-200'
+                          'transition-colors duration-200',
+                          isStopping
+                              ? 'cursor-not-allowed opacity-70'
+                              : 'hover:bg-error/20'
                       )}
                   >
-                    <Square className="w-3 h-3 fill-current"/>
-                    Stop All Tasks
+                    {isStopping ? (
+                        <>
+                          <Loader2 className="w-3 h-3 animate-spin"/>
+                          Stopping tasks
+                        </>
+                    ) : (
+                        <>
+                          <Square className="w-3 h-3 fill-current"/>
+                          Stop All Tasks
+                        </>
+                    )}
                   </button>
                 </div>
             )}
