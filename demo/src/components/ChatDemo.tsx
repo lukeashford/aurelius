@@ -840,7 +840,9 @@ export default function ChatDemo() {
   }, [streamResponse, updateTask, updateSubtask, addSubtasks])
 
   // Handle stop all tasks — cancels any in-progress tasks and subtasks
-  const handleStopAllTasks = useCallback(() => {
+  // Returns a Promise so the button shows a "Stopping tasks" pending state.
+  const handleStopAllTasks = useCallback(async () => {
+    await new Promise((resolve) => setTimeout(resolve, 1000))
     const cancelInProgress = (taskList: Task[]): Task[] =>
         taskList.map(t => ({
           ...t,
