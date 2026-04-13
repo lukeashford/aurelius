@@ -1,3 +1,11 @@
+## [3.4.0](https://github.com/lukeashford/aurelius/compare/v3.3.0...v3.4.0) (2026-04-13)
+
+### Features
+
+* **chat:** add runBrandAnalysisWorkflow with looping support ([f42f08b](https://github.com/lukeashford/aurelius/commit/f42f08b53ebf36ab5e79f7c67295a7062b9d5438))
+* **chat:** show pending feedback on Stop All Tasks while async ([14eba21](https://github.com/lukeashford/aurelius/commit/14eba2127483246489a897c2839426b5ab132b49))
+* **demo:** add 1s delay to handleStopAllTasks to demo pending state ([98dc656](https://github.com/lukeashford/aurelius/commit/98dc656c4c919c109ca15b280613cb9659e0e561))
+
 ## [3.3.0](https://github.com/lukeashford/aurelius/compare/v3.2.1...v3.3.0) (2026-04-08)
 
 ### Features
