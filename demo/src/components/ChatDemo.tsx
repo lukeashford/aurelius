@@ -2,8 +2,8 @@ import React, {useCallback, useEffect, useRef, useState} from 'react'
 import {useNavigate} from 'react-router-dom'
 import {
   addMessageToTree,
-  type Attachment,
   type ArtifactNode,
+  type Attachment,
   ChatInterface,
   type Conversation,
   type ConversationTree,
@@ -410,7 +410,8 @@ const LIGHTING_CHILDREN: ArtifactNode[] = [
  * Immutably add a child to a node identified by parentId within a tree.
  * Returns a new tree array with the updated parent.
  */
-function addChildToNode(tree: ArtifactNode[], parentId: string, child: ArtifactNode): ArtifactNode[] {
+function addChildToNode(tree: ArtifactNode[], parentId: string,
+    child: ArtifactNode): ArtifactNode[] {
   return tree.map(node => {
     if (node.id === parentId) {
       return {...node, children: [...node.children, child]}
@@ -471,6 +472,8 @@ export default function ChatDemo() {
   const streamIntervalRef = useRef<NodeJS.Timeout | null>(null)
   const currentMessageIdRef = useRef<string | null>(null)
   const brandWorkflowRef = useRef<NodeJS.Timeout[]>([])
+  const runBrandAnalysisWorkflowRef = useRef<() => void>(() => {
+  })
 
   // Artifact nodes for the tree-aware panel (simple + brand workflow)
 
@@ -634,6 +637,7 @@ export default function ChatDemo() {
     // Reset state
     setTasks([...INITIAL_BRAND_TASKS])
     setArtifactNodes([])
+    setConversationTree(createEmptyTree())
     setIsStreaming(true)
     setIsThinking(true)
 
@@ -670,19 +674,24 @@ export default function ChatDemo() {
       },
 
       // Complete collect, start analyze
-      {time: 5000, action: () => {
+      {
+        time: 5000, action: () => {
           updateTask('task-collect', {status: 'done'})
           updateTask('task-analyze', {status: 'in_progress'})
-        }},
+        }
+      },
 
       // Complete analyze, start script generation
-      {time: 8000, action: () => {
+      {
+        time: 8000, action: () => {
           updateTask('task-analyze', {status: 'done'})
           updateTask('task-script', {status: 'in_progress'})
-        }},
+        }
+      },
 
       // Script done — add script node to tree
-      {time: 11000, action: () => {
+      {
+        time: 11000, action: () => {
           updateTask('task-script', {status: 'done'})
           pushNode(SCRIPT_NODE)
 
@@ -691,12 +700,14 @@ export default function ChatDemo() {
           streamResponse(BRAND_ANALYSIS_SCRIPT_DONE, null, () => {
             setIsStreaming(false)
           })
-        }},
+        }
+      },
 
       // ---- Storyboard: group appears empty, then panels land 1s apart ----
 
       // Start storyboard task, add empty group
-      {time: 13000, action: () => {
+      {
+        time: 13000, action: () => {
           updateTask('task-storyboard', {status: 'in_progress'})
           addSubtasks('task-storyboard', [
             {id: 'sub-sb-1', label: 'Panel 1 — Opening', status: 'pending'},
@@ -710,31 +721,43 @@ export default function ChatDemo() {
             label: 'Storyboard',
             children: [],
           })
-        }},
+        }
+      },
 
       // Panel 1 lands
-      {time: 14000, action: () => {
+      {
+        time: 14000, action: () => {
           updateSubtask('task-storyboard', 'sub-sb-1', {status: 'in_progress'})
-        }},
-      {time: 15000, action: () => {
+        }
+      },
+      {
+        time: 15000, action: () => {
           updateSubtask('task-storyboard', 'sub-sb-1', {status: 'done'})
           pushChild('storyboard-group', STORYBOARD_PANELS[0])
-        }},
+        }
+      },
 
       // Panel 2 lands
-      {time: 15500, action: () => {
+      {
+        time: 15500, action: () => {
           updateSubtask('task-storyboard', 'sub-sb-2', {status: 'in_progress'})
-        }},
-      {time: 16500, action: () => {
+        }
+      },
+      {
+        time: 16500, action: () => {
           updateSubtask('task-storyboard', 'sub-sb-2', {status: 'done'})
           pushChild('storyboard-group', STORYBOARD_PANELS[1])
-        }},
+        }
+      },
 
       // Panel 3 lands
-      {time: 17000, action: () => {
+      {
+        time: 17000, action: () => {
           updateSubtask('task-storyboard', 'sub-sb-3', {status: 'in_progress'})
-        }},
-      {time: 18000, action: () => {
+        }
+      },
+      {
+        time: 18000, action: () => {
           updateSubtask('task-storyboard', 'sub-sb-3', {status: 'done'})
           pushChild('storyboard-group', STORYBOARD_PANELS[2])
           updateTask('task-storyboard', {status: 'done'})
@@ -744,11 +767,13 @@ export default function ChatDemo() {
           streamResponse(BRAND_ANALYSIS_STORYBOARD_DONE, null, () => {
             setIsStreaming(false)
           })
-        }},
+        }
+      },
 
       // ---- Color treatments: variant set appears, children stream in ----
 
-      {time: 20000, action: () => {
+      {
+        time: 20000, action: () => {
           updateTask('task-colors', {status: 'in_progress'})
           addSubtasks('task-colors', [
             {id: 'sub-color-1', label: 'Warm Analog', status: 'pending'},
@@ -762,27 +787,35 @@ export default function ChatDemo() {
             label: 'Color Treatments',
             children: [],
           })
-        }},
+        }
+      },
 
-      {time: 21000, action: () => {
+      {
+        time: 21000, action: () => {
           updateSubtask('task-colors', 'sub-color-1', {status: 'done'})
           pushChild('color-treatments', COLOR_CHILDREN[0])
-        }},
+        }
+      },
 
-      {time: 22000, action: () => {
+      {
+        time: 22000, action: () => {
           updateSubtask('task-colors', 'sub-color-2', {status: 'done'})
           pushChild('color-treatments', COLOR_CHILDREN[1])
-        }},
+        }
+      },
 
-      {time: 23000, action: () => {
+      {
+        time: 23000, action: () => {
           updateSubtask('task-colors', 'sub-color-3', {status: 'done'})
           pushChild('color-treatments', COLOR_CHILDREN[2])
           updateTask('task-colors', {status: 'done'})
-        }},
+        }
+      },
 
       // ---- Scene breakdown: group → script notes → lighting variant set ----
 
-      {time: 24000, action: () => {
+      {
+        time: 24000, action: () => {
           updateTask('task-scene', {status: 'in_progress'})
           addSubtasks('task-scene', [
             {id: 'sub-scene-notes', label: 'Script notes', status: 'pending'},
@@ -795,16 +828,20 @@ export default function ChatDemo() {
             label: 'Scene Breakdown',
             children: [],
           })
-        }},
+        }
+      },
 
       // Script notes land
-      {time: 25000, action: () => {
+      {
+        time: 25000, action: () => {
           updateSubtask('task-scene', 'sub-scene-notes', {status: 'done'})
           pushChild('scene-breakdown', SCENE_SCRIPT_NOTES)
-        }},
+        }
+      },
 
       // Lighting variant set appears empty, then children land
-      {time: 26000, action: () => {
+      {
+        time: 26000, action: () => {
           updateSubtask('task-scene', 'sub-scene-lighting', {status: 'in_progress'})
           pushChild('scene-breakdown', {
             id: 'sb-lighting',
@@ -813,13 +850,17 @@ export default function ChatDemo() {
             label: 'Lighting Options',
             children: [],
           })
-        }},
+        }
+      },
 
-      {time: 27000, action: () => {
+      {
+        time: 27000, action: () => {
           pushChild('sb-lighting', LIGHTING_CHILDREN[0])
-        }},
+        }
+      },
 
-      {time: 28000, action: () => {
+      {
+        time: 28000, action: () => {
           pushChild('sb-lighting', LIGHTING_CHILDREN[1])
           updateSubtask('task-scene', 'sub-scene-lighting', {status: 'done'})
           updateTask('task-scene', {status: 'done'})
@@ -829,7 +870,15 @@ export default function ChatDemo() {
           streamResponse(BRAND_ANALYSIS_COMPLETE, null, () => {
             setIsStreaming(false)
           })
-        }},
+        }
+      },
+
+      // Loop after 15s
+      {
+        time: 28000 + 15000, action: () => {
+          runBrandAnalysisWorkflowRef.current()
+        }
+      },
     ]
 
     // Schedule all timeline events
@@ -839,6 +888,8 @@ export default function ChatDemo() {
     })
   }, [streamResponse, updateTask, updateSubtask, addSubtasks])
 
+  runBrandAnalysisWorkflowRef.current = runBrandAnalysisWorkflow
+
   // Handle stop all tasks — cancels any in-progress tasks and subtasks
   // Returns a Promise so the button shows a "Stopping tasks" pending state.
   const handleStopAllTasks = useCallback(async () => {
@@ -846,7 +897,8 @@ export default function ChatDemo() {
     const cancelInProgress = (taskList: Task[]): Task[] =>
         taskList.map(t => ({
           ...t,
-          status: (t.status === 'in_progress' || t.status === 'pending') ? 'cancelled' as const : t.status,
+          status: (t.status === 'in_progress' || t.status === 'pending') ? 'cancelled' as const
+              : t.status,
           subtasks: t.subtasks ? cancelInProgress(t.subtasks) : undefined,
         }))
     setTasks(cancelInProgress)
