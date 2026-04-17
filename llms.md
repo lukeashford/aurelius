@@ -161,7 +161,7 @@ Import from `@lukeashford/aurelius`:
 | MessageActions | variant (user, assistant), content, onEdit, onRetry, isEditing, onEditingChange, editValue |
 | ThinkingIndicator | isVisible, phraseInterval, phrases |
 | TodosList | tasks, title, onStopAllTasks |
-| ToolPanelContainer | topContent, bottomContent, width, onResizeStart, side |
+| ToolPanelContainer | topContent, bottomContent, width, initialTopPercent, onResizeStart, side |
 | ToolSidebar | tools, activeTools, onToggleTool, side |
 | ChatBubbleIcon | children |
 | CheckSquareIcon | children |
@@ -498,6 +498,7 @@ to the previous ArtifactsPanel resize behavior.
 - **topContent**: * Content for the top tool slot (from the top group). When null, the bottom slot takes full height.
 - **bottomContent**: * Content for the bottom tool slot (from the bottom group). When null, the top slot takes full height.
 - **width**: * Panel width as CSS value (e.g., "50vw")
+- **initialTopPercent**: * Default top panel height percentage (0-100). @default 60
 - **onResizeStart**: * Callback to start horizontal resizing (width dragger)
 - **side**: * Which side this panel is on — controls border and resize handle position
 
