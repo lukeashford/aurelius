@@ -437,27 +437,45 @@ const INITIAL_BRAND_TASKS: Task[] = [
 ]
 
 // Mock conversation history
+const now = Date.now()
+const HOUR = 60 * 60 * 1000
+const DAY = 24 * HOUR
+
 const MOCK_CONVERSATIONS: Conversation[] = [
-  {
-    id: 'brand-analysis',
-    title: 'Brand Analysis Demo',
-    preview: 'Luminova Coffee campaign...',
-    timestamp: 'Pinned',
-    isActive: false
-  },
   {
     id: '1',
     title: 'Interactive Demo',
-    preview: 'Try all features...',
-    timestamp: 'Now',
-    isActive: true
+    project: 'Aurelius Playground',
+    timestamp: new Date(now),
+    isActive: true,
+  },
+  {
+    id: 'brand-analysis',
+    title: 'Brand Analysis Demo',
+    project: 'Luminova Coffee',
+    timestamp: new Date(now - 3 * HOUR),
+    isActive: false,
   },
   {
     id: 'branching',
     title: 'Branching Demo',
-    preview: 'Explore alternate paths...',
-    timestamp: 'Pinned',
-    isActive: false
+    project: 'Aurelius Playground',
+    timestamp: new Date(now - DAY - 2 * HOUR),
+    isActive: false,
+  },
+  {
+    id: 'old-1',
+    title: 'Tagline Brainstorm',
+    project: 'Luminova Coffee',
+    timestamp: new Date(now - 5 * DAY),
+    isActive: false,
+  },
+  {
+    id: 'old-2',
+    title: 'Release Notes Draft',
+    project: 'Aurelius Playground',
+    timestamp: new Date(now - 12 * DAY),
+    isActive: false,
   },
 ]
 
@@ -1095,13 +1113,20 @@ export default function ChatDemo() {
     const newChat: Conversation = {
       id: newId,
       title: 'New Chat',
-      preview: 'Start typing...',
-      timestamp: 'Now',
+      project: 'Aurelius Playground',
+      timestamp: new Date(),
       isActive: true,
     }
 
     setConversations((prev) =>
         [newChat, ...prev.map((c) => ({...c, isActive: false}))].slice(0, 6)
+    )
+  }, [])
+
+  // Handle conversation rename
+  const handleRenameConversation = useCallback((id: string, newTitle: string) => {
+    setConversations((prev) =>
+        prev.map((c) => (c.id === id ? {...c, title: newTitle} : c))
     )
   }, [])
 
@@ -1210,6 +1235,7 @@ export default function ChatDemo() {
               onStop={handleStop}
               onSelectConversation={handleSelectConversation}
               onNewChat={handleNewChat}
+              onRenameConversation={handleRenameConversation}
               isStreaming={isStreaming}
               isThinking={isThinking}
               attachments={attachments}

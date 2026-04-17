@@ -4,6 +4,7 @@ import {ChatView, type ChatViewItem} from './ChatView'
 import {type Attachment, ChatInput, type ChatInputNotice} from './ChatInput'
 
 import {ArtifactsPanel} from './ArtifactsPanel'
+import {HistoryPanel} from './HistoryPanel'
 import {areAllTasksSettled, type Task, TodosList} from './TodosList'
 import {
   type ExternalToolDefinition,
@@ -37,10 +38,27 @@ export interface ChatMessage {
 }
 
 export interface Conversation {
+  /**
+   * Unique identifier for the conversation
+   */
   id: string
+  /**
+   * Title shown as the first line of the row. Editable via the rename affordance.
+   */
   title: string
-  preview?: string
-  timestamp?: string
+  /**
+   * Project this conversation belongs to. Shown as the second line of the row and
+   * collected into the project filter in the history panel.
+   */
+  project?: string
+  /**
+   * Timestamp used to group conversations into Today / Yesterday / Older.
+   * Accepts a Date, ISO string, or millisecond epoch. Not displayed.
+   */
+  timestamp?: string | number | Date
+  /**
+   * Whether this conversation is currently active (highlighted in the list).
+   */
   isActive?: boolean
 }
 
@@ -90,6 +108,11 @@ export interface ChatInterfaceProps extends Omit<React.HTMLAttributes<HTMLDivEle
    * Called when the "New Chat" button is clicked in the sidebar.
    */
   onNewChat?: () => void
+  /**
+   * Called when a conversation's title is renamed from the history panel.
+   * Receives the conversation id and the new, trimmed title.
+   */
+  onRenameConversation?: (id: string, newTitle: string) => void
   /**
    * Whether the assistant is currently streaming a response.
    * Shows a stop button and disables certain actions.
@@ -221,6 +244,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
           onStop,
           onSelectConversation,
           onNewChat,
+          onRenameConversation,
           isStreaming = false,
           isThinking = false,
           placeholder = 'Send a message...',
@@ -493,66 +517,12 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
         switch (toolId) {
           case 'history':
             return (
-                <div className="h-full flex flex-col">
-                  <div
-                      className="flex items-center justify-between p-4 border-b border-ash/40 shrink-0">
-                    <h3 className="text-xs font-medium text-white">History</h3>
-                    {onNewChat && (
-                        <button
-                            onClick={onNewChat}
-                            className={cx(
-                                'flex px-3 py-1.5',
-                                'bg-gold/10 hover:bg-gold/20 text-gold',
-                                'border border-gold/30',
-                                'text-xs font-medium',
-                                'transition-colors duration-200'
-                            )}
-                        >
-                          <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                              className="w-4 h-4"
-                          >
-                            <path
-                                d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z"/>
-                          </svg>
-                          New Chat
-                        </button>
-                    )}
-                  </div>
-                  <div className="flex-1 overflow-y-auto py-2">
-                    {conversations.length === 0 ? (
-                        <p className="px-4 py-2 text-xs text-silver/60">No conversations yet</p>
-                    ) : (
-                        <div className="space-y-1 px-2">
-                          {conversations.map((conversation) => (
-                              <button
-                                  key={conversation.id}
-                                  onClick={() => onSelectConversation?.(conversation.id)}
-                                  className={cx(
-                                      'w-full px-3 py-2 text-left',
-                                      'transition-colors duration-150',
-                                      conversation.isActive
-                                          ? 'bg-ash/40 text-white'
-                                          : 'text-silver hover:bg-ash/20 hover:text-white'
-                                  )}
-                              >
-                                <p className="text-sm font-medium truncate">{conversation.title}</p>
-                                {conversation.preview && (
-                                    <p className="text-xs text-silver/60 truncate mt-0.5">
-                                      {conversation.preview}
-                                    </p>
-                                )}
-                                {conversation.timestamp && (
-                                    <p className="text-xs text-silver/40 mt-1">{conversation.timestamp}</p>
-                                )}
-                              </button>
-                          ))}
-                        </div>
-                    )}
-                  </div>
-                </div>
+                <HistoryPanel
+                    conversations={conversations}
+                    onSelectConversation={onSelectConversation}
+                    onNewChat={onNewChat}
+                    onRenameConversation={onRenameConversation}
+                />
             )
 
           case 'artifacts':
