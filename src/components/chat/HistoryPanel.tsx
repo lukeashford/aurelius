@@ -373,32 +373,38 @@ export function HistoryPanel({
 
   return (
       <div className="h-full flex flex-col">
-        <div className="p-4 border-b border-ash/40 shrink-0 flex flex-col gap-3">
-          <h3 className="text-xs font-medium text-white">History</h3>
+        <div className="px-4 py-3 border-b border-ash/40 shrink-0 flex items-center gap-2">
+          <h3 className="text-xs font-medium text-white shrink-0">History</h3>
           {(hasFilter || onNewChat) && (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-1 min-w-0">
                 {hasFilter && (
-                    <ProjectFilter
-                        projects={projects}
-                        value={projectFilter}
-                        onChange={setProjectFilter}
-                        className="flex-1"
-                    />
+                    <>
+                      <div className="w-px h-3 bg-ash/40 shrink-0 mx-1"/>
+                      <ProjectFilter
+                          projects={projects}
+                          value={projectFilter}
+                          onChange={setProjectFilter}
+                          className="flex-1"
+                      />
+                    </>
                 )}
                 {onNewChat && (
-                    <button
-                        onClick={onNewChat}
-                        className={cx(
-                            'flex items-center gap-1 px-3 py-1.5 shrink-0',
-                            'bg-gold/10 hover:bg-gold/20 text-gold',
-                            'border border-gold/30',
-                            'text-xs font-medium',
-                            'transition-colors duration-200'
-                        )}
-                    >
-                      <PlusIcon className="w-4 h-4"/>
-                      New Chat
-                    </button>
+                    <>
+                      <div className="w-px h-3 bg-ash/40 shrink-0 mx-1"/>
+                      <button
+                          onClick={onNewChat}
+                          className={cx(
+                              'flex items-center gap-1 px-2.5 py-1.5 shrink-0',
+                              'bg-gold/10 hover:bg-gold/20 text-gold',
+                              'border border-gold/30',
+                              'text-xs font-medium',
+                              'transition-colors duration-200'
+                          )}
+                      >
+                        <PlusIcon className="w-4 h-4"/>
+                        <span className="truncate">New Chat</span>
+                      </button>
+                    </>
                 )}
               </div>
           )}
