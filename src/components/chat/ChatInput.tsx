@@ -6,7 +6,8 @@ import {createPreviewUrl, generateId, isImageFile} from './types'
 
 export interface ChatInputNotice {
   /**
-   * Visual severity: 'warning' shows a dismissible amber notice, 'error' shows a persistent red notice
+   * Visual severity: 'warning' shows a dismissible amber notice, 'error' shows a persistent red
+   * notice
    */
   variant: 'warning' | 'error'
   /**
@@ -93,6 +94,10 @@ export interface ChatInputProps extends Omit<React.HTMLAttributes<HTMLDivElement
    * Called whenever the input value changes, giving the consumer access to the current text
    */
   onInputChange?: (value: string) => void
+  /**
+   * Whether to automatically focus the input when it becomes enabled
+   */
+  autoFocus?: boolean
 }
 
 /**
@@ -123,6 +128,7 @@ export const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
           acceptedFileTypes,
           notice,
           onInputChange,
+          autoFocus = false,
           className,
           ...rest
         },
@@ -189,10 +195,10 @@ export const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
 
       // Focus input when it becomes enabled
       useEffect(() => {
-        if (!disabled && !isStreaming && textareaRef.current) {
+        if (autoFocus && !disabled && !isStreaming && textareaRef.current) {
           textareaRef.current.focus()
         }
-      }, [disabled, isStreaming])
+      }, [disabled, isStreaming, autoFocus])
 
       // File handling
       const addFiles = useCallback(

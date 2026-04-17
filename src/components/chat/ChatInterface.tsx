@@ -180,6 +180,11 @@ export interface ChatInterfaceProps extends Omit<React.HTMLAttributes<HTMLDivEle
    * (bottom-right). Consumer tools are added alongside these.
    */
   tools?: ExternalToolDefinition[]
+  /**
+   * Whether to automatically focus the chat input when it becomes enabled.
+   * Defaults to true.
+   */
+  autoFocus?: boolean
 }
 
 /**
@@ -234,6 +239,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
           inputNotice,
           onInputChange,
           tools: externalTools = [],
+          autoFocus = true,
           className,
           ...rest
         },
@@ -664,6 +670,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
                       onAttachmentsChange={onAttachmentsChange}
                       notice={inputNotice}
                       onInputChange={onInputChange}
+                      autoFocus={autoFocus}
                   />
                 </div>
 

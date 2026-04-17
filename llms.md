@@ -155,7 +155,7 @@ Import from `@lukeashford/aurelius`:
 | VideoCard | src, title, subtitle, aspectRatio (${number}/${number}), playing, controls, light, volume, muted, loop, mediaClassName, contentClassName, playerProps, loading |
 | ArtifactsPanel | nodes, loading, artifactCount, onExpand |
 | BranchNavigator | current, total, onPrevious, onNext, size, showIcon |
-| ChatInput | position (centered, bottom), placeholder, helperText, onSubmit, disabled, animate, isStreaming, onStop, attachments, onAttachmentsChange, showAttachmentButton, acceptedFileTypes, notice, onInputChange |
+| ChatInput | position (centered, bottom), placeholder, helperText, onSubmit, disabled, animate, isStreaming, onStop, attachments, onAttachmentsChange, showAttachmentButton, acceptedFileTypes, notice, onInputChange, autoFocus |
 | ChatInterface | messages, conversationTree, onTreeChange, conversations, onMessageSubmit, onEditMessage, onRetryMessage, onStop, onSelectConversation, onNewChat, isStreaming, isThinking, placeholder, emptyStateHelper, emptyState, showAttachmentButton, enableMessageActions, attachments, onAttachmentsChange, artifactNodes, isArtifactsPanelOpen, onArtifactsPanelOpenChange, tasks, tasksTitle, onStopAllTasks |
 | ChatView | messages, latestUserMessageIndex, isStreaming, isThinking, onScroll |
 | MessageActions | variant (user, assistant), content, onEdit, onRetry, isEditing, onEditingChange, editValue |
@@ -393,6 +393,7 @@ Features:
 - **acceptedFileTypes**: * Accepted file types for attachments
 - **notice**: * Optional notice displayed above the input (e.g. credit warnings or exhaustion messages)
 - **onInputChange**: * Called whenever the input value changes, giving the consumer access to the current text
+- **autoFocus**: * Whether to automatically focus the input when it becomes enabled
 
 **ChatInterface**
 ChatInterface is the main orchestrator for a full-featured chat experience.
