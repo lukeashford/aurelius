@@ -1,3 +1,11 @@
+## [3.6.0](https://github.com/lukeashford/aurelius/compare/v3.5.0...v3.6.0) (2026-04-17)
+
+### Features
+
+* **chat:** add autoFocus prop to ChatInput and ChatInterface ([10e4c69](https://github.com/lukeashford/aurelius/commit/10e4c694575867223cb675c7dcf28e1062c2e6cd))
+* **chat:** group history by date, project filter, and rename titles ([fcfcf07](https://github.com/lukeashford/aurelius/commit/fcfcf07abeafb0bb2aef4887416ee7e6573c9541))
+* **chat:** improve HistoryPanel layout and styling adjustments ([7ead0a0](https://github.com/lukeashford/aurelius/commit/7ead0a03dc7d6eada30bac9e6bb64751f9406549))
+
 ## [3.5.0](https://github.com/lukeashford/aurelius/compare/v3.4.0...v3.5.0) (2026-04-17)
 
 ### Features
