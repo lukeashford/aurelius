@@ -1,7 +1,8 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import {cx} from '../../utils'
 import {ChatView, type ChatViewItem} from './ChatView'
-import {type Attachment, ChatInput} from './ChatInput'
+import {type Attachment, ChatInput, type ChatInputNotice} from './ChatInput'
+
 import {ArtifactsPanel} from './ArtifactsPanel'
 import {areAllTasksSettled, type Task, TodosList} from './TodosList'
 import {
@@ -162,6 +163,16 @@ export interface ChatInterfaceProps extends Omit<React.HTMLAttributes<HTMLDivEle
    */
   onStopAllTasks?: () => void | Promise<void>
   /**
+   * Optional notice displayed above the chat input (e.g. credit warnings or exhaustion messages).
+   * Pass `{ variant: 'warning', content: '...', dismissible: true, onDismiss: () => ... }` for
+   * soft warnings, or `{ variant: 'error', content: <ReactNode> }` for hard blocks.
+   */
+  inputNotice?: ChatInputNotice
+  /**
+   * Called whenever the chat input value changes, giving the consumer access to the current text.
+   */
+  onInputChange?: (value: string) => void
+  /**
    * Additional tools to add to the tool sidebars. Each ExternalToolDefinition provides
    * an id, icon, label, group ('top-left' | 'bottom-left' | 'top-right' | 'bottom-right'),
    * and content (ReactNode) to render when opened. Tools in the same group are mutually
@@ -220,6 +231,8 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
           tasks = [],
           tasksTitle,
           onStopAllTasks,
+          inputNotice,
+          onInputChange,
           tools: externalTools = [],
           className,
           ...rest
@@ -649,6 +662,8 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
                       showAttachmentButton={showAttachmentButton}
                       attachments={propsAttachments}
                       onAttachmentsChange={onAttachmentsChange}
+                      notice={inputNotice}
+                      onInputChange={onInputChange}
                   />
                 </div>
 

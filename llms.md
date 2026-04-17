@@ -155,8 +155,8 @@ Import from `@lukeashford/aurelius`:
 | VideoCard | src, title, subtitle, aspectRatio (${number}/${number}), playing, controls, light, volume, muted, loop, mediaClassName, contentClassName, playerProps, loading |
 | ArtifactsPanel | nodes, loading, artifactCount, onExpand |
 | BranchNavigator | current, total, onPrevious, onNext, size, showIcon |
-| ChatInput | position (centered, bottom), placeholder, helperText, onSubmit, disabled, animate, isStreaming, onStop, attachments, onAttachmentsChange, showAttachmentButton, acceptedFileTypes |
-| ChatInterface | messages, conversationTree, onTreeChange, conversations, onMessageSubmit, onEditMessage, onRetryMessage, onStop, onSelectConversation, onNewChat, isStreaming, isThinking, placeholder, emptyStateHelper, emptyState, showAttachmentButton, enableMessageActions, attachments, onAttachmentsChange, artifactNodes, isArtifactsPanelOpen, onArtifactsPanelOpenChange, tasks, tasksTitle, onStopAllTasks, tools |
+| ChatInput | position (centered, bottom), placeholder, helperText, onSubmit, disabled, animate, isStreaming, onStop, attachments, onAttachmentsChange, showAttachmentButton, acceptedFileTypes, notice, onInputChange |
+| ChatInterface | messages, conversationTree, onTreeChange, conversations, onMessageSubmit, onEditMessage, onRetryMessage, onStop, onSelectConversation, onNewChat, isStreaming, isThinking, placeholder, emptyStateHelper, emptyState, showAttachmentButton, enableMessageActions, attachments, onAttachmentsChange, artifactNodes, isArtifactsPanelOpen, onArtifactsPanelOpenChange, tasks, tasksTitle, onStopAllTasks |
 | ChatView | messages, latestUserMessageIndex, isStreaming, isThinking, onScroll |
 | MessageActions | variant (user, assistant), content, onEdit, onRetry, isEditing, onEditingChange, editValue |
 | ThinkingIndicator | isVisible, phraseInterval, phrases |
@@ -375,6 +375,10 @@ Features:
 - Streaming state with stop button
 - Animated transition between positions
 
+- **ChatInputNotice.variant**: * Visual severity: 'warning' shows a dismissible amber notice, 'error' shows a persistent red notice
+- **ChatInputNotice.content**: * Content to render — plain text or any React node (e.g. text + button for error state)
+- **ChatInputNotice.dismissible**: * Whether to show a dismiss (×) button. Defaults to true for warning, ignored for error.
+- **ChatInputNotice.onDismiss**: * Called when the dismiss button is clicked. Consumer controls whether the notice disappears.
 - **position**: * Position of the input: 'centered' for empty state, 'bottom' for conversation mode
 - **placeholder**: * Placeholder text for the input
 - **helperText**: * Helper text shown above the input in centered mode
@@ -387,6 +391,8 @@ Features:
 - **onAttachmentsChange**: * Called when attachments change (controlled mode)
 - **showAttachmentButton**: * Whether to show the attachment button
 - **acceptedFileTypes**: * Accepted file types for attachments
+- **notice**: * Optional notice displayed above the input (e.g. credit warnings or exhaustion messages)
+- **onInputChange**: * Called whenever the input value changes, giving the consumer access to the current text
 
 **ChatInterface**
 ChatInterface is the main orchestrator for a full-featured chat experience.
@@ -438,7 +444,6 @@ artifactNodes prop.
 - **tasks**: * Tasks to display in the todos list tool panel. Shows a list of tasks with status indicators.
 - **tasksTitle**: * Title for the todos list @default "Tasks"
 - **onStopAllTasks**: * Called when the "Stop All Tasks" button is clicked in the tasks panel. Only shown when at least one task has in_progress status. The consumer app decides what stopping means (cancel API calls, mark tasks cancelled, etc.). * May return a Promise. While the Promise is pending, the button becomes disabled and displays a spinner with "Stopping tasks" so the user knows the stop request is in flight.
-- **tools**: * Additional tools to add to the tool sidebars. Each ExternalToolDefinition provides an id, icon, label, group ('top-left' | 'bottom-left' | 'top-right' | 'bottom-right'), and content (ReactNode) to render when opened. Tools in the same group are mutually exclusive. Built-in tools occupy: History (top-left), Artifacts (top-right), Tasks (bottom-right). Consumer tools are added alongside these.
 
 **ChatView**
 ChatView displays a conversation thread with smart scrolling behavior.

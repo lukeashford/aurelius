@@ -1,8 +1,27 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react'
 import {cx} from '../../utils'
-import {Paperclip, Send, Square} from 'lucide-react'
+import {Paperclip, Send, Square, X} from 'lucide-react'
 import {type AttachmentItem, AttachmentPreview} from '../AttachmentPreview'
 import {createPreviewUrl, generateId, isImageFile} from './types'
+
+export interface ChatInputNotice {
+  /**
+   * Visual severity: 'warning' shows a dismissible amber notice, 'error' shows a persistent red notice
+   */
+  variant: 'warning' | 'error'
+  /**
+   * Content to render — plain text or any React node (e.g. text + button for error state)
+   */
+  content: React.ReactNode
+  /**
+   * Whether to show a dismiss (×) button. Defaults to true for warning, ignored for error.
+   */
+  dismissible?: boolean
+  /**
+   * Called when the dismiss button is clicked. Consumer controls whether the notice disappears.
+   */
+  onDismiss?: () => void
+}
 
 export type ChatInputPosition = 'centered' | 'bottom'
 
@@ -66,6 +85,14 @@ export interface ChatInputProps extends Omit<React.HTMLAttributes<HTMLDivElement
    * Accepted file types for attachments
    */
   acceptedFileTypes?: string
+  /**
+   * Optional notice displayed above the input (e.g. credit warnings or exhaustion messages)
+   */
+  notice?: ChatInputNotice
+  /**
+   * Called whenever the input value changes, giving the consumer access to the current text
+   */
+  onInputChange?: (value: string) => void
 }
 
 /**
@@ -94,6 +121,8 @@ export const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
           onAttachmentsChange,
           showAttachmentButton = true,
           acceptedFileTypes,
+          notice,
+          onInputChange,
           className,
           ...rest
         },
@@ -150,12 +179,13 @@ export const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
 
       const handleChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setValue(e.target.value)
+        onInputChange?.(e.target.value)
 
         // Auto-resize textarea
         const textarea = e.target
         textarea.style.height = 'auto'
         textarea.style.height = `${Math.min(textarea.scrollHeight, 200)}px`
-      }, [])
+      }, [onInputChange])
 
       // Focus input when it becomes enabled
       useEffect(() => {
@@ -256,6 +286,32 @@ export const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
             {/* Helper text for centered mode */}
             {isCentered && helperText && (
                 <p className="text-silver text-sm mb-4 text-center">{helperText}</p>
+            )}
+
+            {/* Notice bar */}
+            {notice && (
+                <div className={cx(
+                    'w-full flex items-start gap-2 px-3 py-2 mb-1 text-xs',
+                    isCentered && 'max-w-lg',
+                    notice.variant === 'warning'
+                        ? 'bg-gold/5 border border-gold/20 text-gold/80'
+                        : 'bg-error/10 border border-error/30 text-error'
+                )}>
+                  <span className="flex-1">{notice.content}</span>
+                  {(notice.dismissible ?? notice.variant === 'warning') && notice.onDismiss && (
+                      <button
+                          type="button"
+                          onClick={notice.onDismiss}
+                          aria-label="Dismiss"
+                          className={cx(
+                              'shrink-0 opacity-60 hover:opacity-100 transition-opacity',
+                              notice.variant === 'warning' ? 'text-gold' : 'text-error'
+                          )}
+                      >
+                        <X className="w-3 h-3"/>
+                      </button>
+                  )}
+                </div>
             )}
 
             {/* Input container */}
