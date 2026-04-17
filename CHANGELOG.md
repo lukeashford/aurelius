@@ -1,3 +1,11 @@
+## [3.5.0](https://github.com/lukeashford/aurelius/compare/v3.4.0...v3.5.0) (2026-04-17)
+
+### Features
+
+* **chat:** add initialTopPercent prop to ToolPanelContainer and update resizing config ([1b9f53a](https://github.com/lukeashford/aurelius/commit/1b9f53a7ec4e5b8da417235cda364a37f6a678a5))
+* **chat:** add support for input notices and onInputChange callback ([4f64500](https://github.com/lukeashford/aurelius/commit/4f6450040ac37646ce3e88e61526fd0fe5563e15))
+* **chat:** add warning and error notices to input section tests ([307419d](https://github.com/lukeashford/aurelius/commit/307419d270d0c0fb47522e50891b18528d133e2d))
+
 ## [3.4.0](https://github.com/lukeashford/aurelius/compare/v3.3.0...v3.4.0) (2026-04-13)
 
 ### Features
