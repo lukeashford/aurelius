@@ -277,9 +277,9 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
         width: rightToolsWidth,
         startResizing: startResizingRightTools
       } = useResizable({
-        initialWidthPercent: 50,
-        minWidthPercent: 25,
-        maxWidthPercent: 70,
+        initialWidthPercent: 40,
+        minWidthPercent: 30,
+        maxWidthPercent: 80,
         direction: 'left'
       })
 
@@ -397,10 +397,8 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
             if (c.status !== p.status || c.label !== p.label) {
               return true
             }
-            if (c.subtasks && hasNewOrUpdatedTask(c.subtasks, p?.subtasks || [])) {
-              return true
-            }
-            return false
+            return !!(c.subtasks && hasNewOrUpdatedTask(c.subtasks, p?.subtasks || []));
+
           })
         }
 
@@ -561,7 +559,8 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
 
           case 'todos':
             return tasks.length > 0
-                ? <TodosList tasks={tasks} title={tasksTitle} onStopAllTasks={onStopAllTasks} className="h-full"/>
+                ? <TodosList tasks={tasks} title={tasksTitle} onStopAllTasks={onStopAllTasks}
+                             className="h-full"/>
                 : (
                     <div className="h-full flex flex-col">
                       <div className="flex items-center p-4 border-b border-ash/40 shrink-0">
@@ -605,6 +604,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
                     width={leftToolsWidth}
                     onResizeStart={startResizingLeftTools}
                     side="left"
+                    initialTopPercent={30}
                 />
             )}
 
@@ -683,6 +683,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
                     width={rightToolsWidth}
                     onResizeStart={startResizingRightTools}
                     side="right"
+                    initialTopPercent={70}
                 />
             )}
 
