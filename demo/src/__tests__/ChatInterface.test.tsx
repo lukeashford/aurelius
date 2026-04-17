@@ -4,8 +4,8 @@ import {addMessageToTree, ChatInterface, createEmptyTree,} from '@lukeashford/au
 
 describe('ChatInterface', () => {
   const mockConversations = [
-    {id: '1', title: 'Conversation 1', preview: 'Hello...', isActive: true},
-    {id: '2', title: 'Conversation 2', preview: 'World...', isActive: false},
+    {id: '1', title: 'Conversation 1', project: 'Alpha', isActive: true},
+    {id: '2', title: 'Conversation 2', project: 'Beta', isActive: false},
   ]
 
   const createTreeWithMessages = () => {

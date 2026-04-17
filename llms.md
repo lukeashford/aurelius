@@ -155,9 +155,10 @@ Import from `@lukeashford/aurelius`:
 | VideoCard | src, title, subtitle, aspectRatio (${number}/${number}), playing, controls, light, volume, muted, loop, mediaClassName, contentClassName, playerProps, loading |
 | ArtifactsPanel | nodes, loading, artifactCount, onExpand |
 | BranchNavigator | current, total, onPrevious, onNext, size, showIcon |
-| ChatInput | position (centered, bottom), placeholder, helperText, onSubmit, disabled, animate, isStreaming, onStop, attachments, onAttachmentsChange, showAttachmentButton, acceptedFileTypes, notice, onInputChange |
-| ChatInterface | messages, conversationTree, onTreeChange, conversations, onMessageSubmit, onEditMessage, onRetryMessage, onStop, onSelectConversation, onNewChat, isStreaming, isThinking, placeholder, emptyStateHelper, emptyState, showAttachmentButton, enableMessageActions, attachments, onAttachmentsChange, artifactNodes, isArtifactsPanelOpen, onArtifactsPanelOpenChange, tasks, tasksTitle, onStopAllTasks |
+| ChatInput | position (centered, bottom), placeholder, helperText, onSubmit, disabled, animate, isStreaming, onStop, attachments, onAttachmentsChange, showAttachmentButton, acceptedFileTypes, notice, onInputChange, autoFocus |
+| ChatInterface | messages, conversationTree, onTreeChange, conversations, onMessageSubmit, onEditMessage, onRetryMessage, onStop, onSelectConversation, onNewChat, onRenameConversation, isStreaming, isThinking, placeholder, emptyStateHelper, emptyState, showAttachmentButton, enableMessageActions, attachments, onAttachmentsChange, artifactNodes, isArtifactsPanelOpen, onArtifactsPanelOpenChange, tasks, tasksTitle, onStopAllTasks |
 | ChatView | messages, latestUserMessageIndex, isStreaming, isThinking, onScroll |
+| HistoryPanel | conversations, onSelectConversation, onNewChat, onRenameConversation |
 | MessageActions | variant (user, assistant), content, onEdit, onRetry, isEditing, onEditingChange, editValue |
 | ThinkingIndicator | isVisible, phraseInterval, phrases |
 | TodosList | tasks, title, onStopAllTasks |
@@ -331,8 +332,8 @@ A card for displaying text content, supporting Markdown and HTML formatting.
 - **content**: * Text content to display (Markdown, HTML, or plain text)
 - **title**: * Optional title for the card
 - **subtitle**: * Optional subtitle or metadata
-- **isMarkdown**: * Whether the content should be treated as Markdown @default true
-- **maxHeight**: * Maximum height of the content area before scrolling @default '16rem'
+- **isMarkdown**: * Whether the content should be treated as Markdown @default true
+- **maxHeight**: * Maximum height of the content area before scrolling @default '16rem'
 - **contentClassName**: * Optional class name for the content container
 
 **ArtifactsPanel**
@@ -393,6 +394,7 @@ Features:
 - **acceptedFileTypes**: * Accepted file types for attachments
 - **notice**: * Optional notice displayed above the input (e.g. credit warnings or exhaustion messages)
 - **onInputChange**: * Called whenever the input value changes, giving the consumer access to the current text
+- **autoFocus**: * Whether to automatically focus the input when it becomes enabled
 
 **ChatInterface**
 ChatInterface is the main orchestrator for a full-featured chat experience.
@@ -419,6 +421,11 @@ artifactNodes prop.
 - **ChatMessage.variant**: * Whether the message is from the user or the assistant
 - **ChatMessage.content**: * Message content (Markdown supported)
 - **ChatMessage.isStreaming**: * Whether the message is currently streaming
+- **Conversation.id**: * Unique identifier for the conversation
+- **Conversation.title**: * Title shown as the first line of the row. Editable via the rename affordance.
+- **Conversation.project**: * Project this conversation belongs to. Shown as the second line of the row and collected into the project filter in the history panel.
+- **Conversation.timestamp**: * Timestamp used to group conversations into Today / Yesterday / Older. Accepts a Date, ISO string, or millisecond epoch. Not displayed.
+- **Conversation.isActive**: * Whether this conversation is currently active (highlighted in the list).
 - **messages**: * Array of messages in the conversation (flat mode) Use this OR conversationTree, not both
 - **conversationTree**: * Conversation tree for branching support Use this OR messages, not both
 - **onTreeChange**: * Called when the conversation tree changes (for tree mode)
@@ -429,6 +436,7 @@ artifactNodes prop.
 - **onStop**: * Called when the Stop button is clicked during assistant streaming.
 - **onSelectConversation**: * Called when a conversation is selected from the sidebar.
 - **onNewChat**: * Called when the "New Chat" button is clicked in the sidebar.
+- **onRenameConversation**: * Called when a conversation's title is renamed from the history panel. Receives the conversation id and the new, trimmed title.
 - **isStreaming**: * Whether the assistant is currently streaming a response. Shows a stop button and disables certain actions.
 - **isThinking**: * Whether to show the thinking indicator. Typically shown after a user message but before the first streaming token.
 - **placeholder**: * Placeholder text for the main chat input.
@@ -460,6 +468,17 @@ Key behaviors:
 - **isStreaming**: * Whether the assistant is currently streaming a response
 - **isThinking**: * Whether to show the thinking indicator (between user message and response)
 - **onScroll**: * Callback when the user scrolls manually
+
+**HistoryPanel**
+HistoryPanel renders the conversation history sidebar: a project filter,
+a "New Chat" button, and the conversation list grouped by recency
+(Today / Yesterday / Older). Each row shows the title and an optional
+project subtitle, and exposes an inline rename affordance on hover.
+
+- **conversations**: * List of past conversations to display.
+- **onSelectConversation**: * Called when a conversation is selected.
+- **onNewChat**: * Called when the "New Chat" button is clicked.
+- **onRenameConversation**: * Called when a conversation's title is edited.
 
 **MessageActions**
 - **variant**: * Whether this is for a user or assistant message

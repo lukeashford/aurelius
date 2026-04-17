@@ -22,6 +22,7 @@ export {
   type ArtifactsPanelProps,
   type ArtifactsPanelToggleProps,
 } from './ArtifactsPanel'
+export {HistoryPanel, type HistoryPanelProps} from './HistoryPanel'
 export {
   TodosList,
   areAllTasksSettled,
