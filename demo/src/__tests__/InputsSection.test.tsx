@@ -11,7 +11,7 @@ describe('InputsSection', () => {
   it('renders input examples', () => {
     const {container} = render(<InputsSection/>);
     const inputs = container.querySelectorAll('input');
-    expect(inputs.length).toBe(4); // Default, With Icons, Invalid, Disabled
+    expect(inputs.length).toBe(6); // Default, With Icons, Invalid, Disabled
   });
 
   it('matches snapshot', () => {

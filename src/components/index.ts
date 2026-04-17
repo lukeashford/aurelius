@@ -214,6 +214,7 @@ export {
   type ChatViewItem,
   type ChatInputProps,
   type ChatInputPosition,
+  type ChatInputNotice,
   type Attachment,
   type AttachmentStatus,
   type Conversation,

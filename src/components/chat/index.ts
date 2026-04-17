@@ -12,6 +12,7 @@ export {
   ChatInput,
   type ChatInputProps,
   type ChatInputPosition,
+  type ChatInputNotice,
   type Attachment,
   type AttachmentStatus
 } from './ChatInput'

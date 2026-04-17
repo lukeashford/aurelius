@@ -17,6 +17,11 @@ export interface ToolPanelContainerProps extends React.HTMLAttributes<HTMLDivEle
    */
   width?: string
   /**
+   * Default top panel height percentage (0-100).
+   * @default 60
+   */
+  initialTopPercent?: number
+  /**
    * Callback to start horizontal resizing (width dragger)
    */
   onResizeStart?: (e: React.MouseEvent) => void
@@ -35,9 +40,18 @@ export interface ToolPanelContainerProps extends React.HTMLAttributes<HTMLDivEle
  * to the previous ArtifactsPanel resize behavior.
  */
 export const ToolPanelContainer = React.forwardRef<HTMLDivElement, ToolPanelContainerProps>(
-    ({topContent, bottomContent, width, onResizeStart, side = 'right', className, ...rest},
+    ({
+          topContent,
+          bottomContent,
+          width,
+          onResizeStart,
+          side = 'right',
+          className,
+          initialTopPercent = 60,
+          ...rest
+        },
         ref) => {
-      const [topPercent, setTopPercent] = useState(60)
+      const [topPercent, setTopPercent] = useState(initialTopPercent)
       const [isResizingHeight, setIsResizingHeight] = useState(false)
       const containerRef = useRef<HTMLDivElement>(null)
       const lastY = useRef<number | null>(null)

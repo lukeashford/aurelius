@@ -1,7 +1,8 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import {cx} from '../../utils'
 import {ChatView, type ChatViewItem} from './ChatView'
-import {type Attachment, ChatInput} from './ChatInput'
+import {type Attachment, ChatInput, type ChatInputNotice} from './ChatInput'
+
 import {ArtifactsPanel} from './ArtifactsPanel'
 import {areAllTasksSettled, type Task, TodosList} from './TodosList'
 import {
@@ -162,6 +163,16 @@ export interface ChatInterfaceProps extends Omit<React.HTMLAttributes<HTMLDivEle
    */
   onStopAllTasks?: () => void | Promise<void>
   /**
+   * Optional notice displayed above the chat input (e.g. credit warnings or exhaustion messages).
+   * Pass `{ variant: 'warning', content: '...', dismissible: true, onDismiss: () => ... }` for
+   * soft warnings, or `{ variant: 'error', content: <ReactNode> }` for hard blocks.
+   */
+  inputNotice?: ChatInputNotice
+  /**
+   * Called whenever the chat input value changes, giving the consumer access to the current text.
+   */
+  onInputChange?: (value: string) => void
+  /**
    * Additional tools to add to the tool sidebars. Each ExternalToolDefinition provides
    * an id, icon, label, group ('top-left' | 'bottom-left' | 'top-right' | 'bottom-right'),
    * and content (ReactNode) to render when opened. Tools in the same group are mutually
@@ -220,6 +231,8 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
           tasks = [],
           tasksTitle,
           onStopAllTasks,
+          inputNotice,
+          onInputChange,
           tools: externalTools = [],
           className,
           ...rest
@@ -264,9 +277,9 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
         width: rightToolsWidth,
         startResizing: startResizingRightTools
       } = useResizable({
-        initialWidthPercent: 50,
-        minWidthPercent: 25,
-        maxWidthPercent: 70,
+        initialWidthPercent: 40,
+        minWidthPercent: 30,
+        maxWidthPercent: 80,
         direction: 'left'
       })
 
@@ -384,10 +397,8 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
             if (c.status !== p.status || c.label !== p.label) {
               return true
             }
-            if (c.subtasks && hasNewOrUpdatedTask(c.subtasks, p?.subtasks || [])) {
-              return true
-            }
-            return false
+            return !!(c.subtasks && hasNewOrUpdatedTask(c.subtasks, p?.subtasks || []));
+
           })
         }
 
@@ -548,7 +559,8 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
 
           case 'todos':
             return tasks.length > 0
-                ? <TodosList tasks={tasks} title={tasksTitle} onStopAllTasks={onStopAllTasks} className="h-full"/>
+                ? <TodosList tasks={tasks} title={tasksTitle} onStopAllTasks={onStopAllTasks}
+                             className="h-full"/>
                 : (
                     <div className="h-full flex flex-col">
                       <div className="flex items-center p-4 border-b border-ash/40 shrink-0">
@@ -592,6 +604,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
                     width={leftToolsWidth}
                     onResizeStart={startResizingLeftTools}
                     side="left"
+                    initialTopPercent={30}
                 />
             )}
 
@@ -649,6 +662,8 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
                       showAttachmentButton={showAttachmentButton}
                       attachments={propsAttachments}
                       onAttachmentsChange={onAttachmentsChange}
+                      notice={inputNotice}
+                      onInputChange={onInputChange}
                   />
                 </div>
 
@@ -668,6 +683,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
                     width={rightToolsWidth}
                     onResizeStart={startResizingRightTools}
                     side="right"
+                    initialTopPercent={70}
                 />
             )}
 
