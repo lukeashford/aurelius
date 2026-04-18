@@ -196,6 +196,10 @@ export interface ChatInterfaceProps extends Omit<React.HTMLAttributes<HTMLDivEle
    */
   onInputChange?: (value: string) => void
   /**
+   * Initial value for the input, used for state restoration (e.g. from DB or localStorage)
+   */
+  initialInputValue?: string
+  /**
    * Additional tools to add to the tool sidebars. Each ExternalToolDefinition provides
    * an id, icon, label, group ('top-left' | 'bottom-left' | 'top-right' | 'bottom-right'),
    * and content (ReactNode) to render when opened. Tools in the same group are mutually
@@ -262,6 +266,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
           onStopAllTasks,
           inputNotice,
           onInputChange,
+          initialInputValue = '',
           tools: externalTools = [],
           autoFocus = true,
           className,
@@ -640,6 +645,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
                       onAttachmentsChange={onAttachmentsChange}
                       notice={inputNotice}
                       onInputChange={onInputChange}
+                      initialInputValue={initialInputValue}
                       autoFocus={autoFocus}
                   />
                 </div>

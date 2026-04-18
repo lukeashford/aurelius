@@ -155,7 +155,7 @@ Import from `@lukeashford/aurelius`:
 | VideoCard | src, title, subtitle, aspectRatio (${number}/${number}), playing, controls, light, volume, muted, loop, mediaClassName, contentClassName, playerProps, loading |
 | ArtifactsPanel | nodes, loading, artifactCount, onExpand |
 | BranchNavigator | current, total, onPrevious, onNext, size, showIcon |
-| ChatInput | position (centered, bottom), placeholder, helperText, onSubmit, disabled, animate, isStreaming, onStop, attachments, onAttachmentsChange, showAttachmentButton, acceptedFileTypes, notice, onInputChange, autoFocus |
+| ChatInput | position (centered, bottom), placeholder, helperText, onSubmit, disabled, animate, isStreaming, onStop, attachments, onAttachmentsChange, showAttachmentButton, acceptedFileTypes, notice, onInputChange, initialInputValue, autoFocus |
 | ChatInterface | messages, conversationTree, onTreeChange, conversations, onMessageSubmit, onEditMessage, onRetryMessage, onStop, onSelectConversation, onNewChat, onRenameConversation, isStreaming, isThinking, placeholder, emptyStateHelper, emptyState, showAttachmentButton, enableMessageActions, attachments, onAttachmentsChange, artifactNodes, isArtifactsPanelOpen, onArtifactsPanelOpenChange, tasks, tasksTitle, onStopAllTasks |
 | ChatView | messages, latestUserMessageIndex, isStreaming, isThinking, onScroll |
 | HistoryPanel | conversations, onSelectConversation, onNewChat, onRenameConversation |
@@ -332,8 +332,8 @@ A card for displaying text content, supporting Markdown and HTML formatting.
 - **content**: * Text content to display (Markdown, HTML, or plain text)
 - **title**: * Optional title for the card
 - **subtitle**: * Optional subtitle or metadata
-- **isMarkdown**: * Whether the content should be treated as Markdown @default true
-- **maxHeight**: * Maximum height of the content area before scrolling @default '16rem'
+- **isMarkdown**: * Whether the content should be treated as Markdown @default true
+- **maxHeight**: * Maximum height of the content area before scrolling @default '16rem'
 - **contentClassName**: * Optional class name for the content container
 
 **ArtifactsPanel**
@@ -394,6 +394,7 @@ Features:
 - **acceptedFileTypes**: * Accepted file types for attachments
 - **notice**: * Optional notice displayed above the input (e.g. credit warnings or exhaustion messages)
 - **onInputChange**: * Called whenever the input value changes, giving the consumer access to the current text
+- **initialInputValue**: * Initial value for the input, used for state restoration (e.g. from DB or localStorage)
 - **autoFocus**: * Whether to automatically focus the input when it becomes enabled
 
 **ChatInterface**

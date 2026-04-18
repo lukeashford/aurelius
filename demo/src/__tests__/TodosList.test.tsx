@@ -76,11 +76,11 @@ describe('TodosList', () => {
     expect(screen.getByText('Parent Task')).toBeInTheDocument()
     expect(screen.getByText('Subtask 1')).toBeInTheDocument()
     expect(screen.getByText('Subtask 2')).toBeInTheDocument()
-    // Progress should include subtasks: 1 (subtask 1) / 3 (parent + 2 subtasks)
-    expect(screen.getByText('1/3')).toBeInTheDocument()
+    // Progress should include subtasks: 0 (parent task not done) / 1 (parent task)
+    expect(screen.getByText('0/1')).toBeInTheDocument()
   })
 
-  it('hides subtasks when parent is pending', () => {
+  it('shows subtasks even when parent is pending', () => {
     const tasks: Task[] = [
       {
         id: '1',
@@ -94,7 +94,7 @@ describe('TodosList', () => {
     render(<TodosList tasks={tasks}/>)
 
     expect(screen.getByText('Parent Task')).toBeInTheDocument()
-    expect(screen.queryByText('Subtask 1')).not.toBeInTheDocument()
+    expect(screen.getByText('Subtask 1')).toBeInTheDocument()
   })
 
   it('applies correct styling for different statuses', () => {

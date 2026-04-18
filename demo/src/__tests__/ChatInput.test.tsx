@@ -140,6 +140,12 @@ describe('ChatInput', () => {
     expect(container.firstChild).toHaveClass('gap-4')
   })
 
+  it('initializes with initialInputValue', () => {
+    render(<ChatInput initialInputValue="Pre-filled text"/>)
+    const textarea = screen.getByRole('textbox') as HTMLTextAreaElement
+    expect(textarea.value).toBe('Pre-filled text')
+  })
+
   it('handles drag and drop for files', () => {
     const onAttachmentsChange = jest.fn()
     render(

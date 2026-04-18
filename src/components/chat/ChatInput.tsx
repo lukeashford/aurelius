@@ -95,6 +95,10 @@ export interface ChatInputProps extends Omit<React.HTMLAttributes<HTMLDivElement
    */
   onInputChange?: (value: string) => void
   /**
+   * Initial value for the input, used for state restoration (e.g. from DB or localStorage)
+   */
+  initialInputValue?: string
+  /**
    * Whether to automatically focus the input when it becomes enabled
    */
   autoFocus?: boolean
@@ -128,13 +132,14 @@ export const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
           acceptedFileTypes,
           notice,
           onInputChange,
+          initialInputValue = '',
           autoFocus = false,
           className,
           ...rest
         },
         ref
     ) => {
-      const [value, setValue] = useState('')
+      const [value, setValue] = useState(initialInputValue)
       const [localAttachments, setLocalAttachments] = useState<Attachment[]>([])
       const [isDragOver, setIsDragOver] = useState(false)
       const textareaRef = useRef<HTMLTextAreaElement>(null)
