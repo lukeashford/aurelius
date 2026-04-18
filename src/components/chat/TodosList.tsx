@@ -100,18 +100,15 @@ function TaskItem({task, depth = 0}: { task: Task; depth?: number }) {
       === 'failed'
   const isSubtle = task.status === 'cancelled' || task.status === 'failed'
 
-  // Show subtasks when parent is in_progress or done (to keep showing after completion)
-  const showSubtasks = (task.status === 'in_progress' || task.status === 'done') &&
-      task.subtasks && task.subtasks.length > 0
+  // Always show subtasks if they exist
+  const showSubtasks = task.subtasks && task.subtasks.length > 0
   const sortedSubtasks = showSubtasks ? sortTasks(task.subtasks!) : []
 
   return (
       <div className="flex flex-col">
         <div
-            className={cx(
-                'flex items-center gap-2 py-1',
-                depth > 0 && 'pl-6'
-            )}
+            className="flex items-center gap-2 py-1"
+            style={{paddingLeft: `${depth * 1.5}rem`}}
         >
           <TaskIcon status={task.status}/>
           <span
@@ -133,7 +130,7 @@ function TaskItem({task, depth = 0}: { task: Task; depth?: number }) {
         </span>
         </div>
 
-        {/* Render subtasks when parent is in_progress or done */}
+        {/* Render subtasks if they exist */}
         {showSubtasks && (
             <div className="flex flex-col">
               {sortedSubtasks.map((subtask) => (
@@ -166,8 +163,12 @@ function TaskItem({task, depth = 0}: { task: Task; depth?: number }) {
  */
 function hasInProgressTask(tasks: Task[]): boolean {
   return tasks.some(t => {
-    if (t.status === 'in_progress') return true
-    if (t.subtasks && t.subtasks.length > 0) return hasInProgressTask(t.subtasks)
+    if (t.status === 'in_progress') {
+      return true
+    }
+    if (t.subtasks && t.subtasks.length > 0) {
+      return hasInProgressTask(t.subtasks)
+    }
     return false
   })
 }
@@ -178,7 +179,9 @@ export const TodosList = React.forwardRef<HTMLDivElement, TodosListProps>(
       const [isStopping, setIsStopping] = useState(false)
 
       const handleStopClick = useCallback(async () => {
-        if (!onStopAllTasks || isStopping) return
+        if (!onStopAllTasks || isStopping) {
+          return
+        }
         try {
           setIsStopping(true)
           await onStopAllTasks()
@@ -187,28 +190,13 @@ export const TodosList = React.forwardRef<HTMLDivElement, TodosListProps>(
         }
       }, [onStopAllTasks, isStopping])
 
-      // Count completed tasks (recursively)
+      // Count completed top-level tasks
       const countCompleted = (taskList: Task[]): number => {
-        let count = 0
-        for (const task of taskList) {
-          if (task.status === 'done') {
-            count++
-          }
-          if (task.subtasks) {
-            count += countCompleted(task.subtasks)
-          }
-        }
-        return count
+        return taskList.filter(task => task.status === 'done').length
       }
 
       const countTotal = (taskList: Task[]): number => {
-        let count = taskList.length
-        for (const task of taskList) {
-          if (task.subtasks) {
-            count += countTotal(task.subtasks)
-          }
-        }
-        return count
+        return taskList.length
       }
 
       // Keep the button mounted while a stop is in flight, even if tasks have
@@ -293,8 +281,12 @@ TodosList.displayName = 'TodosList'
 export function areAllTasksSettled(tasks: Task[]): boolean {
   return tasks.every(t => {
     const settled = t.status === 'done' || t.status === 'cancelled' || t.status === 'failed'
-    if (!settled) return false
-    if (t.subtasks && t.subtasks.length > 0) return areAllTasksSettled(t.subtasks)
+    if (!settled) {
+      return false
+    }
+    if (t.subtasks && t.subtasks.length > 0) {
+      return areAllTasksSettled(t.subtasks)
+    }
     return true
   })
 }
