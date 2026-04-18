@@ -1,3 +1,10 @@
+## [3.7.0](https://github.com/lukeashford/aurelius/compare/v3.6.0...v3.7.0) (2026-04-18)
+
+### Features
+
+* **chat:** add initialInputValue prop to ChatInput and ChatInterface ([7b24977](https://github.com/lukeashford/aurelius/commit/7b249773bec459c1830774f7200ec7948f9ccc22))
+* **chat:** always display subtasks and simplify task counting logic ([1ba32ab](https://github.com/lukeashford/aurelius/commit/1ba32ab72b08bfd90937f6054d809dbb72d710c4))
+
 ## [3.6.0](https://github.com/lukeashford/aurelius/compare/v3.5.0...v3.6.0) (2026-04-17)
 
 ### Features
