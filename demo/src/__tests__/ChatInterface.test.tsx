@@ -194,6 +194,12 @@ describe('ChatInterface', () => {
     expect(screen.getByTestId('custom-empty')).toBeInTheDocument()
   })
 
+  it('initializes with initialInputValue', () => {
+    render(<ChatInterface initialInputValue="Pre-filled interface text"/>)
+    const textarea = screen.getByRole('textbox') as HTMLTextAreaElement
+    expect(textarea.value).toBe('Pre-filled interface text')
+  })
+
   it('renders input even when custom empty state is provided', () => {
     render(
         <ChatInterface
