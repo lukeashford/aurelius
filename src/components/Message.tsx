@@ -39,15 +39,15 @@ export interface MessageActionsConfig {
   showCopy?: boolean
 }
 
-export interface MessageProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface MessageProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'content'> {
   /**
    * Whether the message is from the user or the assistant
    */
   variant?: MessageVariant
   /**
-   * The message content (supports Markdown)
+   * The message content (supports Markdown if string)
    */
-  content: string
+  content: string | React.ReactNode
   /**
    * Whether the message is currently being streamed (shows cursor)
    */
@@ -185,7 +185,7 @@ export const Message = React.forwardRef<HTMLDivElement, MessageProps>(
       const isUser = variant === 'user'
       const [copied, setCopied] = useState(false)
       const [isEditing, setIsEditing] = useState(false)
-      const [editValue, setEditValue] = useState(content)
+      const [editValue, setEditValue] = useState(typeof content === 'string' ? content : '')
       const textareaRef = useRef<HTMLTextAreaElement>(null)
 
       const showBranchNav = branchInfo && branchInfo.total > 1
@@ -204,6 +204,10 @@ export const Message = React.forwardRef<HTMLDivElement, MessageProps>(
       }, [isEditing])
 
       const handleCopy = async () => {
+        if (typeof content !== 'string') {
+          return
+        }
+
         try {
           await navigator.clipboard.writeText(content)
           setCopied(true)
@@ -222,18 +226,22 @@ export const Message = React.forwardRef<HTMLDivElement, MessageProps>(
       }
 
       const handleStartEdit = () => {
-        setEditValue(content)
-        setIsEditing(true)
+        if (typeof content === 'string') {
+          setEditValue(content)
+          setIsEditing(true)
+        }
       }
 
       const handleCancelEdit = () => {
         setIsEditing(false)
-        setEditValue(content)
+        if (typeof content === 'string') {
+          setEditValue(content)
+        }
       }
 
       const handleSubmitEdit = () => {
         const trimmed = editValue.trim()
-        if (trimmed && trimmed !== content) {
+        if (typeof content === 'string' && trimmed && trimmed !== content) {
           actions?.onEdit?.(trimmed)
         }
         setIsEditing(false)
@@ -306,12 +314,14 @@ export const Message = React.forwardRef<HTMLDivElement, MessageProps>(
                         variantStyles[variant]
                     )}
                 >
-                  <MarkdownContent
-                      content={content}
-                      className={cx('prose-sm', isUser ? 'prose-inherit' : 'prose-invert')}
-                      isStreaming={isStreaming}
-                      cursorClassName="ml-0.5"
-                  />
+                  {typeof content === 'string' ? (
+                      <MarkdownContent
+                          content={content}
+                          className={cx('prose-sm', isUser ? 'prose-inherit' : 'prose-invert')}
+                          isStreaming={isStreaming}
+                          cursorClassName="ml-0.5"
+                      />
+                  ) : content}
                 </div>
             )}
 
@@ -330,7 +340,7 @@ export const Message = React.forwardRef<HTMLDivElement, MessageProps>(
                   )}
 
                   {/* Edit - only for user messages */}
-                  {isUser && actions.onEdit && (
+                  {isUser && actions.onEdit && typeof content === 'string' && (
                       <ActionButton onClick={handleStartEdit} label="Edit message">
                         <PencilIcon/>
                       </ActionButton>
