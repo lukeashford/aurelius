@@ -1,6 +1,41 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {Message, type MessageVariant} from '@lukeashford/aurelius'
 import Section from './Section'
+
+const FeedbackForm = () => {
+  const [rating, setRating] = useState<number | null>(null)
+  const [feedback, setFeedback] = useState('')
+
+  return (
+      <div className="space-y-4">
+        <p className="text-sm text-white">How would you rate this task?</p>
+        <div className="flex gap-2">
+          {[1, 2, 3, 4, 5].map((r) => (
+              <button
+                  key={r}
+                  onClick={() => setRating(r)}
+                  className={`w-8 h-8 border border-ash flex items-center justify-center transition-colors ${rating
+                  === r ? "bg-gold text-obsidian border-gold" : "hover:bg-white/10 text-white"}`}
+              >
+                {r}
+              </button>
+          ))}
+        </div>
+        <textarea
+            value={feedback}
+            onChange={(e) => setFeedback(e.target.value)}
+            placeholder="Optional feedback..."
+            className="w-full bg-obsidian border border-ash p-2 text-sm text-white"
+        />
+        <button
+            onClick={() => alert(`Submitted: ${rating}, feedback: ${feedback}`)}
+            className="bg-gold text-obsidian px-3 py-1.5 text-sm font-medium"
+        >
+          Submit
+        </button>
+      </div>
+  )
+}
 
 const variants: Array<{ variant: MessageVariant, label: string }> = [
   {variant: 'assistant', label: 'Assistant'},
@@ -28,6 +63,18 @@ export default function MessageSection() {
                   </div>
               ))}
             </div>
+          </div>
+
+          {/* Custom Content Example */}
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Custom Content</h3>
+            <p className="text-sm text-silver mb-4">
+              Messages can also render custom React nodes instead of text content.
+            </p>
+            <Message
+                variant="assistant"
+                content={<FeedbackForm/>}
+            />
           </div>
 
           {/* With Actions */}

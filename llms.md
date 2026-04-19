@@ -260,7 +260,7 @@ navigate for groups).
 - **MessageActionsConfig.onRetry**: * Called when user retries an assistant message (creates a branch)
 - **MessageActionsConfig.showCopy**: * Whether to show the copy button @default true
 - **variant**: * Whether the message is from the user or the assistant
-- **content**: * The message content (supports Markdown)
+- **content**: * The message content (supports Markdown if string)
 - **isStreaming**: * Whether the message is currently being streamed (shows cursor)
 - **branchInfo**: * Branch navigation info (shows branch indicator if provided and total > 1)
 - **actions**: * Actions configuration (shows action bar if provided)

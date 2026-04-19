@@ -87,6 +87,73 @@ exports[`MessageSection matches snapshot 1`] = `
         <h3
           class="text-lg font-semibold mb-4"
         >
+          Custom Content
+        </h3>
+        <p
+          class="text-sm text-silver mb-4"
+        >
+          Messages can also render custom React nodes instead of text content.
+        </p>
+        <div
+          class="flex flex-col items-start"
+        >
+          <div
+            class="px-3 py-2 w-fit max-w-11/12 bg-charcoal border border-ash text-white mr-auto"
+          >
+            <div
+              class="space-y-4"
+            >
+              <p
+                class="text-sm text-white"
+              >
+                How would you rate this task?
+              </p>
+              <div
+                class="flex gap-2"
+              >
+                <button
+                  class="w-8 h-8 border border-ash flex items-center justify-center transition-colors hover:bg-white/10 text-white"
+                >
+                  1
+                </button>
+                <button
+                  class="w-8 h-8 border border-ash flex items-center justify-center transition-colors hover:bg-white/10 text-white"
+                >
+                  2
+                </button>
+                <button
+                  class="w-8 h-8 border border-ash flex items-center justify-center transition-colors hover:bg-white/10 text-white"
+                >
+                  3
+                </button>
+                <button
+                  class="w-8 h-8 border border-ash flex items-center justify-center transition-colors hover:bg-white/10 text-white"
+                >
+                  4
+                </button>
+                <button
+                  class="w-8 h-8 border border-ash flex items-center justify-center transition-colors hover:bg-white/10 text-white"
+                >
+                  5
+                </button>
+              </div>
+              <textarea
+                class="w-full bg-obsidian border border-ash p-2 text-sm text-white"
+                placeholder="Optional feedback..."
+              />
+              <button
+                class="bg-gold text-obsidian px-3 py-1.5 text-sm font-medium"
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3
+          class="text-lg font-semibold mb-4"
+        >
           With Actions
         </h3>
         <p
