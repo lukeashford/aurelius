@@ -1,3 +1,10 @@
+## [3.8.0](https://github.com/lukeashford/aurelius/compare/v3.7.0...v3.8.0) (2026-04-19)
+
+### Features
+
+* **message:** support custom React nodes in message content ([e563495](https://github.com/lukeashford/aurelius/commit/e5634958a9cbece9120975e362eafa2ed550ab54))
+* **message:** support custom React nodes in message content ([#45](https://github.com/lukeashford/aurelius/issues/45)) ([00a9ad3](https://github.com/lukeashford/aurelius/commit/00a9ad3b21d76ada6025e2ca193e2af86acc9ad7))
+
 ## [3.7.0](https://github.com/lukeashford/aurelius/compare/v3.6.0...v3.7.0) (2026-04-18)
 
 ### Features
