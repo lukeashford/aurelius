@@ -332,8 +332,10 @@ A card for displaying text content, supporting Markdown and HTML formatting.
 - **content**: * Text content to display (Markdown, HTML, or plain text)
 - **title**: * Optional title for the card
 - **subtitle**: * Optional subtitle or metadata
-- **isMarkdown**: * Whether the content should be treated as Markdown @default true
-- **maxHeight**: * Maximum height of the content area before scrolling @default '16rem'
+- **isMarkdown**: * Whether the content should be treated as Markdown
+ @default true
+- **maxHeight**: * Maximum height of the content area before scrolling
+ @default '16rem'
 - **contentClassName**: * Optional class name for the content container
 
 **ArtifactsPanel**
@@ -418,10 +420,6 @@ Features:
 Artifacts are supplied as a tree of ArtifactNode objects via the
 artifactNodes prop.
 
-- **ChatMessage.id**: * Unique identifier for the message
-- **ChatMessage.variant**: * Whether the message is from the user or the assistant
-- **ChatMessage.content**: * Message content (Markdown supported)
-- **ChatMessage.isStreaming**: * Whether the message is currently streaming
 - **Conversation.id**: * Unique identifier for the conversation
 - **Conversation.title**: * Title shown as the first line of the row. Editable via the rename affordance.
 - **Conversation.project**: * Project this conversation belongs to. Shown as the second line of the row and collected into the project filter in the history panel.

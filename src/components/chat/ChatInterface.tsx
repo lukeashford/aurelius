@@ -15,27 +15,14 @@ import {
 import {ToolPanelContainer} from './ToolPanelContainer'
 import {useResizable} from './hooks'
 import type {ArtifactNode} from '../ArtifactNode'
-import {type ConversationTree, getActivePathMessages, getSiblingInfo, switchBranch} from './types'
+import {
+  type ConversationTree,
+  getActivePathMessages,
+  getSiblingInfo,
+  type MessageNode,
+  switchBranch
+} from './types'
 import {ChatBubbleIcon, CheckSquareIcon, MediaIcon, SquareLoaderIcon} from '../icons'
-
-export interface ChatMessage {
-  /**
-   * Unique identifier for the message
-   */
-  id: string
-  /**
-   * Whether the message is from the user or the assistant
-   */
-  variant: 'user' | 'assistant'
-  /**
-   * Message content (Markdown supported)
-   */
-  content: string
-  /**
-   * Whether the message is currently streaming
-   */
-  isStreaming?: boolean
-}
 
 export interface Conversation {
   /**
@@ -67,7 +54,7 @@ export interface ChatInterfaceProps extends Omit<React.HTMLAttributes<HTMLDivEle
    * Array of messages in the conversation (flat mode)
    * Use this OR conversationTree, not both
    */
-  messages?: ChatMessage[]
+  messages?: MessageNode[]
   /**
    * Conversation tree for branching support
    * Use this OR messages, not both
@@ -386,22 +373,16 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
       // ── Messages ──────────────────────────────────────────────────
       const isTreeMode = !!conversationTree
 
-      const effectiveMessages: ChatMessage[] = useMemo(() => {
+      const effectiveMessages: MessageNode[] = useMemo(() => {
         if (isTreeMode && conversationTree) {
-          const pathNodes = getActivePathMessages(conversationTree)
-          return pathNodes.map((node) => ({
-            id: node.id,
-            variant: node.role,
-            content: node.content,
-            isStreaming: node.isStreaming,
-          }))
+          return getActivePathMessages(conversationTree)
         }
-        return messages
+        return messages || []
       }, [isTreeMode, conversationTree, messages])
 
       const latestUserMessageIndex = useMemo(() => {
         for (let i = effectiveMessages.length - 1; i >= 0; i--) {
-          if (effectiveMessages[i].variant === 'user') {
+          if (effectiveMessages[i].role === 'user') {
             return i
           }
         }
@@ -477,16 +458,30 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
           const actions = enableMessageActions
               ? {
                 showCopy: true,
-                onEdit: msg.variant === 'user' && onEditMessage
+                onEdit: msg.role === 'user' && onEditMessage
                     ? (newContent: string) => onEditMessage(msg.id, newContent)
                     : undefined,
-                onRetry: msg.variant === 'assistant' && onRetryMessage
+                onRetry: msg.role === 'assistant' && onRetryMessage
                     ? () => onRetryMessage(msg.id)
                     : undefined,
               }
               : undefined
 
-          return {...msg, branchInfo, actions}
+          const {
+            role,
+            parentId,
+            children,
+            branchIndex,
+            createdAt,
+            ...rest
+          } = msg
+
+          return {
+            ...rest,
+            variant: role,
+            branchInfo,
+            actions
+          }
         })
       }, [effectiveMessages, isTreeMode, conversationTree, enableMessageActions,
         onEditMessage, onRetryMessage, handleBranchSwitch])

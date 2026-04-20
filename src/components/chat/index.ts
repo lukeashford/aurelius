@@ -2,7 +2,6 @@
 export {
   ChatInterface,
   type ChatInterfaceProps,
-  type ChatMessage,
   type Conversation
 } from './ChatInterface'
 

@@ -54,8 +54,14 @@ describe('ChatInterface', () => {
 
   it('renders messages when messages array is provided (flat mode)', () => {
     const messages = [
-      {id: '1', variant: 'user' as const, content: 'User message'},
-      {id: '2', variant: 'assistant' as const, content: 'Assistant response'},
+      {id: '1', role: 'user' as const, content: 'User message', parentId: null, children: []},
+      {
+        id: '2',
+        role: 'assistant' as const,
+        content: 'Assistant response',
+        parentId: '1',
+        children: []
+      },
     ]
     render(<ChatInterface messages={messages}/>)
     expect(screen.getByText('User message')).toBeInTheDocument()
@@ -136,7 +142,7 @@ describe('ChatInterface', () => {
 
   it('shows thinking indicator when isThinking is true', () => {
     const messagesWithUserLast = [
-      {id: '1', variant: 'user' as const, content: 'Hello'},
+      {id: '1', role: 'user' as const, content: 'Hello', parentId: null, children: []},
     ]
     render(
         <ChatInterface
