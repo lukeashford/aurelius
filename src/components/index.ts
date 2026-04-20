@@ -210,7 +210,6 @@ export {
   useArtifactTreeNavigation,
   // Types
   type ChatInterfaceProps,
-  type ChatMessage,
   type ChatViewProps,
   type ChatViewItem,
   type ChatInputProps,

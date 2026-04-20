@@ -7,6 +7,8 @@
  * - Navigate between different conversation branches
  */
 
+import {ReactNode} from 'react'
+
 /**
  * A node in the conversation tree
  */
@@ -20,9 +22,9 @@ export interface MessageNode {
    */
   role: 'user' | 'assistant'
   /**
-   * The message content (may include HTML/markdown)
+   * The message content (may include HTML/markdown or React components)
    */
-  content: string
+  content: ReactNode
   /**
    * ID of the parent message (null for root messages)
    */
@@ -161,15 +163,13 @@ export function addMessageToTree(
   }
 
   // Create the new node
-  const newNode: MessageNode = {
+  newNodes[message.id] = {
     ...message,
     parentId,
     children: [],
     branchIndex,
     createdAt: message.createdAt ?? Date.now(),
   }
-
-  newNodes[message.id] = newNode
 
   // Update parent's children array
   if (parentId && newNodes[parentId]) {
@@ -282,10 +282,8 @@ export function switchBranch(
       ? (currentIndex + 1) % siblings.length
       : (currentIndex - 1 + siblings.length) % siblings.length
 
-  const newNodeId = siblings[newIndex]
-
   // Find the leaf of the new branch (follow first children down)
-  let leafId = newNodeId
+  let leafId = siblings[newIndex]
   let currentNode: MessageNode | undefined = tree.nodes[leafId]
   while (currentNode && currentNode.children.length > 0) {
     leafId = currentNode.children[0]
@@ -304,7 +302,7 @@ export function switchBranch(
 export function updateNodeContent(
     tree: ConversationTree,
     nodeId: string,
-    content: string,
+    content: ReactNode,
     isStreaming?: boolean
 ): ConversationTree {
   const node = tree.nodes[nodeId]
@@ -332,7 +330,7 @@ export function messagesToTree(
     messages: Array<{
       id: string;
       role: 'user' | 'assistant';
-      content: string;
+      content: ReactNode;
       isStreaming?: boolean
     }>
 ): ConversationTree {
