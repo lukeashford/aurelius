@@ -1,3 +1,10 @@
+## [3.8.1](https://github.com/lukeashford/aurelius/compare/v3.8.0...v3.8.1) (2026-04-20)
+
+### Bug Fixes
+
+* **chat:** replace ChatMessage with MessageNode in chat components ([6175a2c](https://github.com/lukeashford/aurelius/commit/6175a2c61a61c596a77fa53ba2925bc4a227429b))
+* **chat:** replace ChatMessage with MessageNode in chat components ([#47](https://github.com/lukeashford/aurelius/issues/47)) ([eca95ef](https://github.com/lukeashford/aurelius/commit/eca95ef9c95d20230555a1dfa23335db5b643393))
+
 ## [3.8.0](https://github.com/lukeashford/aurelius/compare/v3.7.0...v3.8.0) (2026-04-19)
 
 ### Features
