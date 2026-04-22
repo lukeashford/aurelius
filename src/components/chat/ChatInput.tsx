@@ -280,7 +280,8 @@ export const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
 
       const isCentered = position === 'centered'
       const hasAttachments = attachments.length > 0
-      const canSubmit = value.trim() && !disabled && !isStreaming
+      const isUploading = attachments.some(a => a.status === 'uploading')
+      const canSubmit = value.trim() && !disabled && !isStreaming && !isUploading
 
       return (
           <div

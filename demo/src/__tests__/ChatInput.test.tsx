@@ -146,6 +146,26 @@ describe('ChatInput', () => {
     expect(textarea.value).toBe('Pre-filled text')
   })
 
+  it('disables send button when files are uploading', () => {
+    const attachments = [
+      {
+        id: '1',
+        file: new File([''], 'test.txt'),
+        status: 'uploading'
+      }
+    ] as any
+
+    render(
+        <ChatInput
+            attachments={attachments}
+            initialInputValue="Hello"
+        />
+    )
+
+    const sendButton = screen.getByRole('button', {name: /send message/i})
+    expect(sendButton).toBeDisabled()
+  })
+
   it('handles drag and drop for files', () => {
     const onAttachmentsChange = jest.fn()
     render(
