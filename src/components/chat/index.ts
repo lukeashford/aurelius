@@ -11,9 +11,7 @@ export {
   ChatInput,
   type ChatInputProps,
   type ChatInputPosition,
-  type ChatInputNotice,
-  type Attachment,
-  type AttachmentStatus
+  type ChatInputNotice
 } from './ChatInput'
 export {
   ArtifactsPanel,
@@ -49,12 +47,12 @@ export {
 export {ThinkingIndicator, type ThinkingIndicatorProps} from './ThinkingIndicator'
 export {BranchNavigator, type BranchNavigatorProps} from './BranchNavigator'
 
-// Types for branching
+// Types for branching and attachments
 export {
   type MessageNode,
   type ConversationTree,
-  type AttachmentStatus as TreeAttachmentStatus,
-  type Attachment as TreeAttachment,
+  type AttachmentStatus,
+  type Attachment,
   // Utility functions
   createEmptyTree,
   addMessageToTree,

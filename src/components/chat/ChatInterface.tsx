@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import {cx} from '../../utils'
 import {ChatView, type ChatViewItem} from './ChatView'
-import {type Attachment, ChatInput, type ChatInputNotice} from './ChatInput'
+import {ChatInput, type ChatInputNotice} from './ChatInput'
 
 import {ArtifactsPanel} from './ArtifactsPanel'
 import {HistoryPanel} from './HistoryPanel'
@@ -16,6 +16,7 @@ import {ToolPanelContainer} from './ToolPanelContainer'
 import {useResizable} from './hooks'
 import type {ArtifactNode} from '../ArtifactNode'
 import {
+  type Attachment,
   type ConversationTree,
   getActivePathMessages,
   getSiblingInfo,
@@ -140,6 +141,10 @@ export interface ChatInterfaceProps extends Omit<React.HTMLAttributes<HTMLDivEle
    */
   onAttachmentsChange?: (attachments: Attachment[]) => void
   /**
+   * Called when an attachment is removed by the user (clicking the "x")
+   */
+  onAttachmentRemove?: (attachment: Attachment) => void
+  /**
    * Top-level artifact tree nodes for the artifacts panel.
    */
   artifactNodes?: ArtifactNode[]
@@ -245,6 +250,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
           enableMessageActions = true,
           attachments: propsAttachments,
           onAttachmentsChange,
+          onAttachmentRemove,
           artifactNodes,
           isArtifactsPanelOpen,
           onArtifactsPanelOpenChange,
@@ -638,6 +644,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
                       showAttachmentButton={showAttachmentButton}
                       attachments={propsAttachments}
                       onAttachmentsChange={onAttachmentsChange}
+                      onAttachmentRemove={onAttachmentRemove}
                       notice={inputNotice}
                       onInputChange={onInputChange}
                       initialInputValue={initialInputValue}
