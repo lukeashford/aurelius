@@ -155,8 +155,8 @@ Import from `@lukeashford/aurelius`:
 | VideoCard | src, title, subtitle, aspectRatio (${number}/${number}), playing, controls, light, volume, muted, loop, mediaClassName, contentClassName, playerProps, loading |
 | ArtifactsPanel | nodes, loading, artifactCount, onExpand |
 | BranchNavigator | current, total, onPrevious, onNext, size, showIcon |
-| ChatInput | position (centered, bottom), placeholder, helperText, onSubmit, disabled, animate, isStreaming, onStop, attachments, onAttachmentsChange, showAttachmentButton, acceptedFileTypes, notice, onInputChange, initialInputValue, autoFocus |
-| ChatInterface | messages, conversationTree, onTreeChange, conversations, onMessageSubmit, onEditMessage, onRetryMessage, onStop, onSelectConversation, onNewChat, onRenameConversation, isStreaming, isThinking, placeholder, emptyStateHelper, emptyState, showAttachmentButton, enableMessageActions, attachments, onAttachmentsChange, artifactNodes, isArtifactsPanelOpen, onArtifactsPanelOpenChange, tasks, tasksTitle, onStopAllTasks |
+| ChatInput | position (centered, bottom), placeholder, helperText, onSubmit, disabled, animate, isStreaming, onStop, attachments, onAttachmentsChange, onAttachmentRemove, showAttachmentButton, acceptedFileTypes, notice, onInputChange, initialInputValue, autoFocus |
+| ChatInterface | messages, conversationTree, onTreeChange, conversations, onMessageSubmit, onEditMessage, onRetryMessage, onStop, onSelectConversation, onNewChat, onRenameConversation, isStreaming, isThinking, placeholder, emptyStateHelper, emptyState, showAttachmentButton, enableMessageActions, attachments, onAttachmentsChange, onAttachmentRemove, artifactNodes, isArtifactsPanelOpen, onArtifactsPanelOpenChange, tasks, tasksTitle, onStopAllTasks |
 | ChatView | messages, latestUserMessageIndex, isStreaming, isThinking, onScroll |
 | HistoryPanel | conversations, onSelectConversation, onNewChat, onRenameConversation |
 | MessageActions | variant (user, assistant), content, onEdit, onRetry, isEditing, onEditingChange, editValue |
@@ -332,10 +332,8 @@ A card for displaying text content, supporting Markdown and HTML formatting.
 - **content**: * Text content to display (Markdown, HTML, or plain text)
 - **title**: * Optional title for the card
 - **subtitle**: * Optional subtitle or metadata
-- **isMarkdown**: * Whether the content should be treated as Markdown
- @default true
-- **maxHeight**: * Maximum height of the content area before scrolling
- @default '16rem'
+- **isMarkdown**: * Whether the content should be treated as Markdown @default true
+- **maxHeight**: * Maximum height of the content area before scrolling @default '16rem'
 - **contentClassName**: * Optional class name for the content container
 
 **ArtifactsPanel**
@@ -392,6 +390,7 @@ Features:
 - **onStop**: * Called when the Stop button is clicked during streaming
 - **attachments**: * Current attachments (controlled mode)
 - **onAttachmentsChange**: * Called when attachments change (controlled mode)
+- **onAttachmentRemove**: * Called when an attachment is removed by the user (clicking the "x")
 - **showAttachmentButton**: * Whether to show the attachment button
 - **acceptedFileTypes**: * Accepted file types for attachments
 - **notice**: * Optional notice displayed above the input (e.g. credit warnings or exhaustion messages)
@@ -445,6 +444,7 @@ artifactNodes prop.
 - **enableMessageActions**: * Whether to enable message-level actions (copy, edit, retry).
 - **attachments**: * Current attachments for the chat input (controlled).
 - **onAttachmentsChange**: * Called when attachments are added or removed in the chat input.
+- **onAttachmentRemove**: * Called when an attachment is removed by the user (clicking the "x")
 - **artifactNodes**: * Top-level artifact tree nodes for the artifacts panel.
 - **isArtifactsPanelOpen**: * Whether the artifacts panel is currently open (controlled). When set, maps to the tool panel system — opens the artifacts tool.
 - **onArtifactsPanelOpenChange**: * Called when the artifacts panel is opened or closed (controlled).

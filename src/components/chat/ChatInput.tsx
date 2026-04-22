@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useRef, useState} from 'react'
 import {cx} from '../../utils'
 import {Paperclip, Send, Square, X} from 'lucide-react'
 import {type AttachmentItem, AttachmentPreview} from '../AttachmentPreview'
-import {createPreviewUrl, generateId, isImageFile} from './types'
+import {Attachment, createPreviewUrl, generateId, isImageFile} from './types'
 
 export interface ChatInputNotice {
   /**
@@ -25,17 +25,6 @@ export interface ChatInputNotice {
 }
 
 export type ChatInputPosition = 'centered' | 'bottom'
-
-export type AttachmentStatus = 'pending' | 'uploading' | 'complete' | 'error'
-
-export interface Attachment {
-  id: string
-  file: File
-  previewUrl?: string
-  status: AttachmentStatus
-  error?: string
-  progress?: number
-}
 
 export interface ChatInputProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onSubmit'> {
   /**
@@ -78,6 +67,10 @@ export interface ChatInputProps extends Omit<React.HTMLAttributes<HTMLDivElement
    * Called when attachments change (controlled mode)
    */
   onAttachmentsChange?: (attachments: Attachment[]) => void
+  /**
+   * Called when an attachment is removed by the user (clicking the "x")
+   */
+  onAttachmentRemove?: (attachment: Attachment) => void
   /**
    * Whether to show the attachment button
    */
@@ -128,6 +121,7 @@ export const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
           onStop,
           attachments: controlledAttachments,
           onAttachmentsChange,
+          onAttachmentRemove,
           showAttachmentButton = true,
           acceptedFileTypes,
           notice,
@@ -233,15 +227,20 @@ export const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
 
       const handleRemoveAttachment = useCallback(
           (id: string) => {
+            const attachment = attachments.find((a) => a.id === id)
+            if (attachment && onAttachmentRemove) {
+              onAttachmentRemove(attachment)
+            }
+
             setAttachments((prev) => {
-              const attachment = prev.find((a) => a.id === id)
-              if (attachment?.previewUrl) {
-                URL.revokeObjectURL(attachment.previewUrl)
+              const attachmentToRemove = prev.find((a) => a.id === id)
+              if (attachmentToRemove?.previewUrl) {
+                URL.revokeObjectURL(attachmentToRemove.previewUrl)
               }
               return prev.filter((a) => a.id !== id)
             })
           },
-          [setAttachments]
+          [attachments, onAttachmentRemove, setAttachments]
       )
 
       // Drag and drop handlers
@@ -281,7 +280,8 @@ export const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
 
       const isCentered = position === 'centered'
       const hasAttachments = attachments.length > 0
-      const canSubmit = value.trim() && !disabled && !isStreaming
+      const isUploading = attachments.some(a => a.status === 'uploading')
+      const canSubmit = value.trim() && !disabled && !isStreaming && !isUploading
 
       return (
           <div
