@@ -1,3 +1,11 @@
+## [3.9.0](https://github.com/lukeashford/aurelius/compare/v3.8.1...v3.9.0) (2026-04-22)
+
+### Features
+
+* **chat:** add onAttachmentRemove prop to ChatInput and ChatInterface ([cc7b1c8](https://github.com/lukeashford/aurelius/commit/cc7b1c8bda9d04f0d96edbdb84020abdcfbf279d))
+* **chat:** add onAttachmentRemove prop to ChatInput and ChatInterface ([#48](https://github.com/lukeashford/aurelius/issues/48)) ([f71cbb0](https://github.com/lukeashford/aurelius/commit/f71cbb0e0d87adc4b68d34e248ae6f832404e900))
+* **chat:** disable send button during file uploads ([b80c1d9](https://github.com/lukeashford/aurelius/commit/b80c1d95f21428819e9b3c7f9a240cbf755ec91c))
+
 ## [3.8.1](https://github.com/lukeashford/aurelius/compare/v3.8.0...v3.8.1) (2026-04-20)
 
 ### Bug Fixes
