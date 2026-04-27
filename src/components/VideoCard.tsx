@@ -19,6 +19,8 @@ export interface VideoCardProps extends Omit<CardProps, 'title'> {
   loop?: boolean
   mediaClassName?: string
   contentClassName?: string
+  // Forwarded to ReactPlayer. Typed loosely because the underlying prop
+  // surface varies across react-player versions.
   playerProps?: any
   loading?: CardSlotLoading
 }

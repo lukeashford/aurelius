@@ -15,6 +15,8 @@ export interface AudioCardProps extends Omit<CardProps, 'title'> {
   loop?: boolean
   mediaClassName?: string
   contentClassName?: string
+  // Forwarded to ReactPlayer. Typed loosely because the underlying prop
+  // surface (config / file-player options) varies across react-player versions.
   playerProps?: any
   height?: string | number
   loading?: CardSlotLoading

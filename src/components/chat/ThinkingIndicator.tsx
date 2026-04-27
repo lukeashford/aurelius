@@ -58,17 +58,23 @@ export const ThinkingIndicator = React.forwardRef<HTMLDivElement, ThinkingIndica
           return
         }
 
+        let fadeTimeout: ReturnType<typeof setTimeout> | null = null
         const interval = setInterval(() => {
           setIsTransitioning(true)
-
           // Wait for fade out, then change phrase
-          setTimeout(() => {
+          fadeTimeout = setTimeout(() => {
             setCurrentIndex((prev) => (prev + 1) % phrases.length)
             setIsTransitioning(false)
+            fadeTimeout = null
           }, 200)
         }, phraseInterval)
 
-        return () => clearInterval(interval)
+        return () => {
+          clearInterval(interval)
+          if (fadeTimeout !== null) {
+            clearTimeout(fadeTimeout)
+          }
+        }
       }, [isVisible, phrases.length, phraseInterval])
 
       if (!isVisible) {

@@ -1,6 +1,6 @@
-import React, {useEffect, useRef, useState} from 'react'
+import React, {useCallback, useEffect, useRef, useState} from 'react'
 import {MarkdownContent} from './MarkdownContent'
-import {cx} from '../utils/cx'
+import {cx, useCopyToClipboard} from '../utils'
 
 export type MessageVariant = 'user' | 'assistant'
 
@@ -183,7 +183,7 @@ export const Message = React.forwardRef<HTMLDivElement, MessageProps>(
       ...rest
     }, ref) => {
       const isUser = variant === 'user'
-      const [copied, setCopied] = useState(false)
+      const {copied, copy} = useCopyToClipboard()
       const [isEditing, setIsEditing] = useState(false)
       const [editValue, setEditValue] = useState(typeof content === 'string' ? content : '')
       const textareaRef = useRef<HTMLTextAreaElement>(null)
@@ -203,27 +203,11 @@ export const Message = React.forwardRef<HTMLDivElement, MessageProps>(
         }
       }, [isEditing])
 
-      const handleCopy = async () => {
-        if (typeof content !== 'string') {
-          return
+      const handleCopy = useCallback(() => {
+        if (typeof content === 'string') {
+          void copy(content)
         }
-
-        try {
-          await navigator.clipboard.writeText(content)
-          setCopied(true)
-          setTimeout(() => setCopied(false), 2000)
-        } catch {
-          // Fallback
-          const textArea = document.createElement('textarea')
-          textArea.value = content
-          document.body.appendChild(textArea)
-          textArea.select()
-          document.execCommand('copy')
-          document.body.removeChild(textArea)
-          setCopied(true)
-          setTimeout(() => setCopied(false), 2000)
-        }
-      }
+      }, [copy, content])
 
       const handleStartEdit = () => {
         if (typeof content === 'string') {

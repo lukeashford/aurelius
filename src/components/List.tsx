@@ -9,11 +9,13 @@ export interface ListProps extends React.HTMLAttributes<HTMLUListElement> {
 
 export const List = React.forwardRef<HTMLUListElement, ListProps>(
     ({variant = 'default', ordered = false, className, children, ...props}, ref) => {
-      const Component = ordered ? 'ol' : 'ul'
+      // `ol` and `ul` share the HTMLAttributes shape we accept; the ref is
+      // narrowed to HTMLUListElement because that is the dominant case.
+      const Component = (ordered ? 'ol' : 'ul') as 'ul'
 
       return (
           <Component
-              ref={ref as any}
+              ref={ref}
               className={cx(
                   'list-none m-0 p-0',
                   variant === 'bordered' && 'border border-ash',

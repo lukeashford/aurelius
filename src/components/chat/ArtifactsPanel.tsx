@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react'
-import {cx} from '../../utils'
+import {cx, useEscapeKey} from '../../utils'
 import {ArtifactCard} from '../ArtifactCard'
 import {ArtifactGroup} from '../ArtifactGroup'
 import {ArtifactVariantStack} from '../ArtifactVariantStack'
@@ -37,16 +37,7 @@ function ArtifactModal({
   artifact: Artifact
   onClose: () => void
 }) {
-  // Handle ESC key
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        onClose()
-      }
-    }
-    document.addEventListener('keydown', handleKeyDown)
-    return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [onClose])
+  useEscapeKey(onClose)
 
   // Handle click outside
   const handleBackdropClick = useCallback((e: React.MouseEvent) => {

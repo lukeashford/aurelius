@@ -1,5 +1,5 @@
 import React, {useCallback, useState} from 'react'
-import {cx} from '../../utils/cx'
+import {cx, useCopyToClipboard} from '../../utils'
 import {Check, Copy, Pencil, RotateCcw, Send, X,} from 'lucide-react'
 
 export type MessageActionsVariant = 'user' | 'assistant'
@@ -78,7 +78,7 @@ export const MessageActions = React.forwardRef<HTMLDivElement, MessageActionsPro
       // Local state for uncontrolled mode
       const [localIsEditing, setLocalIsEditing] = useState(false)
       const [localEditValue, setLocalEditValue] = useState(content)
-      const [copied, setCopied] = useState(false)
+      const {copied, copy} = useCopyToClipboard()
 
       // Determine if controlled or uncontrolled
       const isEditing = controlledIsEditing ?? localIsEditing
@@ -99,23 +99,9 @@ export const MessageActions = React.forwardRef<HTMLDivElement, MessageActionsPro
         setLocalEditValue(value)
       }, [])
 
-      const handleCopy = useCallback(async () => {
-        try {
-          await navigator.clipboard.writeText(content)
-          setCopied(true)
-          setTimeout(() => setCopied(false), 2000)
-        } catch {
-          // Fallback for older browsers
-          const textArea = document.createElement('textarea')
-          textArea.value = content
-          document.body.appendChild(textArea)
-          textArea.select()
-          document.execCommand('copy')
-          document.body.removeChild(textArea)
-          setCopied(true)
-          setTimeout(() => setCopied(false), 2000)
-        }
-      }, [content])
+      const handleCopy = useCallback(() => {
+        void copy(content)
+      }, [copy, content])
 
       const handleStartEdit = useCallback(() => {
         setLocalEditValue(content)

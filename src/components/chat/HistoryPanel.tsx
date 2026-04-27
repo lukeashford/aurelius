@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
-import {cx} from '../../utils'
+import {cx, useClickOutside} from '../../utils'
 import {PlusIcon} from '../icons'
 import type {Conversation} from './ChatInterface'
 
@@ -115,19 +115,9 @@ function ProjectFilter({
 }) {
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
+  const closeFilter = useCallback(() => setOpen(false), [])
 
-  useEffect(() => {
-    if (!open) {
-      return
-    }
-    const handler = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
-        setOpen(false)
-      }
-    }
-    document.addEventListener('mousedown', handler)
-    return () => document.removeEventListener('mousedown', handler)
-  }, [open])
+  useClickOutside(ref, closeFilter, open)
 
   const label = value ?? 'All projects'
 

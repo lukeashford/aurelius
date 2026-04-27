@@ -1,5 +1,5 @@
-import React, {useCallback, useEffect, useId, useRef, useState} from 'react'
-import {cx} from '../utils/cx'
+import React, {useCallback, useId, useRef, useState} from 'react'
+import {cx, useClickOutside, useEscapeKey} from '../utils'
 
 export type PopoverPosition = 'top' | 'bottom' | 'left' | 'right'
 export type PopoverAlign = 'start' | 'center' | 'end'
@@ -69,37 +69,9 @@ export const Popover: React.FC<PopoverProps> = ({
       [isControlled, onOpenChange]
   )
 
-  // Close on outside click
-  useEffect(() => {
-    if (!isOpen || !closeOnClickOutside) {
-      return
-    }
-
-    const handleClickOutside = (e: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
-        setIsOpen(false)
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [isOpen, closeOnClickOutside, setIsOpen])
-
-  // Close on escape
-  useEffect(() => {
-    if (!isOpen) {
-      return
-    }
-
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        setIsOpen(false)
-      }
-    }
-
-    document.addEventListener('keydown', handleEscape)
-    return () => document.removeEventListener('keydown', handleEscape)
-  }, [isOpen, setIsOpen])
+  const close = useCallback(() => setIsOpen(false), [setIsOpen])
+  useClickOutside(containerRef, close, isOpen && closeOnClickOutside)
+  useEscapeKey(close, isOpen)
 
   const handleTriggerClick = () => {
     setIsOpen(!isOpen)

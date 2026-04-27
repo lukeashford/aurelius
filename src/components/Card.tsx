@@ -24,18 +24,21 @@ const CardContext = createContext<CardContextValue>({loading: undefined})
 
 const useCardContext = () => useContext(CardContext)
 
+type HeaderField = keyof NonNullable<CardSlotLoading['header']>
+type TopLevelKey = Exclude<keyof CardSlotLoading, 'header'>
+type SlotPath = TopLevelKey | ['header', HeaderField]
+
 export function slotLoading(
     loading: CardSlotLoading | undefined,
-    path: 'media' | 'body' | 'footer' | ['header', 'title' | 'subtitle' | 'action']
+    path: SlotPath
 ): boolean {
   if (!loading) {
     return false
   }
   if (Array.isArray(path)) {
-    const [section, field] = path
-    return !!(loading as any)[section]?.[field]
+    return !!loading.header?.[path[1]]
   }
-  return !!(loading as any)[path]
+  return !!loading[path]
 }
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
