@@ -5,6 +5,7 @@ on:
     types: [ opened, synchronize, reopened, edited ]
   push:
     branches: [ main ]
+  workflow_dispatch: { }
 
 # Needed for semantic-release + npm trusted publishing (OIDC)
 permissions:
