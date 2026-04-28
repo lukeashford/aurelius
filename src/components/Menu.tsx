@@ -7,7 +7,7 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import {cx} from '../utils/cx'
+import {composeRefs, cx, useEscapeKey} from '../utils'
 
 // Context for managing menu state
 interface MenuContextValue {
@@ -110,69 +110,52 @@ export interface MenuContentProps extends React.HTMLAttributes<HTMLDivElement> {
   side?: 'top' | 'bottom'
 }
 
+const MENU_ALIGN_CLASSES: Record<NonNullable<MenuContentProps['align']>, string> = {
+  start: 'left-0',
+  center: 'left-1/2 -translate-x-1/2',
+  end: 'right-0',
+}
+
+const MENU_SIDE_CLASSES: Record<NonNullable<MenuContentProps['side']>, string> = {
+  top: 'bottom-full mb-1',
+  bottom: 'top-full mt-1',
+}
+
 export const MenuContent = React.forwardRef<HTMLDivElement, MenuContentProps>(
     ({children, className, align = 'start', side = 'bottom', ...props}, ref) => {
       const {isOpen, setIsOpen, triggerId, menuId} = useMenuContext()
       const menuRef = useRef<HTMLDivElement>(null)
 
-      // Close on outside click
+      const close = useCallback(() => setIsOpen(false), [setIsOpen])
+      useEscapeKey(close, isOpen)
+
+      // Close on outside click — but ignore clicks on the trigger so it can toggle the menu.
       useEffect(() => {
         if (!isOpen) {
           return
         }
-
         const handleClickOutside = (e: MouseEvent) => {
+          const target = e.target as Node
           const trigger = document.getElementById(triggerId)
           if (
               menuRef.current &&
-              !menuRef.current.contains(e.target as Node) &&
-              trigger &&
-              !trigger.contains(e.target as Node)
+              !menuRef.current.contains(target) &&
+              !trigger?.contains(target)
           ) {
             setIsOpen(false)
           }
         }
-
-        const handleEscape = (e: KeyboardEvent) => {
-          if (e.key === 'Escape') {
-            setIsOpen(false)
-          }
-        }
-
         document.addEventListener('mousedown', handleClickOutside)
-        document.addEventListener('keydown', handleEscape)
-
-        return () => {
-          document.removeEventListener('mousedown', handleClickOutside)
-          document.removeEventListener('keydown', handleEscape)
-        }
+        return () => document.removeEventListener('mousedown', handleClickOutside)
       }, [isOpen, setIsOpen, triggerId])
 
       if (!isOpen) {
         return null
       }
 
-      const alignmentClasses = {
-        start: 'left-0',
-        center: 'left-1/2 -translate-x-1/2',
-        end: 'right-0',
-      }
-
-      const sideClasses = {
-        top: 'bottom-full mb-1',
-        bottom: 'top-full mt-1',
-      }
-
       return (
           <div
-              ref={(node) => {
-                menuRef.current = node
-                if (typeof ref === 'function') {
-                  ref(node)
-                } else if (ref) {
-                  ref.current = node
-                }
-              }}
+              ref={composeRefs(menuRef, ref)}
               id={menuId}
               role="menu"
               aria-labelledby={triggerId}
@@ -180,8 +163,8 @@ export const MenuContent = React.forwardRef<HTMLDivElement, MenuContentProps>(
                   'absolute z-50 min-w-40 py-1',
                   'bg-charcoal border border-ash shadow-lg',
                   'animate-fade-in',
-                  alignmentClasses[align],
-                  sideClasses[side],
+                  MENU_ALIGN_CLASSES[align],
+                  MENU_SIDE_CLASSES[side],
                   className
               )}
               {...props}

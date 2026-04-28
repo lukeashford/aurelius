@@ -63,9 +63,6 @@ export {
   messagesToTree,
   isBranchPoint,
   generateId,
-  isImageFile,
-  createPreviewUrl,
-  revokePreviewUrl,
 } from './types'
 
 // Hooks

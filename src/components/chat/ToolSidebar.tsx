@@ -32,26 +32,9 @@ export interface ToolDefinition {
 
 /**
  * Consumer-provided tool definition passed via ChatInterface's `tools` prop.
- * Defines a custom tool with its sidebar icon and the panel content to
- * render when the tool is opened.
+ * Adds the panel content to render when the tool is opened.
  */
-export interface ExternalToolDefinition {
-  /**
-   * Unique identifier for this tool
-   */
-  id: string
-  /**
-   * Icon element shown in the sidebar button
-   */
-  icon: React.ReactNode
-  /**
-   * Accessible label for the button
-   */
-  label: string
-  /**
-   * Which group the tool belongs to
-   */
-  group: ToolGroup
+export interface ExternalToolDefinition extends ToolDefinition {
   /**
    * Content to render when the tool is open
    */

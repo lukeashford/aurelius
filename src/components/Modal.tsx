@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {createPortal} from 'react-dom'
 import {X} from 'lucide-react'
-import {cx} from '../utils/cx'
+import {cx, useEscapeKey, useScrollLock} from '../utils'
 
 export interface ModalProps {
   isOpen: boolean
@@ -18,47 +18,11 @@ export const Modal = ({isOpen, onClose, title, children, className}: ModalProps)
     setMounted(true)
   }, [])
 
-  useEffect(() => {
-    if (isOpen) {
-      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
-      document.body.style.overflow = 'hidden'
-      document.body.style.paddingRight = `${scrollbarWidth}px`
-    } else {
-      document.body.style.overflow = 'unset'
-      document.body.style.paddingRight = '0px'
-    }
-    return () => {
-      document.body.style.overflow = 'unset'
-      document.body.style.paddingRight = '0px'
-    }
-  }, [isOpen])
+  useScrollLock(isOpen)
+  useEscapeKey(onClose, isOpen)
 
-  useEffect(() => {
-    const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        onClose()
-      }
-    }
-    window.addEventListener('keydown', handleEsc)
-    return () => window.removeEventListener('keydown', handleEsc)
-  }, [onClose])
-
-  if (!mounted) {
+  if (!mounted || !isOpen) {
     return null
-  }
-
-  // Don't render anything if closed, unless we want exit animations. 
-  // My CSS relies on data-state, but if I unmount immediately, exit animation won't play.
-  // To support exit animations, I'd need a transition manager (like framer-motion or headlessui).
-  // For this simple implementation, I'll render conditionally. 
-  // If I want animation, I need to keep it mounted until animation ends.
-  // Given the prompt "add all suggestions" and "premium", a simple unmount is acceptable for v1
-  // without heavy deps. However, the CSS I wrote has `data-state=closed`.  Without a transition
-  // library, handling exit animation is tricky.  I'll just conditional render for now. The entry
-  // animation `animate-fade-in` will play.
-
-  if (!isOpen) {
-    return null;
   }
 
   const content = (

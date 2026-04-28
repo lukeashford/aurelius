@@ -569,13 +569,13 @@ exports[`FormsSection matches snapshot 1`] = `
           >
             <input
               class="appearance-none h-4 w-4 border border-ash bg-graphite checked:bg-gold checked:border-gold focus:ring-1 focus:ring-gold focus:ring-offset-1 focus:ring-offset-obsidian transition duration-200 ease-in-out cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-              id="3llllllll"
+              id="_r_22_"
               style="background-position: center; background-size: contain; background-repeat: no-repeat;"
               type="checkbox"
             />
             <label
               class="ml-2 text-sm text-silver cursor-pointer select-none"
-              for="3llllllll"
+              for="_r_22_"
             >
               Accept terms and conditions
             </label>
@@ -586,13 +586,13 @@ exports[`FormsSection matches snapshot 1`] = `
             <input
               checked=""
               class="appearance-none h-4 w-4 border border-ash bg-graphite checked:bg-gold checked:border-gold focus:ring-1 focus:ring-gold focus:ring-offset-1 focus:ring-offset-obsidian transition duration-200 ease-in-out cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-              id="777777777"
+              id="_r_23_"
               style="background-position: center; background-size: contain; background-repeat: no-repeat;"
               type="checkbox"
             />
             <label
               class="ml-2 text-sm text-silver cursor-pointer select-none"
-              for="777777777"
+              for="_r_23_"
             >
               Subscribe to newsletter
             </label>
@@ -603,13 +603,13 @@ exports[`FormsSection matches snapshot 1`] = `
             <input
               class="appearance-none h-4 w-4 border border-ash bg-graphite checked:bg-gold checked:border-gold focus:ring-1 focus:ring-gold focus:ring-offset-1 focus:ring-offset-obsidian transition duration-200 ease-in-out cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               disabled=""
-              id="assssssss"
+              id="_r_24_"
               style="background-position: center; background-size: contain; background-repeat: no-repeat;"
               type="checkbox"
             />
             <label
               class="ml-2 text-sm text-silver cursor-pointer select-none"
-              for="assssssss"
+              for="_r_24_"
             >
               Disabled
             </label>

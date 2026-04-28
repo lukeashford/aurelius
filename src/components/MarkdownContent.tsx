@@ -3,6 +3,15 @@ import DOMPurify, {type Config} from 'dompurify'
 import {marked} from 'marked'
 import {cx} from '../utils'
 
+// Register the link-hardening hook once at module load. Hooks are global on
+// DOMPurify, so calling addHook in render would attach a duplicate every pass.
+DOMPurify.addHook('afterSanitizeAttributes', (node) => {
+  if (node.tagName === 'A') {
+    node.setAttribute('target', '_blank')
+    node.setAttribute('rel', 'noopener noreferrer')
+  }
+})
+
 export interface MarkdownContentProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
    * Content to display (can be Markdown or HTML)
@@ -45,17 +54,6 @@ const DEFAULT_SANITIZE_CONFIG: Config = {
   ],
   ADD_ATTR: ['target', 'rel'],
   ALLOWED_URI_REGEXP: /^(?:(?:https?|mailto|tel):|[^a-z]|[a-z+.-]+(?:[^a-z+.\-:]|$))/i,
-}
-
-function useDOMPurifySetup() {
-  useMemo(() => {
-    DOMPurify.addHook('afterSanitizeAttributes', (node) => {
-      if (node.tagName === 'A') {
-        node.setAttribute('target', '_blank')
-        node.setAttribute('rel', 'noopener noreferrer')
-      }
-    })
-  }, [])
 }
 
 const CURSOR_BASE_CLASSES = 'inline-block bg-current animate-cursor-blink w-0.5 h-cursor translate-y-cursor-offset'
@@ -104,19 +102,18 @@ function injectStreamingCursor(html: string, cursorClassName?: string): string {
 export const MarkdownContent = React.forwardRef<HTMLDivElement, MarkdownContentProps>(
     ({className, content, isMarkdown = true, sanitizeConfig, isStreaming, cursorClassName, ...rest},
         ref) => {
-      useDOMPurifySetup()
-
       const sanitizedHtml = useMemo(() => {
         if (!content && !isStreaming) {
           return ''
         }
         const config = sanitizeConfig ?? DEFAULT_SANITIZE_CONFIG
 
-        // Convert markdown to HTML if requested
+        // Convert markdown to HTML if requested. The fallback (raw `content`)
+        // is still passed through DOMPurify below, so a parser failure can't
+        // bypass sanitization.
         let htmlContent: string
         if (isMarkdown) {
           try {
-            // marked.parse can be sync or async, but for simple strings it's usually sync
             htmlContent = marked.parse(content) as string
           } catch (e) {
             console.error('Error parsing markdown:', e)
@@ -133,7 +130,7 @@ export const MarkdownContent = React.forwardRef<HTMLDivElement, MarkdownContentP
         }
 
         return sanitized
-      }, [content, sanitizeConfig, isStreaming, cursorClassName])
+      }, [content, isMarkdown, sanitizeConfig, isStreaming, cursorClassName])
 
       return (
           <div

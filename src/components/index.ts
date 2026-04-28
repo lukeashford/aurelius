@@ -251,9 +251,6 @@ export {
   messagesToTree,
   isBranchPoint,
   generateId,
-  isImageFile,
-  createPreviewUrl,
-  revokePreviewUrl,
 } from './chat'
 
 // Brand

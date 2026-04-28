@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {createPortal} from 'react-dom'
 import {X} from 'lucide-react'
-import {cx} from '../utils/cx'
+import {cx, useEscapeKey, useScrollLock} from '../utils'
 
 export type DrawerPosition = 'left' | 'right' | 'top' | 'bottom'
 
@@ -77,30 +77,8 @@ export const Drawer: React.FC<DrawerProps> = ({
     setMounted(true)
   }, [])
 
-  useEffect(() => {
-    if (isOpen) {
-      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
-      document.body.style.overflow = 'hidden'
-      document.body.style.paddingRight = `${scrollbarWidth}px`
-    } else {
-      document.body.style.overflow = 'unset'
-      document.body.style.paddingRight = '0px'
-    }
-    return () => {
-      document.body.style.overflow = 'unset'
-      document.body.style.paddingRight = '0px'
-    }
-  }, [isOpen])
-
-  useEffect(() => {
-    const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        onClose()
-      }
-    }
-    window.addEventListener('keydown', handleEsc)
-    return () => window.removeEventListener('keydown', handleEsc)
-  }, [onClose])
+  useScrollLock(isOpen)
+  useEscapeKey(onClose, isOpen)
 
   if (!mounted) {
     return null

@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
-import {cx} from '../../utils'
+import {ChevronDown, Pencil} from 'lucide-react'
+import {cx, useClickOutside} from '../../utils'
 import {PlusIcon} from '../icons'
 import type {Conversation} from './ChatInterface'
 
@@ -69,39 +70,6 @@ function groupConversations(conversations: Conversation[]): ConversationGroup[] 
   ].filter((g) => g.conversations.length > 0) as ConversationGroup[]
 }
 
-function ChevronDownIcon({className}: { className?: string }) {
-  return (
-      <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          className={className}
-          aria-hidden="true"
-      >
-        <path
-            fillRule="evenodd"
-            d="M5.23 7.21a.75.75 0 011.06.02L10 11.06l3.71-3.83a.75.75 0 111.08 1.04l-4.25 4.39a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z"
-            clipRule="evenodd"
-        />
-      </svg>
-  )
-}
-
-function PencilIcon({className}: { className?: string }) {
-  return (
-      <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          className={className}
-          aria-hidden="true"
-      >
-        <path
-            d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/>
-      </svg>
-  )
-}
-
 function ProjectFilter({
   projects,
   value,
@@ -115,19 +83,9 @@ function ProjectFilter({
 }) {
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
+  const closeFilter = useCallback(() => setOpen(false), [])
 
-  useEffect(() => {
-    if (!open) {
-      return
-    }
-    const handler = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
-        setOpen(false)
-      }
-    }
-    document.addEventListener('mousedown', handler)
-    return () => document.removeEventListener('mousedown', handler)
-  }, [open])
+  useClickOutside(ref, closeFilter, open)
 
   const label = value ?? 'All projects'
 
@@ -148,7 +106,7 @@ function ProjectFilter({
             )}
         >
           <span className="truncate">{label}</span>
-          <ChevronDownIcon className="w-3 h-3 shrink-0"/>
+          <ChevronDown className="w-3 h-3 shrink-0" aria-hidden/>
         </button>
         {open && (
             <div
@@ -320,7 +278,7 @@ function ConversationRow({
                     'transition-opacity duration-150'
                 )}
             >
-              <PencilIcon className="w-3.5 h-3.5"/>
+              <Pencil className="w-3.5 h-3.5" aria-hidden/>
             </button>
         )}
       </div>

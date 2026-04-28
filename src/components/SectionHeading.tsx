@@ -18,7 +18,7 @@ export const SectionHeading = React.forwardRef<HTMLHeadingElement, SectionHeadin
 
       return (
           <Component
-              ref={ref as any}
+              ref={ref}
               className={cx(
                   'text-gold font-semibold tracking-tight',
                   levelStyles[level],

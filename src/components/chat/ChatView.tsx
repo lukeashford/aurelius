@@ -6,7 +6,7 @@ import {
   type MessageProps,
   type MessageVariant
 } from '../Message'
-import {cx} from '../../utils'
+import {composeRefs, cx} from '../../utils'
 import {useScrollAnchor} from './hooks/useScrollAnchor'
 import {useAdaptiveSpacer} from './hooks/useAdaptiveSpacer'
 import {ThinkingIndicator} from './ThinkingIndicator'
@@ -93,15 +93,7 @@ export const ChatView = React.forwardRef<HTMLDivElement, ChatViewProps>(
 
       return (
           <div
-              ref={(node) => {
-                // Handle both refs
-                ;(containerRef as React.MutableRefObject<HTMLDivElement | null>).current = node
-                if (typeof ref === 'function') {
-                  ref(node)
-                } else if (ref) {
-                  ref.current = node
-                }
-              }}
+              ref={composeRefs(containerRef, ref)}
               onScroll={onScroll}
               className={cx(
                   'flex flex-col w-full h-full overflow-y-auto scroll-smooth',

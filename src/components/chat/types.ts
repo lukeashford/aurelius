@@ -129,7 +129,10 @@ export function revokePreviewUrl(url: string | undefined): void {
  * Generate a unique ID
  */
 export function generateId(): string {
-  return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID()
+  }
+  return `${Date.now()}-${Math.random().toString(36).slice(2, 11)}`
 }
 
 /**

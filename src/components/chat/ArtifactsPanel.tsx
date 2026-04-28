@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react'
-import {cx} from '../../utils'
+import {Image} from 'lucide-react'
+import {cx, useEscapeKey} from '../../utils'
 import {ArtifactCard} from '../ArtifactCard'
 import {ArtifactGroup} from '../ArtifactGroup'
 import {ArtifactVariantStack} from '../ArtifactVariantStack'
@@ -37,16 +38,7 @@ function ArtifactModal({
   artifact: Artifact
   onClose: () => void
 }) {
-  // Handle ESC key
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        onClose()
-      }
-    }
-    document.addEventListener('keydown', handleKeyDown)
-    return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [onClose])
+  useEscapeKey(onClose)
 
   // Handle click outside
   const handleBackdropClick = useCallback((e: React.MouseEvent) => {
@@ -409,18 +401,7 @@ export const ArtifactsPanelToggle = React.forwardRef<
           aria-label="Expand artifacts panel"
           {...rest}
       >
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            className="w-5 h-5"
-        >
-          <path
-              fillRule="evenodd"
-              d="M2 4.5A1.5 1.5 0 013.5 3h13A1.5 1.5 0 0118 4.5v11a1.5 1.5 0 01-1.5 1.5h-13A1.5 1.5 0 012 15.5v-11zM4 5v1h1V5H4zm2 0v1h1V5H6zm7 0v1h1V5h-1zm2 0v1h1V5h-1zM4 14v1h1v-1H4zm2 0v1h1v-1H6zm7 0v1h1v-1h-1zm2 0v1h1v-1h-1zM8 8.118a.5.5 0 01.757-.429l4 2.382a.5.5 0 010 .858l-4 2.382A.5.5 0 018 12.882V8.118z"
-              clipRule="evenodd"
-          />
-        </svg>
+        <Image className="w-5 h-5" aria-hidden/>
         {artifactCount > 0 && (
             <span
                 className="absolute -top-1 -right-1 w-4 h-4 bg-gold text-obsidian text-xs font-medium flex items-center justify-center">

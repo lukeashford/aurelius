@@ -1,6 +1,7 @@
-import React, {useEffect, useRef, useState} from 'react'
+import React, {useCallback, useEffect, useRef, useState} from 'react'
+import {Check, ChevronLeft, ChevronRight, Copy, GitBranch, Pencil, RotateCcw, Send, X} from 'lucide-react'
 import {MarkdownContent} from './MarkdownContent'
-import {cx} from '../utils/cx'
+import {cx, useCopyToClipboard} from '../utils'
 
 export type MessageVariant = 'user' | 'assistant'
 
@@ -66,110 +67,42 @@ export interface MessageProps extends Omit<React.HTMLAttributes<HTMLDivElement>,
   hideActions?: boolean
 }
 
-const variantStyles: Record<MessageVariant, string> = {
+const VARIANT_STYLES: Record<MessageVariant, string> = {
   user: 'bg-gold text-obsidian ml-auto',
   assistant: 'bg-charcoal border border-ash text-white mr-auto',
 }
 
-// Inline action button component
-const ActionButton: React.FC<{
+const ACTION_BUTTON_CLASSES = cx(
+    'p-1.5 text-silver/60 hover:text-silver transition-colors duration-150',
+    'hover:bg-white/5',
+    'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent',
+)
+
+const BRANCH_BUTTON_CLASSES = cx(
+    'p-0.5 hover:text-white hover:bg-white/10 transition-colors',
+    'disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-silver/70',
+)
+
+interface ActionButtonProps {
   onClick: () => void
   label: string
   children: React.ReactNode
-  className?: string
   disabled?: boolean
-}> = ({onClick, label, children, className, disabled}) => (
-    <button
-        type="button"
-        onClick={onClick}
-        disabled={disabled}
-        className={cx(
-            'p-1.5 text-silver/60 hover:text-silver transition-colors duration-150',
-            'hover:bg-white/5',
-            'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent',
-            className
-        )}
-        aria-label={label}
-    >
-      {children}
-    </button>
-)
+}
 
-// Simple inline icons to avoid importing full icon library
-const CopyIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-         strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5">
-      <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
-      <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
-    </svg>
-)
-
-const CheckIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-         strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-         className="w-3.5 h-3.5 text-success">
-      <polyline points="20 6 9 17 4 12"/>
-    </svg>
-)
-
-const PencilIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-         strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5">
-      <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
-      <path d="m15 5 4 4"/>
-    </svg>
-)
-
-const RetryIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-         strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5">
-      <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
-      <path d="M21 3v5h-5"/>
-      <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
-      <path d="M8 16H3v5"/>
-    </svg>
-)
-
-const ChevronLeftIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-         strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3">
-      <path d="m15 18-6-6 6-6"/>
-    </svg>
-)
-
-const ChevronRightIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-         strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3">
-      <path d="m9 18 6-6-6-6"/>
-    </svg>
-)
-
-const GitBranchIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-         strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-         className="w-3 h-3 mr-0.5 text-silver/50">
-      <line x1="6" x2="6" y1="3" y2="15"/>
-      <circle cx="18" cy="6" r="3"/>
-      <circle cx="6" cy="18" r="3"/>
-      <path d="M18 9a9 9 0 0 1-9 9"/>
-    </svg>
-)
-
-const XIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-         strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
-      <path d="M18 6 6 18"/>
-      <path d="m6 6 12 12"/>
-    </svg>
-)
-
-const SendIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-         strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
-      <path d="m22 2-7 20-4-9-9-4Z"/>
-      <path d="M22 2 11 13"/>
-    </svg>
-)
+function ActionButton({onClick, label, children, disabled}: ActionButtonProps) {
+  return (
+      <button
+          type="button"
+          onClick={onClick}
+          disabled={disabled}
+          className={ACTION_BUTTON_CLASSES}
+          aria-label={label}
+      >
+        {children}
+      </button>
+  )
+}
 
 export const Message = React.forwardRef<HTMLDivElement, MessageProps>(
     ({
@@ -183,7 +116,7 @@ export const Message = React.forwardRef<HTMLDivElement, MessageProps>(
       ...rest
     }, ref) => {
       const isUser = variant === 'user'
-      const [copied, setCopied] = useState(false)
+      const {copied, copy} = useCopyToClipboard()
       const [isEditing, setIsEditing] = useState(false)
       const [editValue, setEditValue] = useState(typeof content === 'string' ? content : '')
       const textareaRef = useRef<HTMLTextAreaElement>(null)
@@ -198,32 +131,15 @@ export const Message = React.forwardRef<HTMLDivElement, MessageProps>(
           textarea.style.height = 'auto'
           textarea.style.height = `${textarea.scrollHeight}px`
           textarea.focus()
-          // Move cursor to end
           textarea.setSelectionRange(textarea.value.length, textarea.value.length)
         }
       }, [isEditing])
 
-      const handleCopy = async () => {
-        if (typeof content !== 'string') {
-          return
+      const handleCopy = useCallback(() => {
+        if (typeof content === 'string') {
+          void copy(content)
         }
-
-        try {
-          await navigator.clipboard.writeText(content)
-          setCopied(true)
-          setTimeout(() => setCopied(false), 2000)
-        } catch {
-          // Fallback
-          const textArea = document.createElement('textarea')
-          textArea.value = content
-          document.body.appendChild(textArea)
-          textArea.select()
-          document.execCommand('copy')
-          document.body.removeChild(textArea)
-          setCopied(true)
-          setTimeout(() => setCopied(false), 2000)
-        }
-      }
+      }, [copy, content])
 
       const handleStartEdit = () => {
         if (typeof content === 'string') {
@@ -258,7 +174,6 @@ export const Message = React.forwardRef<HTMLDivElement, MessageProps>(
 
       const handleEditChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setEditValue(e.target.value)
-        // Auto-resize
         const textarea = e.target
         textarea.style.height = 'auto'
         textarea.style.height = `${textarea.scrollHeight}px`
@@ -293,7 +208,7 @@ export const Message = React.forwardRef<HTMLDivElement, MessageProps>(
                           className="p-1.5 text-obsidian/60 hover:text-obsidian transition-colors"
                           aria-label="Cancel edit"
                       >
-                        <XIcon/>
+                        <X className="w-4 h-4"/>
                       </button>
                       <button
                           type="button"
@@ -302,7 +217,7 @@ export const Message = React.forwardRef<HTMLDivElement, MessageProps>(
                           className="p-1.5 text-obsidian/60 hover:text-obsidian transition-colors disabled:opacity-30"
                           aria-label="Submit edit"
                       >
-                        <SendIcon/>
+                        <Send className="w-4 h-4"/>
                       </button>
                     </div>
                   </div>
@@ -311,7 +226,7 @@ export const Message = React.forwardRef<HTMLDivElement, MessageProps>(
                 <div
                     className={cx(
                         'px-3 py-2 w-fit max-w-11/12',
-                        variantStyles[variant]
+                        VARIANT_STYLES[variant]
                     )}
                 >
                   {typeof content === 'string' ? (
@@ -335,21 +250,23 @@ export const Message = React.forwardRef<HTMLDivElement, MessageProps>(
                   {(actions.showCopy !== false) && (
                       <ActionButton onClick={handleCopy}
                                     label={copied ? 'Copied!' : 'Copy message'}>
-                        {copied ? <CheckIcon/> : <CopyIcon/>}
+                        {copied
+                            ? <Check className="w-3.5 h-3.5 text-success"/>
+                            : <Copy className="w-3.5 h-3.5"/>}
                       </ActionButton>
                   )}
 
                   {/* Edit - only for user messages */}
                   {isUser && actions.onEdit && typeof content === 'string' && (
                       <ActionButton onClick={handleStartEdit} label="Edit message">
-                        <PencilIcon/>
+                        <Pencil className="w-3.5 h-3.5"/>
                       </ActionButton>
                   )}
 
                   {/* Retry - only for assistant messages */}
                   {!isUser && actions.onRetry && (
                       <ActionButton onClick={actions.onRetry} label="Regenerate response">
-                        <RetryIcon/>
+                        <RotateCcw className="w-3.5 h-3.5"/>
                       </ActionButton>
                   )}
 
@@ -358,18 +275,15 @@ export const Message = React.forwardRef<HTMLDivElement, MessageProps>(
                       <>
                         <div className="w-px h-4 bg-ash/40 mx-1"/>
                         <div className="flex items-center gap-0.5 text-silver/70">
-                          <GitBranchIcon/>
+                          <GitBranch className="w-3 h-3 mr-0.5 text-silver/50"/>
                           <button
                               type="button"
                               onClick={branchInfo.onPrevious}
                               disabled={branchInfo.current <= 1}
-                              className={cx(
-                                  'p-0.5 hover:text-white hover:bg-white/10 transition-colors',
-                                  'disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-silver/70'
-                              )}
+                              className={BRANCH_BUTTON_CLASSES}
                               aria-label="Previous branch"
                           >
-                            <ChevronLeftIcon/>
+                            <ChevronLeft className="w-3 h-3"/>
                           </button>
                           <span className="text-xs tabular-nums min-w-6 text-center">
                     {branchInfo.current}/{branchInfo.total}
@@ -378,13 +292,10 @@ export const Message = React.forwardRef<HTMLDivElement, MessageProps>(
                               type="button"
                               onClick={branchInfo.onNext}
                               disabled={branchInfo.current >= branchInfo.total}
-                              className={cx(
-                                  'p-0.5 hover:text-white hover:bg-white/10 transition-colors',
-                                  'disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-silver/70'
-                              )}
+                              className={BRANCH_BUTTON_CLASSES}
                               aria-label="Next branch"
                           >
-                            <ChevronRightIcon/>
+                            <ChevronRight className="w-3 h-3"/>
                           </button>
                         </div>
                       </>

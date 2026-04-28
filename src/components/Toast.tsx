@@ -3,6 +3,12 @@ import {createPortal} from 'react-dom'
 import {AlertCircle, AlertTriangle, CheckCircle, Info, X} from 'lucide-react'
 import {cx} from '../utils/cx'
 
+let toastCounter = 0
+function createToastId(): string {
+  toastCounter += 1
+  return `toast-${Date.now().toString(36)}-${toastCounter}`
+}
+
 export type ToastVariant = 'default' | 'success' | 'error' | 'warning' | 'info'
 export type ToastPosition =
     'top-right'
@@ -70,7 +76,7 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({
 
   const addToast = useCallback(
       (toast: Omit<ToastData, 'id'>) => {
-        const id = Math.random().toString(36).substr(2, 9)
+        const id = createToastId()
         const newToast: ToastData = {
           ...toast,
           id,
@@ -96,6 +102,15 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({
 
 ToastProvider.displayName = 'ToastProvider'
 
+const POSITION_CLASSES: Record<ToastPosition, string> = {
+  'top-right': 'top-4 right-4',
+  'top-left': 'top-4 left-4',
+  'bottom-right': 'bottom-4 right-4',
+  'bottom-left': 'bottom-4 left-4',
+  'top-center': 'top-4 left-1/2 -translate-x-1/2',
+  'bottom-center': 'bottom-4 left-1/2 -translate-x-1/2',
+}
+
 // ToastViewport - container for all toasts
 const ToastViewport: React.FC = () => {
   const context = useContext(ToastContext)
@@ -105,20 +120,11 @@ const ToastViewport: React.FC = () => {
 
   const {toasts, position} = context
 
-  const positionClasses: Record<ToastPosition, string> = {
-    'top-right': 'top-4 right-4',
-    'top-left': 'top-4 left-4',
-    'bottom-right': 'bottom-4 right-4',
-    'bottom-left': 'bottom-4 left-4',
-    'top-center': 'top-4 left-1/2 -translate-x-1/2',
-    'bottom-center': 'bottom-4 left-1/2 -translate-x-1/2',
-  }
-
   return createPortal(
       <div
           className={cx(
               'fixed z-50 flex flex-col gap-2 pointer-events-none',
-              positionClasses[position]
+              POSITION_CLASSES[position]
           )}
       >
         {toasts.map((toast) => (

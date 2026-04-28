@@ -1,14 +1,11 @@
 import {
   addMessageToTree,
   createEmptyTree,
-  createPreviewUrl,
   generateId,
   getActivePathMessages,
   getSiblingInfo,
   isBranchPoint,
-  isImageFile,
   messagesToTree,
-  revokePreviewUrl,
   switchBranch,
   updateNodeContent,
 } from '@lukeashford/aurelius'
@@ -438,55 +435,6 @@ describe('Chat Types Utilities', () => {
       const timestamp = parseInt(id.split('-')[0], 10)
       expect(timestamp).toBeGreaterThanOrEqual(before)
       expect(timestamp).toBeLessThanOrEqual(after)
-    })
-  })
-
-  describe('isImageFile', () => {
-    it('returns true for image files', () => {
-      const imageFile = new File([''], 'test.png', {type: 'image/png'})
-      expect(isImageFile(imageFile)).toBe(true)
-    })
-
-    it('returns true for jpeg files', () => {
-      const jpegFile = new File([''], 'test.jpg', {type: 'image/jpeg'})
-      expect(isImageFile(jpegFile)).toBe(true)
-    })
-
-    it('returns false for non-image files', () => {
-      const textFile = new File([''], 'test.txt', {type: 'text/plain'})
-      expect(isImageFile(textFile)).toBe(false)
-    })
-
-    it('returns false for pdf files', () => {
-      const pdfFile = new File([''], 'test.pdf', {type: 'application/pdf'})
-      expect(isImageFile(pdfFile)).toBe(false)
-    })
-  })
-
-  describe('createPreviewUrl', () => {
-    it('creates URL for image files', () => {
-      const imageFile = new File(['image data'], 'test.png', {type: 'image/png'})
-      const url = createPreviewUrl(imageFile)
-      expect(url).toBeDefined()
-      expect(url).toContain('blob:')
-    })
-
-    it('returns undefined for non-image files', () => {
-      const textFile = new File(['text'], 'test.txt', {type: 'text/plain'})
-      const url = createPreviewUrl(textFile)
-      expect(url).toBeUndefined()
-    })
-  })
-
-  describe('revokePreviewUrl', () => {
-    it('does not throw for undefined url', () => {
-      expect(() => revokePreviewUrl(undefined)).not.toThrow()
-    })
-
-    it('revokes valid blob URL', () => {
-      const imageFile = new File(['image data'], 'test.png', {type: 'image/png'})
-      const url = createPreviewUrl(imageFile)
-      expect(() => revokePreviewUrl(url)).not.toThrow()
     })
   })
 })

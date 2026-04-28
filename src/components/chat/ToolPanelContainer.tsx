@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react'
-import {cx} from '../../utils'
+import {composeRefs, cx} from '../../utils'
 
 export interface ToolPanelContainerProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
@@ -117,15 +117,7 @@ export const ToolPanelContainer = React.forwardRef<HTMLDivElement, ToolPanelCont
 
       return (
           <div
-              ref={(node) => {
-                // Merge forwarded ref and internal ref
-                (containerRef as React.MutableRefObject<HTMLDivElement | null>).current = node
-                if (typeof ref === 'function') {
-                  ref(node)
-                } else if (ref) {
-                  (ref as React.MutableRefObject<HTMLDivElement | null>).current = node
-                }
-              }}
+              ref={composeRefs(containerRef, ref)}
               className={cx(
                   'h-full bg-charcoal/50 flex flex-col relative shrink-0',
                   side === 'left' ? 'border-r border-ash/40' : 'border-l border-ash/40',
