@@ -155,8 +155,12 @@ export const ArtifactCard = React.forwardRef<HTMLDivElement, ArtifactCardProps>(
                     )}
                 />
             )
-          default:
-            return null
+          default: {
+            // Exhaustiveness check — adding a new ArtifactType becomes a
+            // compile error here rather than a silently dropped artifact.
+            const _exhaustive: never = artifact.type
+            return _exhaustive
+          }
         }
       }
 

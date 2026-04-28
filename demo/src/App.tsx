@@ -27,34 +27,41 @@ import ArtifactTreeSection from './sections/ArtifactTreeSection'
 import {Footer} from './components/Footer'
 import {LegalNotice} from './components/LegalNotice'
 import ChatDemo from './components/ChatDemo'
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {BrowserRouter, Route, Routes} from 'react-router-dom'
 
-const nav = [
+interface SectionEntry {
+  id: string
+  label: string
+  /** Component rendered inside the <section>. Omitted for the overview row. */
+  Component?: React.ComponentType
+}
+
+const SECTIONS: SectionEntry[] = [
   {id: 'overview', label: 'Overview'},
-  {id: 'chat-demo-link', label: 'Chat Demo'},
-  {id: 'director-note', label: "Director's Note"},
-  {id: 'colors', label: 'Colors'},
-  {id: 'typography', label: 'Typography'},
-  {id: 'layout', label: 'Layout'},
-  {id: 'buttons', label: 'Buttons'},
-  {id: 'badges', label: 'Badges'},
-  {id: 'inputs', label: 'Inputs'},
-  {id: 'forms', label: 'Forms'},
-  {id: 'navigation', label: 'Navigation'},
-  {id: 'data-display', label: 'Data Display'},
-  {id: 'stepper', label: 'Stepper'},
-  {id: 'tooltip', label: 'Tooltip'},
-  {id: 'modal', label: 'Overlays'},
-  {id: 'avatar', label: 'Avatar'},
-  {id: 'brand-icons', label: 'Brand Icons'},
-  {id: 'markdown', label: 'Markdown Content'},
-  {id: 'cards', label: 'Cards'},
-  {id: 'specialist-cards', label: 'Specialist Cards'},
-  {id: 'artifact-tree', label: 'Artifact Tree'},
-  {id: 'image-cards', label: 'Image Cards'},
-  {id: 'feedback', label: 'Feedback'},
-  {id: 'streaming', label: 'Streaming Cursor'},
-  {id: 'messages', label: 'Messages'},
+  {id: 'chat-demo-link', label: 'Chat Demo', Component: ChatInterfaceSection},
+  {id: 'director-note', label: "Director's Note", Component: DirectorNote},
+  {id: 'colors', label: 'Colors', Component: ColorsSection},
+  {id: 'typography', label: 'Typography', Component: TypographySection},
+  {id: 'layout', label: 'Layout', Component: LayoutSection},
+  {id: 'buttons', label: 'Buttons', Component: ButtonsSection},
+  {id: 'badges', label: 'Badges', Component: BadgesSection},
+  {id: 'inputs', label: 'Inputs', Component: InputsSection},
+  {id: 'forms', label: 'Forms', Component: FormsSection},
+  {id: 'navigation', label: 'Navigation', Component: NavigationSection},
+  {id: 'data-display', label: 'Data Display', Component: DataDisplaySection},
+  {id: 'stepper', label: 'Stepper', Component: StepperSection},
+  {id: 'tooltip', label: 'Tooltip', Component: TooltipSection},
+  {id: 'modal', label: 'Overlays', Component: ModalSection},
+  {id: 'avatar', label: 'Avatar', Component: AvatarSection},
+  {id: 'brand-icons', label: 'Brand Icons', Component: BrandIconSection},
+  {id: 'markdown', label: 'Markdown Content', Component: MarkdownContentSection},
+  {id: 'cards', label: 'Cards', Component: CardsSection},
+  {id: 'specialist-cards', label: 'Specialist Cards', Component: SpecialistCardsSection},
+  {id: 'artifact-tree', label: 'Artifact Tree', Component: ArtifactTreeSection},
+  {id: 'image-cards', label: 'Image Cards', Component: ImageCardSection},
+  {id: 'feedback', label: 'Feedback', Component: FeedbackSection},
+  {id: 'streaming', label: 'Streaming Cursor', Component: StreamingCursorSection},
+  {id: 'messages', label: 'Messages', Component: MessageSection},
 ]
 
 function MainLayout() {
@@ -73,8 +80,8 @@ function MainLayout() {
         {rootMargin: '-40% 0px -55% 0px', threshold: [0, 1]}
     )
 
-    nav.forEach(n => {
-      const el = document.getElementById(n.id)
+    SECTIONS.forEach(({id}) => {
+      const el = document.getElementById(id)
       if (el) {
         observer.observe(el)
       }
@@ -96,14 +103,14 @@ function MainLayout() {
             </a>
           </div>
           <nav className="p-3 space-y-1">
-            {nav.map(n => (
-                <a key={n.id} href={`#${n.id}`}
+            {SECTIONS.map(({id, label}) => (
+                <a key={id} href={`#${id}`}
                    className={`block px-3 py-2 transition-colors ${
-                       active === n.id
+                       active === id
                            ? 'text-white bg-ash/30'
                            : 'text-silver hover:text-white hover:bg-ash/30'
                    }`}>
-                  {n.label}
+                  {label}
                 </a>
             ))}
           </nav>
@@ -118,101 +125,11 @@ function MainLayout() {
             </p>
           </section>
 
-          <section id="chat-demo-link" className="space-y-4">
-            <ChatInterfaceSection/>
-          </section>
-
-          <section id="director-note" className="space-y-4">
-            <DirectorNote/>
-          </section>
-
-          <section id="colors" className="space-y-4">
-            <ColorsSection/>
-          </section>
-
-          <section id="typography" className="space-y-4">
-            <TypographySection/>
-          </section>
-
-          <section id="layout" className="space-y-4">
-            <LayoutSection/>
-          </section>
-
-          <section id="buttons" className="space-y-4">
-            <ButtonsSection/>
-          </section>
-
-          <section id="badges" className="space-y-4">
-            <BadgesSection/>
-          </section>
-
-          <section id="inputs" className="space-y-4">
-            <InputsSection/>
-          </section>
-
-          <section id="forms" className="space-y-4">
-            <FormsSection/>
-          </section>
-
-          <section id="navigation" className="space-y-4">
-            <NavigationSection/>
-          </section>
-
-          <section id="data-display" className="space-y-4">
-            <DataDisplaySection/>
-          </section>
-
-          <section id="stepper" className="space-y-4">
-            <StepperSection/>
-          </section>
-
-          <section id="tooltip" className="space-y-4">
-            <TooltipSection/>
-          </section>
-
-          <section id="modal" className="space-y-4">
-            <ModalSection/>
-          </section>
-
-          <section id="avatar" className="space-y-4">
-            <AvatarSection/>
-          </section>
-
-          <section id="brand-icons" className="space-y-4">
-            <BrandIconSection/>
-          </section>
-
-          <section id="markdown" className="space-y-4">
-            <MarkdownContentSection/>
-          </section>
-
-          <section id="cards" className="space-y-4">
-            <CardsSection/>
-          </section>
-
-          <section id="specialist-cards" className="space-y-4">
-            <SpecialistCardsSection/>
-          </section>
-
-          <section id="artifact-tree" className="space-y-4">
-            <ArtifactTreeSection/>
-          </section>
-
-          <section id="image-cards" className="space-y-4">
-            <ImageCardSection/>
-          </section>
-
-          <section id="feedback" className="space-y-4">
-            <FeedbackSection/>
-          </section>
-
-          <section id="streaming" className="space-y-4">
-            <StreamingCursorSection/>
-          </section>
-
-          <section id="messages" className="space-y-4">
-            <MessageSection/>
-          </section>
+          {SECTIONS.filter(s => s.Component).map(({id, Component}) => (
+              <section key={id} id={id} className="space-y-4">
+                {Component && <Component/>}
+              </section>
+          ))}
 
           <Footer/>
         </main>

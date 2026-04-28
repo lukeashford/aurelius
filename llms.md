@@ -127,7 +127,7 @@ Import from `@lukeashford/aurelius`:
 | List | variant, ordered, leading, trailing, interactive, selected, disabled, primary, secondary |
 | MarkdownContent | content, isMarkdown, sanitizeConfig, isStreaming, cursorClassName |
 | Menu | children, open, onOpenChange, asChild, align, side, icon, destructive |
-| Message | variant (user, assistant), content, isStreaming, branchInfo, actions, hideActions |
+| Message | variant (user, assistant), content, isStreaming, branchInfo, actions, hideActions, onClick, label, children, disabled |
 | Modal | isOpen, onClose, title, children, className |
 | Navbar | fixed, bordered, position, active, active |
 | Pagination | page, totalPages, onPageChange, siblingCount, showEdges |
@@ -159,7 +159,7 @@ Import from `@lukeashford/aurelius`:
 | ChatInterface | messages, conversationTree, onTreeChange, conversations, onMessageSubmit, onEditMessage, onRetryMessage, onStop, onSelectConversation, onNewChat, onRenameConversation, isStreaming, isThinking, placeholder, emptyStateHelper, emptyState, showAttachmentButton, enableMessageActions, attachments, onAttachmentsChange, onAttachmentRemove, artifactNodes, isArtifactsPanelOpen, onArtifactsPanelOpenChange, tasks, tasksTitle, onStopAllTasks |
 | ChatView | messages, latestUserMessageIndex, isStreaming, isThinking, onScroll |
 | HistoryPanel | conversations, onSelectConversation, onNewChat, onRenameConversation |
-| MessageActions | variant (user, assistant), content, onEdit, onRetry, isEditing, onEditingChange, editValue |
+| MessageActions | variant, content, onEdit, onRetry, isEditing, onEditingChange, editValue |
 | ThinkingIndicator | isVisible, phraseInterval, phrases |
 | TodosList | tasks, title, onStopAllTasks |
 | ToolPanelContainer | topContent, bottomContent, width, initialTopPercent, onResizeStart, side |
@@ -234,6 +234,9 @@ navigate for groups).
 - **onRemove**: * Called when an attachment should be removed
 - **removable**: * Whether attachments are removable
 - **maxVisible**: * Maximum number of attachments to show before collapsing Set to 0 or undefined to show all
+
+**AudioCard**
+- **playerProps**: Forwarded to the underlying ReactPlayer.
 
 **FileChip**
 - **name**: * File name to display
@@ -335,6 +338,9 @@ A card for displaying text content, supporting Markdown and HTML formatting.
 - **isMarkdown**: * Whether the content should be treated as Markdown @default true
 - **maxHeight**: * Maximum height of the content area before scrolling @default '16rem'
 - **contentClassName**: * Optional class name for the content container
+
+**VideoCard**
+- **playerProps**: Forwarded to the underlying ReactPlayer.
 
 **ArtifactsPanel**
 ArtifactsPanel displays artifacts in a navigable tree panel.
@@ -534,10 +540,6 @@ side of the chat interface. It follows the IntelliJ pattern:
 - **ToolDefinition.icon**: * Icon element shown in the sidebar button
 - **ToolDefinition.label**: * Accessible label for the button
 - **ToolDefinition.group**: * Which group the tool belongs to — tools in the same group are mutually exclusive (opening one closes the other).
-- **ExternalToolDefinition.id**: * Unique identifier for this tool
-- **ExternalToolDefinition.icon**: * Icon element shown in the sidebar button
-- **ExternalToolDefinition.label**: * Accessible label for the button
-- **ExternalToolDefinition.group**: * Which group the tool belongs to
 - **ExternalToolDefinition.content**: * Content to render when the tool is open
 - **tools**: * Available tool definitions
 - **activeTools**: * Current state — which tool is open per group

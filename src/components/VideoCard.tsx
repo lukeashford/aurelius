@@ -3,6 +3,8 @@ import ReactPlayer from 'react-player'
 import {Card, type CardProps, type CardSlotLoading} from './Card'
 import {cx} from '../utils'
 
+type ReactPlayerProps = React.ComponentProps<typeof ReactPlayer>
+
 export type VideoAspectRatioPreset = 'video' | 'cinema' | 'square'
 export type VideoAspectRatio = VideoAspectRatioPreset | `${number}/${number}`
 
@@ -19,9 +21,8 @@ export interface VideoCardProps extends Omit<CardProps, 'title'> {
   loop?: boolean
   mediaClassName?: string
   contentClassName?: string
-  // Forwarded to ReactPlayer. Typed loosely because the underlying prop
-  // surface varies across react-player versions.
-  playerProps?: any
+  /** Forwarded to the underlying ReactPlayer. */
+  playerProps?: Partial<ReactPlayerProps>
   loading?: CardSlotLoading
 }
 

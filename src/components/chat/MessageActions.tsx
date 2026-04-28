@@ -1,14 +1,18 @@
 import React, {useCallback, useState} from 'react'
 import {cx, useCopyToClipboard} from '../../utils'
 import {Check, Copy, Pencil, RotateCcw, Send, X,} from 'lucide-react'
+import type {MessageVariant} from '../Message'
 
-export type MessageActionsVariant = 'user' | 'assistant'
+/**
+ * @deprecated Use MessageVariant. Kept as an alias for backwards compatibility.
+ */
+export type MessageActionsVariant = MessageVariant
 
 export interface MessageActionsProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
    * Whether this is for a user or assistant message
    */
-  variant: MessageActionsVariant
+  variant: MessageVariant
   /**
    * The message content for copy functionality
    */

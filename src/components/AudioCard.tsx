@@ -4,6 +4,8 @@ import {Music} from 'lucide-react'
 import {Card, type CardProps, type CardSlotLoading} from './Card'
 import {cx} from '../utils'
 
+type ReactPlayerProps = React.ComponentProps<typeof ReactPlayer>
+
 export interface AudioCardProps extends Omit<CardProps, 'title'> {
   src?: string
   title?: React.ReactNode
@@ -15,9 +17,8 @@ export interface AudioCardProps extends Omit<CardProps, 'title'> {
   loop?: boolean
   mediaClassName?: string
   contentClassName?: string
-  // Forwarded to ReactPlayer. Typed loosely because the underlying prop
-  // surface (config / file-player options) varies across react-player versions.
-  playerProps?: any
+  /** Forwarded to the underlying ReactPlayer. */
+  playerProps?: Partial<ReactPlayerProps>
   height?: string | number
   loading?: CardSlotLoading
 }
@@ -68,15 +69,7 @@ export const AudioCard = React.forwardRef<HTMLDivElement, AudioCardProps>(
                         loop={loop}
                         width="100%"
                         height={height}
-                        style={{backgroundColor: 'transparent'}}
-                        config={{
-                          file: {
-                            forceAudio: true,
-                            attributes: {
-                              style: {width: '100%', height: height}
-                            }
-                          }
-                        }}
+                        style={{backgroundColor: 'transparent', width: '100%', height}}
                         {...playerProps}
                     />
                   </div>
