@@ -1,3 +1,14 @@
+## [4.0.0](https://github.com/lukeashford/aurelius/compare/v3.9.0...v4.0.0) (2026-04-28)
+
+### ⚠ BREAKING CHANGES
+
+* trigger release for previous breaking refactors
+
+### Features
+
+* **release:** add manual workflow_dispatch trigger and update dependencies ([eee3cc6](https://github.com/lukeashford/aurelius/commit/eee3cc6fd136256f1a8d35e7de3854cc9bcac784))
+* trigger release for previous breaking refactors ([2802166](https://github.com/lukeashford/aurelius/commit/280216679b98942518af1558f026289b8823b2b6))
+
 ## [3.9.0](https://github.com/lukeashford/aurelius/compare/v3.8.1...v3.9.0) (2026-04-22)
 
 ### Features
