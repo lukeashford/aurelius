@@ -5,12 +5,14 @@ import {cx} from '../utils'
 
 // Register the link-hardening hook once at module load. Hooks are global on
 // DOMPurify, so calling addHook in render would attach a duplicate every pass.
-DOMPurify.addHook('afterSanitizeAttributes', (node) => {
-  if (node.tagName === 'A') {
-    node.setAttribute('target', '_blank')
-    node.setAttribute('rel', 'noopener noreferrer')
-  }
-})
+if (typeof window !== 'undefined' && typeof DOMPurify.addHook === 'function') {
+  DOMPurify.addHook('afterSanitizeAttributes', (node) => {
+    if (node.tagName === 'A') {
+      node.setAttribute('target', '_blank')
+      node.setAttribute('rel', 'noopener noreferrer')
+    }
+  })
+}
 
 export interface MarkdownContentProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
@@ -72,6 +74,11 @@ function injectStreamingCursor(html: string, cursorClassName?: string): string {
       cursorClassName)}" aria-hidden="true"></span>`
 
   // Parse the HTML to find the right injection point
+  // Fallback for SSR/Node environment where DOMParser is not available
+  if (typeof DOMParser === 'undefined') {
+    return html + cursorHtml
+  }
+
   const parser = new DOMParser()
   const doc = parser.parseFromString(`<div>${html}</div>`, 'text/html')
   const container = doc.body.firstChild as HTMLElement
@@ -123,7 +130,9 @@ export const MarkdownContent = React.forwardRef<HTMLDivElement, MarkdownContentP
           htmlContent = content
         }
 
-        const sanitized = htmlContent ? DOMPurify.sanitize(htmlContent, config) : ''
+        const sanitized = (htmlContent && typeof DOMPurify.sanitize === 'function')
+            ? DOMPurify.sanitize(htmlContent, config)
+            : (htmlContent || '')
 
         if (isStreaming) {
           return injectStreamingCursor(sanitized, cursorClassName)

@@ -433,24 +433,19 @@ Import from \`@lukeashford/aurelius\`:
           // Check if this line is a JSDoc comment
           if (line.startsWith('/**')) {
             // Extract JSDoc content (may span multiple lines)
-            let docComment = '';
+            let docLines = [];
             let j = i;
             while (j < lines.length) {
               const docLine = lines[j].trim();
+              docLines.push(docLine);
               if (docLine.includes('*/')) {
-                // Extract text between /** and */
-                const match = propsBlock.substring(
-                    propsBlock.indexOf('/**', propsBlock.split('\n').slice(0, i).join('\n').length),
-                    propsBlock.indexOf('*/', propsBlock.split('\n').slice(0, j).join('\n').length)
-                    + 2
-                ).match(/\/\*\*\s*(.+?)\s*\*\//s);
-                if (match) {
-                  docComment = match[1].replace(/\n\s*\*\s*/g, ' ').trim();
-                }
                 break;
               }
               j++;
             }
+            const docCommentMatch = docLines.join('\n').match(/\/\*\*\s*([\s\S]+?)\s*\*\//);
+            let docComment = docCommentMatch ? docCommentMatch[1].replace(/\n\s*\*\s*/g, ' ').trim()
+                : '';
 
             // Get the next non-empty line which should be the prop definition
             for (let k = j + 1; k < lines.length; k++) {
