@@ -1,3 +1,10 @@
+## [4.1.0](https://github.com/lukeashford/aurelius/compare/v4.0.0...v4.1.0) (2026-04-29)
+
+### Features
+
+* **chat:** add tree-based navigation and greyed-future timeline ([ddde0a6](https://github.com/lukeashford/aurelius/commit/ddde0a68cf27cffae8ec8a52039a8b85e9a5bb0f))
+* **chat:** add tree-based navigation and greyed-future timeline ([#51](https://github.com/lukeashford/aurelius/issues/51)) ([256af9c](https://github.com/lukeashford/aurelius/commit/256af9c9c2ca3aa19e6e08030b9cede02b6bc17b))
+
 ## [4.0.0](https://github.com/lukeashford/aurelius/compare/v3.9.0...v4.0.0) (2026-04-28)
 
 ### ⚠ BREAKING CHANGES
