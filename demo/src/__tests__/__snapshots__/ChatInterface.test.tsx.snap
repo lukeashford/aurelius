@@ -515,7 +515,9 @@ exports[`ChatInterface matches snapshot while streaming 1`] = `
                   </div>
                 </div>
               </div>
-              <div>
+              <div
+                class=""
+              >
                 <div
                   class="flex flex-col items-start"
                 >
@@ -947,7 +949,9 @@ exports[`ChatInterface matches snapshot with messages 1`] = `
                   </div>
                 </div>
               </div>
-              <div>
+              <div
+                class=""
+              >
                 <div
                   class="flex flex-col items-start"
                 >

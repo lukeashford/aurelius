@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react'
 import {useNavigate} from 'react-router-dom'
 import {
-  addMessageToTree,
+  addNodeToTree,
   type ArtifactNode,
   type Attachment,
   ChatInterface,
@@ -11,7 +11,7 @@ import {
   generateId,
   type ScriptElement,
   type Task,
-  updateNodeContent,
+  updateMessageContent,
 } from '@lukeashford/aurelius'
 
 // Mock response content for the first message (no artifacts)
@@ -116,7 +116,8 @@ function createBranchingDemoTree(): ConversationTree {
   let tree = createEmptyTree()
 
   // Root user message
-  tree = addMessageToTree(tree, {
+  tree = addNodeToTree(tree, {
+        kind: 'message' as const,
     id: 'branch-user-1',
     role: 'user',
     content: 'What programming language should I learn first?',
@@ -124,7 +125,8 @@ function createBranchingDemoTree(): ConversationTree {
   }, null)
 
   // First assistant response
-  tree = addMessageToTree(tree, {
+  tree = addNodeToTree(tree, {
+        kind: 'message' as const,
     id: 'branch-assistant-1a',
     role: 'assistant',
     content: '<p>I recommend starting with <strong>Python</strong>! It has:</p><ul><li>Clean, readable syntax</li><li>Huge ecosystem of libraries</li><li>Great for beginners and professionals alike</li></ul>',
@@ -138,6 +140,7 @@ function createBranchingDemoTree(): ConversationTree {
       ...tree.nodes,
       'branch-assistant-1b': {
         id: 'branch-assistant-1b',
+        kind: 'message' as const,
         role: 'assistant',
         content: '<p>I\'d suggest <strong>JavaScript</strong> as your first language:</p><ul><li>Runs everywhere (browser, server, mobile)</li><li>Immediate visual feedback</li><li>Essential for web development</li></ul>',
         parentId: 'branch-user-1',
@@ -152,14 +155,16 @@ function createBranchingDemoTree(): ConversationTree {
   }
 
   // Continue the Python branch
-  tree = addMessageToTree(tree, {
+  tree = addNodeToTree(tree, {
+        kind: 'message' as const,
     id: 'branch-user-2',
     role: 'user',
     content: 'What should I build first with Python?',
     parentId: 'branch-assistant-1a',
   }, 'branch-assistant-1a')
 
-  tree = addMessageToTree(tree, {
+  tree = addNodeToTree(tree, {
+        kind: 'message' as const,
     id: 'branch-assistant-2',
     role: 'assistant',
     content: '<p>Here are some great first projects:</p><ol><li><strong>Calculator</strong> — Practice basic logic</li><li><strong>Todo app</strong> — Learn data structures</li><li><strong>Web scraper</strong> — Explore libraries</li></ol><p>Start small and build up!</p>',
@@ -611,7 +616,8 @@ export default function ChatDemo() {
     // Add empty assistant message to tree
     setConversationTree((prev) => {
       const parentId = prev.activeLeafId
-      return addMessageToTree(prev, {
+      return addNodeToTree(prev, {
+        kind: 'message' as const,
         id: messageId,
         role: 'assistant',
         content: '',
@@ -624,14 +630,14 @@ export default function ChatDemo() {
     streamIntervalRef.current = setInterval(() => {
       if (currentTokenIndex < tokens.length) {
         const chunk = tokens.slice(0, currentTokenIndex + 1).join('')
-        setConversationTree((prev) => updateNodeContent(prev, messageId, chunk, true))
+        setConversationTree((prev) => updateMessageContent(prev, messageId, chunk, true))
         currentTokenIndex++
       } else {
         if (streamIntervalRef.current) {
           clearInterval(streamIntervalRef.current)
           streamIntervalRef.current = null
         }
-        setConversationTree((prev) => updateNodeContent(prev, messageId, tokens.join(''), false))
+        setConversationTree((prev) => updateMessageContent(prev, messageId, tokens.join(''), false))
 
         // Reveal the artifact (clear isPending)
         if (artifactNode) {
@@ -670,7 +676,8 @@ export default function ChatDemo() {
     // Add user message
     const userMessageId = generateId()
     setConversationTree((prev) => {
-      return addMessageToTree(prev, {
+      return addNodeToTree(prev, {
+        kind: 'message' as const,
         id: userMessageId,
         role: 'user',
         content: 'Create a brand video for Luminova Coffee, a premium artisan coffee brand.',
@@ -937,8 +944,8 @@ export default function ChatDemo() {
     if (messageId) {
       setConversationTree((prev) => {
         const node = prev.nodes[messageId]
-        if (node) {
-          return updateNodeContent(prev, messageId, node.content, false)
+        if (node && node.kind === 'message') {
+          return updateMessageContent(prev, messageId, node.content, false)
         }
         return prev
       })
@@ -966,7 +973,8 @@ export default function ChatDemo() {
         const userMessageId = generateId()
         setConversationTree((prev) => {
           const parentId = prev.activeLeafId
-          return addMessageToTree(prev, {
+          return addNodeToTree(prev, {
+        kind: 'message' as const,
             id: userMessageId,
             role: 'user',
             content: message,
@@ -1016,7 +1024,7 @@ export default function ChatDemo() {
   // Handle edit message (creates a branch)
   const handleEditMessage = useCallback((messageId: string, newContent: string) => {
     const node = conversationTree.nodes[messageId]
-    if (!node || node.role !== 'user') {
+    if (!node || node.kind !== 'message' || node.role !== 'user') {
       return
     }
 
@@ -1024,7 +1032,8 @@ export default function ChatDemo() {
     const newMessageId = generateId()
     setConversationTree((prev) => {
       const parentId = node.parentId
-      return addMessageToTree(prev, {
+      return addNodeToTree(prev, {
+        kind: 'message' as const,
         id: newMessageId,
         role: 'user',
         content: newContent,
@@ -1048,7 +1057,7 @@ export default function ChatDemo() {
   // Handle retry message (creates a branch)
   const handleRetryMessage = useCallback((messageId: string) => {
     const node = conversationTree.nodes[messageId]
-    if (!node || node.role !== 'assistant') {
+    if (!node || node.kind !== 'message' || node.role !== 'assistant') {
       return
     }
 
@@ -1070,7 +1079,8 @@ export default function ChatDemo() {
       currentMessageIdRef.current = newMessageId
 
       setConversationTree((prev) => {
-        return addMessageToTree(prev, {
+        return addNodeToTree(prev, {
+        kind: 'message' as const,
           id: newMessageId,
           role: 'assistant',
           content: '',
@@ -1088,11 +1098,11 @@ export default function ChatDemo() {
       const streamIt = () => {
         if (currentIndex < tokens.length) {
           const chunk = tokens.slice(0, currentIndex + 1).join('')
-          setConversationTree((prev) => updateNodeContent(prev, newMessageId, chunk, true))
+          setConversationTree((prev) => updateMessageContent(prev, newMessageId, chunk, true))
           currentIndex++
           setTimeout(streamIt, 30)
         } else {
-          setConversationTree((prev) => updateNodeContent(prev, newMessageId, response, false))
+          setConversationTree((prev) => updateMessageContent(prev, newMessageId, response, false))
           currentMessageIdRef.current = null
           setIsStreaming(false)
         }

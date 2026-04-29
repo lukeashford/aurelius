@@ -16,14 +16,14 @@ test.describe('ModalSection', () => {
 
   test('opens and closes modal', async ({page}) => {
     // Find and click the Open Modal button (exact label in demo is "Open Centered Modal")
-    const openButton = page.getByRole('button', {name: 'Open Modal'});
+    const openButton = page.getByRole('button', {name: 'Open Modal'}).first();
     await openButton.click();
 
     // Verify modal is visible
     await expect(page.locator('text=Example Modal')).toBeVisible();
 
     // Close modal with Cancel button
-    await page.locator('button:has-text("Cancel")').click();
+    await page.getByRole('dialog').getByRole('button', {name: 'Cancel'}).click();
 
     // Verify modal is closed
     await expect(page.locator('text=Example Modal')).not.toBeVisible();
@@ -41,7 +41,7 @@ test.describe('ModalSection', () => {
   });
 
   test('modal overlay appears correctly', async ({page}) => {
-    const openButton = page.locator('button:has-text("Open Modal")').first();
+    const openButton = page.getByRole('button', {name: 'Open Modal'}).first();
     await openButton.click();
 
     // Check for modal backdrop/overlay

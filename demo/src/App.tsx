@@ -14,6 +14,7 @@ import MarkdownContentSection from './sections/MarkdownContentSection'
 import FeedbackSection from './sections/FeedbackSection'
 import StepperSection from './sections/StepperSection'
 import MessageSection from './sections/MessageSection'
+import CheckpointsSection from './sections/CheckpointsSection'
 import StreamingCursorSection from './sections/StreamingCursorSection'
 import TooltipSection from './sections/TooltipSection'
 import ModalSection from './sections/ModalSection'
@@ -62,6 +63,7 @@ const SECTIONS: SectionEntry[] = [
   {id: 'feedback', label: 'Feedback', Component: FeedbackSection},
   {id: 'streaming', label: 'Streaming Cursor', Component: StreamingCursorSection},
   {id: 'messages', label: 'Messages', Component: MessageSection},
+  {id: 'checkpoints', label: 'Checkpoints', Component: CheckpointsSection},
 ]
 
 function MainLayout() {

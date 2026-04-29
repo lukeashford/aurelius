@@ -6,7 +6,22 @@ export {
 } from './ChatInterface'
 
 // Core components
-export {ChatView, type ChatViewProps, type ChatViewItem} from './ChatView'
+export {
+  ChatView,
+  type ChatViewProps,
+  type ChatViewItem,
+  type ChatViewMessageItem,
+  type ChatViewCheckpointItem,
+  type ChatViewDividerItem,
+} from './ChatView'
+export {
+  Checkpoint,
+  type CheckpointProps,
+  type CheckpointBranchInfo,
+  type CheckpointExecutionKind,
+  type CheckpointStatus,
+} from './Checkpoint'
+export {GreyedDivider, type GreyedDividerProps} from './GreyedDivider'
 export {
   ChatInput,
   type ChatInputProps,
@@ -47,23 +62,36 @@ export {
 export {ThinkingIndicator, type ThinkingIndicatorProps} from './ThinkingIndicator'
 export {BranchNavigator, type BranchNavigatorProps} from './BranchNavigator'
 
-// Types for branching and attachments
+// Tree types — discriminated union over message + checkpoint nodes
 export {
+  type NodeTopology,
+  type TreeNode,
   type MessageNode,
+  type CheckpointNode,
+  type ChatNode,
   type ConversationTree,
   type AttachmentStatus,
   type Attachment,
-  // Utility functions
+  generateId,
+  isImageFile,
+  createPreviewUrl,
+  revokePreviewUrl,
+} from './types'
+
+// Tree algorithms — generic over the node kind
+export {
   createEmptyTree,
-  addMessageToTree,
-  getActivePathMessages,
+  addNodeToTree,
+  getActivePath,
+  findAncestor,
   getSiblingInfo,
   switchBranch,
-  updateNodeContent,
-  messagesToTree,
+  setActiveLeaf,
+  getGreyedFuture,
   isBranchPoint,
-  generateId,
-} from './types'
+  messagesToTree,
+  updateMessageContent,
+} from './tree'
 
 // Hooks
 export {

@@ -4,61 +4,87 @@ import {
   type MessageActionsConfig,
   type MessageBranchInfo,
   type MessageProps,
-  type MessageVariant
+  type MessageVariant,
 } from '../Message'
 import {composeRefs, cx} from '../../utils'
 import {useScrollAnchor} from './hooks/useScrollAnchor'
 import {useAdaptiveSpacer} from './hooks/useAdaptiveSpacer'
 import {ThinkingIndicator} from './ThinkingIndicator'
+import {Checkpoint, type CheckpointBranchInfo, type CheckpointProps} from './Checkpoint'
+import {GreyedDivider, type GreyedDividerProps} from './GreyedDivider'
 
-export interface ChatViewItem extends Omit<MessageProps, 'variant' | 'children'> {
-  id?: string
-  variant?: MessageVariant
-  /**
-   * Branch navigation info for this message
-   */
+/**
+ * One row in the chat stream. Discriminated by `kind` so ChatView can dispatch
+ * to the right renderer without leaking shape into upstream types.
+ */
+export type ChatViewItem =
+    | ChatViewMessageItem
+    | ChatViewCheckpointItem
+    | ChatViewDividerItem
+
+export interface ChatViewMessageItem extends Omit<MessageProps, 'variant' | 'children'> {
+  kind: 'message'
+  id: string
+  variant: MessageVariant
+  /** Branch navigation info — chevrons render only when total > 1. */
   branchInfo?: MessageBranchInfo
-  /**
-   * Actions configuration for this message
-   */
+  /** Actions configuration (copy / edit / retry). */
   actions?: MessageActionsConfig
+  /** When true, this row is rendered in the greyed-future region. */
+  muted?: boolean
+}
+
+export interface ChatViewCheckpointItem extends CheckpointProps {
+  kind: 'checkpoint'
+  id: string
+}
+
+export interface ChatViewDividerItem extends GreyedDividerProps {
+  kind: 'divider'
+  id: string
 }
 
 export interface ChatViewProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
-   * Array of chat messages to display
+   * Rows to render in the chat stream. Heterogeneous: messages, checkpoints,
+   * and the greyed-future divider live in the same list, ordered top-to-bottom.
    */
-  messages: ChatViewItem[]
+  items: ChatViewItem[]
   /**
-   * Index of the latest user message to anchor scroll to.
-   * When this changes, the component scrolls that message to the top.
+   * Index of the latest user-message row to anchor scroll to. When this index
+   * changes, the corresponding row scrolls to the top. Defaults to the
+   * last-found user message in `items`.
    */
   latestUserMessageIndex?: number
   /**
-   * Whether the assistant is currently streaming a response
+   * Whether the assistant is currently streaming a response. Drives the
+   * streaming cursor on the last assistant message and the thinking indicator.
    */
   isStreaming?: boolean
   /**
-   * Whether to show the thinking indicator (between user message and response)
+   * Whether to show the thinking indicator (between user message and response).
    */
   isThinking?: boolean
   /**
-   * Callback when the user scrolls manually
+   * Callback when the user scrolls manually.
    */
   onScroll?: (e: React.UIEvent<HTMLDivElement>) => void
 }
 
 /**
- * ChatView displays a conversation thread with smart scrolling behavior.
+ * Renders a heterogeneous chat stream — messages, checkpoints, and the
+ * greyed-future divider — with smart scrolling behavior.
  *
  * Key behaviors:
- * - When a user message is sent, it anchors to the top of the viewport
+ * - When a user message arrives, it anchors to the top of the viewport
  * - Does NOT auto-scroll during streaming (respects user's reading position)
- * - Smooth transitions and animations
+ * - Each row's renderer is dispatched from its `kind` discriminator
  */
 export const ChatView = React.forwardRef<HTMLDivElement, ChatViewProps>(
-    ({messages, latestUserMessageIndex, isStreaming, isThinking, onScroll, className, ...rest},
-        ref) => {
+    function ChatView(
+        {items, latestUserMessageIndex, isStreaming, isThinking, onScroll, className, ...rest},
+        ref,
+    ) {
       const {containerRef, anchorRef, scrollToAnchor} = useScrollAnchor({
         behavior: 'smooth',
         block: 'start',
@@ -69,27 +95,28 @@ export const ChatView = React.forwardRef<HTMLDivElement, ChatViewProps>(
         anchorRef,
       })
 
-      // Scroll to anchor when latest user message index changes
+      const latestUserIdx =
+          latestUserMessageIndex ??
+          items.reduceRight((found, item, idx) => {
+            if (found === -1 && item.kind === 'message' && item.variant === 'user') {
+              return idx
+            }
+            return found
+          }, -1)
+
       useEffect(() => {
         if (latestUserMessageIndex !== undefined && latestUserMessageIndex >= 0) {
           scrollToAnchor()
         }
       }, [latestUserMessageIndex, scrollToAnchor])
 
-      // Find the latest user message for anchoring
-      const latestUserIdx =
-          latestUserMessageIndex ??
-          messages.reduceRight((found, msg, idx) => {
-            if (found === -1 && msg.variant === 'user') {
-              return idx
-            }
-            return found
-          }, -1)
-
-      // Determine if we should show thinking indicator
-      // Show when isThinking is true AND there are messages AND the last message is from user
-      const showThinking = isThinking && messages.length > 0 && messages[messages.length
-      - 1]?.variant === 'user'
+      const lastMessageIdx = items.reduceRight((found, item, idx) => {
+        return found === -1 && item.kind === 'message' ? idx : found
+      }, -1)
+      const lastMessage = lastMessageIdx >= 0 ? items[lastMessageIdx] : null
+      const showThinking = isThinking
+          && lastMessage?.kind === 'message'
+          && lastMessage.variant === 'user'
 
       return (
           <div
@@ -98,31 +125,54 @@ export const ChatView = React.forwardRef<HTMLDivElement, ChatViewProps>(
               className={cx(
                   'flex flex-col w-full h-full overflow-y-auto scroll-smooth',
                   'px-4 py-6 overscroll-contain',
-                  className
+                  className,
               )}
               {...rest}
           >
-            {/* Content wrapper for adaptive spacer measurement */}
             <div ref={contentRef} className="relative flex flex-col gap-3">
-              {messages.map(({
-                id,
-                variant,
-                className: messageClassName,
-                branchInfo,
-                actions,
-                isStreaming: nodeIsStreaming,
-                ...messageProps
-              }, index) => {
+              {items.map((item, index) => {
                 const isAnchor = index === latestUserIdx
-                const isLastMessage = index === messages.length - 1
+                const wrapperRef = isAnchor ? anchorRef : undefined
+                const wrapperClass = isAnchor ? 'scroll-mt-4' : undefined
+
+                if (item.kind === 'divider') {
+                  const {kind: _k, id, ...dividerProps} = item
+                  return (
+                      <div key={id}>
+                        <GreyedDivider {...dividerProps}/>
+                      </div>
+                  )
+                }
+
+                if (item.kind === 'checkpoint') {
+                  const {kind: _k, id, ...checkpointProps} = item
+                  return (
+                      <div key={id} ref={wrapperRef} className={wrapperClass}>
+                        <Checkpoint {...checkpointProps}/>
+                      </div>
+                  )
+                }
+
+                const {
+                  kind: _k,
+                  id,
+                  variant,
+                  muted,
+                  className: messageClassName,
+                  branchInfo,
+                  actions,
+                  isStreaming: nodeIsStreaming,
+                  ...messageProps
+                } = item
+                const isLastMessage = index === lastMessageIdx
                 const showStreaming = isLastMessage && isStreaming && variant === 'assistant'
                 const isMessageStreaming = showStreaming || !!nodeIsStreaming
-                // Hide actions during streaming
+
                 return (
                     <div
-                        key={id ?? `msg-${index}`}
-                        ref={isAnchor ? anchorRef : undefined}
-                        className={isAnchor ? 'scroll-mt-4' : undefined}
+                        key={id}
+                        ref={wrapperRef}
+                        className={cx(wrapperClass, muted && 'opacity-60')}
                     >
                       <Message
                           variant={variant}
@@ -137,13 +187,9 @@ export const ChatView = React.forwardRef<HTMLDivElement, ChatViewProps>(
                 )
               })}
 
-              {/* Thinking indicator */}
-              {showThinking && (
-                  <ThinkingIndicator isVisible/>
-              )}
+              {showThinking && <ThinkingIndicator isVisible/>}
             </div>
 
-            {/* Adaptive bottom spacer - fills remaining space exactly */}
             <div
                 ref={spacerRef}
                 className="shrink-0 pointer-events-none"
@@ -152,9 +198,12 @@ export const ChatView = React.forwardRef<HTMLDivElement, ChatViewProps>(
             />
           </div>
       )
-    }
+    },
 )
 
 ChatView.displayName = 'ChatView'
+
+// Re-export sub-row types for convenience
+export type {CheckpointBranchInfo}
 
 export default ChatView
