@@ -1,3 +1,10 @@
+## [4.2.0](https://github.com/lukeashford/aurelius/compare/v4.1.0...v4.2.0) (2026-04-29)
+
+### Features
+
+* **markdown:** improve content sanitization and SSR compatibility ([e04ba58](https://github.com/lukeashford/aurelius/commit/e04ba5845d7dec633b0130a2431e98e154a04958))
+* **markdown:** improve content sanitization and SSR compatibility ([#52](https://github.com/lukeashford/aurelius/issues/52)) ([9dd6574](https://github.com/lukeashford/aurelius/commit/9dd6574575cbbb8d7bbc8e426ffb1979cb2429fd))
+
 ## [4.1.0](https://github.com/lukeashford/aurelius/compare/v4.0.0...v4.1.0) (2026-04-29)
 
 ### Features
