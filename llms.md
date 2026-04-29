@@ -156,8 +156,10 @@ Import from `@lukeashford/aurelius`:
 | ArtifactsPanel | nodes, loading, artifactCount, onExpand |
 | BranchNavigator | current, total, onPrevious, onNext, size, showIcon |
 | ChatInput | position (centered, bottom), placeholder, helperText, onSubmit, disabled, animate, isStreaming, onStop, attachments, onAttachmentsChange, onAttachmentRemove, showAttachmentButton, acceptedFileTypes, notice, onInputChange, initialInputValue, autoFocus |
-| ChatInterface | messages, conversationTree, onTreeChange, conversations, onMessageSubmit, onEditMessage, onRetryMessage, onStop, onSelectConversation, onNewChat, onRenameConversation, isStreaming, isThinking, placeholder, emptyStateHelper, emptyState, showAttachmentButton, enableMessageActions, attachments, onAttachmentsChange, onAttachmentRemove, artifactNodes, isArtifactsPanelOpen, onArtifactsPanelOpenChange, tasks, tasksTitle, onStopAllTasks |
-| ChatView | messages, latestUserMessageIndex, isStreaming, isThinking, onScroll |
+| ChatInterface | messages, conversationTree, onTreeChange, conversations, onMessageSubmit, onEditMessage, onRetryMessage, onJumpToCheckpoint, onJumpToLatest, onStop, onSelectConversation, onNewChat, onRenameConversation, isStreaming, isThinking, placeholder, emptyStateHelper, emptyState, showAttachmentButton, enableMessageActions, attachments, onAttachmentsChange, onAttachmentRemove, artifactNodes, isArtifactsPanelOpen, onArtifactsPanelOpenChange, tasks, tasksTitle, onStopAllTasks |
+| ChatView | items, latestUserMessageIndex, isStreaming, isThinking, onScroll |
+| Checkpoint | name, executionKind (task, submit, rename, init), status (completed, failed, cancelled), isActive, muted, branchInfo, onJumpHere |
+| GreyedDivider | messageCount, checkpointCount, onJumpToLatest |
 | HistoryPanel | conversations, onSelectConversation, onNewChat, onRenameConversation |
 | MessageActions | variant, content, onEdit, onRetry, isEditing, onEditingChange, editValue |
 | ThinkingIndicator | isVisible, phraseInterval, phrases |
@@ -335,8 +337,10 @@ A card for displaying text content, supporting Markdown and HTML formatting.
 - **content**: * Text content to display (Markdown, HTML, or plain text)
 - **title**: * Optional title for the card
 - **subtitle**: * Optional subtitle or metadata
-- **isMarkdown**: * Whether the content should be treated as Markdown @default true
-- **maxHeight**: * Maximum height of the content area before scrolling @default '16rem'
+- **isMarkdown**: * Whether the content should be treated as Markdown
+ @default true
+- **maxHeight**: * Maximum height of the content area before scrolling
+ @default '16rem'
 - **contentClassName**: * Optional class name for the content container
 
 **VideoCard**
@@ -437,6 +441,8 @@ artifactNodes prop.
 - **onMessageSubmit**: * Called when a message is submitted from the input. Provides the text content and any files attached.
 - **onEditMessage**: * Called when a user message is edited. In tree mode, this creates a new branch.
 - **onRetryMessage**: * Called when an assistant message is retried. In tree mode, this creates a new branch.
+- **onJumpToCheckpoint**: * Called when the user clicks a non-active checkpoint to rewind. Receives the checkpoint id; the consumer should move the active leaf there (without forking) so the artifacts panel and chat re-anchor. In tree mode only.
+- **onJumpToLatest**: * Called when the user clicks "Jump to latest" on the greyed-future divider or otherwise asks to return to the deepest leaf they had reached. In tree mode only.
 - **onStop**: * Called when the Stop button is clicked during assistant streaming.
 - **onSelectConversation**: * Called when a conversation is selected from the sidebar.
 - **onNewChat**: * Called when the "New Chat" button is clicked in the sidebar.
@@ -459,20 +465,55 @@ artifactNodes prop.
 - **onStopAllTasks**: * Called when the "Stop All Tasks" button is clicked in the tasks panel. Only shown when at least one task has in_progress status. The consumer app decides what stopping means (cancel API calls, mark tasks cancelled, etc.). * May return a Promise. While the Promise is pending, the button becomes disabled and displays a spinner with "Stopping tasks" so the user knows the stop request is in flight.
 
 **ChatView**
-ChatView displays a conversation thread with smart scrolling behavior.
+Renders a heterogeneous chat stream — messages, checkpoints, and the
+greyed-future divider — with smart scrolling behavior.
 
 Key behaviors:
-- When a user message is sent, it anchors to the top of the viewport
+- When a user message arrives, it anchors to the top of the viewport
 - Does NOT auto-scroll during streaming (respects user's reading position)
-- Smooth transitions and animations
+- Each row's renderer is dispatched from its `kind` discriminator
 
-- **ChatViewItem.branchInfo**: * Branch navigation info for this message
-- **ChatViewItem.actions**: * Actions configuration for this message
-- **messages**: * Array of chat messages to display
-- **latestUserMessageIndex**: * Index of the latest user message to anchor scroll to. When this changes, the component scrolls that message to the top.
-- **isStreaming**: * Whether the assistant is currently streaming a response
-- **isThinking**: * Whether to show the thinking indicator (between user message and response)
-- **onScroll**: * Callback when the user scrolls manually
+- **ChatViewMessageItem.branchInfo**: Branch navigation info — chevrons render only when total > 1.
+- **ChatViewMessageItem.actions**: Actions configuration (copy / edit / retry).
+- **ChatViewMessageItem.muted**: When true, this row is rendered in the greyed-future region.
+- **items**: * Rows to render in the chat stream. Heterogeneous: messages, checkpoints, and the greyed-future divider live in the same list, ordered top-to-bottom.
+- **latestUserMessageIndex**: * Index of the latest user-message row to anchor scroll to. When this index changes, the corresponding row scrolls to the top. Defaults to the last-found user message in `items`.
+- **isStreaming**: * Whether the assistant is currently streaming a response. Drives the streaming cursor on the last assistant message and the thinking indicator.
+- **isThinking**: * Whether to show the thinking indicator (between user message and response).
+- **onScroll**: * Callback when the user scrolls manually.
+
+**Checkpoint**
+A single-line marker in the chat stream that anchors a chat position to a
+project state. Clicking the underlined name rewinds the artifacts panel and
+the active leaf to this checkpoint without forking. Chevrons switch between
+sibling forks (e.g. parallel task attempts, alternative submits).
+
+Visual variants:
+- active: gold accent, no underline (the user is already here)
+- muted: greyed-future row, lower opacity, still clickable
+- failed/cancelled: status suffix in muted error/silver, still clickable
+
+- **CheckpointBranchInfo.current**: 1-based index of this checkpoint among its siblings.
+- **CheckpointBranchInfo.total**: Total sibling count at this fork point.
+- **name**: Human-readable label, ≤ 50 chars. Comes from the underlying execution name.
+- **executionKind**: What produced the checkpoint — drives the leading icon.
+- **status**: * Terminal status of the execution. @default 'completed'
+- **isActive**: * When true, this checkpoint is the active leaf — the artifacts panel is already showing this state. Renders without underline or jump affordance.
+- **muted**: * When true, this checkpoint sits in the greyed-future region (the timeline the user rewound away from). Lower opacity; still clickable to jump back.
+- **branchInfo**: * Sibling info for the BranchNavigator chevrons. Chevrons render only when `total > 1`.
+- **onJumpHere**: * Click handler for the row. Called when the user wants to jump to this checkpoint (rewind the artifacts panel and active leaf to here).
+
+**GreyedDivider**
+A full-width divider that announces the start of the greyed-future region —
+the timeline beyond the user's current rewound position. Clicking
+"Jump to latest" returns to the deepest leaf the user previously reached.
+
+Visual: hairline rule with a centered summary chip and a right-aligned
+jump-to-latest action. Renders nothing when both counts are zero.
+
+- **messageCount**: Number of message rows in the greyed-future region.
+- **checkpointCount**: Number of checkpoint rows in the greyed-future region.
+- **onJumpToLatest**: Click handler that jumps the active leaf to the deepest greyed leaf.
 
 **HistoryPanel**
 HistoryPanel renders the conversation history sidebar: a project filter,

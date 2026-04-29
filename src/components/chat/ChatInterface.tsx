@@ -17,12 +17,20 @@ import {useResizable} from './hooks'
 import type {ArtifactNode} from '../ArtifactNode'
 import {
   type Attachment,
+  type ChatNode,
+  type CheckpointNode,
   type ConversationTree,
-  getActivePathMessages,
-  getSiblingInfo,
   type MessageNode,
-  switchBranch
+  type TreeNode,
 } from './types'
+import {
+  findAncestor,
+  getActivePath,
+  getGreyedFuture,
+  getSiblingInfo,
+  setActiveLeaf,
+  switchBranch,
+} from './tree'
 import {ChatBubbleIcon, CheckSquareIcon, MediaIcon, SquareLoaderIcon} from '../icons'
 
 export interface Conversation {
@@ -84,6 +92,19 @@ export interface ChatInterfaceProps extends Omit<React.HTMLAttributes<HTMLDivEle
    * In tree mode, this creates a new branch.
    */
   onRetryMessage?: (messageId: string) => void
+  /**
+   * Called when the user clicks a non-active checkpoint to rewind. Receives
+   * the checkpoint id; the consumer should move the active leaf there
+   * (without forking) so the artifacts panel and chat re-anchor.
+   * In tree mode only.
+   */
+  onJumpToCheckpoint?: (checkpointId: string) => void
+  /**
+   * Called when the user clicks "Jump to latest" on the greyed-future divider
+   * or otherwise asks to return to the deepest leaf they had reached.
+   * In tree mode only.
+   */
+  onJumpToLatest?: () => void
   /**
    * Called when the Stop button is clicked during assistant streaming.
    */
@@ -237,6 +258,8 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
           onMessageSubmit,
           onEditMessage,
           onRetryMessage,
+          onJumpToCheckpoint,
+          onJumpToLatest,
           onStop,
           onSelectConversation,
           onNewChat,
@@ -376,24 +399,40 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
         })
       }, [allToolDefinitions, isPanelControlled, activeTools, onArtifactsPanelOpenChange])
 
-      // ── Messages ──────────────────────────────────────────────────
+      // ── Tree → rows ───────────────────────────────────────────────
       const isTreeMode = !!conversationTree
 
-      const effectiveMessages: MessageNode[] = useMemo(() => {
-        if (isTreeMode && conversationTree) {
-          return getActivePathMessages(conversationTree)
-        }
-        return messages || []
-      }, [isTreeMode, conversationTree, messages])
+      const tree = isTreeMode
+          ? (conversationTree as ConversationTree<ChatNode>)
+          : null
 
-      const latestUserMessageIndex = useMemo(() => {
-        for (let i = effectiveMessages.length - 1; i >= 0; i--) {
-          if (effectiveMessages[i].role === 'user') {
-            return i
-          }
-        }
-        return -1
-      }, [effectiveMessages])
+      /** Active path nodes (root → active leaf), heterogeneous (messages + checkpoints). */
+      const activePath: TreeNode<ChatNode>[] = useMemo(() => {
+        if (tree) return getActivePath(tree)
+        // Flat-array fallback: lift each MessageNode into a TreeNode<ChatNode> shape.
+        return (messages || []).map(m => ({...m, children: [], branchIndex: 0}))
+      }, [tree, messages])
+
+      /** Greyed-future nodes (between active leaf and the previously-active deepest leaf). */
+      const greyedFuture: TreeNode<ChatNode>[] = useMemo(
+          () => (tree ? getGreyedFuture(tree) : []),
+          [tree],
+      )
+
+      /**
+       * The checkpoint currently driving the artifacts panel — the nearest
+       * ancestor of the active leaf whose kind is `checkpoint`. Used to mark
+       * one checkpoint row as "active" (gold accent, no jump affordance).
+       */
+      const activeCheckpointId: string | null = useMemo(() => {
+        if (!tree) return null
+        const found = findAncestor(
+            tree,
+            tree.activeLeafId,
+            (n): n is TreeNode<CheckpointNode> => n.kind === 'checkpoint',
+        )
+        return found?.id ?? null
+      }, [tree])
 
       // ── Auto-open tools when data arrives (uncontrolled mode) ─────
       // Only auto-opens a tool if the user hasn't actively dismissed it.
@@ -436,61 +475,116 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
       // ── Branch switching ──────────────────────────────────────────
       const handleBranchSwitch = useCallback(
           (nodeId: string, direction: 'prev' | 'next') => {
-            if (!isTreeMode || !conversationTree || !onTreeChange) {
+            if (!tree || !onTreeChange) {
               return
             }
-            const newTree = switchBranch(conversationTree, nodeId, direction)
-            onTreeChange(newTree)
+            onTreeChange(switchBranch(tree, nodeId, direction))
           },
-          [isTreeMode, conversationTree, onTreeChange]
+          [tree, onTreeChange]
       )
 
-      // ── Display messages ──────────────────────────────────────────
-      const displayMessages: ChatViewItem[] = useMemo(() => {
-        return effectiveMessages.map((msg) => {
-          let branchInfo = undefined
-          if (isTreeMode && conversationTree) {
-            const siblingInfo = getSiblingInfo(conversationTree, msg.id)
-            if (siblingInfo.total > 1) {
-              branchInfo = {
-                current: siblingInfo.current,
-                total: siblingInfo.total,
-                onPrevious: () => handleBranchSwitch(msg.id, 'prev'),
-                onNext: () => handleBranchSwitch(msg.id, 'next'),
+      const handleJumpToCheckpoint = useCallback((checkpointId: string) => {
+        if (!tree) return
+        if (onJumpToCheckpoint) {
+          onJumpToCheckpoint(checkpointId)
+          return
+        }
+        if (onTreeChange) {
+          onTreeChange(setActiveLeaf(tree, checkpointId))
+        }
+      }, [tree, onTreeChange, onJumpToCheckpoint])
+
+      const handleJumpToLatest = useCallback(() => {
+        if (!tree) return
+        if (onJumpToLatest) {
+          onJumpToLatest()
+          return
+        }
+        if (onTreeChange && tree.lastLeafId) {
+          onTreeChange(setActiveLeaf(tree, tree.lastLeafId))
+        }
+      }, [tree, onTreeChange, onJumpToLatest])
+
+      // ── Build the heterogeneous row list for ChatView ─────────────
+      const buildItem = useCallback(
+          (node: TreeNode<ChatNode>, opts: { muted?: boolean }): ChatViewItem => {
+            const branchInfo = tree && getSiblingInfo(tree, node.id).total > 1
+                ? {
+                  ...getSiblingInfo(tree, node.id),
+                  onPrevious: () => handleBranchSwitch(node.id, 'prev'),
+                  onNext: () => handleBranchSwitch(node.id, 'next'),
+                }
+                : undefined
+
+            if (node.kind === 'checkpoint') {
+              return {
+                kind: 'checkpoint',
+                id: node.id,
+                name: node.name,
+                executionKind: node.executionKind,
+                status: node.status,
+                isActive: node.id === activeCheckpointId && !opts.muted,
+                muted: opts.muted,
+                branchInfo,
+                onJumpHere: () => handleJumpToCheckpoint(node.id),
               }
             }
+
+            const actions = enableMessageActions
+                ? {
+                  showCopy: true,
+                  onEdit: node.role === 'user' && onEditMessage
+                      ? (newContent: string) => onEditMessage(node.id, newContent)
+                      : undefined,
+                  onRetry: node.role === 'assistant' && onRetryMessage
+                      ? () => onRetryMessage(node.id)
+                      : undefined,
+                }
+                : undefined
+
+            return {
+              kind: 'message',
+              id: node.id,
+              variant: node.role,
+              content: node.content,
+              isStreaming: node.isStreaming,
+              muted: opts.muted,
+              branchInfo,
+              actions,
+            }
+          },
+          [tree, activeCheckpointId, enableMessageActions, onEditMessage, onRetryMessage,
+            handleBranchSwitch, handleJumpToCheckpoint],
+      )
+
+      const displayItems: ChatViewItem[] = useMemo(() => {
+        const items: ChatViewItem[] = activePath.map(n => buildItem(n, {muted: false}))
+        if (greyedFuture.length > 0) {
+          const messageCount = greyedFuture.filter(n => n.kind === 'message').length
+          const checkpointCount = greyedFuture.filter(n => n.kind === 'checkpoint').length
+          items.push({
+            kind: 'divider',
+            id: '__greyed_divider__',
+            messageCount,
+            checkpointCount,
+            onJumpToLatest: handleJumpToLatest,
+          })
+          for (const n of greyedFuture) {
+            items.push(buildItem(n, {muted: true}))
           }
+        }
+        return items
+      }, [activePath, greyedFuture, buildItem, handleJumpToLatest])
 
-          const actions = enableMessageActions
-              ? {
-                showCopy: true,
-                onEdit: msg.role === 'user' && onEditMessage
-                    ? (newContent: string) => onEditMessage(msg.id, newContent)
-                    : undefined,
-                onRetry: msg.role === 'assistant' && onRetryMessage
-                    ? () => onRetryMessage(msg.id)
-                    : undefined,
-              }
-              : undefined
-
-          const {
-            role,
-            parentId,
-            children,
-            branchIndex,
-            createdAt,
-            ...rest
-          } = msg
-
-          return {
-            ...rest,
-            variant: role,
-            branchInfo,
-            actions
+      const latestUserMessageIndex = useMemo(() => {
+        for (let i = displayItems.length - 1; i >= 0; i--) {
+          const item = displayItems[i]
+          if (item.kind === 'message' && item.variant === 'user' && !item.muted) {
+            return i
           }
-        })
-      }, [effectiveMessages, isTreeMode, conversationTree, enableMessageActions,
-        onEditMessage, onRetryMessage, handleBranchSwitch])
+        }
+        return -1
+      }, [displayItems])
 
       const handleSubmit = useCallback(
           (message: string, attachments?: Attachment[]) => {
@@ -499,7 +593,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
           [onMessageSubmit]
       )
 
-      const isEmpty = effectiveMessages.length === 0
+      const isEmpty = displayItems.length === 0
 
       // ── Derived: which sides have tools ─────────────────────────
       const leftToolDefs = useMemo(
@@ -608,7 +702,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
                     isEmpty ? "flex-zero opacity-0" : "flex-1 opacity-100"
                 )}>
                   <ChatView
-                      messages={displayMessages}
+                      items={displayItems}
                       latestUserMessageIndex={latestUserMessageIndex}
                       isStreaming={isStreaming}
                       isThinking={isThinking}

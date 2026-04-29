@@ -1,6 +1,11 @@
 import React from 'react'
 import {fireEvent, render, screen} from '@testing-library/react'
-import {addMessageToTree, ChatInterface, createEmptyTree,} from '@lukeashford/aurelius'
+import {
+  addNodeToTree,
+  ChatInterface,
+  createEmptyTree,
+  type MessageNode,
+} from '@lukeashford/aurelius'
 
 describe('ChatInterface', () => {
   const mockConversations = [
@@ -9,15 +14,17 @@ describe('ChatInterface', () => {
   ]
 
   const createTreeWithMessages = () => {
-    let tree = createEmptyTree()
-    tree = addMessageToTree(
+    let tree = createEmptyTree<MessageNode>()
+    tree = addNodeToTree(
         tree,
-        {id: 'msg-1', role: 'user', content: 'Hello!', parentId: null},
+        {
+          kind: 'message' as const,id: 'msg-1', role: 'user', content: 'Hello!', parentId: null},
         null
     )
-    tree = addMessageToTree(
+    tree = addNodeToTree(
         tree,
-        {id: 'msg-2', role: 'assistant', content: 'Hi there!', parentId: 'msg-1'},
+        {
+          kind: 'message' as const,id: 'msg-2', role: 'assistant', content: 'Hi there!', parentId: 'msg-1'},
         'msg-1'
     )
     return tree
@@ -54,13 +61,21 @@ describe('ChatInterface', () => {
 
   it('renders messages when messages array is provided (flat mode)', () => {
     const messages = [
-      {id: '1', role: 'user' as const, content: 'User message', parentId: null, children: []},
+      {
+        id: '1',
+        kind: 'message' as const,
+        role: 'user' as const,
+        content: 'User message',
+        parentId: null,
+        children: [],
+      },
       {
         id: '2',
+        kind: 'message' as const,
         role: 'assistant' as const,
         content: 'Assistant response',
         parentId: '1',
-        children: []
+        children: [],
       },
     ]
     render(<ChatInterface messages={messages}/>)
@@ -142,7 +157,14 @@ describe('ChatInterface', () => {
 
   it('shows thinking indicator when isThinking is true', () => {
     const messagesWithUserLast = [
-      {id: '1', role: 'user' as const, content: 'Hello', parentId: null, children: []},
+      {
+        id: '1',
+        kind: 'message' as const,
+        role: 'user' as const,
+        content: 'Hello',
+        parentId: null,
+        children: [],
+      },
     ]
     render(
         <ChatInterface
