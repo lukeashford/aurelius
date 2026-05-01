@@ -52,6 +52,40 @@ export interface MessageNode extends NodeTopology {
   content: ReactNode
   /** Whether this message is currently being streamed. */
   isStreaming?: boolean
+  /**
+   * Files that were attached to this message turn. Rendered as a chip strip
+   * above the bubble. Empty/undefined renders nothing. The `artifactId` field
+   * on each item, paired with the host's `onAttachmentOpen`, drives
+   * click-through to the artifact-card modal.
+   */
+  attachments?: import('./types').MessageAttachmentItem[]
+}
+
+/**
+ * One attachment row above a sent user message. Mirrors `AttachmentItem` but
+ * carries the persisted `artifactId` instead of an in-memory File reference,
+ * since these refer to artifacts that already live in the project tree.
+ */
+export interface MessageAttachmentItem {
+  /** Stable identifier for the chip (typically the upload or artifact id). */
+  id: string
+  /** Display name (filename from the original upload). */
+  name: string
+  /** MIME type — drives the chip icon and image-preview branch. */
+  type: string
+  /** File size in bytes, optional. */
+  size?: number
+  /** Pre-signed thumbnail URL for image previews, optional. */
+  previewUrl?: string
+  /** Backend artifact id; required for click-through to work. */
+  artifactId?: string
+  /**
+   * Lifecycle state captured at message-build time. Defaults to `analyzed`
+   * for the happy path. Set to `analysis_failed` to render a red chip on a
+   * successfully-integrated message, or to a pre-integrate state on a
+   * message whose integrate call failed.
+   */
+  status?: AttachmentStatus
 }
 
 /**
@@ -72,8 +106,9 @@ export interface CheckpointNode extends NodeTopology {
    * - `submit`: a merge of a working branch into the project head
    * - `rename`: a manual artifact rename via the artifacts panel (planned)
    * - `init`: the project head at session start (seeded into new chats)
+   * - `ingest`: a batch of user uploads committed to the project tree
    */
-  executionKind: 'task' | 'submit' | 'rename' | 'init'
+  executionKind: 'task' | 'submit' | 'rename' | 'init' | 'ingest'
   /** Terminal status reported by hypocaust. */
   status: 'completed' | 'failed' | 'cancelled'
 }
@@ -118,9 +153,17 @@ export interface ConversationTree<T extends NodeTopology = ChatNode> {
 // ───────────────────────────────────────────────────────────────
 
 /**
- * Attachment types for file uploads
+ * Attachment lifecycle, mirroring the per-file backend state machine:
+ * upload → analyze, with separate failure modes for each phase.
  */
-export type AttachmentStatus = 'pending' | 'uploading' | 'complete' | 'error'
+export type AttachmentStatus =
+    | 'pending'
+    | 'uploading'
+    | 'uploaded'
+    | 'analyzing'
+    | 'analyzed'
+    | 'upload_failed'
+    | 'analysis_failed'
 
 export interface Attachment {
   /**
@@ -140,13 +183,18 @@ export interface Attachment {
    */
   status: AttachmentStatus
   /**
-   * Error message if status is 'error'
+   * Error message if status is an error variant
    */
   error?: string
   /**
    * Upload progress (0-100)
    */
   progress?: number
+  /**
+   * Backend artifact id, set once the batch is integrated. Drives chip
+   * click-through to the artifact-card modal in the host app.
+   */
+  artifactId?: string
 }
 
 /**

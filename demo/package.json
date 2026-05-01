@@ -48,5 +48,8 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3",
     "vite": "^7.2.7"
+  },
+  "overrides": {
+    "@tootallnate/once": "3.0.1"
   }
 }

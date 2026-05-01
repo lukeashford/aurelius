@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {cx} from '../../utils/cx'
+import {cx} from '../../utils'
 
 const THINKING_PHRASES = [
   'Consulting the ancient tomes...',
@@ -31,6 +31,13 @@ export interface ThinkingIndicatorProps extends React.HTMLAttributes<HTMLDivElem
    * Custom phrases to cycle through (defaults to built-in phrases)
    */
   phrases?: string[]
+  /**
+   * When set, suppresses internal phrase rotation and renders this label
+   * verbatim. Used by the host to express domain-specific waiting states
+   * (e.g. "Analyzing uploads..."). Any animated suffix (cycling dots) is the
+   * caller's responsibility — Aurelius renders the string as-is.
+   */
+  manualLabel?: string
 }
 
 /**
@@ -43,6 +50,7 @@ export const ThinkingIndicator = React.forwardRef<HTMLDivElement, ThinkingIndica
           isVisible = true,
           phraseInterval = 2500,
           phrases = THINKING_PHRASES,
+          manualLabel,
           className,
           ...rest
         },
@@ -53,8 +61,10 @@ export const ThinkingIndicator = React.forwardRef<HTMLDivElement, ThinkingIndica
           () => Math.floor(Math.random() * phrases.length))
       const [isTransitioning, setIsTransitioning] = useState(false)
 
+      const isManual = manualLabel !== undefined
+
       useEffect(() => {
-        if (!isVisible || phrases.length <= 1) {
+        if (!isVisible || isManual || phrases.length <= 1) {
           return
         }
 
@@ -75,7 +85,7 @@ export const ThinkingIndicator = React.forwardRef<HTMLDivElement, ThinkingIndica
             clearTimeout(fadeTimeout)
           }
         }
-      }, [isVisible, phrases.length, phraseInterval])
+      }, [isVisible, isManual, phrases.length, phraseInterval])
 
       if (!isVisible) {
         return null
@@ -104,15 +114,19 @@ export const ThinkingIndicator = React.forwardRef<HTMLDivElement, ThinkingIndica
                     style={{animationDelay: '300ms'}}/>
             </div>
 
-            {/* Phrase with fade transition */}
-            <span
-                className={cx(
-                    'text-sm italic transition-opacity duration-200',
-                    isTransitioning ? 'opacity-0' : 'opacity-100'
-                )}
-            >
+            {/* Phrase: manual label rendered verbatim, otherwise rotating phrases. */}
+            {isManual ? (
+                <span className="text-sm italic">{manualLabel}</span>
+            ) : (
+                <span
+                    className={cx(
+                        'text-sm italic transition-opacity duration-200',
+                        isTransitioning ? 'opacity-0' : 'opacity-100'
+                    )}
+                >
           {phrases[currentIndex]}
         </span>
+            )}
           </div>
       )
     }

@@ -1,5 +1,5 @@
 import React from 'react'
-import {cx} from '../utils/cx'
+import {cx} from '../utils'
 import {FileChip, type FileChipStatus} from './FileChip'
 
 export interface AttachmentItem {
@@ -8,9 +8,12 @@ export interface AttachmentItem {
    */
   id: string
   /**
-   * The File object
+   * The file's name, size and MIME type. A real `File` object satisfies this
+   * shape — compose-box callers pass File instances directly. Above-message
+   * (post-send) rendering supplies a synthetic record built from persisted
+   * attachment metadata.
    */
-  file: File
+  file: Pick<File, 'name' | 'size' | 'type'>
   /**
    * Blob URL for image previews
    */
@@ -20,9 +23,14 @@ export interface AttachmentItem {
    */
   status: FileChipStatus
   /**
-   * Error message if status is 'error'
+   * Error message if status is an error variant
    */
   error?: string
+  /**
+   * Backend artifact id, set once the upload has been integrated. Required to
+   * make the chip clickable to open the artifact card modal.
+   */
+  artifactId?: string
 }
 
 export interface AttachmentPreviewProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -43,6 +51,11 @@ export interface AttachmentPreviewProps extends React.HTMLAttributes<HTMLDivElem
    * Set to 0 or undefined to show all
    */
   maxVisible?: number
+  /**
+   * Click handler for chips with an artifactId. When set, chips that carry an
+   * artifactId become clickable and forward the id to this handler.
+   */
+  onOpen?: (artifactId: string) => void
 }
 
 export const AttachmentPreview = React.forwardRef<HTMLDivElement, AttachmentPreviewProps>(
@@ -52,6 +65,7 @@ export const AttachmentPreview = React.forwardRef<HTMLDivElement, AttachmentPrev
           onRemove,
           removable = true,
           maxVisible,
+          onOpen,
           className,
           ...rest
         },
@@ -88,6 +102,8 @@ export const AttachmentPreview = React.forwardRef<HTMLDivElement, AttachmentPrev
                     error={attachment.error}
                     removable={removable}
                     onRemove={onRemove ? () => onRemove(attachment.id) : undefined}
+                    artifactId={attachment.artifactId}
+                    onOpen={onOpen}
                 />
             ))}
             {hiddenCount > 0 && (

@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react'
 import {Check, ChevronLeft, ChevronRight, Copy, GitBranch, Pencil, RotateCcw, Send, X} from 'lucide-react'
 import {MarkdownContent} from './MarkdownContent'
+import {AttachmentPreview, type AttachmentItem} from './AttachmentPreview'
 import {cx, useCopyToClipboard} from '../utils'
 
 export type MessageVariant = 'user' | 'assistant'
@@ -65,6 +66,16 @@ export interface MessageProps extends Omit<React.HTMLAttributes<HTMLDivElement>,
    * Whether to hide actions (e.g., during streaming)
    */
   hideActions?: boolean
+  /**
+   * Attachments to render above the bubble. Used by user messages to show the
+   * files that were attached to that turn. Empty/undefined renders nothing.
+   */
+  attachments?: AttachmentItem[]
+  /**
+   * Click handler invoked with an attachment's `artifactId`. Wire to open the
+   * artifact-card modal in the host app.
+   */
+  onAttachmentOpen?: (artifactId: string) => void
 }
 
 const VARIANT_STYLES: Record<MessageVariant, string> = {
@@ -113,6 +124,8 @@ export const Message = React.forwardRef<HTMLDivElement, MessageProps>(
       branchInfo,
       actions,
       hideActions,
+      attachments,
+      onAttachmentOpen,
       ...rest
     }, ref) => {
       const isUser = variant === 'user'
@@ -189,6 +202,17 @@ export const Message = React.forwardRef<HTMLDivElement, MessageProps>(
               )}
               {...rest}
           >
+            {/* Attachments above the bubble (user messages with prior attachments). */}
+            {attachments && attachments.length > 0 && (
+                <div className={cx('mb-1.5', isUser ? 'self-end' : 'self-start')}>
+                  <AttachmentPreview
+                      attachments={attachments}
+                      removable={false}
+                      onOpen={onAttachmentOpen}
+                  />
+                </div>
+            )}
+
             {/* Message bubble OR Edit input (replaces message when editing) */}
             {isUser && isEditing ? (
                 <div className="w-full max-w-11/12">
