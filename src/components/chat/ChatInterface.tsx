@@ -133,6 +133,13 @@ export interface ChatInterfaceProps extends Omit<React.HTMLAttributes<HTMLDivEle
    */
   isThinking?: boolean
   /**
+   * Optional verbatim label for the thinking indicator. When set, the indicator
+   * suppresses its rotating phrases and renders this string as-is. Use for
+   * domain-specific waits like "Analyzing uploads..." — any animated suffix
+   * (e.g. cycling dots) is the caller's responsibility.
+   */
+  thinkingLabel?: string
+  /**
    * Placeholder text for the main chat input.
    */
   placeholder?: string
@@ -165,6 +172,12 @@ export interface ChatInterfaceProps extends Omit<React.HTMLAttributes<HTMLDivEle
    * Called when an attachment is removed by the user (clicking the "x")
    */
   onAttachmentRemove?: (attachment: Attachment) => void
+  /**
+   * Called when a chip above a sent message is clicked. Receives the
+   * `artifactId` carried by the chip; wire to open the artifact-card modal.
+   * Without this, above-message chips are not clickable.
+   */
+  onAttachmentOpen?: (artifactId: string) => void
   /**
    * Top-level artifact tree nodes for the artifacts panel.
    */
@@ -266,6 +279,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
           onRenameConversation,
           isStreaming = false,
           isThinking = false,
+          thinkingLabel,
           placeholder = 'Send a message...',
           emptyStateHelper = "Let's talk.",
           emptyState,
@@ -274,6 +288,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
           attachments: propsAttachments,
           onAttachmentsChange,
           onAttachmentRemove,
+          onAttachmentOpen,
           artifactNodes,
           isArtifactsPanelOpen,
           onArtifactsPanelOpenChange,
@@ -292,6 +307,20 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
     ) => {
       const prevArtifactNodesRef = useRef<ArtifactNode[]>([])
       const prevTasksRef = useRef<Task[]>([])
+
+      // Drives the artifacts-panel modal when the user clicks an above-message
+      // chip. Round-trips with `onArtifactClosed` so re-clicking the same chip
+      // after a manual dismiss reopens the modal.
+      const [panelOpenArtifactId, setPanelOpenArtifactId] = useState<string | null>(null)
+
+      const handleAttachmentOpen = useCallback((artifactId: string) => {
+        setPanelOpenArtifactId(artifactId)
+        onAttachmentOpen?.(artifactId)
+      }, [onAttachmentOpen])
+
+      const handleArtifactPanelClosed = useCallback(() => {
+        setPanelOpenArtifactId(null)
+      }, [])
 
       // ── Tool panel state ──────────────────────────────────────────
       const [internalTools, setInternalTools] = useState<ToolPanelState>({
@@ -551,10 +580,20 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
               muted: opts.muted,
               branchInfo,
               actions,
+              attachments: node.attachments
+                  ? node.attachments.map(a => ({
+                    id: a.id,
+                    file: {name: a.name, size: a.size ?? 0, type: a.type},
+                    previewUrl: a.previewUrl,
+                    artifactId: a.artifactId,
+                    status: a.status ?? 'analyzed',
+                  }))
+                  : undefined,
+              onAttachmentOpen: handleAttachmentOpen,
             }
           },
           [tree, activeCheckpointId, enableMessageActions, onEditMessage, onRetryMessage,
-            handleBranchSwitch, handleJumpToCheckpoint],
+            handleBranchSwitch, handleJumpToCheckpoint, handleAttachmentOpen],
       )
 
       const displayItems: ChatViewItem[] = useMemo(() => {
@@ -629,6 +668,8 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
             return (
                 <ArtifactsPanel
                     nodes={artifactNodes}
+                    openArtifactId={panelOpenArtifactId}
+                    onArtifactClosed={handleArtifactPanelClosed}
                     className="h-full"
                 />
             )
@@ -706,6 +747,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
                       latestUserMessageIndex={latestUserMessageIndex}
                       isStreaming={isStreaming}
                       isThinking={isThinking}
+                      thinkingLabel={thinkingLabel}
                       className="flex-1"
                   />
                 </div>

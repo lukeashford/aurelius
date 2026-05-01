@@ -66,6 +66,12 @@ export interface ChatViewProps extends React.HTMLAttributes<HTMLDivElement> {
    */
   isThinking?: boolean
   /**
+   * When set, the thinking indicator renders this label verbatim instead of
+   * its rotating phrases. Use for domain-specific waits like
+   * "Analyzing uploads..." (any animated suffix is the caller's responsibility).
+   */
+  thinkingLabel?: string
+  /**
    * Callback when the user scrolls manually.
    */
   onScroll?: (e: React.UIEvent<HTMLDivElement>) => void
@@ -82,7 +88,16 @@ export interface ChatViewProps extends React.HTMLAttributes<HTMLDivElement> {
  */
 export const ChatView = React.forwardRef<HTMLDivElement, ChatViewProps>(
     function ChatView(
-        {items, latestUserMessageIndex, isStreaming, isThinking, onScroll, className, ...rest},
+        {
+          items,
+          latestUserMessageIndex,
+          isStreaming,
+          isThinking,
+          thinkingLabel,
+          onScroll,
+          className,
+          ...rest
+        },
         ref,
     ) {
       const {containerRef, anchorRef, scrollToAnchor} = useScrollAnchor({
@@ -187,7 +202,7 @@ export const ChatView = React.forwardRef<HTMLDivElement, ChatViewProps>(
                 )
               })}
 
-              {showThinking && <ThinkingIndicator isVisible/>}
+              {showThinking && <ThinkingIndicator isVisible manualLabel={thinkingLabel}/>}
             </div>
 
             <div

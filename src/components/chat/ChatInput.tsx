@@ -280,8 +280,11 @@ export const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
 
       const isCentered = position === 'centered'
       const hasAttachments = attachments.length > 0
-      const isUploading = attachments.some(a => a.status === 'uploading')
-      const canSubmit = value.trim() && !disabled && !isStreaming && !isUploading
+      // Send is gated while bytes are still moving or have not landed at all.
+      // `uploaded` and beyond are sendable; integrate handles analysis fallbacks.
+      const isUploadIncomplete = attachments.some(a =>
+          a.status === 'pending' || a.status === 'uploading' || a.status === 'upload_failed')
+      const canSubmit = value.trim() && !disabled && !isStreaming && !isUploadIncomplete
 
       return (
           <div

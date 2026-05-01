@@ -12,8 +12,8 @@ import {VideoCard} from '../VideoCard'
 import {MarkdownContent} from '../MarkdownContent'
 import {ChevronRightIcon, CloseIcon,} from '../icons'
 import type {Artifact} from './hooks'
+import {useArtifactTreeNavigation} from './hooks'
 import type {ArtifactNode} from '../ArtifactNode'
-import {useArtifactTreeNavigation} from './hooks/useArtifactTreeNavigation'
 
 const ZOOM_LEVELS = [0.25, 0.5, 0.75, 1.0] as const
 
@@ -26,6 +26,19 @@ export interface ArtifactsPanelProps extends React.HTMLAttributes<HTMLDivElement
    * Whether artifacts are still loading (show skeletons)
    */
   loading?: CardSlotLoading
+  /**
+   * When set to a non-null id, surfaces the same expanded artifact card the
+   * panel grid would. Drives chip click-through from outside the panel.
+   * Pair with `onArtifactClosed` so the parent can clear its controller
+   * state when the user dismisses the modal.
+   */
+  openArtifactId?: string | null
+  /**
+   * Called when the user closes the expanded card (X button or backdrop).
+   * The parent owns whether subsequent renders re-open by re-supplying
+   * `openArtifactId`.
+   */
+  onArtifactClosed?: () => void
 }
 
 /**
@@ -128,6 +141,25 @@ function ArtifactModal({
 }
 
 /**
+ * Walk the artifact tree (including variant stacks and nested groups) to find
+ * a leaf artifact by id. Returns null when no match exists in the current view.
+ */
+function findArtifactInNodes(nodes: ArtifactNode[], artifactId: string): Artifact | null {
+  for (const node of nodes) {
+    if (node.type === 'ARTIFACT' && node.artifact?.id === artifactId) {
+      return node.artifact
+    }
+    if (node.children && node.children.length > 0) {
+      const found = findArtifactInNodes(node.children, artifactId)
+      if (found) {
+        return found
+      }
+    }
+  }
+  return null
+}
+
+/**
  * Renders a single node according to its type.
  */
 function NodeRenderer({
@@ -187,6 +219,8 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
     ({
       nodes,
       loading,
+      openArtifactId,
+      onArtifactClosed,
       className,
       ...rest
     }, ref) => {
@@ -205,6 +239,24 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
         treeNav.navigateInto(node)
       }, [treeNav])
 
+      // Controlled open: surfaces the expanded card when the parent supplies a
+      // non-null `openArtifactId`. Pairs with `onArtifactClosed` round-trip so
+      // re-clicking the same chip after a manual close re-opens the modal.
+      useEffect(() => {
+        if (!openArtifactId || !nodes) {
+          return
+        }
+        const found = findArtifactInNodes(nodes, openArtifactId)
+        if (found) {
+          setExpandedArtifact(found)
+        }
+      }, [openArtifactId, nodes])
+
+      const handleModalClose = useCallback(() => {
+        setExpandedArtifact(null)
+        onArtifactClosed?.()
+      }, [onArtifactClosed])
+
       const zoomIn = useCallback(() => {
         setZoomIndex(prev => Math.min(prev + 1, ZOOM_LEVELS.length - 1))
       }, [])
@@ -221,7 +273,9 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
 
       useEffect(() => {
         const el = contentRef.current
-        if (!el) return
+        if (!el) {
+          return
+        }
         const observer = new ResizeObserver(([entry]) => {
           setContentHeight(entry.contentRect.height)
         })
@@ -263,7 +317,8 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
                       >
                         −
                       </button>
-                      <span className="text-xs text-silver w-8 text-center tabular-nums" data-testid="zoom-level">
+                      <span className="text-xs text-silver w-8 text-center tabular-nums"
+                            data-testid="zoom-level">
                         {Math.round(currentZoom * 100)}%
                       </span>
                       <button
@@ -322,7 +377,7 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
                 {/* Sizer div: collapses to the scaled height so scrollbar tracks correctly */}
                 <div
                     style={currentZoom !== 1 && contentHeight !== undefined
-                        ? { height: contentHeight * currentZoom }
+                        ? {height: contentHeight * currentZoom}
                         : undefined
                     }
                 >
@@ -338,21 +393,21 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
                           : undefined
                       }
                   >
-                  {treeNav.currentNodes.length === 0 ? (
-                      <p className="text-xs text-silver/60 text-center py-8">
-                        {hasNodes ? 'Empty group' : 'No artifacts to display'}
-                      </p>
-                  ) : (
-                      treeNav.currentNodes.map((node) => (
-                          <NodeRenderer
-                              key={node.id}
-                              node={node}
-                              loading={loading}
-                              onExpandArtifact={handleExpandArtifact}
-                              onGroupClick={handleGroupClick}
-                          />
-                      ))
-                  )}
+                    {treeNav.currentNodes.length === 0 ? (
+                        <p className="text-xs text-silver/60 text-center py-8">
+                          {hasNodes ? 'Empty group' : 'No artifacts to display'}
+                        </p>
+                    ) : (
+                        treeNav.currentNodes.map((node) => (
+                            <NodeRenderer
+                                key={node.id}
+                                node={node}
+                                loading={loading}
+                                onExpandArtifact={handleExpandArtifact}
+                                onGroupClick={handleGroupClick}
+                            />
+                        ))
+                    )}
                   </div>
                 </div>
               </div>
@@ -363,7 +418,7 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
             {expandedArtifact && (
                 <ArtifactModal
                     artifact={expandedArtifact}
-                    onClose={() => setExpandedArtifact(null)}
+                    onClose={handleModalClose}
                 />
             )}
           </>

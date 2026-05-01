@@ -103,7 +103,7 @@ Import from `@lukeashford/aurelius`:
 | ArtifactCard | artifact, onExpand, loading |
 | ArtifactGroup | node, onClick |
 | ArtifactVariantStack | node, onExpandArtifact, onGroupClick |
-| AttachmentPreview | attachments, onRemove, removable, maxVisible |
+| AttachmentPreview | attachments, onRemove, removable, maxVisible, onOpen |
 | AudioCard | src, title, subtitle, playing, controls, volume, muted, loop, mediaClassName, contentClassName, playerProps, height, loading |
 | Avatar | src, alt, name, size (xs, sm, md, lg, xl, 2xl), status (online, offline, busy) |
 | Badge | variant (default, gold, success, error, warning, info) |
@@ -118,7 +118,7 @@ Import from `@lukeashford/aurelius`:
 | Dialog | description, confirmText, cancelText, onConfirm, onCancel, confirmVariant, isLoading, description, acknowledgeText, variant, description, placeholder, defaultValue, submitText, cancelText, onSubmit, onCancel, isLoading |
 | Divider | orientation (horizontal, vertical), variant (solid, dashed, dotted), label, color |
 | Drawer | isOpen, onClose, position (left, right, top, bottom), title, size, children, className |
-| FileChip | name, size, type, status (pending, uploading, complete, error), previewUrl, onRemove, removable, error |
+| FileChip | name, size, type, status (pending, uploading, uploaded, analyzing, analyzed, upload_failed, analysis_failed), previewUrl, onRemove, removable, error, artifactId, onOpen |
 | HelperText | error |
 | ImageCard | src, alt, title, subtitle, aspectRatio (${number}/${number}), objectFit, overlay, mediaClassName, contentClassName, loading |
 | Input | error, leadingIcon, trailingIcon |
@@ -127,7 +127,7 @@ Import from `@lukeashford/aurelius`:
 | List | variant, ordered, leading, trailing, interactive, selected, disabled, primary, secondary |
 | MarkdownContent | content, isMarkdown, sanitizeConfig, isStreaming, cursorClassName |
 | Menu | children, open, onOpenChange, asChild, align, side, icon, destructive |
-| Message | variant (user, assistant), content, isStreaming, branchInfo, actions, hideActions, onClick, label, children, disabled |
+| Message | variant (user, assistant), content, isStreaming, branchInfo, actions, hideActions, attachments, onAttachmentOpen, onClick, label, children, disabled |
 | Modal | isOpen, onClose, title, children, className |
 | Navbar | fixed, bordered, position, active, active |
 | Pagination | page, totalPages, onPageChange, siblingCount, showEdges |
@@ -153,16 +153,16 @@ Import from `@lukeashford/aurelius`:
 | Toast | children, position (top-right, top-left, bottom-right, bottom-left, top-center, bottom-center), defaultDuration |
 | Tooltip | content, children, open, side (top, right, bottom, left) |
 | VideoCard | src, title, subtitle, aspectRatio (${number}/${number}), playing, controls, light, volume, muted, loop, mediaClassName, contentClassName, playerProps, loading |
-| ArtifactsPanel | nodes, loading, artifactCount, onExpand |
+| ArtifactsPanel | nodes, loading, openArtifactId, onArtifactClosed, artifactCount, onExpand |
 | BranchNavigator | current, total, onPrevious, onNext, size, showIcon |
 | ChatInput | position (centered, bottom), placeholder, helperText, onSubmit, disabled, animate, isStreaming, onStop, attachments, onAttachmentsChange, onAttachmentRemove, showAttachmentButton, acceptedFileTypes, notice, onInputChange, initialInputValue, autoFocus |
-| ChatInterface | messages, conversationTree, onTreeChange, conversations, onMessageSubmit, onEditMessage, onRetryMessage, onJumpToCheckpoint, onJumpToLatest, onStop, onSelectConversation, onNewChat, onRenameConversation, isStreaming, isThinking, placeholder, emptyStateHelper, emptyState, showAttachmentButton, enableMessageActions, attachments, onAttachmentsChange, onAttachmentRemove, artifactNodes, isArtifactsPanelOpen, onArtifactsPanelOpenChange, tasks, tasksTitle, onStopAllTasks |
-| ChatView | items, latestUserMessageIndex, isStreaming, isThinking, onScroll |
-| Checkpoint | name, executionKind (task, submit, rename, init), status (completed, failed, cancelled), isActive, muted, branchInfo, onJumpHere |
+| ChatInterface | messages, conversationTree, onTreeChange, conversations, onMessageSubmit, onEditMessage, onRetryMessage, onJumpToCheckpoint, onJumpToLatest, onStop, onSelectConversation, onNewChat, onRenameConversation, isStreaming, isThinking, thinkingLabel, placeholder, emptyStateHelper, emptyState, showAttachmentButton, enableMessageActions, attachments, onAttachmentsChange, onAttachmentRemove, onAttachmentOpen, artifactNodes, isArtifactsPanelOpen, onArtifactsPanelOpenChange, tasks, tasksTitle, onStopAllTasks |
+| ChatView | items, latestUserMessageIndex, isStreaming, isThinking, thinkingLabel, onScroll |
+| Checkpoint | name, executionKind (task, submit, rename, init, ingest), status (completed, failed, cancelled), isActive, muted, branchInfo, onJumpHere |
 | GreyedDivider | messageCount, checkpointCount, onJumpToLatest |
 | HistoryPanel | conversations, onSelectConversation, onNewChat, onRenameConversation |
 | MessageActions | variant, content, onEdit, onRetry, isEditing, onEditingChange, editValue |
-| ThinkingIndicator | isVisible, phraseInterval, phrases |
+| ThinkingIndicator | isVisible, phraseInterval, phrases, manualLabel |
 | TodosList | tasks, title, onStopAllTasks |
 | ToolPanelContainer | topContent, bottomContent, width, initialTopPercent, onResizeStart, side |
 | ToolSidebar | tools, activeTools, onToggleTool, side |
@@ -228,14 +228,16 @@ navigate for groups).
 
 **AttachmentPreview**
 - **AttachmentItem.id**: * Unique identifier
-- **AttachmentItem.file**: * The File object
+- **AttachmentItem.file**: * The file's name, size and MIME type. A real `File` object satisfies this shape — compose-box callers pass File instances directly. Above-message (post-send) rendering supplies a synthetic record built from persisted attachment metadata.
 - **AttachmentItem.previewUrl**: * Blob URL for image previews
 - **AttachmentItem.status**: * Current status
-- **AttachmentItem.error**: * Error message if status is 'error'
+- **AttachmentItem.error**: * Error message if status is an error variant
+- **AttachmentItem.artifactId**: * Backend artifact id, set once the upload has been integrated. Required to make the chip clickable to open the artifact card modal.
 - **attachments**: * Array of attachments to display
 - **onRemove**: * Called when an attachment should be removed
 - **removable**: * Whether attachments are removable
 - **maxVisible**: * Maximum number of attachments to show before collapsing Set to 0 or undefined to show all
+- **onOpen**: * Click handler for chips with an artifactId. When set, chips that carry an artifactId become clickable and forward the id to this handler.
 
 **AudioCard**
 - **playerProps**: Forwarded to the underlying ReactPlayer.
@@ -248,7 +250,9 @@ navigate for groups).
 - **previewUrl**: * Preview image URL (for images)
 - **onRemove**: * Called when the remove button is clicked
 - **removable**: * Whether the chip is removable
-- **error**: * Error message to display (when status is 'error')
+- **error**: * Error message to display (when status is an error)
+- **artifactId**: * Backend artifact id, set once the upload has been integrated. When both `artifactId` and `onOpen` are present, the chip becomes clickable.
+- **onOpen**: * Click handler invoked with `artifactId` when the chip is clicked. Compose-box (pre-integrate) chips should not pass this — the chip stays non-clickable except for its remove button.
 
 **MarkdownContent**
 - **content**: * Content to display (can be Markdown or HTML)
@@ -270,6 +274,8 @@ navigate for groups).
 - **branchInfo**: * Branch navigation info (shows branch indicator if provided and total > 1)
 - **actions**: * Actions configuration (shows action bar if provided)
 - **hideActions**: * Whether to hide actions (e.g., during streaming)
+- **attachments**: * Attachments to render above the bubble. Used by user messages to show the files that were attached to that turn. Empty/undefined renders nothing.
+- **onAttachmentOpen**: * Click handler invoked with an attachment's `artifactId`. Wire to open the artifact-card modal in the host app.
 
 **PdfCard**
 A card for displaying PDF documents with an embedded viewer.
@@ -361,6 +367,8 @@ moving back from the content.
 
 - **nodes**: * Top-level tree nodes to display in the navigable artifact tree.
 - **loading**: * Whether artifacts are still loading (show skeletons)
+- **openArtifactId**: * When set to a non-null id, surfaces the same expanded artifact card the panel grid would. Drives chip click-through from outside the panel. Pair with `onArtifactClosed` so the parent can clear its controller state when the user dismisses the modal.
+- **onArtifactClosed**: * Called when the user closes the expanded card (X button or backdrop). The parent owns whether subsequent renders re-open by re-supplying `openArtifactId`.
 
 **BranchNavigator**
 BranchNavigator provides a UI for switching between conversation branches.
@@ -447,6 +455,7 @@ artifactNodes prop.
 - **onRenameConversation**: * Called when a conversation's title is renamed from the history panel. Receives the conversation id and the new, trimmed title.
 - **isStreaming**: * Whether the assistant is currently streaming a response. Shows a stop button and disables certain actions.
 - **isThinking**: * Whether to show the thinking indicator. Typically shown after a user message but before the first streaming token.
+- **thinkingLabel**: * Optional verbatim label for the thinking indicator. When set, the indicator suppresses its rotating phrases and renders this string as-is. Use for domain-specific waits like "Analyzing uploads..." — any animated suffix (e.g. cycling dots) is the caller's responsibility.
 - **placeholder**: * Placeholder text for the main chat input.
 - **emptyStateHelper**: * Helper text shown in the empty state (when there are no messages).
 - **emptyState**: * Custom content to show when the conversation is empty. Overrides the default centered input and helper text.
@@ -455,6 +464,7 @@ artifactNodes prop.
 - **attachments**: * Current attachments for the chat input (controlled).
 - **onAttachmentsChange**: * Called when attachments are added or removed in the chat input.
 - **onAttachmentRemove**: * Called when an attachment is removed by the user (clicking the "x")
+- **onAttachmentOpen**: * Called when a chip above a sent message is clicked. Receives the `artifactId` carried by the chip; wire to open the artifact-card modal. Without this, above-message chips are not clickable.
 - **artifactNodes**: * Top-level artifact tree nodes for the artifacts panel.
 - **isArtifactsPanelOpen**: * Whether the artifacts panel is currently open (controlled). When set, maps to the tool panel system — opens the artifacts tool.
 - **onArtifactsPanelOpenChange**: * Called when the artifacts panel is opened or closed (controlled).
@@ -478,6 +488,7 @@ Key behaviors:
 - **latestUserMessageIndex**: * Index of the latest user-message row to anchor scroll to. When this index changes, the corresponding row scrolls to the top. Defaults to the last-found user message in `items`.
 - **isStreaming**: * Whether the assistant is currently streaming a response. Drives the streaming cursor on the last assistant message and the thinking indicator.
 - **isThinking**: * Whether to show the thinking indicator (between user message and response).
+- **thinkingLabel**: * When set, the thinking indicator renders this label verbatim instead of its rotating phrases. Use for domain-specific waits like "Analyzing uploads..." (any animated suffix is the caller's responsibility).
 - **onScroll**: * Callback when the user scrolls manually.
 
 **Checkpoint**
@@ -540,6 +551,7 @@ but has not yet started streaming tokens. It cycles through flavorful "thinking"
 - **isVisible**: * Whether the indicator is visible/active
 - **phraseInterval**: * Interval between phrase changes in ms @default 2500
 - **phrases**: * Custom phrases to cycle through (defaults to built-in phrases)
+- **manualLabel**: * When set, suppresses internal phrase rotation and renders this label verbatim. Used by the host to express domain-specific waiting states (e.g. "Analyzing uploads..."). Any animated suffix (cycling dots) is the caller's responsibility — Aurelius renders the string as-is.
 
 **TodosList**
 - **Task.id**: * Unique identifier for the task

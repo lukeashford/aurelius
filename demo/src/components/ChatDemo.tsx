@@ -512,20 +512,32 @@ export default function ChatDemo() {
   const handleAttachmentsChange = useCallback((newAttachments: Attachment[]) => {
     setAttachments(newAttachments)
 
-    // Simulate upload for any new pending attachments
+    // Simulate the full upload + analysis lifecycle for newly added attachments:
+    // pending → uploading → uploaded → analyzing → analyzed.
     newAttachments.forEach((attachment) => {
       if (attachment.status === 'pending') {
-        // Step 1: Pending -> Uploading after 1s
         setTimeout(() => {
           setAttachments((prev) =>
               prev.map((a) => (a.id === attachment.id ? {...a, status: 'uploading' as const} : a))
           )
-
-          // Step 2: Uploading -> Complete after another 1s
           setTimeout(() => {
             setAttachments((prev) =>
-                prev.map((a) => (a.id === attachment.id ? {...a, status: 'complete' as const} : a))
+                prev.map((a) => (a.id === attachment.id ? {...a, status: 'uploaded' as const} : a))
             )
+            setTimeout(() => {
+              setAttachments((prev) =>
+                  prev.map((a) =>
+                      (a.id === attachment.id ? {...a, status: 'analyzing' as const} : a))
+              )
+              setTimeout(() => {
+                setAttachments((prev) =>
+                    prev.map((a) =>
+                        (a.id === attachment.id
+                            ? {...a, status: 'analyzed' as const, artifactId: a.id}
+                            : a))
+                )
+              }, 1200)
+            }, 600)
           }, 1000)
         }, 1000)
       }

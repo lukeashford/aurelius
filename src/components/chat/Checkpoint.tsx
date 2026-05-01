@@ -7,6 +7,7 @@ import {
   GitCommitVertical,
   GitMerge,
   PencilLine,
+  Upload,
 } from 'lucide-react'
 import {cx} from '../../utils'
 
@@ -14,7 +15,7 @@ import {cx} from '../../utils'
  * What kind of project mutation produced this checkpoint. Drives the icon and
  * visual emphasis. The label and underlying state are unchanged.
  */
-export type CheckpointExecutionKind = 'task' | 'submit' | 'rename' | 'init'
+export type CheckpointExecutionKind = 'task' | 'submit' | 'rename' | 'init' | 'ingest'
 
 /**
  * Terminal state of the underlying execution. `failed` and `cancelled` render
@@ -69,6 +70,7 @@ const KIND_ICONS: Record<CheckpointExecutionKind, React.ComponentType<{ classNam
   submit: GitMerge,
   rename: PencilLine,
   init: GitCommitVertical,
+  ingest: Upload,
 }
 
 const KIND_ARIA_LABELS: Record<CheckpointExecutionKind, string> = {
@@ -76,6 +78,7 @@ const KIND_ARIA_LABELS: Record<CheckpointExecutionKind, string> = {
   submit: 'Submit checkpoint',
   rename: 'Rename checkpoint',
   init: 'Project head checkpoint',
+  ingest: 'Upload batch checkpoint',
 }
 
 /**

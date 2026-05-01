@@ -1,5 +1,5 @@
 import React from 'react'
-import {cx} from '../utils/cx'
+import {cx} from '../utils'
 import {
   File,
   FileArchive,
@@ -12,9 +12,16 @@ import {
   X
 } from 'lucide-react'
 
-export type FileChipStatus = 'pending' | 'uploading' | 'complete' | 'error'
+export type FileChipStatus =
+    | 'pending'
+    | 'uploading'
+    | 'uploaded'
+    | 'analyzing'
+    | 'analyzed'
+    | 'upload_failed'
+    | 'analysis_failed'
 
-export interface FileChipProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
+export interface FileChipProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children' | 'onClick'> {
   /**
    * File name to display
    */
@@ -44,9 +51,20 @@ export interface FileChipProps extends Omit<React.HTMLAttributes<HTMLDivElement>
    */
   removable?: boolean
   /**
-   * Error message to display (when status is 'error')
+   * Error message to display (when status is an error)
    */
   error?: string
+  /**
+   * Backend artifact id, set once the upload has been integrated. When both
+   * `artifactId` and `onOpen` are present, the chip becomes clickable.
+   */
+  artifactId?: string
+  /**
+   * Click handler invoked with `artifactId` when the chip is clicked.
+   * Compose-box (pre-integrate) chips should not pass this — the chip stays
+   * non-clickable except for its remove button.
+   */
+  onOpen?: (artifactId: string) => void
 }
 
 /**
@@ -93,11 +111,28 @@ function getFileIcon(type?: string) {
   return File
 }
 
-const statusStyles: Record<FileChipStatus, string> = {
+const statusBorderClass: Record<FileChipStatus, string> = {
   pending: 'border-silver/30',
   uploading: 'border-gold/50',
-  complete: 'border-success/50',
-  error: 'border-error/50',
+  uploaded: 'border-info/50',
+  analyzing: 'border-info/50',
+  analyzed: 'border-success/50',
+  upload_failed: 'border-error/50',
+  analysis_failed: 'border-error/50',
+}
+
+const statusHoverLabel: Record<FileChipStatus, string | null> = {
+  pending: null,
+  uploading: 'Uploading...',
+  uploaded: 'Upload complete. Analyzing...',
+  analyzing: 'Upload complete. Analyzing...',
+  analyzed: null,
+  upload_failed: 'Upload failed. Remove and try again.',
+  analysis_failed: 'Analysis failed. Provide a description in your next message.',
+}
+
+function isErrorStatus(status: FileChipStatus): boolean {
+  return status === 'upload_failed' || status === 'analysis_failed'
 }
 
 export const FileChip = React.forwardRef<HTMLDivElement, FileChipProps>(
@@ -106,12 +141,15 @@ export const FileChip = React.forwardRef<HTMLDivElement, FileChipProps>(
           name,
           size,
           type,
-          status = 'complete',
+          status = 'analyzed',
           previewUrl,
           onRemove,
           removable = true,
           error,
+          artifactId,
+          onOpen,
           className,
+          title,
           ...rest
         },
         ref
@@ -120,19 +158,46 @@ export const FileChip = React.forwardRef<HTMLDivElement, FileChipProps>(
       const isImage = type?.startsWith('image/')
       const showPreview = isImage && previewUrl
 
+      const clickable = !!(artifactId && onOpen)
+      const hoverLabel = statusHoverLabel[status]
+      const tooltip = title ?? hoverLabel ?? name
+      const showError = isErrorStatus(status)
+
+      const handleClick = () => {
+        if (clickable) {
+          onOpen!(artifactId!)
+        }
+      }
+
+      const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+        if (!clickable) {
+          return
+        }
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          onOpen!(artifactId!)
+        }
+      }
+
       return (
           <div
+              {...rest}
               ref={ref}
               className={cx(
                   'group relative inline-flex items-center gap-2 px-2 py-1.5',
                   'bg-charcoal border text-sm text-white',
                   'transition-colors duration-150',
-                  statusStyles[status],
-                  status === 'error' && 'bg-error/10',
+                  statusBorderClass[status],
+                  showError && 'bg-error/10',
+                  clickable && 'cursor-pointer hover:bg-graphite',
                   className
               )}
-              role="listitem"
-              {...rest}
+              role={clickable ? 'button' : 'listitem'}
+              tabIndex={clickable ? 0 : undefined}
+              onClick={clickable ? handleClick : undefined}
+              onKeyDown={clickable ? handleKeyDown : undefined}
+              title={tooltip}
+              aria-label={hoverLabel ? `${name}: ${hoverLabel}` : name}
           >
             {/* Preview thumbnail or icon */}
             {showPreview ? (
@@ -146,7 +211,7 @@ export const FileChip = React.forwardRef<HTMLDivElement, FileChipProps>(
             ) : (
                 <Icon className={cx(
                     'w-4 h-4 flex-shrink-0',
-                    status === 'error' ? 'text-error' : 'text-silver'
+                    showError ? 'text-error' : 'text-silver'
                 )}/>
             )}
 
@@ -155,12 +220,12 @@ export const FileChip = React.forwardRef<HTMLDivElement, FileChipProps>(
           <span className="truncate max-w-40" title={name}>
             {name}
           </span>
-              {size !== undefined && status !== 'error' && (
+              {size !== undefined && !showError && (
                   <span className="text-xs text-silver/60">
               {formatBytes(size)}
             </span>
               )}
-              {status === 'error' && error && (
+              {showError && error && (
                   <span className="text-xs text-error truncate" title={error}>
               {error}
             </span>
@@ -170,6 +235,9 @@ export const FileChip = React.forwardRef<HTMLDivElement, FileChipProps>(
             {/* Status indicator */}
             {status === 'uploading' && (
                 <Loader2 className="w-3.5 h-3.5 text-gold animate-spin flex-shrink-0"/>
+            )}
+            {(status === 'uploaded' || status === 'analyzing') && (
+                <Loader2 className="w-3.5 h-3.5 text-info animate-spin flex-shrink-0"/>
             )}
             {status === 'pending' && (
                 <div className="w-2 h-2 rounded-full bg-silver/50 flex-shrink-0"/>
