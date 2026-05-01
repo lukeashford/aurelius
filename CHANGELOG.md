@@ -1,3 +1,10 @@
+## [4.3.0](https://github.com/lukeashford/aurelius/compare/v4.2.0...v4.3.0) (2026-05-01)
+
+### Features
+
+* **chat:** enable attachment lifecycle tracking and modal links ([14a2fd1](https://github.com/lukeashford/aurelius/commit/14a2fd13d27bafe0d57191618a50f46fb82370c1))
+* **chat:** enable attachment lifecycle tracking and modal links ([#53](https://github.com/lukeashford/aurelius/issues/53)) ([290b162](https://github.com/lukeashford/aurelius/commit/290b1629c10ff86862740b6b378c271f105444ed))
+
 ## [4.2.0](https://github.com/lukeashford/aurelius/compare/v4.1.0...v4.2.0) (2026-04-29)
 
 ### Features
