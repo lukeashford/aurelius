@@ -1,3 +1,10 @@
+## [4.6.0](https://github.com/lukeashford/aurelius/compare/v4.5.0...v4.6.0) (2026-05-02)
+
+### Features
+
+* **deliverables:** add renderer, routes, and PDF generation tool ([9c29627](https://github.com/lukeashford/aurelius/commit/9c2962739bc8dbcaf9cdb8bc1edf24faf8271c2b))
+* **deliverables:** add renderer, routes, and PDF generation tool ([#56](https://github.com/lukeashford/aurelius/issues/56)) ([7f32a89](https://github.com/lukeashford/aurelius/commit/7f32a890893f948a30b379893b6ac3fb95913789))
+
 ## [4.5.0](https://github.com/lukeashford/aurelius/compare/v4.4.0...v4.5.0) (2026-05-02)
 
 ### Features
