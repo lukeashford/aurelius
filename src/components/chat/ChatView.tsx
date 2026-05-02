@@ -32,6 +32,18 @@ export interface ChatViewMessageItem extends Omit<MessageProps, 'variant' | 'chi
   actions?: MessageActionsConfig
   /** When true, this row is rendered in the greyed-future region. */
   muted?: boolean
+  /**
+   * When true, this message is the active leaf — Message will suppress its
+   * `onJumpHere` click target. Mirrors `ChatViewCheckpointItem.isActive`.
+   */
+  isActive?: boolean
+  /**
+   * Click handler for the bubble. When provided, the bubble becomes a
+   * navigational anchor that moves the active leaf to this node. Aurelius
+   * suppresses the click for `isActive` rows, link / button targets inside
+   * the bubble, and active text selections.
+   */
+  onJumpHere?: () => void
 }
 
 export interface ChatViewCheckpointItem extends CheckpointProps {

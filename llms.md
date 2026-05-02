@@ -127,7 +127,7 @@ Import from `@lukeashford/aurelius`:
 | List | variant, ordered, leading, trailing, interactive, selected, disabled, primary, secondary |
 | MarkdownContent | content, isMarkdown, sanitizeConfig, isStreaming, cursorClassName |
 | Menu | children, open, onOpenChange, asChild, align, side, icon, destructive |
-| Message | variant (user, assistant), content, isStreaming, branchInfo, actions, hideActions, attachments, onAttachmentOpen, onClick, label, children, disabled |
+| Message | variant (user, assistant), content, isStreaming, branchInfo, actions, hideActions, attachments, onAttachmentOpen, onJumpHere, isActive, onClick, label, children, disabled |
 | Modal | isOpen, onClose, title, children, className |
 | Navbar | fixed, bordered, position, active, active |
 | Pagination | page, totalPages, onPageChange, siblingCount, showEdges |
@@ -156,7 +156,7 @@ Import from `@lukeashford/aurelius`:
 | ArtifactsPanel | nodes, loading, openArtifactId, onArtifactClosed, artifactCount, onExpand |
 | BranchNavigator | current, total, onPrevious, onNext, size, showIcon |
 | ChatInput | position (centered, bottom), placeholder, helperText, onSubmit, disabled, animate, isStreaming, onStop, attachments, onAttachmentsChange, onAttachmentRemove, showAttachmentButton, acceptedFileTypes, notice, onInputChange, initialInputValue, autoFocus |
-| ChatInterface | messages, conversationTree, onTreeChange, conversations, onMessageSubmit, onEditMessage, onRetryMessage, onJumpToCheckpoint, onJumpToLatest, onStop, onSelectConversation, onNewChat, onRenameConversation, isStreaming, isThinking, thinkingLabel, placeholder, emptyStateHelper, emptyState, showAttachmentButton, enableMessageActions, attachments, onAttachmentsChange, onAttachmentRemove, onAttachmentOpen, artifactNodes, isArtifactsPanelOpen, onArtifactsPanelOpenChange, tasks, tasksTitle, onStopAllTasks |
+| ChatInterface | messages, conversationTree, onTreeChange, conversations, onMessageSubmit, onEditMessage, onRetryMessage, onJumpHere, onJumpToLatest, onStop, onSelectConversation, onNewChat, onRenameConversation, isStreaming, isThinking, thinkingLabel, placeholder, emptyStateHelper, emptyState, showAttachmentButton, enableMessageActions, attachments, onAttachmentsChange, onAttachmentRemove, onAttachmentOpen, artifactNodes, isArtifactsPanelOpen, onArtifactsPanelOpenChange, tasks, tasksTitle, onStopAllTasks |
 | ChatView | items, latestUserMessageIndex, isStreaming, isThinking, thinkingLabel, onScroll |
 | Checkpoint | name, executionKind (task, submit, rename, init, ingest), status (completed, failed, cancelled), isActive, muted, branchInfo, onJumpHere |
 | GreyedDivider | messageCount, checkpointCount, onJumpToLatest |
@@ -276,6 +276,8 @@ navigate for groups).
 - **hideActions**: * Whether to hide actions (e.g., during streaming)
 - **attachments**: * Attachments to render above the bubble. Used by user messages to show the files that were attached to that turn. Empty/undefined renders nothing.
 - **onAttachmentOpen**: * Click handler invoked with an attachment's `artifactId`. Wire to open the artifact-card modal in the host app.
+- **onJumpHere**: * Click handler for the bubble — when provided, the message becomes a navigational anchor (mirrors Checkpoint's `onJumpHere`): clicking the bubble moves the active leaf to this node. Suppressed when `isActive` is true (already here) or when the user is selecting text or clicking a markdown link inside the bubble.
+- **isActive**: * When true, this message is the active leaf — `onJumpHere` is suppressed (no point jumping to where you already are) and the affordance hover styling is skipped.
 
 **PdfCard**
 A card for displaying PDF documents with an embedded viewer.
@@ -447,7 +449,7 @@ artifactNodes prop.
 - **onMessageSubmit**: * Called when a message is submitted from the input. Provides the text content and any files attached.
 - **onEditMessage**: * Called when a user message is edited. In tree mode, this creates a new branch.
 - **onRetryMessage**: * Called when an assistant message is retried. In tree mode, this creates a new branch.
-- **onJumpToCheckpoint**: * Called when the user clicks a non-active checkpoint to rewind. Receives the checkpoint id; the consumer should move the active leaf there (without forking) so the artifacts panel and chat re-anchor. In tree mode only.
+- **onJumpHere**: * Called when the user clicks a non-active node — checkpoint or message — to move the active leaf there. Receives the node id; the consumer should move the active leaf without forking so the artifacts panel and chat re-anchor. Mirrors the per-component `onJumpHere`. In tree mode only.
 - **onJumpToLatest**: * Called when the user clicks "Jump to latest" on the greyed-future divider or otherwise asks to return to the deepest leaf they had reached. In tree mode only.
 - **onStop**: * Called when the Stop button is clicked during assistant streaming.
 - **onSelectConversation**: * Called when a conversation is selected from the sidebar.
@@ -484,6 +486,8 @@ Key behaviors:
 - **ChatViewMessageItem.branchInfo**: Branch navigation info — chevrons render only when total > 1.
 - **ChatViewMessageItem.actions**: Actions configuration (copy / edit / retry).
 - **ChatViewMessageItem.muted**: When true, this row is rendered in the greyed-future region.
+- **ChatViewMessageItem.isActive**: * When true, this message is the active leaf — Message will suppress its `onJumpHere` click target. Mirrors `ChatViewCheckpointItem.isActive`.
+- **ChatViewMessageItem.onJumpHere**: * Click handler for the bubble. When provided, the bubble becomes a navigational anchor that moves the active leaf to this node. Aurelius suppresses the click for `isActive` rows, link / button targets inside the bubble, and active text selections.
 - **items**: * Rows to render in the chat stream. Heterogeneous: messages, checkpoints, and the greyed-future divider live in the same list, ordered top-to-bottom.
 - **latestUserMessageIndex**: * Index of the latest user-message row to anchor scroll to. When this index changes, the corresponding row scrolls to the top. Defaults to the last-found user message in `items`.
 - **isStreaming**: * Whether the assistant is currently streaming a response. Drives the streaming cursor on the last assistant message and the thinking indicator.

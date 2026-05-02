@@ -93,12 +93,12 @@ export interface ChatInterfaceProps extends Omit<React.HTMLAttributes<HTMLDivEle
    */
   onRetryMessage?: (messageId: string) => void
   /**
-   * Called when the user clicks a non-active checkpoint to rewind. Receives
-   * the checkpoint id; the consumer should move the active leaf there
-   * (without forking) so the artifacts panel and chat re-anchor.
-   * In tree mode only.
+   * Called when the user clicks a non-active node — checkpoint or message —
+   * to move the active leaf there. Receives the node id; the consumer should
+   * move the active leaf without forking so the artifacts panel and chat
+   * re-anchor. Mirrors the per-component `onJumpHere`. In tree mode only.
    */
-  onJumpToCheckpoint?: (checkpointId: string) => void
+  onJumpHere?: (nodeId: string) => void
   /**
    * Called when the user clicks "Jump to latest" on the greyed-future divider
    * or otherwise asks to return to the deepest leaf they had reached.
@@ -271,7 +271,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
           onMessageSubmit,
           onEditMessage,
           onRetryMessage,
-          onJumpToCheckpoint,
+          onJumpHere,
           onJumpToLatest,
           onStop,
           onSelectConversation,
@@ -512,16 +512,16 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
           [tree, onTreeChange]
       )
 
-      const handleJumpToCheckpoint = useCallback((checkpointId: string) => {
+      const handleJumpHere = useCallback((nodeId: string) => {
         if (!tree) return
-        if (onJumpToCheckpoint) {
-          onJumpToCheckpoint(checkpointId)
+        if (onJumpHere) {
+          onJumpHere(nodeId)
           return
         }
         if (onTreeChange) {
-          onTreeChange(setActiveLeaf(tree, checkpointId))
+          onTreeChange(setActiveLeaf(tree, nodeId))
         }
-      }, [tree, onTreeChange, onJumpToCheckpoint])
+      }, [tree, onTreeChange, onJumpHere])
 
       const handleJumpToLatest = useCallback(() => {
         if (!tree) return
@@ -555,7 +555,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
                 isActive: node.id === activeCheckpointId && !opts.muted,
                 muted: opts.muted,
                 branchInfo,
-                onJumpHere: () => handleJumpToCheckpoint(node.id),
+                onJumpHere: () => handleJumpHere(node.id),
               }
             }
 
@@ -570,6 +570,8 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
                       : undefined,
                 }
                 : undefined
+
+            const isActiveLeaf = tree?.activeLeafId === node.id
 
             return {
               kind: 'message',
@@ -590,10 +592,12 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
                   }))
                   : undefined,
               onAttachmentOpen: handleAttachmentOpen,
+              isActive: isActiveLeaf,
+              onJumpHere: () => handleJumpHere(node.id),
             }
           },
           [tree, activeCheckpointId, enableMessageActions, onEditMessage, onRetryMessage,
-            handleBranchSwitch, handleJumpToCheckpoint, handleAttachmentOpen],
+            handleBranchSwitch, handleJumpHere, handleAttachmentOpen],
       )
 
       const displayItems: ChatViewItem[] = useMemo(() => {

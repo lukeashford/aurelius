@@ -76,6 +76,20 @@ export interface MessageProps extends Omit<React.HTMLAttributes<HTMLDivElement>,
    * artifact-card modal in the host app.
    */
   onAttachmentOpen?: (artifactId: string) => void
+  /**
+   * Click handler for the bubble — when provided, the message becomes a
+   * navigational anchor (mirrors Checkpoint's `onJumpHere`): clicking the
+   * bubble moves the active leaf to this node. Suppressed when `isActive`
+   * is true (already here) or when the user is selecting text or clicking
+   * a markdown link inside the bubble.
+   */
+  onJumpHere?: () => void
+  /**
+   * When true, this message is the active leaf — `onJumpHere` is suppressed
+   * (no point jumping to where you already are) and the affordance hover
+   * styling is skipped.
+   */
+  isActive?: boolean
 }
 
 const VARIANT_STYLES: Record<MessageVariant, string> = {
@@ -126,9 +140,30 @@ export const Message = React.forwardRef<HTMLDivElement, MessageProps>(
       hideActions,
       attachments,
       onAttachmentOpen,
+      onJumpHere,
+      isActive,
       ...rest
     }, ref) => {
       const isUser = variant === 'user'
+      const isJumpInteractive = !!onJumpHere && !isActive && !isStreaming
+      const handleBubbleClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+        if (!isJumpInteractive) {
+          return
+        }
+        // Don't hijack a markdown-link click — let the anchor's default
+        // behaviour run.
+        const target = e.target as HTMLElement
+        if (target.closest('a, button')) {
+          return
+        }
+        // Don't hijack a text-selection drag — if the user has highlighted
+        // anything inside the bubble, the click was the end of a selection.
+        const selection = typeof window !== 'undefined' ? window.getSelection() : null
+        if (selection && !selection.isCollapsed) {
+          return
+        }
+        onJumpHere!()
+      }, [isJumpInteractive, onJumpHere])
       const {copied, copy} = useCopyToClipboard()
       const [isEditing, setIsEditing] = useState(false)
       const [editValue, setEditValue] = useState(typeof content === 'string' ? content : '')
@@ -250,8 +285,12 @@ export const Message = React.forwardRef<HTMLDivElement, MessageProps>(
                 <div
                     className={cx(
                         'px-3 py-2 w-fit max-w-11/12',
-                        VARIANT_STYLES[variant]
+                        VARIANT_STYLES[variant],
+                        isJumpInteractive && 'cursor-pointer hover:brightness-110 transition-all duration-150',
                     )}
+                    onClick={isJumpInteractive ? handleBubbleClick : undefined}
+                    role={isJumpInteractive ? 'button' : undefined}
+                    aria-label={isJumpInteractive ? 'Jump to this message' : undefined}
                 >
                   {typeof content === 'string' ? (
                       <MarkdownContent
