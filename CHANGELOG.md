@@ -1,3 +1,10 @@
+## [4.4.0](https://github.com/lukeashford/aurelius/compare/v4.3.0...v4.4.0) (2026-05-02)
+
+### Features
+
+* **filechip:** add tooltips for status and lifecycle feedback ([46fb9ca](https://github.com/lukeashford/aurelius/commit/46fb9caac5dfa0bd73532913f00232394248d4c1))
+* **filechip:** add tooltips for status and lifecycle feedback ([#54](https://github.com/lukeashford/aurelius/issues/54)) ([a281e36](https://github.com/lukeashford/aurelius/commit/a281e3692ce96aaf39dd8925ec063c18a9095993))
+
 ## [4.3.0](https://github.com/lukeashford/aurelius/compare/v4.2.0...v4.3.0) (2026-05-01)
 
 ### Features
