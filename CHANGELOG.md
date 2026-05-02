@@ -1,3 +1,10 @@
+## [4.5.0](https://github.com/lukeashford/aurelius/compare/v4.4.0...v4.5.0) (2026-05-02)
+
+### Features
+
+* **chat:** add onJumpHere prop and navigation anchors for messages ([3766cda](https://github.com/lukeashford/aurelius/commit/3766cdab67f8cc2ce44ecbef3c53fe4bb880dac4))
+* **chat:** add onJumpHere prop and navigation anchors for messages ([#55](https://github.com/lukeashford/aurelius/issues/55)) ([af33c16](https://github.com/lukeashford/aurelius/commit/af33c16fd535bcf8236bb5821aee3877e915e69b))
+
 ## [4.4.0](https://github.com/lukeashford/aurelius/compare/v4.3.0...v4.4.0) (2026-05-02)
 
 ### Features
