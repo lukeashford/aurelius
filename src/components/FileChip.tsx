@@ -1,5 +1,6 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {cx} from '../utils'
+import {Tooltip} from './Tooltip'
 import {
   File,
   FileArchive,
@@ -123,12 +124,12 @@ const statusBorderClass: Record<FileChipStatus, string> = {
 
 const statusHoverLabel: Record<FileChipStatus, string | null> = {
   pending: null,
-  uploading: 'Uploading...',
-  uploaded: 'Upload complete. Analyzing...',
-  analyzing: 'Upload complete. Analyzing...',
+  uploading: 'Uploading',
+  uploaded: 'Analyzing',
+  analyzing: 'Analyzing',
   analyzed: null,
-  upload_failed: 'Upload failed. Remove and try again.',
-  analysis_failed: 'Analysis failed. Provide a description in your next message.',
+  upload_failed: 'Upload failed',
+  analysis_failed: "Couldn't process this file",
 }
 
 function isErrorStatus(status: FileChipStatus): boolean {
@@ -160,7 +161,16 @@ export const FileChip = React.forwardRef<HTMLDivElement, FileChipProps>(
 
       const clickable = !!(artifactId && onOpen)
       const hoverLabel = statusHoverLabel[status]
-      const tooltip = title ?? hoverLabel ?? name
+      // Tooltip on hover/focus surfaces the lifecycle state. Errors take
+      // precedence over the generic status label so the user sees the
+      // specific reason. `analyzed` chips have no tooltip — the chip is
+      // interactive on its own and the filename in the strip already names
+      // it.
+      const tooltipContent: string | null = isErrorStatus(status)
+          ? (error ?? hoverLabel ?? null)
+          : hoverLabel
+      const [hovered, setHovered] = useState(false)
+      const [focused, setFocused] = useState(false)
       const showError = isErrorStatus(status)
 
       const handleClick = () => {
@@ -179,7 +189,9 @@ export const FileChip = React.forwardRef<HTMLDivElement, FileChipProps>(
         }
       }
 
-      return (
+      const tooltipOpen = tooltipContent !== null && (hovered || focused)
+
+      const chip = (
           <div
               {...rest}
               ref={ref}
@@ -196,7 +208,11 @@ export const FileChip = React.forwardRef<HTMLDivElement, FileChipProps>(
               tabIndex={clickable ? 0 : undefined}
               onClick={clickable ? handleClick : undefined}
               onKeyDown={clickable ? handleKeyDown : undefined}
-              title={tooltip}
+              onMouseEnter={() => setHovered(true)}
+              onMouseLeave={() => setHovered(false)}
+              onFocus={() => setFocused(true)}
+              onBlur={() => setFocused(false)}
+              title={title}
               aria-label={hoverLabel ? `${name}: ${hoverLabel}` : name}
           >
             {/* Preview thumbnail or icon */}
@@ -263,6 +279,15 @@ export const FileChip = React.forwardRef<HTMLDivElement, FileChipProps>(
                 </button>
             )}
           </div>
+      )
+
+      if (tooltipContent === null) {
+        return chip
+      }
+      return (
+          <Tooltip content={tooltipContent} open={tooltipOpen} side="top">
+            {chip}
+          </Tooltip>
       )
     }
 )
