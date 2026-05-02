@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "title": "Brand Refresh — Initial Direction",
+  "subtitle": "Moodboard & visual exploration",
+  "clientName": "Atrium Studio",
+  "accentColor": null,
+  "sections": [
+    {
+      "type": "COVER",
+      "eyebrow": "Moodboard",
+      "title": "Brand Refresh — Initial Direction",
+      "subtitle": "A first cut of references, palette, and tone of voice."
+    },
+    {
+      "type": "TEXT_BLOCK",
+      "heading": "Intent",
+      "body": "A confident, cinematic identity grounded in **deep blacks** and a single restrained gold accent. Typography is editorial — long-form serif for headlines, a clean sans for body. We avoid drop-shadows in favour of subtle 1px borders."
+    },
+    {
+      "type": "ARTIFACT_IMAGE_GRID",
+      "heading": "Visual references",
+      "columns": 2,
+      "items": [
+        {
+          "artifact": {"url": "https://picsum.photos/seed/aurelius-1/1200/900", "title": "Reference 1"},
+          "caption": "Architectural lighting, deep contrast."
+        },
+        {
+          "artifact": {"url": "https://picsum.photos/seed/aurelius-2/1200/900", "title": "Reference 2"},
+          "caption": "Editorial composition, generous negative space."
+        },
+        {
+          "artifact": {"url": "https://picsum.photos/seed/aurelius-3/1200/900", "title": "Reference 3"},
+          "caption": "Material study — gold on graphite."
+        },
+        {
+          "artifact": {"url": "https://picsum.photos/seed/aurelius-4/1200/900", "title": "Reference 4"},
+          "caption": "Type pairing experiments."
+        }
+      ]
+    },
+    {
+      "type": "COLOR_PALETTE",
+      "heading": "Palette",
+      "swatches": [
+        {"color": "#0a0a0a", "label": "Obsidian"},
+        {"color": "#141414", "label": "Charcoal"},
+        {"color": "#fecb6b", "label": "Primary Gold"},
+        {"color": "#a3a3a3", "label": "Silver"}
+      ]
+    },
+    {
+      "type": "ARTIFACT_SPOTLIGHT",
+      "heading": "Hero direction",
+      "artifact": {"url": "https://picsum.photos/seed/aurelius-hero/1600/900", "title": "Hero composition"},
+      "body": "A single composition we want to anchor the campaign around — confident, restrained, and intentionally quiet."
+    },
+    {
+      "type": "QUOTE_BLOCK",
+      "quote": "The strongest brands feel inevitable.",
+      "attribution": "Studio principle"
+    }
+  ]
+}

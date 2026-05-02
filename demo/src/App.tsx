@@ -25,9 +25,11 @@ import DataDisplaySection from './sections/DataDisplaySection'
 import ChatInterfaceSection from './sections/ChatInterfaceSection'
 import SpecialistCardsSection from './sections/SpecialistCardsSection'
 import ArtifactTreeSection from './sections/ArtifactTreeSection'
+import DeliverableSection from './sections/DeliverableSection'
 import {Footer} from './components/Footer'
 import {LegalNotice} from './components/LegalNotice'
 import ChatDemo from './components/ChatDemo'
+import DeliverablePrint from './components/DeliverablePrint'
 import {BrowserRouter, Route, Routes} from 'react-router-dom'
 
 interface SectionEntry {
@@ -59,6 +61,7 @@ const SECTIONS: SectionEntry[] = [
   {id: 'cards', label: 'Cards', Component: CardsSection},
   {id: 'specialist-cards', label: 'Specialist Cards', Component: SpecialistCardsSection},
   {id: 'artifact-tree', label: 'Artifact Tree', Component: ArtifactTreeSection},
+  {id: 'deliverable', label: 'Deliverable Renderer', Component: DeliverableSection},
   {id: 'image-cards', label: 'Image Cards', Component: ImageCardSection},
   {id: 'feedback', label: 'Feedback', Component: FeedbackSection},
   {id: 'streaming', label: 'Streaming Cursor', Component: StreamingCursorSection},
@@ -145,6 +148,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<MainLayout/>}/>
           <Route path="/chat-demo" element={<ChatDemo/>}/>
+          <Route path="/deliverable-print" element={<DeliverablePrint/>}/>
           <Route path="/legal" element={<LegalNotice/>}/>
         </Routes>
       </BrowserRouter>

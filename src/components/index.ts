@@ -338,3 +338,26 @@ export {
   type ScriptElementType,
   SCRIPT_ELEMENT_TYPES,
 } from './ScriptCard'
+
+// Deliverables (presentable moodboards / pitch decks)
+export {
+  DeliverableRenderer,
+  CoverSection,
+  ArtifactImageGridSection,
+  ArtifactSpotlightSection,
+  TextBlockSection,
+  ColorPaletteSection,
+  QuoteBlockSection,
+  type DeliverableRendererProps,
+  type CoverSectionProps,
+  type ArtifactImageGridSectionProps,
+  type ArtifactSpotlightSectionProps,
+  type TextBlockSectionProps,
+  type ColorPaletteSectionProps,
+  type QuoteBlockSectionProps,
+  type Deliverable,
+  type DeliverableSection,
+  type DeliverableImageItem,
+  type DeliverableSwatch,
+  type DeliverableArtifactRef,
+} from './deliverable'

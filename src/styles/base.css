@@ -8,5 +8,6 @@
 @import './fonts.css';
 @import './theme.css';
 @import './prose.css';
+@import './deliverable.css';
 
 @plugin "@tailwindcss/typography";
