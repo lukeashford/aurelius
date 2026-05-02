@@ -107,10 +107,12 @@ export function createAureliusESLintConfig(options = {}) {
       },
     },
 
-    // CSS files: enforce Tailwind v4 CSS usage and tokens (exclude fonts.css and theme.css)
+    // CSS files: enforce Tailwind v4 CSS usage and tokens (exclude foundation
+    // sheets — fonts/theme/deliverable — which define the primitives the
+    // tokens rule would otherwise flag as hard-coded).
     {
       files: ['**/*.css'],
-      ignores: ['**/fonts.css', '**/theme.css'],
+      ignores: ['**/fonts.css', '**/theme.css', '**/deliverable.css'],
       language: 'css/css',
       languageOptions: {
         customSyntax: tailwind4,

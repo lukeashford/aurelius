@@ -166,6 +166,13 @@ Import from `@lukeashford/aurelius`:
 | TodosList | tasks, title, onStopAllTasks |
 | ToolPanelContainer | topContent, bottomContent, width, initialTopPercent, onResizeStart, side |
 | ToolSidebar | tools, activeTools, onToggleTool, side |
+| ArtifactImageGridSection | data |
+| ArtifactSpotlightSection | data |
+| ColorPaletteSection | data |
+| CoverSection | data |
+| DeliverableRenderer | deliverable, onDownloadPdf, hideActions, className |
+| QuoteBlockSection | data |
+| TextBlockSection | data |
 | ChatBubbleIcon | children |
 | CheckSquareIcon | children |
 | ChevronLeftIcon | children |
@@ -600,6 +607,50 @@ side of the chat interface. It follows the IntelliJ pattern:
 - **activeTools**: * Current state — which tool is open per group
 - **onToggleTool**: * Called when a tool button is clicked (toggle)
 - **side**: * Which side this sidebar is on — controls border direction
+
+**ArtifactImageGridSection**
+Grid of project artifact images with optional captions. The number of
+columns is fixed by the spec (1–3); the renderer enforces a sensible aspect
+ratio per item and lets the browser flow rows.
+
+
+**ArtifactSpotlightSection**
+A single hero artifact image with optional prose alongside. Reads at full
+page width on screen and prints to a single page.
+
+
+**ColorPaletteSection**
+Color palette presented as labelled swatches with hex values.
+
+
+**CoverSection**
+Title page for a deliverable. Always rendered as the first section.
+
+
+**DeliverableRenderer**
+Render a presentable deliverable (moodboard, pitch deck) from a structured
+spec. The same component drives the on-screen view and the print/PDF
+version — `@media print` styles in `aurelius/styles/base.css` keep them in
+sync. To produce a PDF, drive the page with headless Chromium and let the
+print stylesheet do the work.
+
+The renderer is purely presentational: it takes a fully resolved spec
+(artifact URLs already inflated by the caller) and dispatches each section
+to its typed sub-renderer. Unknown section types are skipped silently
+forward-compat for new section variants added by the backend.
+
+- **deliverable**: Resolved deliverable spec — every artifact reference already inflated.
+- **onDownloadPdf**: * Called when the viewer requests a PDF download. The host application is responsible for fetching and triggering the file save (the URL knows about share tokens and credentials we don't). When omitted, the download affordance is hidden.
+- **hideActions**: Hide the floating action bar entirely. Used when rendering for print.
+
+**QuoteBlockSection**
+Pulled quote with optional attribution. The renderer adds the surrounding
+quotation marks.
+
+
+**TextBlockSection**
+Prose section. Body is rendered as Markdown.
+
 
 **CrossSquareIcon**
 - **variant**: * Visual variant for different states - 'cancelled': subtle ash coloring - 'failed': error red coloring
