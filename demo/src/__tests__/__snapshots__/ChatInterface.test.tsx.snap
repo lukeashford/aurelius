@@ -466,7 +466,9 @@ exports[`ChatInterface matches snapshot while streaming 1`] = `
                   class="flex flex-col items-end"
                 >
                   <div
-                    class="px-3 py-2 w-fit max-w-11/12 bg-gold text-obsidian ml-auto"
+                    aria-label="Jump to this message"
+                    class="px-3 py-2 w-fit max-w-11/12 bg-gold text-obsidian ml-auto cursor-pointer hover:brightness-110 transition-all duration-150"
+                    role="button"
                   >
                     <div
                       class="prose prose-sm prose-inherit"
@@ -900,7 +902,9 @@ exports[`ChatInterface matches snapshot with messages 1`] = `
                   class="flex flex-col items-end"
                 >
                   <div
-                    class="px-3 py-2 w-fit max-w-11/12 bg-gold text-obsidian ml-auto"
+                    aria-label="Jump to this message"
+                    class="px-3 py-2 w-fit max-w-11/12 bg-gold text-obsidian ml-auto cursor-pointer hover:brightness-110 transition-all duration-150"
+                    role="button"
                   >
                     <div
                       class="prose prose-sm prose-inherit"
