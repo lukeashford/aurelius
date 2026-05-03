@@ -179,13 +179,25 @@ export function switchBranch<T extends NodeTopology>(
  * Preserves `lastLeafId` when the new leaf is an ancestor of it (i.e. the user
  * rewound, or moved within the rewound region). Otherwise resets `lastLeafId`
  * to the new leaf — the greyed future doesn't carry over to unrelated paths.
+ *
+ * `null` clears the active leaf (empty session). An id that doesn't exist in
+ * the tree is treated as a no-op rather than written through — the previous
+ * behaviour silently set `activeLeafId` to a non-existent id, which made
+ * `getActivePath` walk from a missing node and return an empty path. That
+ * presented as "the chat just cleared" for callers that accidentally passed
+ * a foreign id (a hypocaust execution id, a stale optimistic temp id, etc.).
+ * A no-op turns those caller bugs into visible "nothing happened" instead of
+ * an invisible empty-render.
  */
 export function setActiveLeaf<T extends NodeTopology>(
     tree: ConversationTree<T>,
     leafId: string | null,
 ): ConversationTree<T> {
-  if (!leafId || !tree.nodes[leafId]) {
-    return {...tree, activeLeafId: leafId, lastLeafId: leafId}
+  if (leafId === null) {
+    return {...tree, activeLeafId: null, lastLeafId: null}
+  }
+  if (!tree.nodes[leafId]) {
+    return tree
   }
   const lastLeafId = tree.lastLeafId && isAncestor(tree, leafId, tree.lastLeafId)
       ? tree.lastLeafId
