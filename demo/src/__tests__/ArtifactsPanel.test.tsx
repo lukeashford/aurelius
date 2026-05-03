@@ -1,5 +1,6 @@
 import React from 'react'
 import {fireEvent, render, screen} from '@testing-library/react'
+import type {ArtifactNode} from '@lukeashford/aurelius'
 import {ArtifactsPanel} from '@lukeashford/aurelius'
 
 const IMG = 'https://example.com/image.jpg'
@@ -216,5 +217,129 @@ describe('ArtifactsPanel', () => {
   it('matches snapshot with nodes', () => {
     const {container} = render(<ArtifactsPanel nodes={mockNodes}/>)
     expect(container).toMatchSnapshot()
+  })
+})
+
+// ── Modal rendering: shares the card's render path so no divergence ──
+//
+// Pre-fix the modal had its own type-switch with an unguarded
+// `<img src={artifact.url}>`. When `url` was undefined the browser drew the
+// broken-image glyph captioned with the literal "Artifact image" alt
+// fallback — the exact failure mode that motivated unifying renderers.
+//
+// Each test below opens an artifact and reads the modal subtree directly,
+// so a regression that re-introduces a divergent path would fail here.
+
+describe('ArtifactsPanel — modal renders through ArtifactCard', () => {
+  function openModal(nodes: ArtifactNode[]) {
+    const {container} = render(<ArtifactsPanel nodes={nodes}/>)
+    // ArtifactCard is the clickable surface for IMAGE / PDF / SCRIPT / TEXT.
+    // First clickable card opens the modal; backdrop is `inset-0 z-50`.
+    const cards = container.querySelectorAll<HTMLElement>('.cursor-pointer')
+    expect(cards.length).toBeGreaterThan(0)
+    fireEvent.click(cards[0])
+    const modal = container.querySelector<HTMLElement>('.fixed.inset-0.z-50')
+    expect(modal).toBeTruthy()
+    return modal!
+  }
+
+  it('regression: opens an IMAGE artifact missing a url without rendering a broken <img>', () => {
+    // Simulates the placeholder-fabrication race: a node arrived without its
+    // DTO, so it's marked pending with no url. The pre-fix modal would
+    // unconditionally render `<img src={undefined}>` here.
+    const modal = openModal([
+      {
+        id: 'art-empty',
+        type: 'ARTIFACT' as const,
+        name: 'still_pending',
+        label: 'Still Pending',
+        artifact: {
+          id: 'a-empty',
+          type: 'IMAGE' as const,
+          title: 'Still Pending',
+          isPending: true,
+        },
+        children: [],
+      },
+    ])
+    // The card path uses ImageCard, which guards `{src && <img/>}`. With no
+    // url, the modal therefore contains no <img> at all — instead of one
+    // with src=undefined that would draw the broken-image glyph.
+    const imgs = modal.querySelectorAll('img')
+    expect(imgs.length).toBe(0)
+    // And the title we DO know about renders — the user sees a real label.
+    expect(modal.textContent).toContain('Still Pending')
+  })
+
+  it('opens an IMAGE artifact with a url and renders a single <img> with the right src/alt', () => {
+    const modal = openModal([
+      {
+        id: 'art-img',
+        type: 'ARTIFACT' as const,
+        name: 'real_image',
+        label: 'Real Image',
+        artifact: {
+          id: 'a-img',
+          type: 'IMAGE' as const,
+          url: 'https://example.com/img.jpg',
+          alt: 'A real picture',
+          title: 'Real Image',
+        },
+        children: [],
+      },
+    ])
+    const imgs = modal.querySelectorAll('img')
+    expect(imgs.length).toBe(1)
+    expect(imgs[0].getAttribute('src')).toBe('https://example.com/img.jpg')
+    // The alt is the artifact's actual alt — never the hardcoded
+    // "Artifact image" string the pre-fix modal used as a fallback.
+    expect(imgs[0].getAttribute('alt')).toBe('A real picture')
+  })
+
+  it('opens a TEXT artifact (the DELIVERABLE mapping target) and shows its inline content', () => {
+    // Mirrors how mapArtifact in atrium handles ArtifactKind.DELIVERABLE:
+    // type=TEXT, mimeType=application/json, inlineContent=the JSON body.
+    const json = '{"title":"LAST LIGHT","sections":[]}'
+    const modal = openModal([
+      {
+        id: 'art-deliv',
+        type: 'ARTIFACT' as const,
+        name: 'pitch_deck',
+        label: 'Pitch Deck',
+        artifact: {
+          id: 'a-deliv',
+          type: 'TEXT' as const,
+          title: 'Pitch Deck',
+          inlineContent: json,
+          mimeType: 'application/json',
+        },
+        children: [],
+      },
+    ])
+    expect(modal.textContent).toContain('LAST LIGHT')
+    // No phantom broken image for a non-image artifact.
+    expect(modal.querySelectorAll('img').length).toBe(0)
+  })
+
+  it('the literal "Artifact image" fallback string is gone from the modal', () => {
+    // Belt-and-braces: the hardcoded alt-text fallback that the user saw
+    // captioning the broken-image glyph is no longer anywhere in the modal,
+    // for any artifact shape.
+    const modal = openModal([
+      {
+        id: 'art-empty',
+        type: 'ARTIFACT' as const,
+        name: 'still_pending',
+        label: 'Still Pending',
+        artifact: {
+          id: 'a-empty',
+          type: 'IMAGE' as const,
+          title: 'Still Pending',
+          isPending: true,
+        },
+        children: [],
+      },
+    ])
+    expect(modal.textContent).not.toContain('Artifact image')
   })
 })
