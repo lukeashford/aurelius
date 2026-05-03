@@ -258,6 +258,64 @@
   pointer-events: auto;
 }
 
+/* === Compact card ===
+ * Surfaced in chat-tree-style artifact lists where the full multi-page
+ * renderer would be cramped. Borrows the cover treatment but constrains it
+ * to card dimensions and adds a footer that invites the viewer to expand
+ * to the full presentation.
+ */
+
+@utility deliverable-card {
+  --deliverable-accent: var(--color-gold);
+  display: flex;
+  flex-direction: column;
+}
+
+@utility deliverable-card-cover {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-2);
+  padding: var(--spacing-6);
+  border-bottom: 1px solid color-mix(in oklab, var(--deliverable-accent) 30%, transparent);
+}
+
+@utility deliverable-card-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-widest);
+  color: var(--color-silver);
+  font-size: var(--text-xs);
+}
+
+@utility deliverable-card-title {
+  font-family: var(--font-heading);
+  font-size: var(--text-2xl);
+  line-height: var(--text-2xl--line-height);
+  color: var(--deliverable-accent);
+  letter-spacing: var(--letter-spacing-tight);
+}
+
+@utility deliverable-card-subtitle {
+  font-size: var(--text-sm);
+  color: var(--color-silver);
+}
+
+@utility deliverable-card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-3) var(--spacing-6);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wider);
+  color: var(--color-silver);
+}
+
+@utility deliverable-card-open {
+  color: var(--deliverable-accent);
+  font-weight: var(--font-weight-medium);
+}
+
 /* === Print path ===
  * Same React tree, different paint. The strategy:
  *   - Cover gets its own named page (`@page cover`) with no margins so it

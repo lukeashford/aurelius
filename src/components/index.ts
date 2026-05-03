@@ -308,6 +308,10 @@ export {
   type TextCardProps,
 } from './TextCard'
 export {
+  DeliverableCard,
+  type DeliverableCardProps,
+} from './DeliverableCard'
+export {
   ArtifactCard,
   type ArtifactCardProps,
   ARTIFACT_TYPES,
