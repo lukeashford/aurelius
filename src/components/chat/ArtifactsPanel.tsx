@@ -5,11 +5,6 @@ import {ArtifactCard} from '../ArtifactCard'
 import {ArtifactGroup} from '../ArtifactGroup'
 import {ArtifactVariantStack} from '../ArtifactVariantStack'
 import {CardSlotLoading} from '../Card'
-import {AudioCard} from '../AudioCard'
-import {PdfCard} from '../PdfCard'
-import {ScriptCard} from '../ScriptCard'
-import {VideoCard} from '../VideoCard'
-import {MarkdownContent} from '../MarkdownContent'
 import {ChevronRightIcon, CloseIcon,} from '../icons'
 import type {Artifact} from './hooks'
 import {useArtifactTreeNavigation} from './hooks'
@@ -42,7 +37,18 @@ export interface ArtifactsPanelProps extends React.HTMLAttributes<HTMLDivElement
 }
 
 /**
- * Artifact modal for full-screen viewing
+ * Artifact modal for full-screen viewing.
+ *
+ * Delegates rendering to {@link ArtifactCard} so the inline card and the
+ * expanded modal share a single set of guards (missing url, pending state,
+ * unknown type) and a single dispatch table (image/video/audio/pdf/text/
+ * script). Previously the modal had its own switch with an unguarded
+ * `<img src={artifact.url}>`, which drew the browser's broken-image glyph
+ * whenever the url was undefined — even when the card path beside it
+ * correctly rendered an empty media slot for the same artifact.
+ *
+ * The card's title/subtitle render inside its own header, so this modal
+ * frame only owns the dismiss affordance.
  */
 function ArtifactModal({
   artifact,
@@ -53,7 +59,6 @@ function ArtifactModal({
 }) {
   useEscapeKey(onClose)
 
-  // Handle click outside
   const handleBackdropClick = useCallback((e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
       onClose()
@@ -67,17 +72,7 @@ function ArtifactModal({
       >
         <div
             className="relative w-11/12 h-5/6 max-w-6xl bg-charcoal border border-ash/40 flex flex-col overflow-hidden">
-          {/* Modal header */}
-          <div
-              className="flex items-center justify-between p-4 border-b border-ash/40 shrink-0">
-            <div>
-              {artifact.title && (
-                  <h3 className="text-sm font-semibold text-white">{artifact.title}</h3>
-              )}
-              {artifact.subtitle && (
-                  <p className="text-xs text-silver">{artifact.subtitle}</p>
-              )}
-            </div>
+          <div className="flex items-center justify-end p-2 shrink-0">
             <button
                 onClick={onClose}
                 className="p-2 text-silver hover:text-white hover:bg-ash/20 transition-colors"
@@ -86,54 +81,8 @@ function ArtifactModal({
               <CloseIcon className="w-5 h-5"/>
             </button>
           </div>
-
-          {/* Modal content */}
           <div className="flex-1 overflow-auto p-4">
-            {artifact.type === 'IMAGE' && (
-                <img
-                    src={artifact.url}
-                    alt={artifact.alt || 'Artifact image'}
-                    className="max-w-full max-h-full object-contain mx-auto"
-                />
-            )}
-            {artifact.type === 'VIDEO' && (
-                <VideoCard
-                    src={artifact.url || ''}
-                    aspectRatio="video"
-                    controls
-                    className="max-w-full max-h-full mx-auto"
-                />
-            )}
-            {artifact.type === 'AUDIO' && (
-                <AudioCard
-                    src={artifact.url || ''}
-                    controls
-                    className="max-w-xl mx-auto"
-                />
-            )}
-            {artifact.type === 'PDF' && (
-                <PdfCard
-                    src={artifact.url || ''}
-                    className="h-full border-0"
-                />
-            )}
-            {artifact.type === 'TEXT' && (
-                <MarkdownContent
-                    content={artifact.inlineContent || ''}
-                    isMarkdown={artifact.mimeType !== 'text/plain'}
-                    className={cx(
-                        "prose prose-invert max-w-none",
-                        artifact.mimeType === 'text/plain' && "whitespace-pre-wrap"
-                    )}
-                />
-            )}
-            {artifact.type === 'SCRIPT' && artifact.scriptElements && (
-                <ScriptCard
-                    elements={artifact.scriptElements}
-                    maxHeight="100%"
-                    className="max-w-3xl mx-auto border-0"
-                />
-            )}
+            <ArtifactCard artifact={artifact}/>
           </div>
         </div>
       </div>
