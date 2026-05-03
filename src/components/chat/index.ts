@@ -82,6 +82,7 @@ export {
 export {
   createEmptyTree,
   addNodeToTree,
+  type AddNodeOptions,
   getActivePath,
   findAncestor,
   getSiblingInfo,

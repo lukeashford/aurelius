@@ -29,16 +29,41 @@ export function createEmptyTree<T extends NodeTopology = ChatNode>(): Conversati
 }
 
 /**
- * Append a node under `parentId` (or as a root when null) and make it the new
- * active leaf. Sending a message, retrying, editing, and submitting all go
- * through here — the tree doesn't care which one. `lastLeafId` is reset to the
- * new node since by definition the user is now at a fresh deepest leaf.
+ * Options for {@link addNodeToTree}.
+ */
+export interface AddNodeOptions {
+  /**
+   * Whether the new node should become the active leaf. Defaults to `true`,
+   * matching the historical "create-and-focus" behaviour: a freshly added
+   * node almost always represents the latest user-visible state.
+   *
+   * Pass `false` when focus is decided by a separate signal — e.g. an SSE
+   * stream that emits `active_leaf_set` only when the new node *should*
+   * pull focus (the previous active leaf was its parent), and otherwise
+   * leaves the user wherever they navigated to.
+   *
+   * `lastLeafId` follows the same rule: it only advances to the new node
+   * when the node is activated, since "deepest leaf the user has reached"
+   * does not include nodes the system added off-screen.
+   *
+   * @default true
+   */
+  activate?: boolean
+}
+
+/**
+ * Append a node under `parentId` (or as a root when null). By default the new
+ * node also becomes the active leaf — sending a message, retrying, editing,
+ * and submitting all rely on that. Pass `{activate: false}` to insert without
+ * pulling focus, e.g. for off-branch updates from a stream.
  */
 export function addNodeToTree<T extends NodeTopology>(
     tree: ConversationTree<T>,
     node: T,
     parentId: string | null = null,
+    options: AddNodeOptions = {},
 ): ConversationTree<T> {
+  const activate = options.activate ?? true
   const newNodes: Record<string, TreeNode<T>> = {...tree.nodes}
   const newRootIds = [...tree.rootIds]
 
@@ -66,8 +91,8 @@ export function addNodeToTree<T extends NodeTopology>(
   return {
     nodes: newNodes,
     rootIds: newRootIds,
-    activeLeafId: node.id,
-    lastLeafId: node.id,
+    activeLeafId: activate ? node.id : tree.activeLeafId,
+    lastLeafId: activate ? node.id : tree.lastLeafId,
   }
 }
 

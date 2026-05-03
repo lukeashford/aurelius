@@ -258,6 +258,7 @@ export {
   // Tree algorithms (generic over the node kind)
   createEmptyTree,
   addNodeToTree,
+  type AddNodeOptions,
   getActivePath,
   findAncestor,
   getSiblingInfo,
