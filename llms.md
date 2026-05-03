@@ -115,6 +115,7 @@ Import from `@lukeashford/aurelius`:
 | Col | span, offset, order |
 | ColorSwatch | color, label |
 | Container | size (sm, md, lg, xl, fluid, responsive) |
+| DeliverableCard | deliverable, title, subtitle, loading |
 | Dialog | description, confirmText, cancelText, onConfirm, onCancel, confirmVariant, isLoading, description, acknowledgeText, variant, description, placeholder, defaultValue, submitText, cancelText, onSubmit, onCancel, isLoading |
 | Divider | orientation (horizontal, vertical), variant (solid, dashed, dotted), label, color |
 | Drawer | isOpen, onClose, position (left, right, top, bottom), title, size, children, className |
@@ -157,7 +158,7 @@ Import from `@lukeashford/aurelius`:
 | BranchNavigator | current, total, onPrevious, onNext, size, showIcon |
 | ChatInput | position (centered, bottom), placeholder, helperText, onSubmit, disabled, animate, isStreaming, onStop, attachments, onAttachmentsChange, onAttachmentRemove, showAttachmentButton, acceptedFileTypes, notice, onInputChange, initialInputValue, autoFocus |
 | ChatInterface | messages, conversationTree, onTreeChange, conversations, onMessageSubmit, onEditMessage, onRetryMessage, onJumpHere, onJumpToLatest, onStop, onSelectConversation, onNewChat, onRenameConversation, isStreaming, isThinking, thinkingLabel, placeholder, emptyStateHelper, emptyState, showAttachmentButton, enableMessageActions, attachments, onAttachmentsChange, onAttachmentRemove, onAttachmentOpen, artifactNodes, isArtifactsPanelOpen, onArtifactsPanelOpenChange, tasks, tasksTitle, onStopAllTasks |
-| ChatView | items, latestUserMessageIndex, isStreaming, isThinking, thinkingLabel, onScroll |
+| ChatView | items, latestUserMessageIndex |
 | Checkpoint | name, executionKind (task, submit, rename, init, ingest), status (completed, failed, cancelled), isActive, muted, branchInfo, onJumpHere |
 | GreyedDivider | messageCount, checkpointCount, onJumpToLatest |
 | HistoryPanel | conversations, onSelectConversation, onNewChat, onRenameConversation |
@@ -210,6 +211,7 @@ based on the artifact type.
 - **Artifact.isPending**: * Whether this artifact is still loading (shows skeleton)
 - **Artifact.fullWidth**: * Whether the artifact should span full width in the grid
 - **Artifact.scriptElements**: * For html artifacts - structured script elements (used by ScriptCard)
+- **Artifact.deliverable**: * For deliverable artifacts - the resolved presentation spec, every artifact reference already inflated. Rendered as a compact card that links to the full DeliverableRenderer; surfaces the cover info and section count.
 - **artifact**: * The artifact object to display
 - **onExpand**: * Callback when the artifact should be expanded/opened
 - **loading**: * Whether the artifact is still loading
@@ -248,6 +250,16 @@ navigate for groups).
 
 **AudioCard**
 - **playerProps**: Forwarded to the underlying ReactPlayer.
+
+**DeliverableCard**
+Compact preview of a deliverable for surfaces that can't host the full
+multi-page renderer (chat tree, artifact lists). Surfaces the deliverable's
+cover info plus its section count and invites the viewer to open the full
+presentation. Click handling is owned by the parent {@code ArtifactCard}.
+
+- **deliverable**: * Resolved deliverable spec — every artifact reference already inflated. Same shape the full DeliverableRenderer accepts.
+- **title**: Optional override for the cover title (otherwise derived from the spec).
+- **subtitle**: Optional subtitle shown below the title.
 
 **FileChip**
 - **name**: * File name to display
@@ -497,10 +509,6 @@ Key behaviors:
 - **ChatViewMessageItem.onJumpHere**: * Click handler for the bubble. When provided, the bubble becomes a navigational anchor that moves the active leaf to this node. Aurelius suppresses the click for `isActive` rows, link / button targets inside the bubble, and active text selections.
 - **items**: * Rows to render in the chat stream. Heterogeneous: messages, checkpoints, and the greyed-future divider live in the same list, ordered top-to-bottom.
 - **latestUserMessageIndex**: * Index of the latest user-message row to anchor scroll to. When this index changes, the corresponding row scrolls to the top. Defaults to the last-found user message in `items`.
-- **isStreaming**: * Whether the assistant is currently streaming a response. Drives the streaming cursor on the last assistant message and the thinking indicator.
-- **isThinking**: * Whether to show the thinking indicator (between user message and response).
-- **thinkingLabel**: * When set, the thinking indicator renders this label verbatim instead of its rotating phrases. Use for domain-specific waits like "Analyzing uploads..." (any animated suffix is the caller's responsibility).
-- **onScroll**: * Callback when the user scrolls manually.
 
 **Checkpoint**
 A single-line marker in the chat stream that anchors a chat position to a

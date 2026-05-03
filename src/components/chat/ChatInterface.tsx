@@ -749,7 +749,6 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
                   <ChatView
                       items={displayItems}
                       latestUserMessageIndex={latestUserMessageIndex}
-                      isStreaming={isStreaming}
                       isThinking={isThinking}
                       thinkingLabel={thinkingLabel}
                       className="flex-1"

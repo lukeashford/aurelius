@@ -355,9 +355,17 @@ describe('ChatInterface', () => {
 
   it('matches snapshot while streaming', () => {
     const tree = createTreeWithMessages()
+    // Per-node isStreaming drives the cursor; the global flag only gates input.
+    const streamingTree = {
+      ...tree,
+      nodes: {
+        ...tree.nodes,
+        'msg-2': {...tree.nodes['msg-2'], isStreaming: true},
+      },
+    }
     const {container} = render(
         <ChatInterface
-            conversationTree={tree}
+            conversationTree={streamingTree}
             isStreaming={true}
             onStop={() => {
             }}

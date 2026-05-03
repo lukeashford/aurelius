@@ -71,7 +71,7 @@ describe('ChatView', () => {
         isStreaming: true,
       },
     ]
-    render(<ChatView items={streaming} isStreaming={true}/>)
+    render(<ChatView items={streaming}/>)
     expect(screen.getByText('Once upon a time...')).toBeInTheDocument()
   })
 
@@ -135,9 +135,9 @@ describe('ChatView', () => {
   it('matches snapshot with streaming state', () => {
     const streaming: ChatViewItem[] = [
       {kind: 'message', id: '1', variant: 'user', content: 'Question'},
-      {kind: 'message', id: '2', variant: 'assistant', content: 'Answering...'},
+      {kind: 'message', id: '2', variant: 'assistant', content: 'Answering...', isStreaming: true},
     ]
-    const {container} = render(<ChatView items={streaming} isStreaming={true}/>)
+    const {container} = render(<ChatView items={streaming}/>)
     expect(container).toMatchSnapshot()
   })
 })

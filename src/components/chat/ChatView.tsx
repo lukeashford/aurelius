@@ -69,12 +69,10 @@ export interface ChatViewProps extends React.HTMLAttributes<HTMLDivElement> {
    */
   latestUserMessageIndex?: number
   /**
-   * Whether the assistant is currently streaming a response. Drives the
-   * streaming cursor on the last assistant message and the thinking indicator.
-   */
-  isStreaming?: boolean
-  /**
    * Whether to show the thinking indicator (between user message and response).
+   * Renders only when the latest message is a user turn — i.e. the assistant
+   * hasn't sent its first chunk yet. Streaming-cursor behavior is owned by
+   * the per-node {@code isStreaming} flag on each message item.
    */
   isThinking?: boolean
   /**
@@ -103,7 +101,6 @@ export const ChatView = React.forwardRef<HTMLDivElement, ChatViewProps>(
         {
           items,
           latestUserMessageIndex,
-          isStreaming,
           isThinking,
           thinkingLabel,
           onScroll,
@@ -137,10 +134,9 @@ export const ChatView = React.forwardRef<HTMLDivElement, ChatViewProps>(
         }
       }, [latestUserMessageIndex, scrollToAnchor])
 
-      const lastMessageIdx = items.reduceRight((found, item, idx) => {
-        return found === -1 && item.kind === 'message' ? idx : found
-      }, -1)
-      const lastMessage = lastMessageIdx >= 0 ? items[lastMessageIdx] : null
+      const lastMessage = items.reduceRight<ChatViewItem | null>((found, item) => {
+        return found ?? (item.kind === 'message' ? item : null)
+      }, null)
       const showThinking = isThinking
           && lastMessage?.kind === 'message'
           && lastMessage.variant === 'user'
@@ -191,9 +187,7 @@ export const ChatView = React.forwardRef<HTMLDivElement, ChatViewProps>(
                   isStreaming: nodeIsStreaming,
                   ...messageProps
                 } = item
-                const isLastMessage = index === lastMessageIdx
-                const showStreaming = isLastMessage && isStreaming && variant === 'assistant'
-                const isMessageStreaming = showStreaming || !!nodeIsStreaming
+                const isMessageStreaming = !!nodeIsStreaming
 
                 return (
                     <div
