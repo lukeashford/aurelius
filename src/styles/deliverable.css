@@ -8,14 +8,23 @@
  * as a recurring chapter mark.
  *
  * Document-level levers (set per-section by the agent via the spec):
+ *   - `theme` enum → `.deliverable-theme-*` class on the root, overrides
+ *     a small bundle of CSS variables (accent, cover surface, rule weight)
+ *     so the same DOM reads as a different document. The cover surface
+ *     swap shows on screen too, but the body chrome stays cinematic-dark
+ *     on screen — themes only fully bloom in print, where the body flips
+ *     to obsidian-on-white. Aurelius is dark-mode-only on screen by design.
  *   - `accentColor` (hex) → `--deliverable-accent`, used for headings, rules,
- *     swatch surrounds.
+ *     swatch surrounds. Set per-document on the React root.
  *   - Image grid `aspectRatio` enum → utility on the grid container.
  *   - Spotlight `variant` enum → utility on the spotlight section.
  */
 
 @utility deliverable {
   --deliverable-accent: var(--color-gold);
+  --deliverable-cover-bg: var(--color-obsidian);
+  --deliverable-cover-ink: var(--color-white);
+  --deliverable-rule-weight: 1.2pt;
 
   display: flex;
   flex-direction: column;
@@ -27,6 +36,20 @@
   padding-block: var(--spacing-12);
   color: var(--color-white);
   font-family: var(--font-body);
+}
+
+@utility deliverable-theme-editorial {
+  --deliverable-accent: var(--color-obsidian);
+  --deliverable-cover-bg: var(--color-white);
+  --deliverable-cover-ink: var(--color-obsidian);
+  --deliverable-rule-weight: 2.4pt;
+}
+
+@utility deliverable-theme-minimal {
+  --deliverable-accent: var(--color-zinc);
+  --deliverable-cover-bg: var(--color-white);
+  --deliverable-cover-ink: var(--color-obsidian);
+  --deliverable-rule-weight: 0.6pt;
 }
 
 @utility deliverable-page {
@@ -51,7 +74,8 @@
   justify-content: center;
   text-align: center;
   border: 1px solid color-mix(in oklab, var(--deliverable-accent) 30%, transparent);
-  background-color: var(--color-charcoal);
+  background-color: var(--deliverable-cover-bg);
+  color: var(--deliverable-cover-ink);
   padding: var(--spacing-16);
 }
 
@@ -65,12 +89,12 @@
 @utility deliverable-cover-eyebrow {
   text-transform: uppercase;
   letter-spacing: var(--letter-spacing-widest);
-  color: var(--color-silver);
+  color: color-mix(in oklab, var(--deliverable-cover-ink) 55%, transparent);
   font-size: var(--text-xs);
 }
 
 @utility deliverable-cover-rule {
-  height: 1px;
+  height: var(--deliverable-rule-weight);
   width: 6rem;
   background-color: var(--deliverable-accent);
   align-self: center;
@@ -87,7 +111,7 @@
 @utility deliverable-cover-subtitle {
   font-size: var(--text-xl);
   line-height: var(--text-xl--line-height);
-  color: var(--color-silver);
+  color: color-mix(in oklab, var(--deliverable-cover-ink) 65%, transparent);
 }
 
 @utility deliverable-cover-client {
@@ -95,11 +119,11 @@
   font-size: var(--text-sm);
   letter-spacing: var(--letter-spacing-wider);
   text-transform: uppercase;
-  color: var(--color-silver);
+  color: color-mix(in oklab, var(--deliverable-cover-ink) 55%, transparent);
 }
 
 @utility deliverable-cover-client-name {
-  color: var(--color-white);
+  color: var(--deliverable-cover-ink);
   font-weight: var(--font-weight-semibold);
 }
 
@@ -355,6 +379,9 @@
  * to the full presentation.
  */
 
+/* The compact card lives outside the print path and is always shown in
+   the cinematic chrome of the surrounding chat UI — it doesn't carry the
+   document's `theme`. The accent is pinned to gold here for that reason. */
 @utility deliverable-card {
   --deliverable-accent: var(--color-gold);
   display: flex;
@@ -505,19 +532,25 @@
     top: 0;
     left: 0;
     width: 14mm;
-    height: 1.2pt;
+    height: var(--deliverable-rule-weight);
     background-color: var(--deliverable-accent);
   }
 
+  /* `minimal` theme drops the chapter mark — the calmness is the message. */
+  .deliverable-theme-minimal .deliverable-heading::before {
+    display: none;
+  }
+
   /* === Cover ===
-   * Full-bleed first page. Dark obsidian, gold rule between the eyebrow
-   * and the title, type bottom-anchored so the page reads like a poster
-   * rather than centred boilerplate. */
+   * Full-bleed first page. Surface and ink come from the theme bundle
+   * (`cinematic` → obsidian/white, `editorial`/`minimal` → white/obsidian),
+   * with type bottom-anchored so the page reads like a poster rather
+   * than centred boilerplate. */
   .deliverable-cover {
     page-break-after: always;
     break-after: page;
-    background-color: var(--color-obsidian);
-    color: var(--color-white);
+    background-color: var(--deliverable-cover-bg);
+    color: var(--deliverable-cover-ink);
     min-height: 297mm;
     width: 210mm;
     border: none;
@@ -543,7 +576,7 @@
 
   .deliverable-cover-rule {
     width: 18mm;
-    height: 1.5pt;
+    height: var(--deliverable-rule-weight);
     background-color: var(--deliverable-accent);
     align-self: flex-start;
     margin-bottom: 4mm;
@@ -552,13 +585,13 @@
   .deliverable-cover-title {
     font-size: 48pt;
     line-height: 1.02;
-    color: var(--color-white);
+    color: var(--deliverable-cover-ink);
     letter-spacing: var(--letter-spacing-tight);
   }
 
   .deliverable-cover-subtitle {
     font-size: 13pt;
-    color: var(--color-silver);
+    color: color-mix(in oklab, var(--deliverable-cover-ink) 65%, transparent);
     margin-top: 3mm;
     max-width: 28em;
     font-style: italic;
@@ -567,12 +600,12 @@
   .deliverable-cover-client {
     grid-row: 3;
     margin-top: 0;
-    color: var(--color-silver);
+    color: color-mix(in oklab, var(--deliverable-cover-ink) 65%, transparent);
     font-size: 9pt;
   }
 
   .deliverable-cover-client-name {
-    color: var(--color-white);
+    color: var(--deliverable-cover-ink);
   }
 
   /* === Body typography ===

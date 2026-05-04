@@ -23,9 +23,14 @@ export interface Deliverable {
   clientName?: string | null
   /** Optional accent hex color (e.g. "#fecb6b"). Falls back to design-system gold. */
   accentColor?: string | null
+  /** Optional theme preset. Defaults to `cinematic` when omitted. */
+  theme?: DeliverableTheme | null
   /** Ordered sections. Render in array order. */
   sections: DeliverableSection[]
 }
+
+/** Document-level visual identity preset. */
+export type DeliverableTheme = 'cinematic' | 'editorial' | 'minimal'
 
 /**
  * Discriminated union of section types. Each variant has a matching renderer

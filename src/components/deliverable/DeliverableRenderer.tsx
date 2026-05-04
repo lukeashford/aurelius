@@ -1,13 +1,19 @@
 import React, {useState} from 'react'
 import {Button} from '../Button'
 import {cx} from '../../utils'
-import type {Deliverable, DeliverableSection} from './types'
+import type {Deliverable, DeliverableSection, DeliverableTheme} from './types'
 import {CoverSection} from './CoverSection'
 import {ArtifactImageGridSection} from './ArtifactImageGridSection'
 import {ArtifactSpotlightSection} from './ArtifactSpotlightSection'
 import {TextBlockSection} from './TextBlockSection'
 import {ColorPaletteSection} from './ColorPaletteSection'
 import {QuoteBlockSection} from './QuoteBlockSection'
+
+const THEME_CLASSES: Record<DeliverableTheme, string | null> = {
+  cinematic: null,
+  editorial: 'deliverable-theme-editorial',
+  minimal: 'deliverable-theme-minimal',
+}
 
 export interface DeliverableRendererProps {
   /** Resolved deliverable spec — every artifact reference already inflated. */
@@ -48,6 +54,8 @@ export function DeliverableRenderer({
   const style = accent
       ? ({'--deliverable-accent': accent} as React.CSSProperties)
       : undefined
+  const theme: DeliverableTheme = deliverable.theme ?? 'cinematic'
+  const themeClass = THEME_CLASSES[theme]
 
   const handleDownload = async () => {
     if (!onDownloadPdf || isDownloading) return
@@ -61,7 +69,7 @@ export function DeliverableRenderer({
 
   return (
       <div
-          className={cx('deliverable', className)}
+          className={cx('deliverable', themeClass, className)}
           style={style}
       >
         {deliverable.sections.map((section, idx) =>
