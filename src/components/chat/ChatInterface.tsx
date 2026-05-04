@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
+import React, {useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState} from 'react'
 import {cx} from '../../utils'
 import {ChatView, type ChatViewItem} from './ChatView'
 import {ChatInput, type ChatInputNotice} from './ChatInput'
@@ -56,6 +56,25 @@ export interface Conversation {
    * Whether this conversation is currently active (highlighted in the list).
    */
   isActive?: boolean
+}
+
+/**
+ * Imperative API exposed by `ChatInterface` via its forwarded ref. Use this from
+ * call sites that need to drive the chat from outside React state — typically
+ * to surface an artifact when the user clicks a `MentionChip` or other
+ * cross-surface pointer. Attach with
+ * `useRef<ChatInterfaceHandle>(null)` and read `ref.current?.openArtifact(name)`.
+ */
+export interface ChatInterfaceHandle {
+  /**
+   * Open the artifact lightbox for the given artifact name. Ensures the
+   * artifacts panel is open (overriding any prior dismissal) before
+   * surfacing the lightbox, since the lightbox renders inside the panel.
+   * If the name is not present in the current artifact tree, the call is a
+   * no-op — the chip's leading icon already signals unknown / stale
+   * references via `HelpCircle`.
+   */
+  openArtifact(name: string): void
 }
 
 export interface ChatInterfaceProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onSubmit'> {
@@ -287,7 +306,7 @@ export interface ChatInterfaceProps extends Omit<React.HTMLAttributes<HTMLDivEle
  * Artifacts are supplied as a tree of ArtifactNode objects via the
  * artifactNodes prop.
  */
-export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps>(
+export const ChatInterface = React.forwardRef<ChatInterfaceHandle, ChatInterfaceProps>(
     (
         {
           messages = [],
@@ -342,15 +361,6 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
       // after a manual dismiss reopens the modal.
       const [panelOpenArtifactId, setPanelOpenArtifactId] = useState<string | null>(null)
 
-      const handleAttachmentOpen = useCallback((artifactId: string) => {
-        setPanelOpenArtifactId(artifactId)
-        onAttachmentOpen?.(artifactId)
-      }, [onAttachmentOpen])
-
-      const handleArtifactPanelClosed = useCallback(() => {
-        setPanelOpenArtifactId(null)
-      }, [])
-
       // ── Tool panel state ──────────────────────────────────────────
       const [internalTools, setInternalTools] = useState<ToolPanelState>({
         'top-left': 'history',
@@ -361,6 +371,33 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
 
       // Track tools the user has actively dismissed — auto-open won't reopen these
       const dismissedToolsRef = useRef<Set<string>>(new Set())
+
+      // Open the artifacts panel and surface the lightbox for the given
+      // artifact. Ensures the panel is mounted (the lightbox lives inside it)
+      // and clears any prior dismissal — clicking a chip is an explicit
+      // intent that overrides "I closed this earlier."
+      const openArtifact = useCallback((artifactId: string) => {
+        dismissedToolsRef.current.delete('artifacts')
+        if (isArtifactsPanelOpen === undefined) {
+          setInternalTools(prev => prev['top-right'] === 'artifacts'
+              ? prev
+              : {...prev, 'top-right': 'artifacts'})
+        } else if (!isArtifactsPanelOpen) {
+          onArtifactsPanelOpenChange?.(true)
+        }
+        setPanelOpenArtifactId(artifactId)
+      }, [isArtifactsPanelOpen, onArtifactsPanelOpenChange])
+
+      const handleAttachmentOpen = useCallback((artifactId: string) => {
+        openArtifact(artifactId)
+        onAttachmentOpen?.(artifactId)
+      }, [openArtifact, onAttachmentOpen])
+
+      const handleArtifactPanelClosed = useCallback(() => {
+        setPanelOpenArtifactId(null)
+      }, [])
+
+      useImperativeHandle(ref, () => ({openArtifact}), [openArtifact])
 
       // Controlled vs uncontrolled: isArtifactsPanelOpen maps to the tool system
       const isPanelControlled = isArtifactsPanelOpen !== undefined
@@ -733,7 +770,6 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
 
       return (
           <div
-              ref={ref}
               className={cx('flex h-full w-full bg-obsidian overflow-hidden', className)}
               {...rest}
           >

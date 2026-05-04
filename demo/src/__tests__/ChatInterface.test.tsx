@@ -3,6 +3,7 @@ import {fireEvent, render, screen} from '@testing-library/react'
 import {
   addNodeToTree,
   ChatInterface,
+  type ChatInterfaceHandle,
   createEmptyTree,
   type MessageNode,
 } from '@lukeashford/aurelius'
@@ -329,6 +330,68 @@ describe('ChatInterface', () => {
 
     expect(screen.queryByRole('button', {name: /edit message/i})).not.toBeInTheDocument()
     expect(screen.queryByRole('button', {name: /regenerate response/i})).not.toBeInTheDocument()
+  })
+
+  describe('openArtifact imperative handle', () => {
+    const mockNodes = [
+      {
+        id: 'node-1',
+        type: 'ARTIFACT' as const,
+        name: 'sunset',
+        label: 'Sunset',
+        artifact: {
+          id: 'sunset',
+          type: 'IMAGE' as const,
+          url: 'https://example.com/sunset.jpg',
+          title: 'Sunset',
+        },
+        children: [],
+      },
+    ]
+
+    it('surfaces the lightbox for a known artifact', () => {
+      const ref = React.createRef<ChatInterfaceHandle>()
+      render(<ChatInterface ref={ref} artifactNodes={mockNodes}/>)
+
+      // Panel auto-opens because nodes arrive on mount; no lightbox yet.
+      expect(screen.queryByRole('button', {name: /close/i})).not.toBeInTheDocument()
+
+      React.act(() => {
+        ref.current!.openArtifact('sunset')
+      })
+
+      // Lightbox close affordance proves the lightbox opened.
+      expect(screen.getByRole('button', {name: /close/i})).toBeInTheDocument()
+    })
+
+    it('is a no-op for unknown names — panel still mounted, no lightbox', () => {
+      const ref = React.createRef<ChatInterfaceHandle>()
+      render(<ChatInterface ref={ref} artifactNodes={mockNodes}/>)
+
+      React.act(() => {
+        ref.current!.openArtifact('ghost')
+      })
+
+      expect(screen.getByTestId('artifacts-panel')).toBeInTheDocument()
+      expect(screen.queryByRole('button', {name: /close/i})).not.toBeInTheDocument()
+    })
+
+    it('reopens the panel after the user dismissed it', () => {
+      const ref = React.createRef<ChatInterfaceHandle>()
+      render(<ChatInterface ref={ref} artifactNodes={mockNodes}/>)
+
+      // User dismisses the auto-opened panel.
+      fireEvent.click(screen.getByRole('button', {name: /artifacts/i}))
+      expect(screen.queryByTestId('artifacts-panel')).not.toBeInTheDocument()
+
+      // Imperative call overrides the dismissal.
+      React.act(() => {
+        ref.current!.openArtifact('sunset')
+      })
+
+      expect(screen.getByTestId('artifacts-panel')).toBeInTheDocument()
+      expect(screen.getByRole('button', {name: /close/i})).toBeInTheDocument()
+    })
   })
 
   it('matches snapshot in empty state', () => {

@@ -220,6 +220,7 @@ export {
   useResizable,
   useArtifactTreeNavigation,
   // Types
+  type ChatInterfaceHandle,
   type ChatInterfaceProps,
   type ChatViewProps,
   type ChatViewItem,
