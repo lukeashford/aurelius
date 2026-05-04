@@ -1,3 +1,9 @@
+## [4.8.0](https://github.com/lukeashford/aurelius/compare/v4.7.0...v4.8.0) (2026-05-04)
+
+### Features
+
+* **demo:** add combobox, file chip, and mention chip sections with tests ([4964970](https://github.com/lukeashford/aurelius/commit/496497079c883a21fbc4a66dc0caae1299f8a65b))
+
 ## [4.7.0](https://github.com/lukeashford/aurelius/compare/v4.6.0...v4.7.0) (2026-05-04)
 
 ### Features
