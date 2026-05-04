@@ -1,3 +1,18 @@
+## [4.7.0](https://github.com/lukeashford/aurelius/compare/v4.6.0...v4.7.0) (2026-05-04)
+
+### Features
+
+* **artifact:** add DELIVERABLE card with multi-section deck support ([675cc1c](https://github.com/lukeashford/aurelius/commit/675cc1c474a20175b4706d7b437f1e1488fd7225))
+* **artifact:** render DELIVERABLE artifacts via a dedicated card ([517241b](https://github.com/lukeashford/aurelius/commit/517241bf72d7658a9dbe77c497a377a4a66cb3b1))
+* **chat:** add {activate} option to addNodeToTree ([d056deb](https://github.com/lukeashford/aurelius/commit/d056deb72db1b311c859470c72c41a49da563371))
+* **ui:** add Lightbox and ArtifactLightboxBody components ([95b0d83](https://github.com/lukeashford/aurelius/commit/95b0d8375ba7195fa92b637ed94e947efc5b84af))
+
+### Bug Fixes
+
+* **chat:** drive the streaming cursor from the per-node flag, never the global ([b7e0921](https://github.com/lukeashford/aurelius/commit/b7e09210f3fe5e9834da96306ae7a9009b92fbe9))
+* **chat:** render artifact modal through ArtifactCard ([14cdaef](https://github.com/lukeashford/aurelius/commit/14cdaefdbf3320ee8e2873a51b0b93132b0ac148))
+* **chat:** setActiveLeaf is a no-op when leafId is not in the tree ([d1d0dd5](https://github.com/lukeashford/aurelius/commit/d1d0dd514e18737a847a96332962b21793655290))
+
 ## [4.6.0](https://github.com/lukeashford/aurelius/compare/v4.5.0...v4.6.0) (2026-05-02)
 
 ### Features
