@@ -16,6 +16,8 @@ export interface PdfCardProps extends Omit<CardProps, 'title'> {
    * Subtitle or document metadata
    */
   subtitle?: React.ReactNode
+  /** The artifact's `@-handle` — see `Card.Header.handle`. */
+  handle?: string
   /**
    * Height of the PDF viewer
    */
@@ -40,6 +42,7 @@ export const PdfCard = React.forwardRef<HTMLDivElement, PdfCardProps>(
           src,
           title,
           subtitle,
+          handle,
           height = '400px',
           mediaClassName,
           contentClassName,
@@ -72,6 +75,7 @@ export const PdfCard = React.forwardRef<HTMLDivElement, PdfCardProps>(
             <Card.Header
                 title={title}
                 subtitle={subtitle}
+                handle={handle}
                 className={contentClassName}
                 action={
                   <div className="p-2 bg-ash/20 text-gold shrink-0">

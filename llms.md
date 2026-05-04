@@ -105,41 +105,43 @@ Import from `@lukeashford/aurelius`:
 | ArtifactLightboxBody | artifact |
 | ArtifactVariantStack | node, onExpandArtifact, onGroupClick |
 | AttachmentPreview | attachments, onRemove, removable, maxVisible, onOpen |
-| AudioCard | src, title, subtitle, playing, controls, volume, muted, loop, mediaClassName, contentClassName, playerProps, height, loading |
+| AudioCard | src, title, subtitle, handle, playing, controls, volume, muted, loop, mediaClassName, contentClassName, playerProps, height, loading |
 | Avatar | src, alt, name, size (xs, sm, md, lg, xl, 2xl), status (online, offline, busy) |
 | Badge | variant (default, gold, success, error, warning, info) |
 | BrandIcon | size (sm, md, lg), variant (solid, outline) |
 | Breadcrumb | separator, current |
 | Button | variant (primary, important, elevated, outlined, featured, ghost, danger), size (sm, md, lg, xl), loading |
-| Card | variant (default, elevated, outlined, ghost, featured), interactive, selected, noPadding, loading, title, subtitle, action, align, aspect, position |
+| Card | variant (default, elevated, outlined, ghost, featured), interactive, selected, noPadding, loading, title, subtitle, action, handle, handle, align, aspect, position |
 | Checkbox | label |
 | Col | span, offset, order |
 | ColorSwatch | color, label |
+| Combobox | items, selectedIndex, renderItem, onSelectItem, getItemKey, emptyState, maxHeight |
 | Container | size (sm, md, lg, xl, fluid, responsive) |
-| DeliverableCard | deliverable, title, subtitle, loading |
+| DeliverableCard | deliverable, title, subtitle, handle, loading |
 | Dialog | description, confirmText, cancelText, onConfirm, onCancel, confirmVariant, isLoading, description, acknowledgeText, variant, description, placeholder, defaultValue, submitText, cancelText, onSubmit, onCancel, isLoading |
 | Divider | orientation (horizontal, vertical), variant (solid, dashed, dotted), label, color |
 | Drawer | isOpen, onClose, position (left, right, top, bottom), title, size, children, className |
 | FileChip | name, size, type, status (pending, uploading, uploaded, analyzing, analyzed, upload_failed, analysis_failed), previewUrl, onRemove, removable, error, artifactId, onOpen |
 | HelperText | error |
-| ImageCard | src, alt, title, subtitle, aspectRatio (${number}/${number}), objectFit, overlay, mediaClassName, contentClassName, loading |
+| ImageCard | src, alt, title, subtitle, handle, aspectRatio (${number}/${number}), objectFit, overlay, mediaClassName, contentClassName, loading |
 | Input | error, leadingIcon, trailingIcon |
 | InputGroup | children |
 | Label | required |
 | Lightbox | onClose, actions, caption, children, className |
 | List | variant, ordered, leading, trailing, interactive, selected, disabled, primary, secondary |
-| MarkdownContent | content, isMarkdown, sanitizeConfig, isStreaming, cursorClassName |
+| MarkdownContent | children |
+| MentionChip | name, title, leadingIcon, onClick, onRemove |
 | Menu | children, open, onOpenChange, asChild, align, side, icon, destructive |
 | Message | variant (user, assistant), content, isStreaming, branchInfo, actions, hideActions, attachments, onAttachmentOpen, onJumpHere, isActive, onClick, label, children, disabled |
 | Modal | isOpen, onClose, title, children, className |
 | Navbar | fixed, bordered, position, active, active |
 | Pagination | page, totalPages, onPageChange, siblingCount, showEdges |
-| PdfCard | src, title, subtitle, height, mediaClassName, contentClassName, loading |
+| PdfCard | src, title, subtitle, handle, height, mediaClassName, contentClassName, loading |
 | Popover | children, trigger, position (top, bottom, left, right), align (start, center, end), open, onOpenChange, closeOnClickOutside |
 | Progress | value, max, size (sm, md, lg), variant (default, success, warning, error), showValue, formatValue, indeterminate |
 | Radio | label |
 | Row | gutter, gutterX, gutterY, justify (start, center, end, between, around, evenly), align (start, center, end, stretch, baseline) |
-| ScriptCard | title, subtitle, elements, maxHeight, loading |
+| ScriptCard | title, subtitle, handle, elements, maxHeight, loading |
 | SectionHeading | level (h2, h3) |
 | Select | error, options |
 | Skeleton | children |
@@ -151,14 +153,14 @@ Import from `@lukeashford/aurelius`:
 | Switch | checked, defaultChecked, onCheckedChange, label |
 | Table | responsive, hoverable, selected, sortable, sortDirection |
 | Tabs | defaultValue, value, onValueChange, value, value, forceMount |
-| TextCard | content, title, subtitle, isMarkdown, maxHeight, contentClassName, loading |
+| TextCard | content, title, subtitle, handle, isMarkdown, maxHeight, contentClassName, loading |
 | Textarea | error |
 | Toast | children, position (top-right, top-left, bottom-right, bottom-left, top-center, bottom-center), defaultDuration |
 | Tooltip | content, children, open, side (top, right, bottom, left) |
-| VideoCard | src, title, subtitle, aspectRatio (${number}/${number}), playing, controls, light, volume, muted, loop, mediaClassName, contentClassName, playerProps, loading |
+| VideoCard | src, title, subtitle, handle, aspectRatio (${number}/${number}), playing, controls, light, volume, muted, loop, mediaClassName, contentClassName, playerProps, loading |
 | ArtifactsPanel | nodes, loading, openArtifactId, onArtifactClosed, getArtifactActions, artifact, ctx, artifactCount, onExpand |
 | BranchNavigator | current, total, onPrevious, onNext, size, showIcon |
-| ChatInput | position (centered, bottom), placeholder, helperText, onSubmit, disabled, animate, isStreaming, onStop, attachments, onAttachmentsChange, onAttachmentRemove, showAttachmentButton, acceptedFileTypes, notice, onInputChange, initialInputValue, autoFocus |
+| ChatInput | position (centered, bottom), placeholder, helperText, onSubmit, disabled, animate, isStreaming, onStop, attachments, onAttachmentsChange, onAttachmentRemove, showAttachmentButton, acceptedFileTypes, notice, onInputChange, initialInputValue, autoFocus, textareaRef, onTextareaKeyDown |
 | ChatInterface | messages, conversationTree, onTreeChange, conversations, onMessageSubmit, onEditMessage, onRetryMessage, onJumpHere, onJumpToLatest, onStop, onSelectConversation, onNewChat, onRenameConversation, isStreaming, isThinking, thinkingLabel, placeholder, emptyStateHelper, emptyState, showAttachmentButton, enableMessageActions, attachments, onAttachmentsChange, onAttachmentRemove, onAttachmentOpen, artifactNodes, isArtifactsPanelOpen, onArtifactsPanelOpenChange, getArtifactActions, artifact, ctx |
 | ChatView | items, latestUserMessageIndex |
 | Checkpoint | name, executionKind (task, submit, rename, init, ingest), status (completed, failed, cancelled), isActive, muted, branchInfo, onJumpHere |
@@ -267,7 +269,31 @@ navigate for groups).
 - **onOpen**: * Click handler for chips with an artifactId. When set, chips that carry an artifactId become clickable and forward the id to this handler.
 
 **AudioCard**
+- **handle**: The artifact's `@-handle` — see `Card.Header.handle`.
 - **playerProps**: Forwarded to the underlying ReactPlayer.
+
+**Card**
+- **handle**: * Optional addressable handle (the artifact's `name` / `@-handle`). Renders as a tertiary monospace line below the subtitle, prefixed with `@`. Click copies `@<handle>` to the clipboard and pulses the handle once. Use to surface the typed identifier filmmakers reference in chat.
+
+**Combobox**
+Floating panel for inline autocompletes — `@`-mention pickers, slash-command menus, and
+the like. The panel is unstyled-positioned (`absolute`) so the caller controls placement
+via wrapper, `style`, or by mounting it inside their own positioned container; this keeps
+the component agnostic to how the trigger position is computed (caret coordinates, ref
+rect, popover anchor).
+
+Pair with `useComboboxNav` for the standard arrow-key + Enter/Escape behaviour.
+
+- **items**: * Items to display in the panel. The caller is responsible for filtering before passing.
+- **selectedIndex**: * Index of the currently highlighted (focused, not yet picked) item. Drive this from `useComboboxNav` for the standard arrow-key behaviour, or manage it yourself.
+- **renderItem**: * Render one row. `isSelected` reflects the keyboard highlight; click and hover styling are applied by the panel.
+- **onSelectItem**: * Called when the user clicks a row. Use the same handler you call from the keyboard's Enter key to keep mouse and keyboard paths consistent.
+- **getItemKey**: * Stable key per item. Required because the panel re-mounts rows when `items` changes.
+- **emptyState**: * Optional node rendered when `items` is empty. Skip the panel entirely if you'd rather hide it on no-match.
+- **maxHeight**: * Maximum pixel height of the scrollable list. The panel itself sizes to its content up to this cap; rows beyond it scroll within the panel. @default 256
+- **ComboboxNav.handleKeyDown**: * Standard handler for ArrowUp / ArrowDown / Enter / Escape. Returns true when a key was consumed — the caller should skip its own handling for those events.
+- **UseComboboxNavOptions.onSelect**: * Called when the user presses Enter on the highlighted item.
+- **UseComboboxNavOptions.onDismiss**: * Called when the user presses Escape.
 
 **DeliverableCard**
 Compact preview of a deliverable for surfaces that can't host the full
@@ -279,6 +305,7 @@ for every artifact kind, so we don't add a "Open preview" lure here.
 - **deliverable**: * Resolved deliverable spec — every artifact reference already inflated. Same shape the full DeliverableRenderer accepts.
 - **title**: Optional override for the cover title (otherwise derived from the spec).
 - **subtitle**: Optional subtitle shown below the title.
+- **handle**: The artifact's `@-handle` — see `Card.Header.handle`.
 
 **FileChip**
 - **name**: * File name to display
@@ -291,6 +318,9 @@ for every artifact kind, so we don't add a "Open preview" lure here.
 - **error**: * Error message to display (when status is an error)
 - **artifactId**: * Backend artifact id, set once the upload has been integrated. When both `artifactId` and `onOpen` are present, the chip becomes clickable.
 - **onOpen**: * Click handler invoked with `artifactId` when the chip is clicked. Compose-box (pre-integrate) chips should not pass this — the chip stays non-clickable except for its remove button.
+
+**ImageCard**
+- **handle**: The artifact's `@-handle` — see `Card.Header.handle`.
 
 **Lightbox**
 Full-bleed modal canvas for one piece of content. Premium-haptic alternative
@@ -311,10 +341,29 @@ close button in the action cluster.
 - **children**: * The artifact body. Sits directly on the backdrop with no inner frame — the body is responsible for its own layout (object-contain image, scrollable deliverable, readable text column, etc.). Click events whose target is the sized content wrapper (i.e. the empty area around the body) dismiss the lightbox; clicks on the body itself do not.
 
 **MarkdownContent**
-- **content**: * Content to display (can be Markdown or HTML)
-- **isMarkdown**: * Whether the content should be treated as Markdown @default true
-- **isStreaming**: * When true, injects a streaming cursor at the end of the content
-- **cursorClassName**: * Additional classes for the streaming cursor
+Renders Markdown content into a real React tree via `react-markdown`. Drop-in for prose
+surfaces (chat messages, artifact bodies, deliverable text). Optional `mentionRenderer`
+adds inline `@artifact_name` chip rendering — see prop docs.
+
+Raw HTML in the source is escaped (not rendered) by react-markdown's defaults; this is
+intentional and safer than the previous pipeline. Pass markdown.
+
+
+**MentionChip**
+Inline chip representing an `@name` artifact mention. Use anywhere a stable reference to a
+project artifact appears — typed input previews, rendered chat messages, deliverable
+descriptions. Renders the name in monospace with a leading `@` glyph and a gold-tinted border,
+mirroring the addressable handle the user sees on the artifact card.
+
+Pair with the `Combobox` primitive for the typing surface, and with the
+`MarkdownContent` `mentionRenderer` prop to render mentions inline inside rendered chat
+messages — typically `mentionRenderer={(name) => <MentionChip name={name} … />}`.
+
+- **name**: * The artifact name (the @-handle, without the leading @).
+- **title**: * Optional human-readable title; shown in the hover tooltip alongside the name.
+- **leadingIcon**: * Optional icon rendered before the name — typically a kind glyph (e.g. `FileImage`, `FileVideo`) or `HelpCircle` for unknown / stale references. Sized at `w-3 h-3` to match the chip's text scale.
+- **onClick**: * Called when the chip is clicked. When provided, the chip becomes keyboard-focusable and gains a hover affordance.
+- **onRemove**: * Called when the remove (×) button is clicked. When provided, an × appears on hover/focus. Use only on input-side previews; rendered messages should leave this unset.
 
 **Message**
 - **MessageBranchInfo.current**: * Current branch index (1-based)
@@ -341,6 +390,7 @@ A card for displaying PDF documents with an embedded viewer.
 - **src**: * URL of the PDF file
 - **title**: * Title of the document
 - **subtitle**: * Subtitle or document metadata
+- **handle**: The artifact's `@-handle` — see `Card.Header.handle`.
 - **height**: * Height of the PDF viewer
 - **mediaClassName**: * Optional class name for the media container
 - **contentClassName**: * Optional class name for the content container
@@ -380,6 +430,7 @@ Follows standard screenplay formatting conventions:
 - **ScriptElement.content**: * The text content of the element
 - **title**: * Title of the script (shown at top)
 - **subtitle**: * Subtitle/metadata (e.g., "30-second spot • Directed by AI Creative")
+- **handle**: The artifact's `@-handle` — see `Card.Header.handle`.
 - **elements**: * Array of script elements in order. Available types: 'scene-heading', 'action', 'character', 'dialogue', 'parenthetical', 'transition', 'title', 'subtitle'
 - **maxHeight**: * Maximum height before scrolling (default: 16rem / 256px)
 
@@ -401,11 +452,13 @@ A card for displaying text content, supporting Markdown and HTML formatting.
 - **content**: * Text content to display (Markdown, HTML, or plain text)
 - **title**: * Optional title for the card
 - **subtitle**: * Optional subtitle or metadata
+- **handle**: The artifact's `@-handle` — see `Card.Header.handle`.
 - **isMarkdown**: * Whether the content should be treated as Markdown @default true
 - **maxHeight**: * Maximum height of the content area before scrolling @default '16rem'
 - **contentClassName**: * Optional class name for the content container
 
 **VideoCard**
+- **handle**: The artifact's `@-handle` — see `Card.Header.handle`.
 - **playerProps**: Forwarded to the underlying ReactPlayer.
 
 **ArtifactsPanel**
@@ -472,6 +525,8 @@ Features:
 - **onInputChange**: * Called whenever the input value changes, giving the consumer access to the current text
 - **initialInputValue**: * Initial value for the input, used for state restoration (e.g. from DB or localStorage)
 - **autoFocus**: * Whether to automatically focus the input when it becomes enabled
+- **textareaRef**: * Optional ref forwarded to the underlying `<textarea>`. Use this to drive an inline autocomplete (e.g. an `@`-mention picker) — read selection/caret position, mirror the textarea for caret coordinates, or imperatively update its value.
+- **onTextareaKeyDown**: * Optional keydown hook that runs before the input's own handling. Call `e.preventDefault()` to stop ChatInput from acting on the event — for example, to keep Enter from submitting while an autocomplete is consuming it. The submit-on-Enter and default newline behaviours both check `defaultPrevented` and skip when set.
 
 **ChatInterface**
 ChatInterface is the main orchestrator for a full-featured chat experience.
@@ -783,7 +838,7 @@ Standard Tailwind classes for size (`text-sm`, `text-lg`, etc.), weight (`font-m
 **Columns (Tailwind built-in):** `col-span-{1-12}`, `col-span-full`, `col-auto`, `sm:col-span-*`, `md:col-span-*`, `lg:col-span-*`, `xl:col-span-*`
 
 ### Custom Utilities
-text-gradient-gold, glow, glow-sm, glow-md, glow-lg, flex-zero, font-heading, font-body, scroll-smooth, scrollbar-hide, backdrop-glass, focus-ring, line-clamp-2, line-clamp-3, center-absolute, aspect-wide, container, container-sm, container-md, container-lg, container-xl, container-fluid, row
+aurelius-mention, aurelius-mention-x, text-gradient-gold, glow, glow-sm, glow-md, glow-lg, flex-zero, font-heading, font-body, scroll-smooth, scrollbar-hide, backdrop-glass, focus-ring, line-clamp-2, line-clamp-3, center-absolute, aspect-wide, container, container-sm, container-md, container-lg, container-xl, container-fluid, row
 
 ### Opacity modifiers
 Append `/10`, `/20`, `/30`, etc. to colors: `bg-gold/20`, `border-ash/50`

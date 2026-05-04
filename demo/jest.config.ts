@@ -11,17 +11,27 @@ const config: Config = {
   },
   setupFilesAfterEnv: ['<rootDir>/src/__tests__/setup.ts'],
   transform: {
-    '^.+\\.tsx?$': ['ts-jest', {
+    '^.+\\.[jt]sx?$': ['ts-jest', {
       tsconfig: {
         jsx: 'react-jsx',
         esModuleInterop: true,
         allowSyntheticDefaultImports: true,
+        allowJs: true,
         moduleResolution: 'node',
       },
     }],
   },
   transformIgnorePatterns: [
-    'node_modules/(?!(@lukeashford/aurelius|lucide-react|react-player)/)',
+    'node_modules/(?!(@lukeashford/aurelius|lucide-react|react-player'
+    + '|react-markdown|vfile|vfile-message|unist-.*|unified|bail|is-plain-obj|trough'
+    + '|remark-.*|mdast-util-.*|micromark|micromark-.*|decode-named-character-reference'
+    + '|character-entities|character-entities-html4|character-entities-legacy'
+    + '|character-reference-invalid|property-information|hast-util-.*'
+    + '|space-separated-tokens|comma-separated-tokens|web-namespaces|zwitch'
+    + '|html-void-elements|estree-util-.*|trim-lines|escape-string-regexp|ccount'
+    + '|markdown-table|longest-streak|html-url-attributes|devlop|is-decimal'
+    + '|is-hexadecimal|is-alphanumerical|is-alphabetical|stringify-entities|fault'
+    + ')/)',
   ],
   moduleDirectories: ['node_modules', '<rootDir>/node_modules', '<rootDir>/../node_modules'],
   collectCoverageFrom: [

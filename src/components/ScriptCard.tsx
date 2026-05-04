@@ -42,6 +42,8 @@ export interface ScriptCardProps extends Omit<CardProps, 'title'> {
    * Subtitle/metadata (e.g., "30-second spot • Directed by AI Creative")
    */
   subtitle?: React.ReactNode
+  /** The artifact's `@-handle` — see `Card.Header.handle`. */
+  handle?: string
   /**
    * Array of script elements in order.
    * Available types: 'scene-heading', 'action', 'character', 'dialogue', 'parenthetical',
@@ -145,7 +147,7 @@ function ScriptElementRenderer({element}: { element: ScriptElement }) {
  * ```
  */
 export const ScriptCard = React.forwardRef<HTMLDivElement, ScriptCardProps>(
-    ({title, subtitle, elements, maxHeight = '16rem', className, style, loading, ...rest},
+    ({title, subtitle, handle, elements, maxHeight = '16rem', className, style, loading, ...rest},
         ref) => {
       return (
           <Card
@@ -157,6 +159,7 @@ export const ScriptCard = React.forwardRef<HTMLDivElement, ScriptCardProps>(
             <Card.Header
                 title={title}
                 subtitle={subtitle}
+                handle={handle}
             />
             <Card.Body
                 className="font-mono overflow-y-auto"

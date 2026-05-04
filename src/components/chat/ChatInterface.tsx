@@ -250,6 +250,20 @@ export interface ChatInterfaceProps extends Omit<React.HTMLAttributes<HTMLDivEle
    * Defaults to true.
    */
   autoFocus?: boolean
+  /**
+   * Forwarded to the underlying chat-input `<textarea>`. Use to drive an
+   * inline autocomplete (e.g. an `@`-mention picker) — read selection/caret
+   * position, mirror the textarea for caret coordinates, or imperatively
+   * update its value.
+   */
+  textareaRef?: React.Ref<HTMLTextAreaElement>
+  /**
+   * Forwarded to the underlying chat-input. Runs before the input's own
+   * keydown handling; calling `e.preventDefault()` opts that event out of
+   * default behaviour (submit-on-Enter, newline) — typical use is to claim
+   * Arrow / Enter / Escape while an autocomplete panel is open.
+   */
+  onTextareaKeyDown?: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void
 }
 
 /**
@@ -313,6 +327,8 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
           initialInputValue = '',
           tools: externalTools = [],
           autoFocus = true,
+          textareaRef,
+          onTextareaKeyDown,
           className,
           ...rest
         },
@@ -802,6 +818,8 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
                       onInputChange={onInputChange}
                       initialInputValue={initialInputValue}
                       autoFocus={autoFocus}
+                      textareaRef={textareaRef}
+                      onTextareaKeyDown={onTextareaKeyDown}
                   />
                 </div>
 

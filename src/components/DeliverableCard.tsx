@@ -1,7 +1,7 @@
 import React from 'react'
 import {Card, type CardProps, type CardSlotLoading} from './Card'
 import {cx} from '../utils'
-import type {Deliverable} from './deliverable/types'
+import type {Deliverable} from './deliverable'
 
 export interface DeliverableCardProps extends Omit<CardProps, 'title'> {
   /**
@@ -13,6 +13,8 @@ export interface DeliverableCardProps extends Omit<CardProps, 'title'> {
   title?: React.ReactNode
   /** Optional subtitle shown below the title. */
   subtitle?: React.ReactNode
+  /** The artifact's `@-handle` — see `Card.Header.handle`. */
+  handle?: string
   loading?: CardSlotLoading
 }
 
@@ -29,6 +31,7 @@ export const DeliverableCard = React.forwardRef<HTMLDivElement, DeliverableCardP
           deliverable,
           title,
           subtitle,
+          handle,
           className,
           loading,
           ...props
@@ -36,7 +39,7 @@ export const DeliverableCard = React.forwardRef<HTMLDivElement, DeliverableCardP
         ref,
     ) => {
       const cover = deliverable?.sections.find(
-          (s): s is Extract<typeof s, {type: 'COVER'}> => s.type === 'COVER',
+          (s): s is Extract<typeof s, { type: 'COVER' }> => s.type === 'COVER',
       )
       const eyebrow = cover?.eyebrow
       const headline = title ?? cover?.title ?? deliverable?.title
@@ -68,10 +71,11 @@ export const DeliverableCard = React.forwardRef<HTMLDivElement, DeliverableCardP
                   <p className="deliverable-card-subtitle">{tagline}</p>
               )}
             </div>
-            <div className="deliverable-card-meta">
+            <div className="deliverable-card-meta flex items-center justify-between">
               <span>
                 {sectionCount} {sectionCount === 1 ? 'section' : 'sections'}
               </span>
+              {handle && <Card.Handle handle={handle}/>}
             </div>
           </Card>
       )

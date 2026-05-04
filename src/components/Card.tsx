@@ -1,6 +1,6 @@
-import React, {createContext, useContext} from 'react'
+import React, {createContext, useContext, useState} from 'react'
 import {Check} from 'lucide-react'
-import {cx} from '../utils'
+import {copyToClipboard, cx} from '../utils'
 import {Skeleton} from './Skeleton'
 
 export type CardVariant = 'default' | 'elevated' | 'outlined' | 'ghost' | 'featured'
@@ -106,16 +106,23 @@ export interface CardHeaderProps extends Omit<React.HTMLAttributes<HTMLDivElemen
   title?: React.ReactNode
   subtitle?: React.ReactNode
   action?: React.ReactNode
+  /**
+   * Optional addressable handle (the artifact's `name` / `@-handle`). Renders
+   * as a tertiary monospace line below the subtitle, prefixed with `@`. Click
+   * copies `@<handle>` to the clipboard and pulses the handle once. Use to
+   * surface the typed identifier filmmakers reference in chat.
+   */
+  handle?: string
 }
 
 const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
-    ({title, subtitle, action, className, children, ...props}, ref) => {
+    ({title, subtitle, action, handle, className, children, ...props}, ref) => {
       const {loading} = useCardContext()
       const titleIsLoading = slotLoading(loading, ['header', 'title'])
       const subtitleIsLoading = slotLoading(loading, ['header', 'subtitle'])
       const actionIsLoading = slotLoading(loading, ['header', 'action'])
 
-      const hasContent = title || subtitle || action || children
+      const hasContent = title || subtitle || action || handle || children
 
       if (!hasContent && !titleIsLoading && !subtitleIsLoading && !actionIsLoading) {
         return null
@@ -127,7 +134,8 @@ const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
               className={cx('px-6 py-4 border-b border-ash', className)}
               {...props}
           >
-            {(title || subtitle || action || titleIsLoading || subtitleIsLoading || actionIsLoading)
+            {(title || subtitle || action || handle
+                    || titleIsLoading || subtitleIsLoading || actionIsLoading)
                 ? (
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1 min-w-0">
@@ -141,6 +149,7 @@ const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
                         ) : subtitleIsLoading ? (
                             <Skeleton className="h-4 w-1/2 mt-1"/>
                         ) : null}
+                        {handle && <CardHandle handle={handle}/>}
                       </div>
                       {action ? (
                           <div className="shrink-0">{action}</div>
@@ -155,6 +164,41 @@ const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
       )
     }
 )
+
+/**
+ * Click-to-copy `@-handle` line. Rendered automatically by `Card.Header` when
+ * its `handle` prop is set; exposed standalone as `Card.Handle` for custom
+ * card layouts that don't use `Card.Header` (e.g. `DeliverableCard`).
+ */
+export interface CardHandleProps {
+  handle: string
+}
+
+const CardHandle: React.FC<CardHandleProps> = ({handle}) => {
+  const [pulseKey, setPulseKey] = useState(0)
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    void copyToClipboard(`@${handle}`)
+    setPulseKey(k => k + 1)
+  }
+  return (
+      <button
+          type="button"
+          onClick={handleClick}
+          // `key` resets the animation so consecutive clicks pulse again.
+          key={pulseKey}
+          className={cx(
+              'mt-1 inline-flex items-center font-mono text-xs text-gold/70',
+              'hover:text-gold transition-colors',
+              'animate-pulse-once px-1 -mx-1',
+          )}
+          aria-label={`Copy @${handle} to clipboard`}
+          title={`Copy @${handle} to clipboard`}
+      >
+        <span className="opacity-60">@</span>{handle}
+      </button>
+  )
+}
 
 CardHeader.displayName = 'CardHeader'
 
@@ -271,10 +315,13 @@ const CardMedia = React.forwardRef<HTMLDivElement, CardMediaProps>(
 
 CardMedia.displayName = 'CardMedia'
 
+CardHandle.displayName = 'CardHandle'
+
 // Compound component pattern
 export const Card = Object.assign(CardBase, {
   Header: CardHeader,
   Body: CardBody,
   Footer: CardFooter,
   Media: CardMedia,
+  Handle: CardHandle,
 })

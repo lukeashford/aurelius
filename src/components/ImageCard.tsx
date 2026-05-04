@@ -10,6 +10,8 @@ export interface ImageCardProps extends Omit<CardProps, 'title'> {
   alt?: string
   title?: React.ReactNode
   subtitle?: React.ReactNode
+  /** The artifact's `@-handle` — see `Card.Header.handle`. */
+  handle?: string
   aspectRatio?: AspectRatio
   objectFit?: 'cover' | 'contain'
   overlay?: React.ReactNode
@@ -38,6 +40,7 @@ export const ImageCard = React.forwardRef<HTMLDivElement, ImageCardProps>(
           alt = '',
           title,
           subtitle,
+          handle,
           aspectRatio = 'landscape',
           objectFit = 'cover',
           overlay,
@@ -83,6 +86,7 @@ export const ImageCard = React.forwardRef<HTMLDivElement, ImageCardProps>(
             <Card.Header
                 title={title}
                 subtitle={subtitle}
+                handle={handle}
                 className={contentClassName}
             />
             {children && <Card.Body className={contentClassName}>{children}</Card.Body>}

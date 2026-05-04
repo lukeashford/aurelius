@@ -93,6 +93,19 @@ exports[`ArtifactsPanel matches snapshot with nodes 1`] = `
                     >
                       Artifact Image
                     </h3>
+                    <button
+                      aria-label="Copy @a-1 to clipboard"
+                      class="mt-1 inline-flex items-center font-mono text-xs text-gold/70 hover:text-gold transition-colors animate-pulse-once px-1 -mx-1"
+                      title="Copy @a-1 to clipboard"
+                      type="button"
+                    >
+                      <span
+                        class="opacity-60"
+                      >
+                        @
+                      </span>
+                      a-1
+                    </button>
                   </div>
                 </div>
               </div>
@@ -160,6 +173,19 @@ exports[`ArtifactsPanel matches snapshot with nodes 1`] = `
                               >
                                 Child Artifact
                               </h3>
+                              <button
+                                aria-label="Copy @a-child-1 to clipboard"
+                                class="mt-1 inline-flex items-center font-mono text-xs text-gold/70 hover:text-gold transition-colors animate-pulse-once px-1 -mx-1"
+                                title="Copy @a-child-1 to clipboard"
+                                type="button"
+                              >
+                                <span
+                                  class="opacity-60"
+                                >
+                                  @
+                                </span>
+                                a-child-1
+                              </button>
                             </div>
                           </div>
                         </div>
@@ -233,6 +259,19 @@ exports[`ArtifactsPanel matches snapshot with nodes 1`] = `
                           >
                             Warm Treatment
                           </h3>
+                          <button
+                            aria-label="Copy @a-warm to clipboard"
+                            class="mt-1 inline-flex items-center font-mono text-xs text-gold/70 hover:text-gold transition-colors animate-pulse-once px-1 -mx-1"
+                            title="Copy @a-warm to clipboard"
+                            type="button"
+                          >
+                            <span
+                              class="opacity-60"
+                            >
+                              @
+                            </span>
+                            a-warm
+                          </button>
                         </div>
                       </div>
                     </div>

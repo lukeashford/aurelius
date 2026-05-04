@@ -11,5 +11,8 @@
 // React components
 export * from './components'
 
+// Utilities consumers commonly need (caret coords for inline autocompletes, etc.)
+export {getTextareaCaretCoords, type TextareaCaretCoords} from './utils/textareaCaret'
+
 // Version
 export const version = '2.0.0'

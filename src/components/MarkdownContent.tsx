@@ -1,153 +1,94 @@
-import React, {useMemo} from 'react'
-import DOMPurify, {type Config} from 'dompurify'
-import {marked} from 'marked'
+import React from 'react'
+import ReactMarkdown, {type Components} from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 import {cx} from '../utils'
-
-// Register the link-hardening hook once at module load. Hooks are global on
-// DOMPurify, so calling addHook in render would attach a duplicate every pass.
-if (typeof window !== 'undefined' && typeof DOMPurify.addHook === 'function') {
-  DOMPurify.addHook('afterSanitizeAttributes', (node) => {
-    if (node.tagName === 'A') {
-      node.setAttribute('target', '_blank')
-      node.setAttribute('rel', 'noopener noreferrer')
-    }
-  })
-}
+import {remarkMentions} from '../utils/remarkMentions'
 
 export interface MarkdownContentProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
-   * Content to display (can be Markdown or HTML)
+   * Content to display. Markdown by default; pass `isMarkdown={false}` for literal display
+   * of plain text (preserves whitespace, no parsing).
    */
   content: string
   /**
-   * Whether the content should be treated as Markdown
+   * Whether the content should be parsed as Markdown. `false` renders the string verbatim
+   * inside a `whitespace-pre-wrap` block — useful for plain-text artifacts.
    * @default true
    */
   isMarkdown?: boolean
-  sanitizeConfig?: Config
   /**
-   * When true, injects a streaming cursor at the end of the content
+   * When true, injects a streaming cursor at the end of the rendered content.
    */
   isStreaming?: boolean
   /**
-   * Additional classes for the streaming cursor
+   * Additional classes for the streaming cursor.
    */
   cursorClassName?: string
+  /**
+   * When set, the renderer recognises `@artifact_name` mentions in prose (anywhere except
+   * inside code spans / blocks) and replaces each with the React node returned by this
+   * callback. Typical wiring is `(name) => <MentionChip name={name} onClick={...} />`,
+   * giving each chip a real per-call-site click handler.
+   *
+   * Without this prop, mentions render as literal `@name` text.
+   */
+  mentionRenderer?: (name: string) => React.ReactNode
 }
 
-const DEFAULT_SANITIZE_CONFIG: Config = {
-  ALLOWED_TAGS: [
-    'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-    'p', 'br', 'hr',
-    'strong', 'b', 'em', 'i', 'u', 's', 'strike', 'del', 'ins',
-    'sup', 'sub', 'mark', 'small',
-    'ul', 'ol', 'li',
-    'a',
-    'code', 'pre', 'kbd', 'samp', 'var',
-    'blockquote', 'q', 'cite', 'abbr',
-    'table', 'thead', 'tbody', 'tfoot', 'tr', 'th', 'td', 'caption', 'colgroup', 'col',
-    'div', 'span', 'details', 'summary',
-  ],
-  ALLOWED_ATTR: [
-    'href', 'title', 'target', 'rel',
-    'class', 'id',
-    'colspan', 'rowspan', 'scope',
-    'open',
-  ],
-  ADD_ATTR: ['target', 'rel'],
-  ALLOWED_URI_REGEXP: /^(?:(?:https?|mailto|tel):|[^a-z]|[a-z+.-]+(?:[^a-z+.\-:]|$))/i,
-}
-
-const CURSOR_BASE_CLASSES = 'inline-block bg-current animate-cursor-blink w-0.5 h-cursor translate-y-cursor-offset'
+const CURSOR_BASE_CLASSES = 'inline-block bg-current animate-cursor-blink w-0.5 h-cursor '
+    + 'translate-y-cursor-offset'
 
 /**
- * Injects a streaming cursor at the end of the HTML content.
- * Finds the deepest last element and appends the cursor inside it.
+ * Renders Markdown content into a real React tree via `react-markdown`. Drop-in for prose
+ * surfaces (chat messages, artifact bodies, deliverable text). Optional `mentionRenderer`
+ * adds inline `@artifact_name` chip rendering — see prop docs.
+ *
+ * Raw HTML in the source is escaped (not rendered) by react-markdown's defaults; this is
+ * intentional and safer than the previous pipeline. Pass markdown.
  */
-function injectStreamingCursor(html: string, cursorClassName?: string): string {
-  if (!html.trim()) {
-    // Empty content - just return the cursor
-    return `<span class="${cx(CURSOR_BASE_CLASSES, cursorClassName)}" aria-hidden="true"></span>`
-  }
-
-  const cursorHtml = `<span class="${cx(CURSOR_BASE_CLASSES,
-      cursorClassName)}" aria-hidden="true"></span>`
-
-  // Parse the HTML to find the right injection point
-  // Fallback for SSR/Node environment where DOMParser is not available
-  if (typeof DOMParser === 'undefined') {
-    return html + cursorHtml
-  }
-
-  const parser = new DOMParser()
-  const doc = parser.parseFromString(`<div>${html}</div>`, 'text/html')
-  const container = doc.body.firstChild as HTMLElement
-
-  if (!container) {
-    return html + cursorHtml
-  }
-
-  // Find the deepest last element to append the cursor to
-  let target: Element = container
-  while (target.lastElementChild) {
-    const lastChild = target.lastElementChild
-    // Stop at inline elements or elements that shouldn't have block children
-    const tagName = lastChild.tagName.toLowerCase()
-    if (['code', 'a', 'strong', 'em', 'b', 'i', 'span', 'mark', 'del', 's'].includes(tagName)) {
-      break
-    }
-    target = lastChild
-  }
-
-  // Append cursor to the target element
-  target.insertAdjacentHTML('beforeend', cursorHtml)
-
-  // Return the inner HTML (excluding our wrapper div)
-  return container.innerHTML
-}
-
 export const MarkdownContent = React.forwardRef<HTMLDivElement, MarkdownContentProps>(
-    ({className, content, isMarkdown = true, sanitizeConfig, isStreaming, cursorClassName, ...rest},
-        ref) => {
-      const sanitizedHtml = useMemo(() => {
-        if (!content && !isStreaming) {
-          return ''
-        }
-        const config = sanitizeConfig ?? DEFAULT_SANITIZE_CONFIG
+    ({className, content, isMarkdown = true, isStreaming, cursorClassName,
+       mentionRenderer, ...rest}, ref) => {
+      if (!isMarkdown) {
+        return (
+            <div ref={ref} className={cx('prose whitespace-pre-wrap', className)} {...rest}>
+              {content}
+              {isStreaming && (
+                  <span aria-hidden="true"
+                        className={cx(CURSOR_BASE_CLASSES, cursorClassName)}/>
+              )}
+            </div>
+        )
+      }
 
-        // Convert markdown to HTML if requested. The fallback (raw `content`)
-        // is still passed through DOMPurify below, so a parser failure can't
-        // bypass sanitization.
-        let htmlContent: string
-        if (isMarkdown) {
-          try {
-            htmlContent = marked.parse(content) as string
-          } catch (e) {
-            console.error('Error parsing markdown:', e)
-            htmlContent = content
-          }
-        } else {
-          htmlContent = content
-        }
+      // `mention` isn't a known IntrinsicElement, but react-markdown looks tagNames up
+      // by string in `components`, so a dedicated record keeps the typing honest without
+      // forcing a cast on the whole `components` object.
+      const components: Components & {mention?: React.ComponentType<{name: string}>} = {
+        // Harden external links so user-authored URLs don't open in the same tab
+        // and can't reach `window.opener`.
+        a: ({href, children}) => (
+            <a href={href} target="_blank" rel="noopener noreferrer">
+              {children}
+            </a>
+        ),
+        ...(mentionRenderer && {
+          mention: ({name}) => <>{mentionRenderer(name)}</>,
+        }),
+      }
 
-        const sanitized = (htmlContent && typeof DOMPurify.sanitize === 'function')
-            ? DOMPurify.sanitize(htmlContent, config)
-            : (htmlContent || '')
-
-        if (isStreaming) {
-          return injectStreamingCursor(sanitized, cursorClassName)
-        }
-
-        return sanitized
-      }, [content, isMarkdown, sanitizeConfig, isStreaming, cursorClassName])
+      const remarkPlugins = mentionRenderer ? [remarkGfm, remarkMentions] : [remarkGfm]
 
       return (
-          <div
-              ref={ref}
-              className={cx('prose', className)}
-              dangerouslySetInnerHTML={{__html: sanitizedHtml}}
-              {...rest}
-          />
+          <div ref={ref} className={cx('prose', className)} {...rest}>
+            <ReactMarkdown remarkPlugins={remarkPlugins} components={components}>
+              {content}
+            </ReactMarkdown>
+            {isStreaming && (
+                <span aria-hidden="true"
+                      className={cx(CURSOR_BASE_CLASSES, cursorClassName)}/>
+            )}
+          </div>
       )
     }
 )

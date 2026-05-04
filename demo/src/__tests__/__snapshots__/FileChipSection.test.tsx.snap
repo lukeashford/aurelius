@@ -1,0 +1,795 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FileChipSection matches snapshot 1`] = `
+<div>
+  <section>
+    <header
+      class="mb-12"
+    >
+      <h2
+        class="text-2xl"
+      >
+        File Chip
+      </h2>
+      <p
+        class="text-silver"
+      >
+        Compact representation of an uploaded file with lifecycle status.
+      </p>
+    </header>
+    <div
+      class="space-y-8"
+    >
+      <div>
+        <h3
+          class="text-sm uppercase tracking-wider text-silver mb-3"
+        >
+          All statuses
+        </h3>
+        <div
+          class="flex flex-wrap items-start gap-3"
+        >
+          <div
+            aria-label="pending.png"
+            class="group relative inline-flex items-center gap-2 px-2 py-1.5 bg-charcoal border text-sm text-white transition-colors duration-150 border-silver/30"
+            role="listitem"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-file-image w-4 h-4 flex-shrink-0 text-silver"
+              fill="none"
+              height="24"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"
+              />
+              <path
+                d="M14 2v5a1 1 0 0 0 1 1h5"
+              />
+              <circle
+                cx="10"
+                cy="12"
+                r="2"
+              />
+              <path
+                d="m20 17-1.296-1.296a2.41 2.41 0 0 0-3.408 0L9 22"
+              />
+            </svg>
+            <div
+              class="flex flex-col min-w-0 flex-1"
+            >
+              <span
+                class="truncate max-w-40"
+                title="pending.png"
+              >
+                pending.png
+              </span>
+              <span
+                class="text-xs text-silver/60"
+              >
+                1.2 MB
+              </span>
+            </div>
+            <div
+              class="w-2 h-2 rounded-full bg-silver/50 flex-shrink-0"
+            />
+          </div>
+          <span
+            class="relative inline-block"
+          >
+            <div
+              aria-label="uploading.png: Uploading"
+              class="group relative inline-flex items-center gap-2 px-2 py-1.5 bg-charcoal border text-sm text-white transition-colors duration-150 border-gold/50"
+              role="listitem"
+            >
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-file-image w-4 h-4 flex-shrink-0 text-silver"
+                fill="none"
+                height="24"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"
+                />
+                <path
+                  d="M14 2v5a1 1 0 0 0 1 1h5"
+                />
+                <circle
+                  cx="10"
+                  cy="12"
+                  r="2"
+                />
+                <path
+                  d="m20 17-1.296-1.296a2.41 2.41 0 0 0-3.408 0L9 22"
+                />
+              </svg>
+              <div
+                class="flex flex-col min-w-0 flex-1"
+              >
+                <span
+                  class="truncate max-w-40"
+                  title="uploading.png"
+                >
+                  uploading.png
+                </span>
+                <span
+                  class="text-xs text-silver/60"
+                >
+                  1.2 MB
+                </span>
+              </div>
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-loader-circle w-3.5 h-3.5 text-gold animate-spin flex-shrink-0"
+                fill="none"
+                height="24"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M21 12a9 9 0 1 1-6.219-8.56"
+                />
+              </svg>
+            </div>
+            <span
+              class="pointer-events-none absolute z-50 whitespace-nowrap border border-ash bg-graphite px-3 py-1.5 text-sm text-white shadow-lg transition-opacity duration-200 ease-out opacity-0 left-1/2 -translate-x-1/2 -top-2 -translate-y-full"
+              role="tooltip"
+            >
+              Uploading
+            </span>
+          </span>
+          <span
+            class="relative inline-block"
+          >
+            <div
+              aria-label="uploaded.png: Analyzing"
+              class="group relative inline-flex items-center gap-2 px-2 py-1.5 bg-charcoal border text-sm text-white transition-colors duration-150 border-info/50"
+              role="listitem"
+            >
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-file-image w-4 h-4 flex-shrink-0 text-silver"
+                fill="none"
+                height="24"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"
+                />
+                <path
+                  d="M14 2v5a1 1 0 0 0 1 1h5"
+                />
+                <circle
+                  cx="10"
+                  cy="12"
+                  r="2"
+                />
+                <path
+                  d="m20 17-1.296-1.296a2.41 2.41 0 0 0-3.408 0L9 22"
+                />
+              </svg>
+              <div
+                class="flex flex-col min-w-0 flex-1"
+              >
+                <span
+                  class="truncate max-w-40"
+                  title="uploaded.png"
+                >
+                  uploaded.png
+                </span>
+                <span
+                  class="text-xs text-silver/60"
+                >
+                  1.2 MB
+                </span>
+              </div>
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-loader-circle w-3.5 h-3.5 text-info animate-spin flex-shrink-0"
+                fill="none"
+                height="24"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M21 12a9 9 0 1 1-6.219-8.56"
+                />
+              </svg>
+            </div>
+            <span
+              class="pointer-events-none absolute z-50 whitespace-nowrap border border-ash bg-graphite px-3 py-1.5 text-sm text-white shadow-lg transition-opacity duration-200 ease-out opacity-0 left-1/2 -translate-x-1/2 -top-2 -translate-y-full"
+              role="tooltip"
+            >
+              Analyzing
+            </span>
+          </span>
+          <span
+            class="relative inline-block"
+          >
+            <div
+              aria-label="analyzing.png: Analyzing"
+              class="group relative inline-flex items-center gap-2 px-2 py-1.5 bg-charcoal border text-sm text-white transition-colors duration-150 border-info/50"
+              role="listitem"
+            >
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-file-image w-4 h-4 flex-shrink-0 text-silver"
+                fill="none"
+                height="24"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"
+                />
+                <path
+                  d="M14 2v5a1 1 0 0 0 1 1h5"
+                />
+                <circle
+                  cx="10"
+                  cy="12"
+                  r="2"
+                />
+                <path
+                  d="m20 17-1.296-1.296a2.41 2.41 0 0 0-3.408 0L9 22"
+                />
+              </svg>
+              <div
+                class="flex flex-col min-w-0 flex-1"
+              >
+                <span
+                  class="truncate max-w-40"
+                  title="analyzing.png"
+                >
+                  analyzing.png
+                </span>
+                <span
+                  class="text-xs text-silver/60"
+                >
+                  1.2 MB
+                </span>
+              </div>
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-loader-circle w-3.5 h-3.5 text-info animate-spin flex-shrink-0"
+                fill="none"
+                height="24"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M21 12a9 9 0 1 1-6.219-8.56"
+                />
+              </svg>
+            </div>
+            <span
+              class="pointer-events-none absolute z-50 whitespace-nowrap border border-ash bg-graphite px-3 py-1.5 text-sm text-white shadow-lg transition-opacity duration-200 ease-out opacity-0 left-1/2 -translate-x-1/2 -top-2 -translate-y-full"
+              role="tooltip"
+            >
+              Analyzing
+            </span>
+          </span>
+          <div
+            aria-label="analyzed.png"
+            class="group relative inline-flex items-center gap-2 px-2 py-1.5 bg-charcoal border text-sm text-white transition-colors duration-150 border-success/50"
+            role="listitem"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-file-image w-4 h-4 flex-shrink-0 text-silver"
+              fill="none"
+              height="24"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"
+              />
+              <path
+                d="M14 2v5a1 1 0 0 0 1 1h5"
+              />
+              <circle
+                cx="10"
+                cy="12"
+                r="2"
+              />
+              <path
+                d="m20 17-1.296-1.296a2.41 2.41 0 0 0-3.408 0L9 22"
+              />
+            </svg>
+            <div
+              class="flex flex-col min-w-0 flex-1"
+            >
+              <span
+                class="truncate max-w-40"
+                title="analyzed.png"
+              >
+                analyzed.png
+              </span>
+              <span
+                class="text-xs text-silver/60"
+              >
+                1.2 MB
+              </span>
+            </div>
+          </div>
+          <span
+            class="relative inline-block"
+          >
+            <div
+              aria-label="upload_failed.png: Upload failed"
+              class="group relative inline-flex items-center gap-2 px-2 py-1.5 border text-sm text-white transition-colors duration-150 border-error/50 bg-error/10"
+              role="listitem"
+            >
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-file-image w-4 h-4 flex-shrink-0 text-error"
+                fill="none"
+                height="24"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"
+                />
+                <path
+                  d="M14 2v5a1 1 0 0 0 1 1h5"
+                />
+                <circle
+                  cx="10"
+                  cy="12"
+                  r="2"
+                />
+                <path
+                  d="m20 17-1.296-1.296a2.41 2.41 0 0 0-3.408 0L9 22"
+                />
+              </svg>
+              <div
+                class="flex flex-col min-w-0 flex-1"
+              >
+                <span
+                  class="truncate max-w-40"
+                  title="upload_failed.png"
+                >
+                  upload_failed.png
+                </span>
+              </div>
+            </div>
+            <span
+              class="pointer-events-none absolute z-50 whitespace-nowrap border border-ash bg-graphite px-3 py-1.5 text-sm text-white shadow-lg transition-opacity duration-200 ease-out opacity-0 left-1/2 -translate-x-1/2 -top-2 -translate-y-full"
+              role="tooltip"
+            >
+              Upload failed
+            </span>
+          </span>
+          <span
+            class="relative inline-block"
+          >
+            <div
+              aria-label="analysis_failed.png: Couldn't process this file"
+              class="group relative inline-flex items-center gap-2 px-2 py-1.5 border text-sm text-white transition-colors duration-150 border-error/50 bg-error/10"
+              role="listitem"
+            >
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-file-image w-4 h-4 flex-shrink-0 text-error"
+                fill="none"
+                height="24"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"
+                />
+                <path
+                  d="M14 2v5a1 1 0 0 0 1 1h5"
+                />
+                <circle
+                  cx="10"
+                  cy="12"
+                  r="2"
+                />
+                <path
+                  d="m20 17-1.296-1.296a2.41 2.41 0 0 0-3.408 0L9 22"
+                />
+              </svg>
+              <div
+                class="flex flex-col min-w-0 flex-1"
+              >
+                <span
+                  class="truncate max-w-40"
+                  title="analysis_failed.png"
+                >
+                  analysis_failed.png
+                </span>
+                <span
+                  class="text-xs text-error truncate"
+                  title="Couldn't process this image"
+                >
+                  Couldn't process this image
+                </span>
+              </div>
+            </div>
+            <span
+              class="pointer-events-none absolute z-50 whitespace-nowrap border border-ash bg-graphite px-3 py-1.5 text-sm text-white shadow-lg transition-opacity duration-200 ease-out opacity-0 left-1/2 -translate-x-1/2 -top-2 -translate-y-full"
+              role="tooltip"
+            >
+              Couldn't process this image
+            </span>
+          </span>
+        </div>
+      </div>
+      <div>
+        <h3
+          class="text-sm uppercase tracking-wider text-silver mb-3"
+        >
+          Image preview thumbnail
+        </h3>
+        <div
+          class="flex flex-wrap items-start gap-3"
+        >
+          <div
+            aria-label="hero_pose.jpg"
+            class="group relative inline-flex items-center gap-2 px-2 py-1.5 bg-charcoal border text-sm text-white transition-colors duration-150 border-success/50"
+            role="listitem"
+          >
+            <div
+              class="w-8 h-8 flex-shrink-0 overflow-hidden bg-slate"
+            >
+              <img
+                alt=""
+                class="w-full h-full object-cover"
+                src="https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?w=64&h=64&fit=crop"
+              />
+            </div>
+            <div
+              class="flex flex-col min-w-0 flex-1"
+            >
+              <span
+                class="truncate max-w-40"
+                title="hero_pose.jpg"
+              >
+                hero_pose.jpg
+              </span>
+              <span
+                class="text-xs text-silver/60"
+              >
+                793 KB
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3
+          class="text-sm uppercase tracking-wider text-silver mb-3"
+        >
+          Removable (input-side preview)
+        </h3>
+        <div
+          class="flex flex-wrap items-center gap-3"
+        >
+          <div
+            aria-label="draft.pdf"
+            class="group relative inline-flex items-center gap-2 px-2 py-1.5 bg-charcoal border text-sm text-white transition-colors duration-150 border-success/50"
+            role="listitem"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-file w-4 h-4 flex-shrink-0 text-silver"
+              fill="none"
+              height="24"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"
+              />
+              <path
+                d="M14 2v5a1 1 0 0 0 1 1h5"
+              />
+            </svg>
+            <div
+              class="flex flex-col min-w-0 flex-1"
+            >
+              <span
+                class="truncate max-w-40"
+                title="draft.pdf"
+              >
+                draft.pdf
+              </span>
+              <span
+                class="text-xs text-silver/60"
+              >
+                2.2 MB
+              </span>
+            </div>
+            <button
+              aria-label="Remove draft.pdf"
+              class="p-0.5 text-silver/40 hover:text-white transition-colors hover:bg-white/10 opacity-0 group-hover:opacity-100 focus:opacity-100"
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-x w-3.5 h-3.5"
+                fill="none"
+                height="24"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M18 6 6 18"
+                />
+                <path
+                  d="m6 6 12 12"
+                />
+              </svg>
+            </button>
+          </div>
+          <div
+            aria-label="rough_cut.mp4"
+            class="group relative inline-flex items-center gap-2 px-2 py-1.5 bg-charcoal border text-sm text-white transition-colors duration-150 border-success/50"
+            role="listitem"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-file w-4 h-4 flex-shrink-0 text-silver"
+              fill="none"
+              height="24"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"
+              />
+              <path
+                d="M14 2v5a1 1 0 0 0 1 1h5"
+              />
+            </svg>
+            <div
+              class="flex flex-col min-w-0 flex-1"
+            >
+              <span
+                class="truncate max-w-40"
+                title="rough_cut.mp4"
+              >
+                rough_cut.mp4
+              </span>
+              <span
+                class="text-xs text-silver/60"
+              >
+                2.2 MB
+              </span>
+            </div>
+            <button
+              aria-label="Remove rough_cut.mp4"
+              class="p-0.5 text-silver/40 hover:text-white transition-colors hover:bg-white/10 opacity-0 group-hover:opacity-100 focus:opacity-100"
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-x w-3.5 h-3.5"
+                fill="none"
+                height="24"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M18 6 6 18"
+                />
+                <path
+                  d="m6 6 12 12"
+                />
+              </svg>
+            </button>
+          </div>
+          <div
+            aria-label="voiceover.mp3"
+            class="group relative inline-flex items-center gap-2 px-2 py-1.5 bg-charcoal border text-sm text-white transition-colors duration-150 border-success/50"
+            role="listitem"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-file w-4 h-4 flex-shrink-0 text-silver"
+              fill="none"
+              height="24"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"
+              />
+              <path
+                d="M14 2v5a1 1 0 0 0 1 1h5"
+              />
+            </svg>
+            <div
+              class="flex flex-col min-w-0 flex-1"
+            >
+              <span
+                class="truncate max-w-40"
+                title="voiceover.mp3"
+              >
+                voiceover.mp3
+              </span>
+              <span
+                class="text-xs text-silver/60"
+              >
+                2.2 MB
+              </span>
+            </div>
+            <button
+              aria-label="Remove voiceover.mp3"
+              class="p-0.5 text-silver/40 hover:text-white transition-colors hover:bg-white/10 opacity-0 group-hover:opacity-100 focus:opacity-100"
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-x w-3.5 h-3.5"
+                fill="none"
+                height="24"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M18 6 6 18"
+                />
+                <path
+                  d="m6 6 12 12"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3
+          class="text-sm uppercase tracking-wider text-silver mb-3"
+        >
+          Clickable (after artifact integration)
+        </h3>
+        <div
+          class="flex flex-wrap items-center gap-3"
+        >
+          <div
+            aria-label="treatment.md"
+            class="group relative inline-flex items-center gap-2 px-2 py-1.5 bg-charcoal border text-sm text-white transition-colors duration-150 border-success/50 cursor-pointer hover:bg-graphite"
+            role="button"
+            tabindex="0"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-file-text w-4 h-4 flex-shrink-0 text-silver"
+              fill="none"
+              height="24"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"
+              />
+              <path
+                d="M14 2v5a1 1 0 0 0 1 1h5"
+              />
+              <path
+                d="M10 9H8"
+              />
+              <path
+                d="M16 13H8"
+              />
+              <path
+                d="M16 17H8"
+              />
+            </svg>
+            <div
+              class="flex flex-col min-w-0 flex-1"
+            >
+              <span
+                class="truncate max-w-40"
+                title="treatment.md"
+              >
+                treatment.md
+              </span>
+              <span
+                class="text-xs text-silver/60"
+              >
+                4 KB
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+`;

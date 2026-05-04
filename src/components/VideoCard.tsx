@@ -12,6 +12,8 @@ export interface VideoCardProps extends Omit<CardProps, 'title'> {
   src?: string
   title?: React.ReactNode
   subtitle?: React.ReactNode
+  /** The artifact's `@-handle` — see `Card.Header.handle`. */
+  handle?: string
   aspectRatio?: VideoAspectRatio
   playing?: boolean
   controls?: boolean
@@ -45,6 +47,7 @@ export const VideoCard = React.forwardRef<HTMLDivElement, VideoCardProps>(
           src,
           title,
           subtitle,
+          handle,
           aspectRatio = 'video',
           playing = false,
           controls = true,
@@ -92,6 +95,7 @@ export const VideoCard = React.forwardRef<HTMLDivElement, VideoCardProps>(
             <Card.Header
                 title={title}
                 subtitle={subtitle}
+                handle={handle}
                 className={contentClassName}
             />
             {children && <Card.Body className={contentClassName}>{children}</Card.Body>}

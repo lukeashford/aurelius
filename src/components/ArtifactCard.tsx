@@ -7,7 +7,7 @@ import {PdfCard} from './PdfCard'
 import {ScriptCard, type ScriptElement} from './ScriptCard'
 import {TextCard} from './TextCard'
 import {DeliverableCard} from './DeliverableCard'
-import type {Deliverable} from './deliverable/types'
+import type {Deliverable} from './deliverable'
 import {ExpandIcon} from './icons'
 import {cx} from '../utils'
 import {deriveCardSlotLoading} from '../utils/artifactLoading'
@@ -99,6 +99,10 @@ export const ArtifactCard = React.forwardRef<HTMLDivElement, ArtifactCardProps>(
       const commonProps = {
         title: artifact.title,
         subtitle: artifact.subtitle,
+        // `Artifact.id` is the addressable name (the @-handle) — surfacing
+        // it on the card lets the filmmaker recognise the typed token in
+        // chat. See `Card.Header.handle` for the rendering behaviour.
+        handle: artifact.id,
         loading: loading || derivedLoading,
         className: 'w-full',
       }
