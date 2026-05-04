@@ -1,3 +1,10 @@
+## [4.9.0](https://github.com/lukeashford/aurelius/compare/v4.8.0...v4.9.0) (2026-05-04)
+
+### Features
+
+* **chat:** expose openArtifact handle for external artifact control ([9f2b56b](https://github.com/lukeashford/aurelius/commit/9f2b56b3d9d2c239ebb89e7fdbf2a35e38835ecc))
+* **chat:** expose openArtifact handle for external artifact control ([#59](https://github.com/lukeashford/aurelius/issues/59)) ([d4fb061](https://github.com/lukeashford/aurelius/commit/d4fb06135822ccd87a077941b68821b2e5b4ff06))
+
 ## [4.8.0](https://github.com/lukeashford/aurelius/compare/v4.7.0...v4.8.0) (2026-05-04)
 
 ### Features
