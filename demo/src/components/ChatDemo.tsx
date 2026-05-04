@@ -5,6 +5,7 @@ import {
   type ArtifactNode,
   type Attachment,
   ChatInterface,
+  type ChatInterfaceHandle,
   type Conversation,
   type ConversationTree,
   createEmptyTree,
@@ -497,6 +498,7 @@ export default function ChatDemo() {
   const brandWorkflowRef = useRef<NodeJS.Timeout[]>([])
   const runBrandAnalysisWorkflowRef = useRef<() => void>(() => {
   })
+  const chatInterfaceRef = useRef<ChatInterfaceHandle>(null)
 
   // Artifact nodes for the tree-aware panel (simple + brand workflow)
 
@@ -1242,12 +1244,23 @@ export default function ChatDemo() {
             <p className="text-xs text-silver hidden md:block">
               {getHeaderSubtitle()}
             </p>
+            {artifactNodes.length > 0 && (
+                <button
+                    onClick={() => chatInterfaceRef.current?.openArtifact(
+                        artifactNodes[0].name)}
+                    className="text-xs px-2 py-1 border border-gold/40 text-gold hover:bg-gold/10 transition-colors"
+                    aria-label="Open first artifact via imperative handle"
+                >
+                  Open @{artifactNodes[0].name}
+                </button>
+            )}
           </div>
         </header>
 
         {/* Chat Interface */}
         <div className="flex-1 overflow-hidden">
           <ChatInterface
+              ref={chatInterfaceRef}
               conversationTree={conversationTree}
               onTreeChange={setConversationTree}
               conversations={conversations}

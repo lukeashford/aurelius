@@ -1,6 +1,7 @@
 // Main orchestrator
 export {
   ChatInterface,
+  type ChatInterfaceHandle,
   type ChatInterfaceProps,
   type Conversation
 } from './ChatInterface'
