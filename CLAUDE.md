@@ -98,7 +98,13 @@ aurelius/
 1. Create component file in `src/components/` (or appropriate subdirectory)
 2. Add JSDoc comments to the component and its props interface — these are auto-extracted to `llms.md`
 3. Export from `src/components/index.ts`
-4. Run `npm run build` to regenerate `llms.md`
+4. **Add a demo section** in `demo/src/sections/<Component>Section.tsx` and register it in
+   `demo/src/App.tsx`. If a closely-related section already exists (e.g. another chip variant
+   alongside `FileChipSection`), extend that section rather than creating a near-duplicate. The
+   demo is the visual contract — every public component must be exercisable from `npm run
+   dev:demo`. Add a snapshot test alongside in `demo/src/__tests__/<Component>Section.test.tsx`
+   so a refactor that breaks the demo trips CI.
+5. Run `npm run build` to regenerate `llms.md`
 
 ### JSDoc Format for Props
 

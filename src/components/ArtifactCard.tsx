@@ -99,6 +99,10 @@ export const ArtifactCard = React.forwardRef<HTMLDivElement, ArtifactCardProps>(
       const commonProps = {
         title: artifact.title,
         subtitle: artifact.subtitle,
+        // `Artifact.id` is the addressable name (the @-handle) — surfacing
+        // it on the card lets the filmmaker recognise the typed token in
+        // chat. See `Card.Header.handle` for the rendering behaviour.
+        handle: artifact.id,
         loading: loading || derivedLoading,
         className: 'w-full',
       }

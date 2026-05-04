@@ -14,13 +14,18 @@ exports[`MarkdownContentSection matches snapshot 1`] = `
       <p
         class="text-silver"
       >
-        Styled container for rich text content.
+        Markdown rendered into a real React tree via react-markdown.
       </p>
     </header>
     <div
-      class="space-y-8"
+      class="space-y-10"
     >
       <div>
+        <h3
+          class="text-sm uppercase tracking-wider text-silver mb-3"
+        >
+          Default prose
+        </h3>
         <div
           class="prose"
         >
@@ -30,8 +35,7 @@ exports[`MarkdownContentSection matches snapshot 1`] = `
           
 
           <p>
-            
-  You can drop in content with 
+            You can drop in markdown with 
             <strong>
               bold
             </strong>
@@ -41,27 +45,28 @@ exports[`MarkdownContentSection matches snapshot 1`] = `
             </em>
             , 
             <a
-              href="#demo"
+              href="https://example.com"
               rel="noopener noreferrer"
               target="_blank"
             >
               links
             </a>
             , and
-  
+
             <code>
               inline code
             </code>
              and it will render with consistent design-system typography.
-
           </p>
           
 
           <pre>
-            <code>
-              // Code block example 
-function greet(name) { 
-   return "Hello,  
+            <code
+              class="language-js"
+            >
+              // Code block example
+function greet(name) {
+  return \`Hello, \${name}\`
 }
 
             </code>
@@ -70,20 +75,230 @@ function greet(name) {
 
           <ul>
             
-  
+
             <li>
               Clean spacing
             </li>
             
-  
+
             <li>
               Readable defaults
+            </li>
+            
+
+            <li>
+              GitHub-flavoured features (tables, task lists, strikethrough)
             </li>
             
 
           </ul>
           
 
+          <table>
+            <thead>
+              <tr>
+                <th>
+                  Column A
+                </th>
+                <th>
+                  Column B
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  Cell 1
+                </td>
+                <td>
+                  Cell 2
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          
+
+          <ul
+            class="contains-task-list"
+          >
+            
+
+            <li
+              class="task-list-item"
+            >
+              <input
+                checked=""
+                disabled=""
+                type="checkbox"
+              />
+               
+              Done task
+            </li>
+            
+
+            <li
+              class="task-list-item"
+            >
+              <input
+                disabled=""
+                type="checkbox"
+              />
+               
+              Pending task
+            </li>
+            
+
+          </ul>
+        </div>
+      </div>
+      <div>
+        <h3
+          class="text-sm uppercase tracking-wider text-silver mb-3"
+        >
+          With mentionRenderer
+        </h3>
+        <div
+          class="prose"
+        >
+          <p>
+            Reference an artifact inline like 
+            <span
+              aria-label="hero_pose"
+              class="aurelius-mention group relative inline-flex items-center gap-1 align-baseline px-1.5 py-0.5 text-xs font-mono border cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-current"
+              role="button"
+              tabindex="0"
+            >
+              <span
+                class="truncate max-w-40"
+              >
+                <span
+                  class="opacity-60"
+                >
+                  @
+                </span>
+                hero_pose
+              </span>
+            </span>
+            , or 
+            <strong>
+              emphasised inside
+formatting like 
+              <span
+                aria-label="villain_pose"
+                class="aurelius-mention group relative inline-flex items-center gap-1 align-baseline px-1.5 py-0.5 text-xs font-mono border cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-current"
+                role="button"
+                tabindex="0"
+              >
+                <span
+                  class="truncate max-w-40"
+                >
+                  <span
+                    class="opacity-60"
+                  >
+                    @
+                  </span>
+                  villain_pose
+                </span>
+              </span>
+            </strong>
+             — the chip survives the surrounding markdown. Inside a
+
+            <code>
+              code span like @ignored
+            </code>
+             the pattern stays literal.
+          </p>
+          
+
+          <p>
+            Mentions also work in lists:
+          </p>
+          
+
+          <ol>
+            
+
+            <li>
+              Look at 
+              <span
+                aria-label="hero_pose"
+                class="aurelius-mention group relative inline-flex items-center gap-1 align-baseline px-1.5 py-0.5 text-xs font-mono border cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-current"
+                role="button"
+                tabindex="0"
+              >
+                <span
+                  class="truncate max-w-40"
+                >
+                  <span
+                    class="opacity-60"
+                  >
+                    @
+                  </span>
+                  hero_pose
+                </span>
+              </span>
+            </li>
+            
+
+            <li>
+              Then 
+              <span
+                aria-label="villain_pose"
+                class="aurelius-mention group relative inline-flex items-center gap-1 align-baseline px-1.5 py-0.5 text-xs font-mono border cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-current"
+                role="button"
+                tabindex="0"
+              >
+                <span
+                  class="truncate max-w-40"
+                >
+                  <span
+                    class="opacity-60"
+                  >
+                    @
+                  </span>
+                  villain_pose
+                </span>
+              </span>
+            </li>
+            
+
+            <li>
+              Compare with 
+              <span
+                aria-label="sidekick_pose"
+                class="aurelius-mention group relative inline-flex items-center gap-1 align-baseline px-1.5 py-0.5 text-xs font-mono border cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-current"
+                role="button"
+                tabindex="0"
+              >
+                <span
+                  class="truncate max-w-40"
+                >
+                  <span
+                    class="opacity-60"
+                  >
+                    @
+                  </span>
+                  sidekick_pose
+                </span>
+              </span>
+            </li>
+            
+
+          </ol>
+        </div>
+      </div>
+      <div>
+        <h3
+          class="text-sm uppercase tracking-wider text-silver mb-3"
+        >
+          Plain text (isMarkdown=false)
+        </h3>
+        <div
+          class="prose whitespace-pre-wrap"
+        >
+          Plain text artifact body.
+Newlines preserved.
+No **markdown** parsing.
         </div>
       </div>
     </div>

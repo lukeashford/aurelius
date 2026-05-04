@@ -10,6 +10,8 @@ export interface AudioCardProps extends Omit<CardProps, 'title'> {
   src?: string
   title?: React.ReactNode
   subtitle?: React.ReactNode
+  /** The artifact's `@-handle` — see `Card.Header.handle`. */
+  handle?: string
   playing?: boolean
   controls?: boolean
   volume?: number
@@ -29,6 +31,7 @@ export const AudioCard = React.forwardRef<HTMLDivElement, AudioCardProps>(
           src,
           title,
           subtitle,
+          handle,
           playing = false,
           controls = true,
           volume,
@@ -78,6 +81,7 @@ export const AudioCard = React.forwardRef<HTMLDivElement, AudioCardProps>(
             <Card.Header
                 title={title}
                 subtitle={subtitle}
+                handle={handle}
                 className={contentClassName}
             />
             {children && <Card.Body className={contentClassName}>{children}</Card.Body>}

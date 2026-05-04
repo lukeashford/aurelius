@@ -476,8 +476,6 @@ exports[`ChatInterface matches snapshot while streaming 1`] = `
                       <p>
                         Hello!
                       </p>
-                      
-
                     </div>
                   </div>
                   <div
@@ -531,13 +529,11 @@ exports[`ChatInterface matches snapshot while streaming 1`] = `
                     >
                       <p>
                         Hi there!
-                        <span
-                          aria-hidden="true"
-                          class="inline-block bg-current animate-cursor-blink w-0.5 h-cursor translate-y-cursor-offset ml-0.5"
-                        />
                       </p>
-                      
-
+                      <span
+                        aria-hidden="true"
+                        class="inline-block bg-current animate-cursor-blink w-0.5 h-cursor translate-y-cursor-offset ml-0.5"
+                      />
                     </div>
                   </div>
                 </div>
@@ -912,8 +908,6 @@ exports[`ChatInterface matches snapshot with messages 1`] = `
                       <p>
                         Hello!
                       </p>
-                      
-
                     </div>
                   </div>
                   <div
@@ -968,8 +962,6 @@ exports[`ChatInterface matches snapshot with messages 1`] = `
                       <p>
                         Hi there!
                       </p>
-                      
-
                     </div>
                   </div>
                   <div

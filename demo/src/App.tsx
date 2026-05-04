@@ -11,6 +11,9 @@ import CardsSection from './sections/CardsSection'
 import ImageCardSection from './sections/ImageCardSection'
 import AvatarSection from './sections/AvatarSection'
 import MarkdownContentSection from './sections/MarkdownContentSection'
+import MentionChipSection from './sections/MentionChipSection'
+import ComboboxSection from './sections/ComboboxSection'
+import FileChipSection from './sections/FileChipSection'
 import FeedbackSection from './sections/FeedbackSection'
 import StepperSection from './sections/StepperSection'
 import MessageSection from './sections/MessageSection'
@@ -48,6 +51,9 @@ const SECTIONS: SectionEntry[] = [
   {id: 'layout', label: 'Layout', Component: LayoutSection},
   {id: 'buttons', label: 'Buttons', Component: ButtonsSection},
   {id: 'badges', label: 'Badges', Component: BadgesSection},
+  {id: 'mention-chip', label: 'Mention Chip', Component: MentionChipSection},
+  {id: 'file-chip', label: 'File Chip', Component: FileChipSection},
+  {id: 'combobox', label: 'Combobox', Component: ComboboxSection},
   {id: 'inputs', label: 'Inputs', Component: InputsSection},
   {id: 'forms', label: 'Forms', Component: FormsSection},
   {id: 'navigation', label: 'Navigation', Component: NavigationSection},

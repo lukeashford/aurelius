@@ -16,6 +16,8 @@ export interface TextCardProps extends Omit<CardProps, 'title'> {
    * Optional subtitle or metadata
    */
   subtitle?: React.ReactNode
+  /** The artifact's `@-handle` — see `Card.Header.handle`. */
+  handle?: string
   /**
    * Whether the content should be treated as Markdown
    * @default true
@@ -42,6 +44,7 @@ export const TextCard = React.forwardRef<HTMLDivElement, TextCardProps>(
           content,
           title,
           subtitle,
+          handle,
           isMarkdown = true,
           maxHeight = '16rem',
           contentClassName,
@@ -61,6 +64,7 @@ export const TextCard = React.forwardRef<HTMLDivElement, TextCardProps>(
             <Card.Header
                 title={title}
                 subtitle={subtitle}
+                handle={handle}
             />
             <Card.Body
                 className={cx('overflow-y-auto', contentClassName)}

@@ -23,8 +23,6 @@ exports[`ChatView matches snapshot with messages 1`] = `
               <p>
                 Hello, how are you?
               </p>
-              
-
             </div>
           </div>
         </div>
@@ -44,8 +42,6 @@ exports[`ChatView matches snapshot with messages 1`] = `
               <p>
                 I am doing well, thank you!
               </p>
-              
-
             </div>
           </div>
         </div>
@@ -83,8 +79,6 @@ exports[`ChatView matches snapshot with streaming state 1`] = `
               <p>
                 Question
               </p>
-              
-
             </div>
           </div>
         </div>
@@ -103,13 +97,11 @@ exports[`ChatView matches snapshot with streaming state 1`] = `
             >
               <p>
                 Answering...
-                <span
-                  aria-hidden="true"
-                  class="inline-block bg-current animate-cursor-blink w-0.5 h-cursor translate-y-cursor-offset ml-0.5"
-                />
               </p>
-              
-
+              <span
+                aria-hidden="true"
+                class="inline-block bg-current animate-cursor-blink w-0.5 h-cursor translate-y-cursor-offset ml-0.5"
+              />
             </div>
           </div>
         </div>

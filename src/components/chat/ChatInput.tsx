@@ -1,5 +1,5 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react'
-import {cx} from '../../utils'
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
+import {composeRefs, cx} from '../../utils'
 import {Paperclip, Send, Square, X} from 'lucide-react'
 import {type AttachmentItem, AttachmentPreview} from '../AttachmentPreview'
 import {Attachment, createPreviewUrl, generateId, isImageFile} from './types'
@@ -95,6 +95,19 @@ export interface ChatInputProps extends Omit<React.HTMLAttributes<HTMLDivElement
    * Whether to automatically focus the input when it becomes enabled
    */
   autoFocus?: boolean
+  /**
+   * Optional ref forwarded to the underlying `<textarea>`. Use this to drive an inline
+   * autocomplete (e.g. an `@`-mention picker) — read selection/caret position, mirror the
+   * textarea for caret coordinates, or imperatively update its value.
+   */
+  textareaRef?: React.Ref<HTMLTextAreaElement>
+  /**
+   * Optional keydown hook that runs before the input's own handling. Call
+   * `e.preventDefault()` to stop ChatInput from acting on the event — for example, to keep
+   * Enter from submitting while an autocomplete is consuming it. The submit-on-Enter and
+   * default newline behaviours both check `defaultPrevented` and skip when set.
+   */
+  onTextareaKeyDown?: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void
 }
 
 /**
@@ -128,6 +141,8 @@ export const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
           onInputChange,
           initialInputValue = '',
           autoFocus = false,
+          textareaRef: externalTextareaRef,
+          onTextareaKeyDown,
           className,
           ...rest
         },
@@ -138,6 +153,11 @@ export const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
       const [isDragOver, setIsDragOver] = useState(false)
       const textareaRef = useRef<HTMLTextAreaElement>(null)
       const fileInputRef = useRef<HTMLInputElement>(null)
+
+      const mergedTextareaRef = useMemo(
+          () => composeRefs<HTMLTextAreaElement>(textareaRef, externalTextareaRef),
+          [externalTextareaRef]
+      )
 
       // Determine if using controlled or uncontrolled attachments
       const attachments = controlledAttachments ?? localAttachments
@@ -174,12 +194,19 @@ export const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
 
       const handleKeyDown = useCallback(
           (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+            // Consumer first — lets an attached autocomplete claim Arrow/Enter/Escape
+            // before submit-on-Enter fires. A consumer that calls preventDefault opts
+            // out of all default key behaviour for that event.
+            onTextareaKeyDown?.(e)
+            if (e.defaultPrevented) {
+              return
+            }
             if (e.key === 'Enter' && !e.shiftKey) {
               e.preventDefault()
               handleSubmit()
             }
           },
-          [handleSubmit]
+          [handleSubmit, onTextareaKeyDown]
       )
 
       const handleChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -391,7 +418,7 @@ export const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
                 )}
 
                 <textarea
-                    ref={textareaRef}
+                    ref={mergedTextareaRef}
                     value={value}
                     onChange={handleChange}
                     onKeyDown={handleKeyDown}

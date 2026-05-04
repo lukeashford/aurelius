@@ -19,6 +19,7 @@
   /* Core RGB helpers (reduce repeated rgba() literals) */
   --ink-rgb: 0 0 0;
   --gold-rgb: 201 162 39;
+  --obsidian-rgb: 10 10 10;
   --glass-rgb: 20 20 20;
 
   /* Gold spectrum (derived from one base where possible) */
@@ -182,6 +183,7 @@
   --animate-cursor-blink: cursor-blink 1s steps(1) infinite;
   --animate-snake-spin: snake-spin 1.5s linear infinite;
   --animate-snake-travel: snake-travel 1.5s ease-in-out infinite;
+  --animate-pulse-once: pulse-once 600ms ease-out;
 
   /* ===== LAYOUT TOKENS ===== */
   --container-sm: 640px;
@@ -249,6 +251,15 @@
   }
   50% {
     box-shadow: 0 0 30px rgb(var(--gold-rgb) / 0.5);
+  }
+}
+
+@keyframes pulse-once {
+  0% {
+    background-color: rgb(var(--gold-rgb) / 0.3);
+  }
+  100% {
+    background-color: transparent;
   }
 }
 
@@ -473,6 +484,54 @@
   ::-webkit-scrollbar-thumb:hover {
     background: var(--color-silver);
   }
+}
+
+/* ===== COMPONENT STYLES =====
+   These are component-level CSS classes that use design tokens but need
+   cascade-based context overrides — something Tailwind utilities applied
+   directly on a JSX element can't do without prop drilling. */
+
+/* Mention chip — colours come from CSS variables so the parent prose
+   context (`.prose-inherit` user bubble vs `.prose-invert` assistant bubble)
+   can override them via the cascade. The defaults below are the
+   gold-on-dark variant suitable for the standard charcoal background. */
+@utility aurelius-mention {
+  --aurelius-mention-bg: rgb(var(--gold-rgb) / 0.1);
+  --aurelius-mention-border: rgb(var(--gold-rgb) / 0.3);
+  --aurelius-mention-text: var(--color-gold);
+  --aurelius-mention-hover-bg: rgb(var(--gold-rgb) / 0.2);
+  --aurelius-mention-x: rgb(var(--gold-rgb) / 0.6);
+  --aurelius-mention-x-hover: var(--color-gold);
+
+  background-color: var(--aurelius-mention-bg);
+  border-color: var(--aurelius-mention-border);
+  color: var(--aurelius-mention-text);
+  transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease;
+}
+.aurelius-mention:hover {
+  background-color: var(--aurelius-mention-hover-bg);
+}
+
+/* × button inside the chip — colour tracks the chip's text contrast so it
+   remains visible in both the gold-on-dark and dark-on-gold variants. */
+@utility aurelius-mention-x {
+  color: var(--aurelius-mention-x);
+  transition: color 150ms ease;
+}
+.aurelius-mention-x:hover {
+  color: var(--aurelius-mention-x-hover);
+}
+
+/* When the chip lives inside a user bubble (gold background, dark text),
+   gold-on-gold disappears. Override the variables to a dark contrast that
+   reads cleanly on the gold backdrop. */
+.prose-inherit .aurelius-mention {
+  --aurelius-mention-bg: rgb(var(--obsidian-rgb) / 0.12);
+  --aurelius-mention-border: rgb(var(--obsidian-rgb) / 0.45);
+  --aurelius-mention-text: rgb(var(--obsidian-rgb) / 0.9);
+  --aurelius-mention-hover-bg: rgb(var(--obsidian-rgb) / 0.2);
+  --aurelius-mention-x: rgb(var(--obsidian-rgb) / 0.6);
+  --aurelius-mention-x-hover: var(--color-obsidian);
 }
 
 /* ===== UTILITY CLASSES ===== */

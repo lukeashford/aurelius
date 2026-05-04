@@ -49,8 +49,6 @@ exports[`MessageSection matches snapshot 1`] = `
                   <p>
                     This is the assistant message variant. It demonstrates the styling for this variant.
                   </p>
-                  
-
                 </div>
               </div>
             </div>
@@ -75,8 +73,6 @@ exports[`MessageSection matches snapshot 1`] = `
                   <p>
                     This is the user message variant. It demonstrates the styling for this variant.
                   </p>
-                  
-
                 </div>
               </div>
             </div>
@@ -176,8 +172,6 @@ exports[`MessageSection matches snapshot 1`] = `
                 <p>
                   This user message has actions. Try the copy and edit buttons below.
                 </p>
-                
-
               </div>
             </div>
             <div
@@ -254,8 +248,6 @@ exports[`MessageSection matches snapshot 1`] = `
                 <p>
                   This assistant message has actions. You can copy or retry this response.
                 </p>
-                
-
               </div>
             </div>
             <div
@@ -348,8 +340,6 @@ exports[`MessageSection matches snapshot 1`] = `
                 <p>
                   This message is part of a branched conversation. Use the navigator to switch between alternate responses.
                 </p>
-                
-
               </div>
             </div>
             <div
@@ -532,13 +522,11 @@ exports[`MessageSection matches snapshot 1`] = `
             >
               <p>
                 This message is currently streaming
-                <span
-                  aria-hidden="true"
-                  class="inline-block bg-current animate-cursor-blink w-0.5 h-cursor translate-y-cursor-offset ml-0.5"
-                />
               </p>
-              
-
+              <span
+                aria-hidden="true"
+                class="inline-block bg-current animate-cursor-blink w-0.5 h-cursor translate-y-cursor-offset ml-0.5"
+              />
             </div>
           </div>
         </div>

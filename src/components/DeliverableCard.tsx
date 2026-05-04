@@ -13,6 +13,8 @@ export interface DeliverableCardProps extends Omit<CardProps, 'title'> {
   title?: React.ReactNode
   /** Optional subtitle shown below the title. */
   subtitle?: React.ReactNode
+  /** The artifact's `@-handle` — see `Card.Header.handle`. */
+  handle?: string
   loading?: CardSlotLoading
 }
 
@@ -29,6 +31,7 @@ export const DeliverableCard = React.forwardRef<HTMLDivElement, DeliverableCardP
           deliverable,
           title,
           subtitle,
+          handle,
           className,
           loading,
           ...props
@@ -68,10 +71,11 @@ export const DeliverableCard = React.forwardRef<HTMLDivElement, DeliverableCardP
                   <p className="deliverable-card-subtitle">{tagline}</p>
               )}
             </div>
-            <div className="deliverable-card-meta">
+            <div className="deliverable-card-meta flex items-center justify-between">
               <span>
                 {sectionCount} {sectionCount === 1 ? 'section' : 'sections'}
               </span>
+              {handle && <Card.Handle handle={handle}/>}
             </div>
           </Card>
       )

@@ -51,6 +51,14 @@ export {
   type ListSubheaderProps,
 } from './List'
 export {FileChip, type FileChipProps, type FileChipStatus} from './FileChip'
+export {MentionChip, type MentionChipProps} from './MentionChip'
+export {
+  Combobox,
+  useComboboxNav,
+  type ComboboxProps,
+  type ComboboxNav,
+  type UseComboboxNavOptions,
+} from './Combobox'
 export {
   AttachmentPreview, type AttachmentPreviewProps, type AttachmentItem
 } from './AttachmentPreview'

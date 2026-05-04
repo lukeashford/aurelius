@@ -88,7 +88,7 @@ describe('ArtifactGroup', () => {
   it('calls onClick with the node when clicked', () => {
     const onClick = jest.fn()
     render(<ArtifactGroup node={makeGroupNode()} onClick={onClick}/>)
-    fireEvent.click(screen.getByRole('button'))
+    fireEvent.click(screen.getByRole('button', {name: /Storyboard/}))
     expect(onClick).toHaveBeenCalledTimes(1)
     expect(onClick).toHaveBeenCalledWith(expect.objectContaining({id: 'group-1'}))
   })
@@ -96,14 +96,14 @@ describe('ArtifactGroup', () => {
   it('calls onClick on Enter key', () => {
     const onClick = jest.fn()
     render(<ArtifactGroup node={makeGroupNode()} onClick={onClick}/>)
-    fireEvent.keyDown(screen.getByRole('button'), {key: 'Enter'})
+    fireEvent.keyDown(screen.getByRole('button', {name: /Storyboard/}), {key: 'Enter'})
     expect(onClick).toHaveBeenCalledTimes(1)
   })
 
   it('calls onClick on Space key', () => {
     const onClick = jest.fn()
     render(<ArtifactGroup node={makeGroupNode()} onClick={onClick}/>)
-    fireEvent.keyDown(screen.getByRole('button'), {key: ' '})
+    fireEvent.keyDown(screen.getByRole('button', {name: /Storyboard/}), {key: ' '})
     expect(onClick).toHaveBeenCalledTimes(1)
   })
 
@@ -115,7 +115,7 @@ describe('ArtifactGroup', () => {
 
   it('has an accessible label with the group name and count', () => {
     render(<ArtifactGroup node={makeGroupNode()}/>)
-    expect(screen.getByRole('button')).toHaveAttribute(
+    expect(screen.getByRole('button', {name: /Storyboard/})).toHaveAttribute(
         'aria-label',
         'Storyboard — 3 items'
     )
