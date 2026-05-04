@@ -1,7 +1,7 @@
 import React from 'react'
 import {Card, type CardProps, type CardSlotLoading} from './Card'
 import {cx} from '../utils'
-import type {Deliverable} from './deliverable/types'
+import type {Deliverable} from './deliverable'
 
 export interface DeliverableCardProps extends Omit<CardProps, 'title'> {
   /**
@@ -39,7 +39,7 @@ export const DeliverableCard = React.forwardRef<HTMLDivElement, DeliverableCardP
         ref,
     ) => {
       const cover = deliverable?.sections.find(
-          (s): s is Extract<typeof s, {type: 'COVER'}> => s.type === 'COVER',
+          (s): s is Extract<typeof s, { type: 'COVER' }> => s.type === 'COVER',
       )
       const eyebrow = cover?.eyebrow
       const headline = title ?? cover?.title ?? deliverable?.title

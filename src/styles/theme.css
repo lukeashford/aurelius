@@ -565,7 +565,7 @@
 
 /* Flex utility for collapsing to zero size (0 0 0%) - use with flex-1 for expand/collapse animations */
 @utility flex-zero {
-  flex: 0 0 0%;
+  flex: 0 0 0;
 }
 
 @utility font-heading {
