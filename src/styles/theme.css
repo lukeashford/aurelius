@@ -175,6 +175,7 @@
   /* ===== ANIMATIONS ===== */
   --animate-fade-in: fade-in 200ms ease-out;
   --animate-fade-out: fade-out 150ms ease-in;
+  --animate-lightbox-in: lightbox-in 220ms var(--ease-smooth);
   --animate-slide-in-right: slide-in-right 300ms var(--ease-smooth);
   --animate-slide-out-right: slide-out-right 200ms ease-in;
   --animate-pulse-glow: pulse-glow 2s ease-in-out infinite;
@@ -205,6 +206,17 @@
   }
   100% {
     opacity: 0;
+  }
+}
+
+@keyframes lightbox-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 

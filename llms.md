@@ -102,6 +102,7 @@ Import from `@lukeashford/aurelius`:
 | Alert | variant (info, success, warning, error), title |
 | ArtifactCard | artifact, onExpand, loading |
 | ArtifactGroup | node, onClick |
+| ArtifactLightboxBody | artifact |
 | ArtifactVariantStack | node, onExpandArtifact, onGroupClick |
 | AttachmentPreview | attachments, onRemove, removable, maxVisible, onOpen |
 | AudioCard | src, title, subtitle, playing, controls, volume, muted, loop, mediaClassName, contentClassName, playerProps, height, loading |
@@ -125,6 +126,7 @@ Import from `@lukeashford/aurelius`:
 | Input | error, leadingIcon, trailingIcon |
 | InputGroup | children |
 | Label | required |
+| Lightbox | onClose, actions, caption, children, className |
 | List | variant, ordered, leading, trailing, interactive, selected, disabled, primary, secondary |
 | MarkdownContent | content, isMarkdown, sanitizeConfig, isStreaming, cursorClassName |
 | Menu | children, open, onOpenChange, asChild, align, side, icon, destructive |
@@ -154,10 +156,10 @@ Import from `@lukeashford/aurelius`:
 | Toast | children, position (top-right, top-left, bottom-right, bottom-left, top-center, bottom-center), defaultDuration |
 | Tooltip | content, children, open, side (top, right, bottom, left) |
 | VideoCard | src, title, subtitle, aspectRatio (${number}/${number}), playing, controls, light, volume, muted, loop, mediaClassName, contentClassName, playerProps, loading |
-| ArtifactsPanel | nodes, loading, openArtifactId, onArtifactClosed, artifactCount, onExpand |
+| ArtifactsPanel | nodes, loading, openArtifactId, onArtifactClosed, getArtifactActions, artifact, ctx, artifactCount, onExpand |
 | BranchNavigator | current, total, onPrevious, onNext, size, showIcon |
 | ChatInput | position (centered, bottom), placeholder, helperText, onSubmit, disabled, animate, isStreaming, onStop, attachments, onAttachmentsChange, onAttachmentRemove, showAttachmentButton, acceptedFileTypes, notice, onInputChange, initialInputValue, autoFocus |
-| ChatInterface | messages, conversationTree, onTreeChange, conversations, onMessageSubmit, onEditMessage, onRetryMessage, onJumpHere, onJumpToLatest, onStop, onSelectConversation, onNewChat, onRenameConversation, isStreaming, isThinking, thinkingLabel, placeholder, emptyStateHelper, emptyState, showAttachmentButton, enableMessageActions, attachments, onAttachmentsChange, onAttachmentRemove, onAttachmentOpen, artifactNodes, isArtifactsPanelOpen, onArtifactsPanelOpenChange, tasks, tasksTitle, onStopAllTasks |
+| ChatInterface | messages, conversationTree, onTreeChange, conversations, onMessageSubmit, onEditMessage, onRetryMessage, onJumpHere, onJumpToLatest, onStop, onSelectConversation, onNewChat, onRenameConversation, isStreaming, isThinking, thinkingLabel, placeholder, emptyStateHelper, emptyState, showAttachmentButton, enableMessageActions, attachments, onAttachmentsChange, onAttachmentRemove, onAttachmentOpen, artifactNodes, isArtifactsPanelOpen, onArtifactsPanelOpenChange, getArtifactActions, artifact, ctx |
 | ChatView | items, latestUserMessageIndex |
 | Checkpoint | name, executionKind (task, submit, rename, init, ingest), status (completed, failed, cancelled), isActive, muted, branchInfo, onJumpHere |
 | GreyedDivider | messageCount, checkpointCount, onJumpToLatest |
@@ -225,6 +227,22 @@ shows the total items.
 - **node**: * The GROUP node to display
 - **onClick**: * Called when the group is clicked (e.g. to navigate into it)
 
+**ArtifactLightboxBody**
+Picks the bare body for an artifact when displayed inside a {@link Lightbox}.
+
+Each kind decides its own internal layout — an image aspect-fits the canvas,
+a deliverable scrolls full-bleed, and so on. Crucially, none of these wrap
+themselves in another Card frame: the lightbox already provides the canvas,
+and a card-inside-modal produces the nested-frame look that signals "cheap
+generic container." Kinds that don't yet have a dedicated bare body fall
+back to {@link ArtifactCard} — adequate, but the stack-of-frames feel is the
+thing to fix next when those kinds matter.
+
+Callers don't choose the body explicitly; the registry dispatches by
+`artifact.type`. To add a kind, extend the switch — never branch on type at
+the call site.
+
+
 **ArtifactVariantStack**
 Renders a VARIANT_SET node as a Card with the set label as title.
 Children are displayed in a horizontal row inside the card body.
@@ -254,8 +272,9 @@ navigate for groups).
 **DeliverableCard**
 Compact preview of a deliverable for surfaces that can't host the full
 multi-page renderer (chat tree, artifact lists). Surfaces the deliverable's
-cover info plus its section count and invites the viewer to open the full
-presentation. Click handling is owned by the parent {@code ArtifactCard}.
+cover info plus its section count. The whole card is clickable — the
+affordance is the same expand-icon overlay that {@link ArtifactCard} shows
+for every artifact kind, so we don't add a "Open preview" lure here.
 
 - **deliverable**: * Resolved deliverable spec — every artifact reference already inflated. Same shape the full DeliverableRenderer accepts.
 - **title**: Optional override for the cover title (otherwise derived from the spec).
@@ -272,6 +291,24 @@ presentation. Click handling is owned by the parent {@code ArtifactCard}.
 - **error**: * Error message to display (when status is an error)
 - **artifactId**: * Backend artifact id, set once the upload has been integrated. When both `artifactId` and `onOpen` are present, the chip becomes clickable.
 - **onOpen**: * Click handler invoked with `artifactId` when the chip is clicked. Compose-box (pre-integrate) chips should not pass this — the chip stays non-clickable except for its remove button.
+
+**Lightbox**
+Full-bleed modal canvas for one piece of content. Premium-haptic alternative
+to a bordered modal: deep void backdrop, scale-fade entrance, no inner frame,
+floating glass action cluster top-right.
+
+The component is content-agnostic — it ships chrome, not artifact knowledge.
+Compose it with kind-aware bodies and action sets to build the artifact
+viewer; reach for it directly any time a single piece of content needs the
+full screen.
+
+Dismiss surfaces: ESC, backdrop click (outside the sized content area),
+close button in the action cluster.
+
+- **onClose**: * Called when the user dismisses the lightbox (ESC, backdrop click, X button). The caller owns the open/closed state — when `onClose` fires, unmount the lightbox.
+- **actions**: * Optional kind-specific actions placed before the close button in the floating top-right cluster. Typically buttons like "Share" or "Download". The cluster always renders the close button; pass `undefined` if the only affordance is dismiss.
+- **caption**: * Optional caption shown bottom-centre over the backdrop. Use for short metadata like a title and subtitle. Non-interactive — clicks pass through to the backdrop and dismiss.
+- **children**: * The artifact body. Sits directly on the backdrop with no inner frame — the body is responsible for its own layout (object-contain image, scrollable deliverable, readable text column, etc.). Click events whose target is the sized content wrapper (i.e. the empty area around the body) dismiss the lightbox; clicks on the body itself do not.
 
 **MarkdownContent**
 - **content**: * Content to display (can be Markdown or HTML)
@@ -390,6 +427,7 @@ moving back from the content.
 - **loading**: * Whether artifacts are still loading (show skeletons)
 - **openArtifactId**: * When set to a non-null id, surfaces the same expanded artifact card the panel grid would. Drives chip click-through from outside the panel. Pair with `onArtifactClosed` so the parent can clear its controller state when the user dismisses the modal.
 - **onArtifactClosed**: * Called when the user closes the expanded card (X button or backdrop). The parent owns whether subsequent renders re-open by re-supplying `openArtifactId`.
+- **getArtifactActions**: * Resolves the floating action cluster shown over the lightbox when an artifact is opened. Switch on `artifact.type` and return the host-owned buttons for that kind (e.g. Share + Download for deliverables, Download for images). Aurelius ships the close affordance itself; return only the kind-specific actions, or `null` when there are none. The `ctx.onClose` helper lets actions dismiss the lightbox after a successful operation.
 
 **BranchNavigator**
 BranchNavigator provides a UI for switching between conversation branches.
@@ -489,9 +527,7 @@ artifactNodes prop.
 - **artifactNodes**: * Top-level artifact tree nodes for the artifacts panel.
 - **isArtifactsPanelOpen**: * Whether the artifacts panel is currently open (controlled). When set, maps to the tool panel system — opens the artifacts tool.
 - **onArtifactsPanelOpenChange**: * Called when the artifacts panel is opened or closed (controlled).
-- **tasks**: * Tasks to display in the todos list tool panel. Shows a list of tasks with status indicators.
-- **tasksTitle**: * Title for the todos list @default "Tasks"
-- **onStopAllTasks**: * Called when the "Stop All Tasks" button is clicked in the tasks panel. Only shown when at least one task has in_progress status. The consumer app decides what stopping means (cancel API calls, mark tasks cancelled, etc.). * May return a Promise. While the Promise is pending, the button becomes disabled and displays a spinner with "Stopping tasks" so the user knows the stop request is in flight.
+- **getArtifactActions**: * Resolves the floating action cluster shown over the artifact lightbox. The host switches on `artifact.type` and returns the right buttons for that kind (e.g. Share + Download for deliverables, Download for images). Aurelius ships the close affordance itself; return only the kind-specific actions, or `null` when none. Use `ctx.onClose` to dismiss the lightbox after a successful operation.
 
 **ChatView**
 Renders a heterogeneous chat stream — messages, checkpoints, and the

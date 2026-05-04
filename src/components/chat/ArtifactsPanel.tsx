@@ -1,11 +1,13 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react'
 import {Image} from 'lucide-react'
-import {cx, useEscapeKey} from '../../utils'
+import {cx} from '../../utils'
 import {ArtifactCard} from '../ArtifactCard'
 import {ArtifactGroup} from '../ArtifactGroup'
 import {ArtifactVariantStack} from '../ArtifactVariantStack'
+import {ArtifactLightboxBody, getArtifactLightboxCaption} from '../ArtifactLightboxBody'
 import {CardSlotLoading} from '../Card'
-import {ChevronRightIcon, CloseIcon,} from '../icons'
+import {Lightbox} from '../Lightbox'
+import {ChevronRightIcon} from '../icons'
 import type {Artifact} from './hooks'
 import {useArtifactTreeNavigation} from './hooks'
 import type {ArtifactNode} from '../ArtifactNode'
@@ -34,58 +36,45 @@ export interface ArtifactsPanelProps extends React.HTMLAttributes<HTMLDivElement
    * `openArtifactId`.
    */
   onArtifactClosed?: () => void
+  /**
+   * Resolves the floating action cluster shown over the lightbox when an
+   * artifact is opened. Switch on `artifact.type` and return the host-owned
+   * buttons for that kind (e.g. Share + Download for deliverables, Download
+   * for images). Aurelius ships the close affordance itself; return only the
+   * kind-specific actions, or `null` when there are none. The `ctx.onClose`
+   * helper lets actions dismiss the lightbox after a successful operation.
+   */
+  getArtifactActions?: (
+      artifact: Artifact,
+      ctx: {onClose: () => void},
+  ) => React.ReactNode
 }
 
 /**
- * Artifact modal for full-screen viewing.
- *
- * Delegates rendering to {@link ArtifactCard} so the inline card and the
- * expanded modal share a single set of guards (missing url, pending state,
- * unknown type) and a single dispatch table (image/video/audio/pdf/text/
- * script). Previously the modal had its own switch with an unguarded
- * `<img src={artifact.url}>`, which drew the browser's broken-image glyph
- * whenever the url was undefined — even when the card path beside it
- * correctly rendered an empty media slot for the same artifact.
- *
- * The card's title/subtitle render inside its own header, so this modal
- * frame only owns the dismiss affordance.
+ * Resolve the lightbox host actions for an artifact via the panel-level
+ * callback. Wrapped here so the JSX reads as a single component. When the
+ * host provides nothing, the lightbox renders only its close affordance.
  */
-function ArtifactModal({
+function ArtifactLightbox({
   artifact,
   onClose,
+  getArtifactActions,
 }: {
   artifact: Artifact
   onClose: () => void
+  getArtifactActions?: (
+      artifact: Artifact,
+      ctx: {onClose: () => void},
+  ) => React.ReactNode
 }) {
-  useEscapeKey(onClose)
-
-  const handleBackdropClick = useCallback((e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) {
-      onClose()
-    }
-  }, [onClose])
-
   return (
-      <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-void/90 backdrop-blur-sm animate-fade-in"
-          onClick={handleBackdropClick}
+      <Lightbox
+          onClose={onClose}
+          actions={getArtifactActions?.(artifact, {onClose})}
+          caption={getArtifactLightboxCaption(artifact)}
       >
-        <div
-            className="relative w-11/12 h-5/6 max-w-6xl bg-charcoal border border-ash/40 flex flex-col overflow-hidden">
-          <div className="flex items-center justify-end p-2 shrink-0">
-            <button
-                onClick={onClose}
-                className="p-2 text-silver hover:text-white hover:bg-ash/20 transition-colors"
-                aria-label="Close modal"
-            >
-              <CloseIcon className="w-5 h-5"/>
-            </button>
-          </div>
-          <div className="flex-1 overflow-auto p-4">
-            <ArtifactCard artifact={artifact}/>
-          </div>
-        </div>
-      </div>
+        <ArtifactLightboxBody artifact={artifact}/>
+      </Lightbox>
   )
 }
 
@@ -170,6 +159,7 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
       loading,
       openArtifactId,
       onArtifactClosed,
+      getArtifactActions,
       className,
       ...rest
     }, ref) => {
@@ -363,11 +353,12 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
 
             </div>
 
-            {/* Modal for expanded artifact */}
+            {/* Lightbox for the expanded artifact */}
             {expandedArtifact && (
-                <ArtifactModal
+                <ArtifactLightbox
                     artifact={expandedArtifact}
                     onClose={handleModalClose}
+                    getArtifactActions={getArtifactActions}
                 />
             )}
           </>

@@ -13,7 +13,7 @@ import {
   ToolSidebar
 } from './ToolSidebar'
 import {ToolPanelContainer} from './ToolPanelContainer'
-import {useResizable} from './hooks'
+import {type Artifact, useResizable} from './hooks'
 import type {ArtifactNode} from '../ArtifactNode'
 import {
   type Attachment,
@@ -192,6 +192,18 @@ export interface ChatInterfaceProps extends Omit<React.HTMLAttributes<HTMLDivEle
    */
   onArtifactsPanelOpenChange?: (open: boolean) => void
   /**
+   * Resolves the floating action cluster shown over the artifact lightbox.
+   * The host switches on `artifact.type` and returns the right buttons for
+   * that kind (e.g. Share + Download for deliverables, Download for images).
+   * Aurelius ships the close affordance itself; return only the kind-specific
+   * actions, or `null` when none. Use `ctx.onClose` to dismiss the lightbox
+   * after a successful operation.
+   */
+  getArtifactActions?: (
+      artifact: Artifact,
+      ctx: {onClose: () => void},
+  ) => React.ReactNode
+  /**
    * Tasks to display in the todos list tool panel.
    * Shows a list of tasks with status indicators.
    */
@@ -292,6 +304,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
           artifactNodes,
           isArtifactsPanelOpen,
           onArtifactsPanelOpenChange,
+          getArtifactActions,
           tasks = [],
           tasksTitle,
           onStopAllTasks,
@@ -674,6 +687,7 @@ export const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps
                     nodes={artifactNodes}
                     openArtifactId={panelOpenArtifactId}
                     onArtifactClosed={handleArtifactPanelClosed}
+                    getArtifactActions={getArtifactActions}
                     className="h-full"
                 />
             )

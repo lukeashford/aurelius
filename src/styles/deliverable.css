@@ -303,17 +303,11 @@
 @utility deliverable-card-meta {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   padding: var(--spacing-3) var(--spacing-6);
   font-size: var(--text-xs);
   text-transform: uppercase;
   letter-spacing: var(--letter-spacing-wider);
   color: var(--color-silver);
-}
-
-@utility deliverable-card-open {
-  color: var(--deliverable-accent);
-  font-weight: var(--font-weight-medium);
 }
 
 /* === Print path ===

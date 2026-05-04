@@ -19,8 +19,9 @@ export interface DeliverableCardProps extends Omit<CardProps, 'title'> {
 /**
  * Compact preview of a deliverable for surfaces that can't host the full
  * multi-page renderer (chat tree, artifact lists). Surfaces the deliverable's
- * cover info plus its section count and invites the viewer to open the full
- * presentation. Click handling is owned by the parent {@code ArtifactCard}.
+ * cover info plus its section count. The whole card is clickable — the
+ * affordance is the same expand-icon overlay that {@link ArtifactCard} shows
+ * for every artifact kind, so we don't add a "Open preview" lure here.
  */
 export const DeliverableCard = React.forwardRef<HTMLDivElement, DeliverableCardProps>(
     (
@@ -71,7 +72,6 @@ export const DeliverableCard = React.forwardRef<HTMLDivElement, DeliverableCardP
               <span>
                 {sectionCount} {sectionCount === 1 ? 'section' : 'sections'}
               </span>
-              <span className="deliverable-card-open">Open preview →</span>
             </div>
           </Card>
       )

@@ -93,6 +93,7 @@ export {
 
 // Overlays
 export {Modal, type ModalProps} from './Modal'
+export {Lightbox, type LightboxProps} from './Lightbox'
 export {Drawer, type DrawerProps, type DrawerPosition} from './Drawer'
 export {Popover, type PopoverProps, type PopoverPosition, type PopoverAlign} from './Popover'
 export {
