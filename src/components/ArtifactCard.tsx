@@ -6,6 +6,8 @@ import {AudioCard} from './AudioCard'
 import {PdfCard} from './PdfCard'
 import {ScriptCard, type ScriptElement} from './ScriptCard'
 import {TextCard} from './TextCard'
+import {DeliverableCard} from './DeliverableCard'
+import type {Deliverable} from './deliverable/types'
 import {ExpandIcon} from './icons'
 import {cx} from '../utils'
 import {deriveCardSlotLoading} from '../utils/artifactLoading'
@@ -20,6 +22,7 @@ export const ARTIFACT_TYPES = {
   AUDIO: 'AUDIO',
   SCRIPT: 'SCRIPT',
   PDF: 'PDF',
+  DELIVERABLE: 'DELIVERABLE',
 } as const
 
 export type ArtifactType = typeof ARTIFACT_TYPES[keyof typeof ARTIFACT_TYPES]
@@ -63,6 +66,12 @@ export interface Artifact {
    * For html artifacts - structured script elements (used by ScriptCard)
    */
   scriptElements?: ScriptElement[]
+  /**
+   * For deliverable artifacts - the resolved presentation spec, every artifact
+   * reference already inflated. Rendered as a compact card that links to the
+   * full DeliverableRenderer; surfaces the cover info and section count.
+   */
+  deliverable?: Deliverable
 }
 
 export interface ArtifactCardProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -155,6 +164,13 @@ export const ArtifactCard = React.forwardRef<HTMLDivElement, ArtifactCardProps>(
                     )}
                 />
             )
+          case 'DELIVERABLE':
+            return (
+                <DeliverableCard
+                    {...commonProps}
+                    deliverable={artifact.deliverable}
+                />
+            )
           default: {
             // Exhaustiveness check — adding a new ArtifactType becomes a
             // compile error here rather than a silently dropped artifact.
@@ -170,7 +186,8 @@ export const ArtifactCard = React.forwardRef<HTMLDivElement, ArtifactCardProps>(
           artifact.type === 'IMAGE' ||
           artifact.type === 'PDF' ||
           artifact.type === 'SCRIPT' ||
-          artifact.type === 'TEXT'
+          artifact.type === 'TEXT' ||
+          artifact.type === 'DELIVERABLE'
       )
 
       return (

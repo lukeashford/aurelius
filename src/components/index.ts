@@ -93,6 +93,7 @@ export {
 
 // Overlays
 export {Modal, type ModalProps} from './Modal'
+export {Lightbox, type LightboxProps} from './Lightbox'
 export {Drawer, type DrawerProps, type DrawerPosition} from './Drawer'
 export {Popover, type PopoverProps, type PopoverPosition, type PopoverAlign} from './Popover'
 export {
@@ -258,6 +259,7 @@ export {
   // Tree algorithms (generic over the node kind)
   createEmptyTree,
   addNodeToTree,
+  type AddNodeOptions,
   getActivePath,
   findAncestor,
   getSiblingInfo,
@@ -306,6 +308,10 @@ export {
   TextCard,
   type TextCardProps,
 } from './TextCard'
+export {
+  DeliverableCard,
+  type DeliverableCardProps,
+} from './DeliverableCard'
 export {
   ArtifactCard,
   type ArtifactCardProps,
