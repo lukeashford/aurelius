@@ -51,15 +51,42 @@ export interface ArtifactImageGridSection {
   heading?: string | null
   /** 1, 2 or 3. */
   columns: number
+  /**
+   * Aspect ratio applied to every image in the grid. Defaults to `landscape`
+   * when omitted.
+   */
+  aspectRatio?: ImageGridAspectRatio | null
   items: DeliverableImageItem[]
 }
+
+/**
+ * Allowed values for {@link ArtifactImageGridSection.aspectRatio}. Each
+ * controls a single CSS `aspect-ratio` applied uniformly across the grid:
+ * `landscape` → 4:3, `portrait` → 3:4, `square` → 1:1, `wide` → 16:9.
+ */
+export type ImageGridAspectRatio = 'landscape' | 'portrait' | 'square' | 'wide'
 
 export interface ArtifactSpotlightSection {
   type: 'ARTIFACT_SPOTLIGHT'
   heading?: string | null
   artifact: DeliverableArtifactRef
   body?: string | null
+  /**
+   * Layout variant. Defaults to `framed` when omitted.
+   */
+  variant?: SpotlightVariant | null
 }
+
+/**
+ * Allowed values for {@link ArtifactSpotlightSection.variant}.
+ * `framed`       → image above body (default).
+ * `full-bleed`   → image claims a full edge-to-edge page in print; the
+ *                  heading and body are suppressed in print so the image
+ *                  alone carries the page. Use sparingly — once or twice
+ *                  per deck — for the marquee moment.
+ * `side-by-side` → image left, body right on the same page.
+ */
+export type SpotlightVariant = 'framed' | 'full-bleed' | 'side-by-side'
 
 export interface TextBlockSection {
   type: 'TEXT_BLOCK'

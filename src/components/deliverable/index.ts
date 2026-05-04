@@ -17,6 +17,8 @@ export type {
   DeliverableImageItem,
   DeliverableSwatch,
   DeliverableArtifactRef,
+  ImageGridAspectRatio,
+  SpotlightVariant,
   CoverSection as CoverSectionData,
   ArtifactImageGridSection as ArtifactImageGridSectionData,
   ArtifactSpotlightSection as ArtifactSpotlightSectionData,

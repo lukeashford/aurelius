@@ -375,4 +375,6 @@ export {
   type DeliverableImageItem,
   type DeliverableSwatch,
   type DeliverableArtifactRef,
+  type ImageGridAspectRatio,
+  type SpotlightVariant,
 } from './deliverable'

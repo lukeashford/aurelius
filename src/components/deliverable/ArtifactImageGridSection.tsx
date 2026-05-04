@@ -1,6 +1,9 @@
 import React from 'react'
 import {cx} from '../../utils'
-import type {ArtifactImageGridSection as GridData} from './types'
+import type {
+  ArtifactImageGridSection as GridData,
+  ImageGridAspectRatio,
+} from './types'
 
 export interface ArtifactImageGridSectionProps {
   data: GridData
@@ -12,6 +15,13 @@ const COLUMN_CLASSES: Record<1 | 2 | 3, string> = {
   3: 'deliverable-image-grid-cols-3',
 }
 
+const ASPECT_CLASSES: Record<ImageGridAspectRatio, string> = {
+  landscape: 'deliverable-image-grid-aspect-landscape',
+  portrait: 'deliverable-image-grid-aspect-portrait',
+  square: 'deliverable-image-grid-aspect-square',
+  wide: 'deliverable-image-grid-aspect-wide',
+}
+
 /**
  * Grid of project artifact images with optional captions. The number of
  * columns is fixed by the spec (1–3); the renderer enforces a sensible aspect
@@ -19,12 +29,19 @@ const COLUMN_CLASSES: Record<1 | 2 | 3, string> = {
  */
 export function ArtifactImageGridSection({data}: ArtifactImageGridSectionProps) {
   const columns = clampColumns(data.columns)
+  const aspect = data.aspectRatio ?? 'landscape'
   return (
       <section className="deliverable-page">
         {data.heading && (
             <h2 className="deliverable-heading">{data.heading}</h2>
         )}
-        <div className={cx('deliverable-image-grid', COLUMN_CLASSES[columns])}>
+        <div
+            className={cx(
+                'deliverable-image-grid',
+                COLUMN_CLASSES[columns],
+                ASPECT_CLASSES[aspect],
+            )}
+        >
           {data.items.map((item, idx) => (
               <figure key={idx} className="deliverable-image-item">
                 {item.artifact.url
