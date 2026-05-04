@@ -58,6 +58,27 @@ const DEMO_DATA: Record<ArtifactType, any> = {
     title: 'Script Card',
     subtitle: 'Demonstrating SCRIPT type (formerly HTML)'
   },
+  DELIVERABLE: {
+    type: 'DELIVERABLE',
+    title: 'Deliverable Card',
+    subtitle: 'Demonstrating DELIVERABLE type',
+    deliverable: {
+      version: 1,
+      title: 'Sample Deliverable',
+      subtitle: 'A compact preview of a multi-section deck',
+      accentColor: '#c9a227',
+      sections: [
+        {
+          type: 'COVER',
+          eyebrow: 'CASE STUDY',
+          title: 'Sample Deliverable',
+          subtitle: 'A compact preview of a multi-section deck',
+        },
+        {type: 'TEXT_BLOCK', heading: 'Overview', body: 'Lorem ipsum.'},
+        {type: 'QUOTE_BLOCK', quote: 'Refined, grounded, cinematic.'},
+      ],
+    },
+  },
 }
 
 export default function SpecialistCardsSection() {
