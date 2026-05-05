@@ -8,6 +8,36 @@ const bodyStack = '"Raleway", system-ui, sans-serif'
 const monoStack =
     '"JetBrains Mono", "Fira Code", "SF Mono", monospace'
 
+// Faces shipped by aurelius beyond the default trio. They back the
+// `editorial`, `minimal`, and `playful` deliverable theme presets but are
+// available to consumers as plain `font-family` declarations too.
+const themeFaces = [
+  {
+    name: 'Lora',
+    role: 'Editorial serif',
+    backs: 'editorial theme — heading',
+    stack: '"Lora", serif',
+    weights: 'Variable wght 400–700, plus 400 italic',
+    sample: 'The strongest brands feel inevitable.',
+  },
+  {
+    name: 'Inter',
+    role: 'Modern neutral sans',
+    backs: 'editorial / minimal / playful — body',
+    stack: '"Inter", system-ui, sans-serif',
+    weights: 'Variable wght 400–700',
+    sample: 'A confident, restrained, intentionally quiet identity.',
+  },
+  {
+    name: 'Comic Neue',
+    role: 'Friendly handwriting (open-license Comic Sans alternative)',
+    backs: 'playful theme — heading',
+    stack: '"Comic Neue", system-ui, sans-serif',
+    weights: 'Static 400 + 700',
+    sample: 'Brand Refresh — Initial Direction',
+  },
+]
+
 // Font size scale mapped to utilities
 const fontSizes = [
   {
@@ -165,6 +195,46 @@ export default function TypographySection() {
                   {monoStack}
                 </code>
               </div>
+            </div>
+          </Card>
+
+          {/* Theme typefaces — Lora / Inter / Comic Neue */}
+          <Card className="md:col-span-2 p-6">
+            <h3 className="mb-1 text-gold">Theme typefaces</h3>
+            <p className="mb-4 text-sm text-silver">
+              Additional faces shipped by aurelius to back the deliverable
+              theme presets. Available to any consumer via{' '}
+              <code className="text-white">font-family</code>.
+            </p>
+            <div className="grid gap-4 md:grid-cols-3">
+              {themeFaces.map(({name, role, backs, stack, weights, sample}) => (
+                  <Card key={name} className={tokenCardClass}>
+                    <div
+                        className="mb-3 text-3xl text-white"
+                        style={{fontFamily: stack}}
+                    >
+                      {name}
+                    </div>
+                    <div
+                        className="mb-1 text-base text-white"
+                        style={{fontFamily: stack, fontWeight: 400}}
+                    >
+                      {sample}
+                    </div>
+                    <div
+                        className="mb-3 text-base text-white"
+                        style={{fontFamily: stack, fontWeight: 700}}
+                    >
+                      {sample}
+                    </div>
+                    <div className="space-y-1 text-xs text-silver">
+                      <div className="text-white">{role}</div>
+                      <div>{weights}</div>
+                      <div className="text-silver/80">{backs}</div>
+                      <code className="block text-silver/80">{stack}</code>
+                    </div>
+                  </Card>
+              ))}
             </div>
           </Card>
 

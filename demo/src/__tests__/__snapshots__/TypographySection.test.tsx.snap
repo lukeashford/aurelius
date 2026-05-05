@@ -124,6 +124,163 @@ exports[`TypographySection matches snapshot 1`] = `
         class="rounded-none relative transition-opacity duration-500 bg-charcoal shadow-sm border border-gold/30 md:col-span-2 p-6"
       >
         <h3
+          class="mb-1 text-gold"
+        >
+          Theme typefaces
+        </h3>
+        <p
+          class="mb-4 text-sm text-silver"
+        >
+          Additional faces shipped by aurelius to back the deliverable theme presets. Available to any consumer via
+           
+          <code
+            class="text-white"
+          >
+            font-family
+          </code>
+          .
+        </p>
+        <div
+          class="grid gap-4 md:grid-cols-3"
+        >
+          <div
+            class="rounded-none relative transition-opacity duration-500 shadow-sm border border-slate/60 bg-void/40 p-3"
+          >
+            <div
+              class="mb-3 text-3xl text-white"
+              style="font-family: "Lora", serif;"
+            >
+              Lora
+            </div>
+            <div
+              class="mb-1 text-base text-white"
+              style="font-family: "Lora", serif; font-weight: 400;"
+            >
+              The strongest brands feel inevitable.
+            </div>
+            <div
+              class="mb-3 text-base text-white"
+              style="font-family: "Lora", serif; font-weight: 700;"
+            >
+              The strongest brands feel inevitable.
+            </div>
+            <div
+              class="space-y-1 text-xs text-silver"
+            >
+              <div
+                class="text-white"
+              >
+                Editorial serif
+              </div>
+              <div>
+                Variable wght 400–700, plus 400 italic
+              </div>
+              <div
+                class="text-silver/80"
+              >
+                editorial theme — heading
+              </div>
+              <code
+                class="block text-silver/80"
+              >
+                "Lora", serif
+              </code>
+            </div>
+          </div>
+          <div
+            class="rounded-none relative transition-opacity duration-500 shadow-sm border border-slate/60 bg-void/40 p-3"
+          >
+            <div
+              class="mb-3 text-3xl text-white"
+              style="font-family: "Inter", system-ui, sans-serif;"
+            >
+              Inter
+            </div>
+            <div
+              class="mb-1 text-base text-white"
+              style="font-family: "Inter", system-ui, sans-serif; font-weight: 400;"
+            >
+              A confident, restrained, intentionally quiet identity.
+            </div>
+            <div
+              class="mb-3 text-base text-white"
+              style="font-family: "Inter", system-ui, sans-serif; font-weight: 700;"
+            >
+              A confident, restrained, intentionally quiet identity.
+            </div>
+            <div
+              class="space-y-1 text-xs text-silver"
+            >
+              <div
+                class="text-white"
+              >
+                Modern neutral sans
+              </div>
+              <div>
+                Variable wght 400–700
+              </div>
+              <div
+                class="text-silver/80"
+              >
+                editorial / minimal / playful — body
+              </div>
+              <code
+                class="block text-silver/80"
+              >
+                "Inter", system-ui, sans-serif
+              </code>
+            </div>
+          </div>
+          <div
+            class="rounded-none relative transition-opacity duration-500 shadow-sm border border-slate/60 bg-void/40 p-3"
+          >
+            <div
+              class="mb-3 text-3xl text-white"
+              style="font-family: "Comic Neue", system-ui, sans-serif;"
+            >
+              Comic Neue
+            </div>
+            <div
+              class="mb-1 text-base text-white"
+              style="font-family: "Comic Neue", system-ui, sans-serif; font-weight: 400;"
+            >
+              Brand Refresh — Initial Direction
+            </div>
+            <div
+              class="mb-3 text-base text-white"
+              style="font-family: "Comic Neue", system-ui, sans-serif; font-weight: 700;"
+            >
+              Brand Refresh — Initial Direction
+            </div>
+            <div
+              class="space-y-1 text-xs text-silver"
+            >
+              <div
+                class="text-white"
+              >
+                Friendly handwriting (open-license Comic Sans alternative)
+              </div>
+              <div>
+                Static 400 + 700
+              </div>
+              <div
+                class="text-silver/80"
+              >
+                playful theme — heading
+              </div>
+              <code
+                class="block text-silver/80"
+              >
+                "Comic Neue", system-ui, sans-serif
+              </code>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="rounded-none relative transition-opacity duration-500 bg-charcoal shadow-sm border border-gold/30 md:col-span-2 p-6"
+      >
+        <h3
           class="mb-2 text-gold"
         >
           Font Sizes
