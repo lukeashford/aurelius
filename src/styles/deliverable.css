@@ -9,11 +9,13 @@
  *
  * Document-level levers (set per-section by the agent via the spec):
  *   - `theme` enum → `.deliverable-theme-*` class on the root, overrides
- *     a small bundle of CSS variables (accent, cover surface, rule weight)
- *     so the same DOM reads as a different document. The cover surface
- *     swap shows on screen too, but the body chrome stays cinematic-dark
- *     on screen — themes only fully bloom in print, where the body flips
- *     to obsidian-on-white. Aurelius is dark-mode-only on screen by design.
+ *     a small bundle of CSS variables (accent, cover surface, rule weight,
+ *     heading + body font families) so the same DOM reads as a different
+ *     document. The cover surface swap shows on screen too, but the body
+ *     chrome stays cinematic-dark on screen — themes only fully bloom in
+ *     print, where the body flips to obsidian-on-white. Aurelius is
+ *     dark-mode-only on screen by design. See `DeliverableSpec.theme`
+ *     in hypocaust for the agent-facing description of each theme.
  *   - `accentColor` (hex) → `--deliverable-accent`, used for headings, rules,
  *     swatch surrounds. Set per-document on the React root.
  *   - Image grid `aspectRatio` enum → utility on the grid container.
@@ -25,6 +27,8 @@
   --deliverable-cover-bg: var(--color-obsidian);
   --deliverable-cover-ink: var(--color-white);
   --deliverable-rule-weight: 1.2pt;
+  --deliverable-font-heading: var(--font-heading);
+  --deliverable-font-body: var(--font-body);
 
   display: flex;
   flex-direction: column;
@@ -35,7 +39,7 @@
   padding-inline: var(--spacing-6);
   padding-block: var(--spacing-12);
   color: var(--color-white);
-  font-family: var(--font-body);
+  font-family: var(--deliverable-font-body, var(--font-body));
 }
 
 @utility deliverable-theme-editorial {
@@ -43,6 +47,8 @@
   --deliverable-cover-bg: var(--color-white);
   --deliverable-cover-ink: var(--color-obsidian);
   --deliverable-rule-weight: 2.4pt;
+  --deliverable-font-heading: "Lora", "Marcellus", serif;
+  --deliverable-font-body: "Inter", "Raleway", system-ui, sans-serif;
 }
 
 @utility deliverable-theme-minimal {
@@ -50,6 +56,17 @@
   --deliverable-cover-bg: var(--color-white);
   --deliverable-cover-ink: var(--color-obsidian);
   --deliverable-rule-weight: 0.6pt;
+  --deliverable-font-heading: "Inter", "Raleway", system-ui, sans-serif;
+  --deliverable-font-body: "Inter", "Raleway", system-ui, sans-serif;
+}
+
+@utility deliverable-theme-playful {
+  --deliverable-accent: var(--color-gold);
+  --deliverable-cover-bg: var(--color-white);
+  --deliverable-cover-ink: var(--color-obsidian);
+  --deliverable-rule-weight: 1.6pt;
+  --deliverable-font-heading: "Comic Neue", system-ui, sans-serif;
+  --deliverable-font-body: "Inter", "Raleway", system-ui, sans-serif;
 }
 
 @utility deliverable-page {
@@ -57,7 +74,7 @@
 }
 
 @utility deliverable-heading {
-  font-family: var(--font-heading);
+  font-family: var(--deliverable-font-heading, var(--font-heading));
   font-size: var(--text-3xl);
   line-height: var(--text-3xl--line-height);
   color: var(--deliverable-accent);
@@ -101,7 +118,7 @@
 }
 
 @utility deliverable-cover-title {
-  font-family: var(--font-heading);
+  font-family: var(--deliverable-font-heading, var(--font-heading));
   font-size: var(--text-6xl);
   line-height: var(--text-6xl--line-height);
   color: var(--deliverable-accent);
@@ -339,7 +356,7 @@
 
 @utility deliverable-quote-body {
   max-width: 64ch;
-  font-family: var(--font-heading);
+  font-family: var(--deliverable-font-heading, var(--font-heading));
   text-align: center;
 }
 
@@ -351,7 +368,7 @@
 
 @utility deliverable-quote-attribution {
   margin-top: var(--spacing-6);
-  font-family: var(--font-body);
+  font-family: var(--deliverable-font-body, var(--font-body));
   font-size: var(--text-sm);
   color: var(--color-silver);
   letter-spacing: var(--letter-spacing-wider);
@@ -542,8 +559,7 @@
   }
 
   /* === Cover ===
-   * Full-bleed first page. Surface and ink come from the theme bundle
-   * (`cinematic` → obsidian/white, `editorial`/`minimal` → white/obsidian),
+   * Full-bleed first page. Surface and ink come from the theme bundle,
    * with type bottom-anchored so the page reads like a poster rather
    * than centred boilerplate. */
   .deliverable-cover {

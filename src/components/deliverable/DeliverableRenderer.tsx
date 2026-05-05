@@ -13,6 +13,7 @@ const THEME_CLASSES: Record<DeliverableTheme, string | null> = {
   cinematic: null,
   editorial: 'deliverable-theme-editorial',
   minimal: 'deliverable-theme-minimal',
+  playful: 'deliverable-theme-playful',
 }
 
 export interface DeliverableRendererProps {

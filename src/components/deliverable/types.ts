@@ -30,7 +30,7 @@ export interface Deliverable {
 }
 
 /** Document-level visual identity preset. */
-export type DeliverableTheme = 'cinematic' | 'editorial' | 'minimal'
+export type DeliverableTheme = 'cinematic' | 'editorial' | 'minimal' | 'playful'
 
 /**
  * Discriminated union of section types. Each variant has a matching renderer
