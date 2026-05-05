@@ -1,3 +1,12 @@
+## [4.10.0](https://github.com/lukeashford/aurelius/compare/v4.9.0...v4.10.0) (2026-05-05)
+
+### Features
+
+* **deliverable:** add document-level theme preset ([362fc90](https://github.com/lukeashford/aurelius/commit/362fc900a18d7e84ad6731dfa70fd79f10459b6d))
+* **deliverable:** aspect-ratio + spotlight variants, paper-friendly print polish ([e31ea28](https://github.com/lukeashford/aurelius/commit/e31ea2804330c128ef20017c41dd579bafc7bafc))
+* **deliverable:** per-theme typography + add `playful` theme ([4ee3422](https://github.com/lukeashford/aurelius/commit/4ee3422d9312ebefdedcb532d6244435c01982c4))
+* **demo:** surface theme typefaces and a live theme selector ([f3573df](https://github.com/lukeashford/aurelius/commit/f3573df2085d72ec9e04358de7594703a6dd62ac))
+
 ## [4.9.0](https://github.com/lukeashford/aurelius/compare/v4.8.0...v4.9.0) (2026-05-04)
 
 ### Features
