@@ -15,7 +15,10 @@ export function CoverSection({data, clientName}: CoverSectionProps) {
       <section className="deliverable-cover deliverable-page">
         <div className="deliverable-cover-inner">
           {data.eyebrow && (
-              <p className="deliverable-cover-eyebrow">{data.eyebrow}</p>
+              <>
+                <p className="deliverable-cover-eyebrow">{data.eyebrow}</p>
+                <div className="deliverable-cover-rule" aria-hidden="true"/>
+              </>
           )}
           <h1 className="deliverable-cover-title">{data.title}</h1>
           {data.subtitle && (

@@ -3,9 +3,12 @@ import {
   Alert,
   Button,
   DeliverableRenderer,
+  Label,
+  Select,
   Stack,
   Textarea,
   type Deliverable,
+  type DeliverableTheme,
 } from '@lukeashford/aurelius'
 import Section from './Section'
 import {AUTO_PRINT_KEY, STORAGE_KEY} from '../components/DeliverablePrint'
@@ -16,6 +19,16 @@ import sampleSpec from '../../scripts/sample-deliverable-spec.json'
 
 const DEFAULT_SPEC: Deliverable = sampleSpec as Deliverable
 
+type ThemeChoice = 'default' | DeliverableTheme
+
+const THEME_OPTIONS: {value: ThemeChoice; label: string}[] = [
+  {value: 'default', label: 'Use spec default (cinematic)'},
+  {value: 'cinematic', label: 'Cinematic — Marcellus + Raleway, dark + gold'},
+  {value: 'editorial', label: 'Editorial — Lora + Inter, white + obsidian'},
+  {value: 'minimal', label: 'Minimal — Inter throughout, white + zinc'},
+  {value: 'playful', label: 'Playful — Comic Neue + Inter, white + gold'},
+]
+
 /**
  * Live preview of the deliverable renderer — the same component atrium uses
  * for share pages and PDF rendering. Edit the JSON spec on the left, see the
@@ -25,6 +38,7 @@ export default function DeliverableSection() {
   const [draft, setDraft] = useState<string>(() =>
       JSON.stringify(DEFAULT_SPEC, null, 2))
   const [active, setActive] = useState<Deliverable>(DEFAULT_SPEC)
+  const [themeChoice, setThemeChoice] = useState<ThemeChoice>('default')
   const [error, setError] = useState<string | null>(null)
 
   const handleApply = () => {
@@ -48,7 +62,15 @@ export default function DeliverableSection() {
     setError(null)
   }
 
-  const previewKey = useMemo(() => active.title + active.sections.length, [active])
+  // Override the spec's theme without rewriting the JSON, so flipping
+  // the dropdown immediately retargets the renderer.
+  const previewSpec = useMemo<Deliverable>(() => (
+      themeChoice === 'default' ? active : {...active, theme: themeChoice}
+  ), [active, themeChoice])
+
+  const previewKey = useMemo(
+      () => `${previewSpec.title}-${previewSpec.sections.length}-${themeChoice}`,
+      [previewSpec, themeChoice])
 
   // The button on the renderer just calls whatever `onDownloadPdf` we hand
   // it. In production atrium, that handler hits a Next.js endpoint that
@@ -60,7 +82,7 @@ export default function DeliverableSection() {
   // the sidecar. The print-mode CSS exercised is identical, so the dialog
   // preview is a faithful representation of what atrium's PDFs look like.
   const handleOpenPrintPreview = () => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(active))
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(previewSpec))
     localStorage.setItem(AUTO_PRINT_KEY, '1')
     window.open('/deliverable-print', '_blank', 'noopener,noreferrer')
   }
@@ -78,6 +100,22 @@ export default function DeliverableSection() {
           {' '}— prerendered from the default spec via the same Playwright path
           atrium uses in production.
         </p>
+        <div className="flex flex-wrap items-end gap-3 mb-4">
+          <div className="flex flex-col gap-1">
+            <Label htmlFor="deliverable-theme-select">Theme preview</Label>
+            <Select
+                id="deliverable-theme-select"
+                value={themeChoice}
+                onChange={e => setThemeChoice(e.target.value as ThemeChoice)}
+                options={THEME_OPTIONS}
+            />
+          </div>
+          <p className="text-xs text-silver/70 max-w-md">
+            Flips the renderer through each preset without editing the JSON.
+            The Download PDF button uses whichever theme is currently
+            selected — the new fonts only fully bloom in print.
+          </p>
+        </div>
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="flex flex-col gap-3 min-w-0 lg:col-span-1">
             <Textarea
@@ -100,7 +138,7 @@ export default function DeliverableSection() {
           <div className="border border-ash bg-obsidian min-w-0 overflow-hidden lg:col-span-2">
             <DeliverableRenderer
                 key={previewKey}
-                deliverable={active}
+                deliverable={previewSpec}
                 onDownloadPdf={handleOpenPrintPreview}
             />
           </div>

@@ -20,6 +20,7 @@
       "type": "ARTIFACT_IMAGE_GRID",
       "heading": "Visual references",
       "columns": 2,
+      "aspectRatio": "landscape",
       "items": [
         {
           "artifact": {"url": "https://picsum.photos/seed/aurelius-1/1200/900", "title": "Reference 1"},
@@ -40,6 +41,76 @@
       ]
     },
     {
+      "type": "ARTIFACT_SPOTLIGHT",
+      "heading": "Hero direction",
+      "variant": "full-bleed",
+      "artifact": {"url": "https://picsum.photos/seed/aurelius-hero/1600/2400", "title": "Hero composition"},
+      "body": "A single composition we want to anchor the campaign around — confident, restrained, and intentionally quiet."
+    },
+    {
+      "type": "ARTIFACT_IMAGE_GRID",
+      "heading": "Figure studies",
+      "columns": 3,
+      "aspectRatio": "portrait",
+      "items": [
+        {
+          "artifact": {"url": "https://picsum.photos/seed/aurelius-p1/900/1200", "title": "Figure 1"},
+          "caption": "Standing figure, low key."
+        },
+        {
+          "artifact": {"url": "https://picsum.photos/seed/aurelius-p2/900/1200", "title": "Figure 2"},
+          "caption": "Side profile, single source."
+        },
+        {
+          "artifact": {"url": "https://picsum.photos/seed/aurelius-p3/900/1200", "title": "Figure 3"},
+          "caption": "Half-turn, neutral expression."
+        }
+      ]
+    },
+    {
+      "type": "ARTIFACT_SPOTLIGHT",
+      "heading": "Material reference",
+      "variant": "side-by-side",
+      "artifact": {"url": "https://picsum.photos/seed/aurelius-mat/1200/1500", "title": "Brushed brass"},
+      "body": "A brushed-brass swatch sits at the centre of the material story. The directional grain catches light unevenly — quiet from one angle, almost ceremonial from another. We want the print runs and the digital surfaces to share this temperament: never flat, never loud."
+    },
+    {
+      "type": "ARTIFACT_IMAGE_GRID",
+      "heading": "Cinematic stills",
+      "columns": 1,
+      "aspectRatio": "wide",
+      "items": [
+        {
+          "artifact": {"url": "https://picsum.photos/seed/aurelius-w1/1920/810", "title": "Still 1"},
+          "caption": "Empty interior, late afternoon."
+        },
+        {
+          "artifact": {"url": "https://picsum.photos/seed/aurelius-w2/1920/810", "title": "Still 2"},
+          "caption": "Long corridor, single figure."
+        }
+      ]
+    },
+    {
+      "type": "ARTIFACT_IMAGE_GRID",
+      "heading": "Texture & surface",
+      "columns": 3,
+      "aspectRatio": "square",
+      "items": [
+        {
+          "artifact": {"url": "https://picsum.photos/seed/aurelius-s1/900/900", "title": "Texture 1"},
+          "caption": "Cast concrete."
+        },
+        {
+          "artifact": {"url": "https://picsum.photos/seed/aurelius-s2/900/900", "title": "Texture 2"},
+          "caption": "Linen weave."
+        },
+        {
+          "artifact": {"url": "https://picsum.photos/seed/aurelius-s3/900/900", "title": "Texture 3"},
+          "caption": "Anodised aluminium."
+        }
+      ]
+    },
+    {
       "type": "COLOR_PALETTE",
       "heading": "Palette",
       "swatches": [
@@ -51,9 +122,10 @@
     },
     {
       "type": "ARTIFACT_SPOTLIGHT",
-      "heading": "Hero direction",
-      "artifact": {"url": "https://picsum.photos/seed/aurelius-hero/1600/900", "title": "Hero composition"},
-      "body": "A single composition we want to anchor the campaign around — confident, restrained, and intentionally quiet."
+      "heading": "Closing reference",
+      "variant": "framed",
+      "artifact": {"url": "https://picsum.photos/seed/aurelius-close/1600/900", "title": "Closing composition"},
+      "body": "We close on a wide composition — open space, low light, single point of warmth. The deck-final image ought to feel like a held breath."
     },
     {
       "type": "QUOTE_BLOCK",

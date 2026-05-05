@@ -715,7 +715,8 @@ ratio per item and lets the browser flow rows.
 
 **ArtifactSpotlightSection**
 A single hero artifact image with optional prose alongside. Reads at full
-page width on screen and prints to a single page.
+page width on screen and prints to a single page (or a full-bleed page for
+the `full-bleed` variant).
 
 
 **ColorPaletteSection**

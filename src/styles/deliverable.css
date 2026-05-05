@@ -2,14 +2,33 @@
  *
  * Each visual class is defined as a Tailwind v4 `@utility` so the design-system
  * ESLint rule recognises them. The same DOM serves both the on-screen view
- * and the PDF print path; `@page` and `@media print` rules below replace the
- * dark theme with a print-friendly version (black on white, page-sized
- * sections, no actions). The accent color is a CSS variable scoped to the
- * deliverable root and falls back to the design-system gold.
+ * and the PDF print path. The screen path is the cinematic dark theme; the
+ * print path under `@media print` is its paper-friendly counterpart — high
+ * contrast on white, editorial type pairing, gold rule above every section
+ * as a recurring chapter mark.
+ *
+ * Document-level levers (set per-section by the agent via the spec):
+ *   - `theme` enum → `.deliverable-theme-*` class on the root, overrides
+ *     a small bundle of CSS variables (accent, cover surface, rule weight,
+ *     heading + body font families) so the same DOM reads as a different
+ *     document. The cover surface swap shows on screen too, but the body
+ *     chrome stays cinematic-dark on screen — themes only fully bloom in
+ *     print, where the body flips to obsidian-on-white. Aurelius is
+ *     dark-mode-only on screen by design. See `DeliverableSpec.theme`
+ *     in hypocaust for the agent-facing description of each theme.
+ *   - `accentColor` (hex) → `--deliverable-accent`, used for headings, rules,
+ *     swatch surrounds. Set per-document on the React root.
+ *   - Image grid `aspectRatio` enum → utility on the grid container.
+ *   - Spotlight `variant` enum → utility on the spotlight section.
  */
 
 @utility deliverable {
   --deliverable-accent: var(--color-gold);
+  --deliverable-cover-bg: var(--color-obsidian);
+  --deliverable-cover-ink: var(--color-white);
+  --deliverable-rule-weight: 1.2pt;
+  --deliverable-font-heading: var(--font-heading);
+  --deliverable-font-body: var(--font-body);
 
   display: flex;
   flex-direction: column;
@@ -20,7 +39,34 @@
   padding-inline: var(--spacing-6);
   padding-block: var(--spacing-12);
   color: var(--color-white);
-  font-family: var(--font-body);
+  font-family: var(--deliverable-font-body, var(--font-body));
+}
+
+@utility deliverable-theme-editorial {
+  --deliverable-accent: var(--color-obsidian);
+  --deliverable-cover-bg: var(--color-white);
+  --deliverable-cover-ink: var(--color-obsidian);
+  --deliverable-rule-weight: 2.4pt;
+  --deliverable-font-heading: "Lora", "Marcellus", serif;
+  --deliverable-font-body: "Inter", "Raleway", system-ui, sans-serif;
+}
+
+@utility deliverable-theme-minimal {
+  --deliverable-accent: var(--color-zinc);
+  --deliverable-cover-bg: var(--color-white);
+  --deliverable-cover-ink: var(--color-obsidian);
+  --deliverable-rule-weight: 0.6pt;
+  --deliverable-font-heading: "Inter", "Raleway", system-ui, sans-serif;
+  --deliverable-font-body: "Inter", "Raleway", system-ui, sans-serif;
+}
+
+@utility deliverable-theme-playful {
+  --deliverable-accent: var(--color-gold);
+  --deliverable-cover-bg: var(--color-white);
+  --deliverable-cover-ink: var(--color-obsidian);
+  --deliverable-rule-weight: 1.6pt;
+  --deliverable-font-heading: "Comic Neue", system-ui, sans-serif;
+  --deliverable-font-body: "Inter", "Raleway", system-ui, sans-serif;
 }
 
 @utility deliverable-page {
@@ -28,7 +74,7 @@
 }
 
 @utility deliverable-heading {
-  font-family: var(--font-heading);
+  font-family: var(--deliverable-font-heading, var(--font-heading));
   font-size: var(--text-3xl);
   line-height: var(--text-3xl--line-height);
   color: var(--deliverable-accent);
@@ -45,7 +91,8 @@
   justify-content: center;
   text-align: center;
   border: 1px solid color-mix(in oklab, var(--deliverable-accent) 30%, transparent);
-  background-color: var(--color-charcoal);
+  background-color: var(--deliverable-cover-bg);
+  color: var(--deliverable-cover-ink);
   padding: var(--spacing-16);
 }
 
@@ -59,12 +106,19 @@
 @utility deliverable-cover-eyebrow {
   text-transform: uppercase;
   letter-spacing: var(--letter-spacing-widest);
-  color: var(--color-silver);
+  color: color-mix(in oklab, var(--deliverable-cover-ink) 55%, transparent);
   font-size: var(--text-xs);
 }
 
+@utility deliverable-cover-rule {
+  height: var(--deliverable-rule-weight);
+  width: 6rem;
+  background-color: var(--deliverable-accent);
+  align-self: center;
+}
+
 @utility deliverable-cover-title {
-  font-family: var(--font-heading);
+  font-family: var(--deliverable-font-heading, var(--font-heading));
   font-size: var(--text-6xl);
   line-height: var(--text-6xl--line-height);
   color: var(--deliverable-accent);
@@ -74,7 +128,7 @@
 @utility deliverable-cover-subtitle {
   font-size: var(--text-xl);
   line-height: var(--text-xl--line-height);
-  color: var(--color-silver);
+  color: color-mix(in oklab, var(--deliverable-cover-ink) 65%, transparent);
 }
 
 @utility deliverable-cover-client {
@@ -82,15 +136,18 @@
   font-size: var(--text-sm);
   letter-spacing: var(--letter-spacing-wider);
   text-transform: uppercase;
-  color: var(--color-silver);
+  color: color-mix(in oklab, var(--deliverable-cover-ink) 55%, transparent);
 }
 
 @utility deliverable-cover-client-name {
-  color: var(--color-white);
+  color: var(--deliverable-cover-ink);
   font-weight: var(--font-weight-semibold);
 }
 
-/* === Image grid === */
+/* === Image grid ===
+ * The renderer always applies one of the four `aspect-ratio` utilities, so
+ * the base img/missing utilities don't need a fallback ratio of their own.
+ */
 
 @utility deliverable-image-grid {
   display: grid;
@@ -119,14 +176,40 @@
 @utility deliverable-image-img {
   width: 100%;
   height: 100%;
-  aspect-ratio: 4 / 3;
   object-fit: cover;
   background-color: var(--color-graphite);
   border: 1px solid var(--color-ash);
 }
 
+@utility deliverable-image-grid-aspect-landscape {
+  & .deliverable-image-img,
+  & .deliverable-image-missing {
+    aspect-ratio: 4 / 3;
+  }
+}
+
+@utility deliverable-image-grid-aspect-portrait {
+  & .deliverable-image-img,
+  & .deliverable-image-missing {
+    aspect-ratio: 3 / 4;
+  }
+}
+
+@utility deliverable-image-grid-aspect-square {
+  & .deliverable-image-img,
+  & .deliverable-image-missing {
+    aspect-ratio: 1 / 1;
+  }
+}
+
+@utility deliverable-image-grid-aspect-wide {
+  & .deliverable-image-img,
+  & .deliverable-image-missing {
+    aspect-ratio: 16 / 9;
+  }
+}
+
 @utility deliverable-image-missing {
-  aspect-ratio: 4 / 3;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -141,7 +224,11 @@
   line-height: var(--line-height-snug);
 }
 
-/* === Spotlight === */
+/* === Spotlight ===
+ * `framed` is the default — image above, body below.
+ * `full_bleed` claims the page edge-to-edge in print and a tall hero on screen.
+ * `side_by_side` lays image and body alongside each other (image left).
+ */
 
 @utility deliverable-spotlight-media {
   margin-bottom: var(--spacing-6);
@@ -169,6 +256,48 @@
   max-width: 72ch;
   font-size: var(--text-base);
   line-height: var(--line-height-relaxed);
+}
+
+/* `framed` is the default and inherits the base spotlight layout — no
+   separate utility class is applied. */
+
+@utility deliverable-spotlight-variant-full-bleed {
+  & .deliverable-spotlight-img {
+    max-height: 85vh;
+    width: 100%;
+    object-fit: cover;
+    border: none;
+  }
+  & .deliverable-spotlight-missing {
+    height: 70vh;
+  }
+}
+
+@utility deliverable-spotlight-variant-side-by-side {
+  display: grid;
+  grid-template-columns: 5fr 4fr;
+  grid-template-areas:
+    "heading heading"
+    "media body";
+  gap: var(--spacing-8);
+  align-items: start;
+
+  & .deliverable-heading {
+    grid-area: heading;
+  }
+  & .deliverable-spotlight-media {
+    grid-area: media;
+    margin-bottom: 0;
+  }
+  & .deliverable-spotlight-body {
+    grid-area: body;
+    align-self: center;
+  }
+  & .deliverable-spotlight-img {
+    max-height: none;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+  }
 }
 
 /* === Text block === */
@@ -206,12 +335,14 @@
   font-size: var(--text-sm);
   color: var(--color-white);
   font-weight: var(--font-weight-medium);
+  margin-top: var(--spacing-2);
 }
 
 @utility deliverable-palette-hex {
   font-family: var(--font-mono);
   font-size: var(--text-xs);
   color: var(--color-silver);
+  letter-spacing: var(--letter-spacing-wide);
 }
 
 /* === Quote === */
@@ -225,7 +356,7 @@
 
 @utility deliverable-quote-body {
   max-width: 64ch;
-  font-family: var(--font-heading);
+  font-family: var(--deliverable-font-heading, var(--font-heading));
   text-align: center;
 }
 
@@ -237,7 +368,7 @@
 
 @utility deliverable-quote-attribution {
   margin-top: var(--spacing-6);
-  font-family: var(--font-body);
+  font-family: var(--deliverable-font-body, var(--font-body));
   font-size: var(--text-sm);
   color: var(--color-silver);
   letter-spacing: var(--letter-spacing-wider);
@@ -265,6 +396,9 @@
  * to the full presentation.
  */
 
+/* The compact card lives outside the print path and is always shown in
+   the cinematic chrome of the surrounding chat UI — it doesn't carry the
+   document's `theme`. The accent is pinned to gold here for that reason. */
 @utility deliverable-card {
   --deliverable-accent: var(--color-gold);
   display: flex;
@@ -311,27 +445,39 @@
 }
 
 /* === Print path ===
- * Same React tree, different paint. The strategy:
- *   - Cover gets its own named page (`@page cover`) with no margins so it
- *     prints full-bleed, with the body running on default pages with
- *     normal margins.
- *   - Body sections flow naturally — only the cover forces a page break.
- *     `break-inside: avoid` on each block keeps headings with their content
- *     and stops grids from splitting awkwardly.
- *   - The palette and quote no longer claim a full page each — they were
- *     web-mode treatments, not print.
- *   - Running footer carries page numbers; the cover suppresses it via
- *     `@page :first`.
+ * Same React tree, paper-friendly paint. The strategy:
+ *   - Cover is a full-bleed dark hero on its own page (`@page cover`,
+ *     zero margins). All other pages run on the default A4 page with
+ *     editorial margins and a page counter.
+ *   - Body sections are obsidian-on-white. Each heading carries a thin
+ *     gold rule above it as a recurring chapter mark — the same accent
+ *     that anchors the cover, repeating to give the document rhythm.
+ *   - Captions use Raleway italic for editorial weight, tight under the
+ *     image.
+ *   - Full-bleed spotlight variants get their own `@page bleed` so the
+ *     image escapes the page margins; side-by-side variants reuse the
+ *     screen-side grid.
+ *   - `print-color-adjust: exact` is set once at the `.deliverable` root
+ *     and inherited by every descendant, keeping Chromium from
+ *     economising authored backgrounds (cover obsidian, palette chips,
+ *     gold rules) into white.
  */
 
 @page {
   size: A4;
-  margin: 18mm 18mm 22mm;
+  margin: 20mm 22mm 22mm;
   @bottom-right {
     content: counter(page);
     font-family: var(--font-body);
     font-size: 9pt;
     color: var(--color-slate);
+  }
+  @top-left {
+    content: "—";
+    font-family: var(--font-body);
+    font-size: 9pt;
+    color: var(--color-gold);
+    letter-spacing: var(--letter-spacing-widest);
   }
 }
 
@@ -340,9 +486,27 @@
   @bottom-right {
     content: none;
   }
+  @top-left {
+    content: none;
+  }
+}
+
+@page bleed {
+  size: A4;
+  margin: 0;
+  @bottom-right {
+    content: none;
+  }
+  @top-left {
+    content: none;
+  }
 }
 
 @media print {
+  /* `print-color-adjust: exact` is inherited per the CSS Color Adjustment
+     spec, so setting it once at the root keeps Chromium from economising
+     authored backgrounds (cover obsidian, palette chips, the gold rule
+     ::before pseudos) into white. No need to repeat per element. */
   .deliverable {
     color: var(--color-obsidian);
     padding: 0;
@@ -351,35 +515,58 @@
     gap: 0;
     font-size: 10.5pt;
     line-height: var(--line-height-relaxed);
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
   }
 
   .deliverable-page {
-    /* Sections flow; break only when content needs more room. Avoid
-       splitting any single block across pages. */
     page-break-inside: avoid;
     break-inside: avoid;
-    margin-bottom: 14mm;
+    margin-bottom: 16mm;
   }
 
   .deliverable-page + .deliverable-page {
     margin-top: 0;
   }
 
+  /* Section heading: a small gold rule above the headline acts as a
+     recurring chapter mark, tying body sections back to the cover. */
   .deliverable-heading {
     page-break-after: avoid;
     break-after: avoid;
+    font-size: 22pt;
+    line-height: 1.15;
+    margin-bottom: 6mm;
+    color: var(--color-obsidian);
+    letter-spacing: var(--letter-spacing-tight);
+    position: relative;
+    padding-top: 5mm;
+  }
+
+  .deliverable-heading::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 14mm;
+    height: var(--deliverable-rule-weight);
+    background-color: var(--deliverable-accent);
+  }
+
+  /* `minimal` theme drops the chapter mark — the calmness is the message. */
+  .deliverable-theme-minimal .deliverable-heading::before {
+    display: none;
   }
 
   /* === Cover ===
-   * Full-bleed first page. The cover is always the first section, so
-   * `@page :first { margin: 0 }` lets it bleed; we still pad the content
-   * inside the cover so the type doesn't sit on the page edge.
-   */
+   * Full-bleed first page. Surface and ink come from the theme bundle,
+   * with type bottom-anchored so the page reads like a poster rather
+   * than centred boilerplate. */
   .deliverable-cover {
     page-break-after: always;
     break-after: page;
-    background-color: var(--color-obsidian);
-    color: var(--color-white);
+    background-color: var(--deliverable-cover-bg);
+    color: var(--deliverable-cover-ink);
     min-height: 297mm;
     width: 210mm;
     border: none;
@@ -392,57 +579,77 @@
   .deliverable-cover-inner {
     grid-row: 2;
     align-self: end;
-    max-width: 28em;
+    max-width: 30em;
+    gap: 4mm;
+    align-items: flex-start;
   }
 
   .deliverable-cover-eyebrow {
     color: var(--deliverable-accent);
     font-size: 9pt;
+    margin-bottom: 2mm;
+  }
+
+  .deliverable-cover-rule {
+    width: 18mm;
+    height: var(--deliverable-rule-weight);
+    background-color: var(--deliverable-accent);
+    align-self: flex-start;
+    margin-bottom: 4mm;
   }
 
   .deliverable-cover-title {
-    font-size: 44pt;
-    line-height: 1.05;
-    color: var(--color-white);
+    font-size: 48pt;
+    line-height: 1.02;
+    color: var(--deliverable-cover-ink);
+    letter-spacing: var(--letter-spacing-tight);
   }
 
   .deliverable-cover-subtitle {
     font-size: 13pt;
-    color: var(--color-silver);
-    margin-top: 2mm;
+    color: color-mix(in oklab, var(--deliverable-cover-ink) 65%, transparent);
+    margin-top: 3mm;
+    max-width: 28em;
+    font-style: italic;
   }
 
   .deliverable-cover-client {
     grid-row: 3;
     margin-top: 0;
-    color: var(--color-silver);
+    color: color-mix(in oklab, var(--deliverable-cover-ink) 65%, transparent);
+    font-size: 9pt;
   }
 
   .deliverable-cover-client-name {
-    color: var(--color-white);
+    color: var(--deliverable-cover-ink);
   }
 
-  /* === Body typography === */
-  .deliverable-heading {
-    font-size: 20pt;
-    margin-bottom: 4mm;
-    color: var(--deliverable-accent);
-  }
-
+  /* === Body typography ===
+   * The aurelius `prose` styles target dark-mode reading by default, with
+   * `--tw-prose-bold` set to white. On a paper-white print page that
+   * disappears, so override the prose tokens here for any markdown body
+   * the deliverable renders. */
   .deliverable-text-block,
   .deliverable-spotlight-body {
-    font-size: 11pt;
-    line-height: 1.55;
-    max-width: 36em;
+    font-size: 10.5pt;
+    line-height: 1.6;
+    max-width: 34em;
     color: var(--color-obsidian);
+    --tw-prose-body: var(--color-obsidian);
+    --tw-prose-bold: var(--color-obsidian);
+    --tw-prose-headings: var(--color-obsidian);
+    --tw-prose-links: var(--deliverable-accent);
+    --tw-prose-quotes: var(--color-slate);
+    --tw-prose-quote-borders: var(--deliverable-accent);
+    --tw-prose-captions: var(--color-slate);
   }
 
   /* === Image grid ===
-   * Tighter than on screen. Each item stays atomic; the grid can break
-   * between rows but not mid-cell.
-   */
+   * Tighter than on screen. Aspect-ratio rules live on the screen
+   * `@utility deliverable-image-grid-aspect-*` blocks and apply on every
+   * medium — no print duplicates needed. */
   .deliverable-image-grid {
-    gap: 4mm;
+    gap: 5mm;
   }
 
   .deliverable-image-item {
@@ -451,14 +658,19 @@
   }
 
   .deliverable-image-img {
-    aspect-ratio: 4 / 3;
     border: none;
   }
 
+  /* Captions in italic Raleway sit tight under the image, with a hairline
+     accent rule on the left coupling caption to image. */
   .deliverable-image-caption {
     color: var(--color-slate);
     font-size: 9pt;
-    margin-top: 1.5mm;
+    line-height: 1.4;
+    font-style: italic;
+    margin-top: 2mm;
+    padding-left: 3mm;
+    border-left: 1px solid color-mix(in oklab, var(--deliverable-accent) 50%, transparent);
   }
 
   /* === Spotlight === */
@@ -469,28 +681,92 @@
   }
 
   .deliverable-spotlight-media {
-    margin-bottom: 4mm;
+    margin-bottom: 5mm;
+  }
+
+  /* Full-bleed: the section claims its own zero-margin page (`@page bleed`)
+     and the image alone carries it. Heading and body are suppressed so the
+     image is the statement — author with that in mind. */
+  .deliverable-spotlight-variant-full-bleed {
+    page: bleed;
+    page-break-before: always;
+    break-before: page;
+    page-break-after: always;
+    break-after: page;
+    margin: 0;
+    padding: 0;
+  }
+
+  .deliverable-spotlight-variant-full-bleed .deliverable-spotlight-media {
+    margin: 0;
+  }
+
+  .deliverable-spotlight-variant-full-bleed .deliverable-spotlight-img {
+    width: 210mm;
+    height: 297mm;
+    max-height: none;
+    object-fit: cover;
+    border: none;
+  }
+
+  .deliverable-spotlight-variant-full-bleed .deliverable-heading,
+  .deliverable-spotlight-variant-full-bleed .deliverable-spotlight-body {
+    display: none;
+  }
+
+  /* Side-by-side: image left, body right, on the same page. Heading
+     spans both columns. */
+  .deliverable-spotlight-variant-side-by-side {
+    display: grid;
+    grid-template-columns: 95mm 1fr;
+    grid-template-areas:
+      "heading heading"
+      "media body";
+    column-gap: 8mm;
+    row-gap: 0;
+    align-items: start;
+  }
+
+  .deliverable-spotlight-variant-side-by-side .deliverable-heading {
+    grid-area: heading;
+  }
+  .deliverable-spotlight-variant-side-by-side .deliverable-spotlight-media {
+    grid-area: media;
+    margin-bottom: 0;
+  }
+  .deliverable-spotlight-variant-side-by-side .deliverable-spotlight-body {
+    grid-area: body;
+    max-width: none;
+    align-self: center;
+  }
+  .deliverable-spotlight-variant-side-by-side .deliverable-spotlight-img {
+    width: 100%;
+    max-height: none;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
   }
 
   /* === Palette ===
-   * Inline strip at body width — not a full-page chart. Smaller chips,
-   * label and hex below.
-   */
+   * Inline strip at body width — not a full-page chart. */
   .deliverable-palette {
     grid-template-columns: repeat(auto-fit, minmax(28mm, 1fr));
-    gap: 4mm;
+    gap: 5mm;
     max-width: 160mm;
+  }
+
+  .deliverable-palette-item {
+    text-align: left;
   }
 
   .deliverable-palette-chip {
     aspect-ratio: 1 / 1;
-    border: 1px solid var(--color-slate);
+    border: 1px solid color-mix(in oklab, var(--color-obsidian) 12%, transparent);
   }
 
   .deliverable-palette-label {
     font-size: 10pt;
     color: var(--color-obsidian);
-    margin-top: 2mm;
+    margin-top: 2.5mm;
   }
 
   .deliverable-palette-hex {
@@ -500,11 +776,20 @@
 
   /* === Quote ===
    * Editorial pull-quote, not a full page. Generous margins, no min-height
-   * heroics.
+   * heroics. Hairline rule above signals the cadence break.
    */
   .deliverable-quote {
     min-height: 0;
-    padding: 6mm 0 8mm;
+    padding: 8mm 0 10mm;
+    flex-direction: column;
+  }
+
+  .deliverable-quote::before {
+    content: "";
+    width: 14mm;
+    height: 1.2pt;
+    background-color: var(--deliverable-accent);
+    margin-bottom: 6mm;
   }
 
   .deliverable-quote-body {
