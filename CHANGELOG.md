@@ -1,3 +1,9 @@
+## [4.10.2](https://github.com/lukeashford/aurelius/compare/v4.10.1...v4.10.2) (2026-05-06)
+
+### Bug Fixes
+
+* **deliverable:** reset html/body to white in [@media](https://github.com/media) print ([7e8d6da](https://github.com/lukeashford/aurelius/commit/7e8d6daf9ea60eea28060fb5bb8068218144c914))
+
 ## [4.10.1](https://github.com/lukeashford/aurelius/compare/v4.10.0...v4.10.1) (2026-05-06)
 
 ### Bug Fixes
