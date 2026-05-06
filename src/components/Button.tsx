@@ -103,7 +103,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           >
             {loading && (
                 <span
-                    className="mr-2 inline-block h-4 w-4 animate-pulse rounded-full bg-gold"
+                    className="mr-2 inline-block h-4 w-4 animate-pulse rounded-full bg-current"
                     aria-hidden
                 />
             )}

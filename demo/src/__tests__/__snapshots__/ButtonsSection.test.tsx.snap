@@ -136,7 +136,7 @@ exports[`ButtonsSection matches snapshot 1`] = `
               >
                 <span
                   aria-hidden="true"
-                  class="mr-2 inline-block h-4 w-4 animate-pulse rounded-full bg-gold"
+                  class="mr-2 inline-block h-4 w-4 animate-pulse rounded-full bg-current"
                 />
                 Loading
               </button>
@@ -213,7 +213,7 @@ exports[`ButtonsSection matches snapshot 1`] = `
               >
                 <span
                   aria-hidden="true"
-                  class="mr-2 inline-block h-4 w-4 animate-pulse rounded-full bg-gold"
+                  class="mr-2 inline-block h-4 w-4 animate-pulse rounded-full bg-current"
                 />
                 Loading
               </button>
@@ -290,7 +290,7 @@ exports[`ButtonsSection matches snapshot 1`] = `
               >
                 <span
                   aria-hidden="true"
-                  class="mr-2 inline-block h-4 w-4 animate-pulse rounded-full bg-gold"
+                  class="mr-2 inline-block h-4 w-4 animate-pulse rounded-full bg-current"
                 />
                 Loading
               </button>
@@ -367,7 +367,7 @@ exports[`ButtonsSection matches snapshot 1`] = `
               >
                 <span
                   aria-hidden="true"
-                  class="mr-2 inline-block h-4 w-4 animate-pulse rounded-full bg-gold"
+                  class="mr-2 inline-block h-4 w-4 animate-pulse rounded-full bg-current"
                 />
                 Loading
               </button>
@@ -444,7 +444,7 @@ exports[`ButtonsSection matches snapshot 1`] = `
               >
                 <span
                   aria-hidden="true"
-                  class="mr-2 inline-block h-4 w-4 animate-pulse rounded-full bg-gold"
+                  class="mr-2 inline-block h-4 w-4 animate-pulse rounded-full bg-current"
                 />
                 Loading
               </button>
@@ -521,7 +521,7 @@ exports[`ButtonsSection matches snapshot 1`] = `
               >
                 <span
                   aria-hidden="true"
-                  class="mr-2 inline-block h-4 w-4 animate-pulse rounded-full bg-gold"
+                  class="mr-2 inline-block h-4 w-4 animate-pulse rounded-full bg-current"
                 />
                 Loading
               </button>
@@ -598,7 +598,7 @@ exports[`ButtonsSection matches snapshot 1`] = `
               >
                 <span
                   aria-hidden="true"
-                  class="mr-2 inline-block h-4 w-4 animate-pulse rounded-full bg-gold"
+                  class="mr-2 inline-block h-4 w-4 animate-pulse rounded-full bg-current"
                 />
                 Loading
               </button>
