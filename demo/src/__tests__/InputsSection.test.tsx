@@ -11,7 +11,9 @@ describe('InputsSection', () => {
   it('renders input examples', () => {
     const {container} = render(<InputsSection/>);
     const inputs = container.querySelectorAll('input');
-    expect(inputs.length).toBe(6); // Default, With Icons, Invalid, Disabled
+    // 4 plain Input (Default, With Icons, Invalid, Disabled)
+    // + 3 ChatInput (Info, Warning, Error) — each contributes a hidden <input>
+    expect(inputs.length).toBe(7);
   });
 
   it('matches snapshot', () => {

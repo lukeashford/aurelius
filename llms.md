@@ -110,6 +110,7 @@ Import from `@lukeashford/aurelius`:
 | Badge | variant (default, gold, success, error, warning, info) |
 | BrandIcon | size (sm, md, lg), variant (solid, outline) |
 | Breadcrumb | separator, current |
+| BusyOverlay | label, blurStrength (sm, md, lg), tone (dim, frost) |
 | Button | variant (primary, important, elevated, outlined, featured, ghost, danger), size (sm, md, lg, xl), loading |
 | Card | variant (default, elevated, outlined, ghost, featured), interactive, selected, noPadding, loading, title, subtitle, action, handle, handle, align, aspect, position |
 | Checkbox | label |
@@ -271,6 +272,22 @@ navigate for groups).
 **AudioCard**
 - **handle**: The artifact's `@-handle` — see `Card.Header.handle`.
 - **playerProps**: Forwarded to the underlying ReactPlayer.
+
+**BusyOverlay**
+Centered busy indicator that mounts `position: absolute inset-0` over its
+positioned parent. Use it when a known region is *temporarily unavailable
+but its surrounding chrome still matters* — chat tree mid-load, retry
+in-flight, "reconnecting" hops. Prefer `Skeleton` for data-shaped regions
+where the layout is known and you can preview content shape; prefer the
+`ChatInputNotice` slot when the unavailability is on a control rather
+than a region.
+
+The host must establish a positioning context (`relative`, `absolute`, or
+`fixed`) — `BusyOverlay` does not create its own.
+
+- **label**: * Optional content rendered next to the spinner — typically a short label like "Loading session…". Pass any ReactNode so callers can compose icons, countdowns, or even nested links if needed.
+- **blurStrength**: * Backdrop blur strength. `sm` is the default and reads as "this region is busy, the scene behind is still legible". Use `md` or `lg` only when you deliberately want to discourage the user from interacting with the region behind — e.g. a destructive retry-in-flight. @default 'sm'
+- **tone**: * Visual weight of the overlay tint. * - `dim` (default) — translucent dark wash, lighter on the eyes, communicates "this area is temporarily busy". - `frost` — heavier wash + blur, communicates "blocking-modal feel" suitable for in-flight retries where the user shouldn't keep reading the dimmed content. * @default 'dim'
 
 **Card**
 - **handle**: * Optional addressable handle (the artifact's `name` / `@-handle`). Renders as a tertiary monospace line below the subtitle, prefixed with `@`. Click copies `@<handle>` to the clipboard and pulses the handle once. Use to surface the typed identifier filmmakers reference in chat.
@@ -477,7 +494,7 @@ images, gaps, and text all shrink as if the viewer is physically
 moving back from the content.
 
 - **nodes**: * Top-level tree nodes to display in the navigable artifact tree.
-- **loading**: * Whether artifacts are still loading (show skeletons)
+- **loading**: * Loading signal for the panel. Pass `true` for the cold-start case — the panel renders placeholder skeleton cards in place of real artifacts so the user sees "stuff is on its way" instead of an empty grid. Pass a `CardSlotLoading` config to skeletonise specific slots on existing cards (e.g. while a single artifact's media is hydrating). Falsy ⇒ render real content.
 - **openArtifactId**: * When set to a non-null id, surfaces the same expanded artifact card the panel grid would. Drives chip click-through from outside the panel. Pair with `onArtifactClosed` so the parent can clear its controller state when the user dismisses the modal.
 - **onArtifactClosed**: * Called when the user closes the expanded card (X button or backdrop). The parent owns whether subsequent renders re-open by re-supplying `openArtifactId`.
 - **getArtifactActions**: * Resolves the floating action cluster shown over the lightbox when an artifact is opened. Switch on `artifact.type` and return the host-owned buttons for that kind (e.g. Share + Download for deliverables, Download for images). Aurelius ships the close affordance itself; return only the kind-specific actions, or `null` when there are none. The `ctx.onClose` helper lets actions dismiss the lightbox after a successful operation.
@@ -504,9 +521,9 @@ Features:
 - Streaming state with stop button
 - Animated transition between positions
 
-- **ChatInputNotice.variant**: * Visual severity: 'warning' shows a dismissible amber notice, 'error' shows a persistent red notice
-- **ChatInputNotice.content**: * Content to render — plain text or any React node (e.g. text + button for error state)
-- **ChatInputNotice.dismissible**: * Whether to show a dismiss (×) button. Defaults to true for warning, ignored for error.
+- **ChatInputNotice.variant**: * Visual severity. `info` is muted neutral (slate) and non-dismissible by default — use it for transient "control unavailable" states like draft hydration or backend reconnects. `warning` is amber and dismissible by default — use it for soft-limit warnings the user can still act past. `error` is red and non-dismissible by default — use it for hard-block states like credit exhaustion.
+- **ChatInputNotice.content**: * Content to render — plain text or any React node (e.g. text + button for error state, or a `<Spinner/>` + label for info).
+- **ChatInputNotice.dismissible**: * Whether to show a dismiss (×) button. Defaults to true for `warning`, false for `info` and `error`. Override either way explicitly.
 - **ChatInputNotice.onDismiss**: * Called when the dismiss button is clicked. Consumer controls whether the notice disappears.
 - **position**: * Position of the input: 'centered' for empty state, 'bottom' for conversation mode
 - **placeholder**: * Placeholder text for the input

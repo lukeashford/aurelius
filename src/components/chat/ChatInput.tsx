@@ -4,24 +4,44 @@ import {Paperclip, Send, Square, X} from 'lucide-react'
 import {type AttachmentItem, AttachmentPreview} from '../AttachmentPreview'
 import {Attachment, createPreviewUrl, generateId, isImageFile} from './types'
 
+export type ChatInputNoticeVariant = 'info' | 'warning' | 'error'
+
 export interface ChatInputNotice {
   /**
-   * Visual severity: 'warning' shows a dismissible amber notice, 'error' shows a persistent red
-   * notice
+   * Visual severity. `info` is muted neutral (slate) and non-dismissible by
+   * default — use it for transient "control unavailable" states like draft
+   * hydration or backend reconnects. `warning` is amber and dismissible by
+   * default — use it for soft-limit warnings the user can still act past.
+   * `error` is red and non-dismissible by default — use it for hard-block
+   * states like credit exhaustion.
    */
-  variant: 'warning' | 'error'
+  variant: ChatInputNoticeVariant
   /**
-   * Content to render — plain text or any React node (e.g. text + button for error state)
+   * Content to render — plain text or any React node (e.g. text + button for
+   * error state, or a `<Spinner/>` + label for info).
    */
   content: React.ReactNode
   /**
-   * Whether to show a dismiss (×) button. Defaults to true for warning, ignored for error.
+   * Whether to show a dismiss (×) button. Defaults to true for `warning`,
+   * false for `info` and `error`. Override either way explicitly.
    */
   dismissible?: boolean
   /**
    * Called when the dismiss button is clicked. Consumer controls whether the notice disappears.
    */
   onDismiss?: () => void
+}
+
+const noticeContainerClass: Record<ChatInputNoticeVariant, string> = {
+  info: 'bg-charcoal border border-ash/40 text-silver',
+  warning: 'bg-gold/5 border border-gold/20 text-gold/80',
+  error: 'bg-error/10 border border-error/30 text-error',
+}
+
+const noticeDismissClass: Record<ChatInputNoticeVariant, string> = {
+  info: 'text-silver',
+  warning: 'text-gold',
+  error: 'text-error',
 }
 
 export type ChatInputPosition = 'centered' | 'bottom'
@@ -334,9 +354,7 @@ export const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
                 <div className={cx(
                     'w-full flex items-start gap-2 px-3 py-2 mb-1 text-xs',
                     isCentered && 'max-w-lg',
-                    notice.variant === 'warning'
-                        ? 'bg-gold/5 border border-gold/20 text-gold/80'
-                        : 'bg-error/10 border border-error/30 text-error'
+                    noticeContainerClass[notice.variant],
                 )}>
                   <span className="flex-1">{notice.content}</span>
                   {(notice.dismissible ?? notice.variant === 'warning') && notice.onDismiss && (
@@ -346,7 +364,7 @@ export const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
                           aria-label="Dismiss"
                           className={cx(
                               'shrink-0 opacity-60 hover:opacity-100 transition-opacity',
-                              notice.variant === 'warning' ? 'text-gold' : 'text-error'
+                              noticeDismissClass[notice.variant],
                           )}
                       >
                         <X className="w-3 h-3"/>

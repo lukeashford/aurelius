@@ -91,6 +91,12 @@ export {Spinner, type SpinnerProps} from './Spinner'
 export {Skeleton, type SkeletonProps} from './Skeleton'
 export {Progress, type ProgressProps} from './Progress'
 export {
+  BusyOverlay,
+  type BusyOverlayProps,
+  type BusyOverlayTone,
+  type BusyOverlayBlurStrength,
+} from './BusyOverlay'
+export {
   ToastProvider,
   useToast,
   type ToastProviderProps,
@@ -235,6 +241,7 @@ export {
   type ChatInputProps,
   type ChatInputPosition,
   type ChatInputNotice,
+  type ChatInputNoticeVariant,
   type Attachment,
   type AttachmentStatus,
   type Conversation,

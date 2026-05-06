@@ -27,7 +27,8 @@ export {
   ChatInput,
   type ChatInputProps,
   type ChatInputPosition,
-  type ChatInputNotice
+  type ChatInputNotice,
+  type ChatInputNoticeVariant,
 } from './ChatInput'
 export {
   ArtifactsPanel,

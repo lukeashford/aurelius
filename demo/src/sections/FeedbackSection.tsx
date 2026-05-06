@@ -1,8 +1,13 @@
 import React from 'react'
 import {
   Alert,
+  ArtifactsPanel,
+  BusyOverlay,
+  type BusyOverlayBlurStrength,
+  type BusyOverlayTone,
   Button,
   Card,
+  ChatInterface,
   Progress,
   Skeleton,
   Spinner,
@@ -10,6 +15,43 @@ import {
   useToast,
 } from '@lukeashford/aurelius'
 import Section from './Section'
+
+const BUSY_OVERLAY_MATRIX: Array<{
+  tone: BusyOverlayTone
+  blurStrength: BusyOverlayBlurStrength
+  label?: string
+}> = [
+  {tone: 'dim', blurStrength: 'sm'},
+  {tone: 'dim', blurStrength: 'md', label: 'Loading session…'},
+  {tone: 'frost', blurStrength: 'sm', label: 'Retrying'},
+  {tone: 'frost', blurStrength: 'lg'},
+]
+
+function BusyOverlayDemoCard({
+  tone,
+  blurStrength,
+  label,
+}: {
+  tone: BusyOverlayTone
+  blurStrength: BusyOverlayBlurStrength
+  label?: string
+}) {
+  return (
+      <Card className="relative p-6 min-h-40 space-y-2">
+        <h4 className="text-gold font-medium text-sm">Sample card</h4>
+        <p className="text-xs text-silver leading-relaxed">
+          The scene behind the overlay should remain legible at <code>tone="dim"</code>
+          {' '}and recede at <code>tone="frost"</code>.
+        </p>
+        <p className="text-xs text-silver/70">
+          tone=<span className="text-white">{tone}</span>
+          {' · '}blurStrength=<span className="text-white">{blurStrength}</span>
+          {label ? ' · with label' : ' · no label'}
+        </p>
+        <BusyOverlay tone={tone} blurStrength={blurStrength} label={label}/>
+      </Card>
+  )
+}
 
 function ToastDemo() {
   const {toast} = useToast()
@@ -132,6 +174,58 @@ export default function FeedbackSection() {
                   </div>
                 </div>
                 <Skeleton className="h-32 w-full"/>
+              </div>
+            </Card>
+
+            {/* BusyOverlay matrix */}
+            <Card className="p-6 space-y-4 md:col-span-2">
+              <h3 className="text-gold font-medium">BusyOverlay</h3>
+              <p className="text-sm text-silver">
+                Mounts <code>position: absolute inset-0</code> over its positioned parent.
+                Pair tone and blurStrength to communicate "this region is temporarily
+                busy" vs. "this region is blocking".
+              </p>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                {BUSY_OVERLAY_MATRIX.map(({tone, blurStrength, label}) => (
+                    <BusyOverlayDemoCard
+                        key={`${tone}-${blurStrength}-${label ?? 'none'}`}
+                        tone={tone}
+                        blurStrength={blurStrength}
+                        label={label}
+                    />
+                ))}
+              </div>
+            </Card>
+
+            {/* ChatInterface chatLoading */}
+            <Card className="p-6 space-y-4 md:col-span-2">
+              <h3 className="text-gold font-medium">ChatInterface · chatLoading</h3>
+              <p className="text-sm text-silver">
+                Overlays the messages region with <code>BusyOverlay</code> while the
+                chrome (sidebar, input, tool panels) stays mounted — the user keeps
+                every other affordance through the transition.
+              </p>
+              <div className="h-96 border border-ash/40 overflow-hidden">
+                <ChatInterface
+                    messages={[]}
+                    conversations={[]}
+                    chatLoading
+                    placeholder="Send a message..."
+                />
+              </div>
+            </Card>
+
+            {/* ArtifactsPanel cold-start placeholders */}
+            <Card className="p-6 space-y-4 md:col-span-2">
+              <h3 className="text-gold font-medium">ArtifactsPanel · cold-start loading</h3>
+              <p className="text-sm text-silver">
+                Pass <code>loading</code> as a boolean (e.g. via{' '}
+                <code>ChatInterface.artifactsLoading</code>) and the panel renders
+                placeholder cards until real artifacts arrive — instead of the bare
+                "No artifacts" empty state.
+              </p>
+              <div className="h-96 border border-ash/40 overflow-hidden">
+                <ArtifactsPanel loading nodes={[]}/>
               </div>
             </Card>
           </div>

@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {ChatInput, Input} from '@lukeashford/aurelius'
+import {ChatInput, Input, Spinner} from '@lukeashford/aurelius'
 import Section from './Section'
 
 export default function InputsSection() {
@@ -38,6 +38,23 @@ export default function InputsSection() {
         </div>
 
         <div className="mt-10 space-y-8">
+          <div className="space-y-2">
+            <label className="block text-sm text-silver">Info notice (draft hydrating, input disabled, non-dismissible)</label>
+            <ChatInput
+                disabled
+                notice={{
+                  variant: 'info',
+                  content: (
+                      <span className="flex items-center gap-2">
+                        <Spinner size="sm"/>
+                        Loading your draft…
+                      </span>
+                  ),
+                }}
+                placeholder="Send a message..."
+            />
+          </div>
+
           <div className="space-y-2">
             <label className="block text-sm text-silver">Warning notice (dismissible)</label>
             <ChatInput
