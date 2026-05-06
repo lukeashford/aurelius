@@ -1,3 +1,9 @@
+## [4.10.1](https://github.com/lukeashford/aurelius/compare/v4.10.0...v4.10.1) (2026-05-06)
+
+### Bug Fixes
+
+* **button:** pulse dot inherits text color so it stays visible on every variant ([4ca2379](https://github.com/lukeashford/aurelius/commit/4ca2379f9d93771cd8556f13ed71c99af0c62bf9))
+
 ## [4.10.0](https://github.com/lukeashford/aurelius/compare/v4.9.0...v4.10.0) (2026-05-05)
 
 ### Features
