@@ -503,6 +503,19 @@
 }
 
 @media print {
+  /* Reset the page chrome to paper. Host apps paint html/body with a dark
+     theme background for the on-screen view; in `window.print()` the browser
+     defaults "Background graphics" off so this stays invisible, but headless
+     Chromium prints with backgrounds on (it has to — the cover hero, palette
+     chips, and gold rules need their authored color). Without this reset the
+     PDF would render the dark page chrome behind every sheet. */
+  html, body {
+    /* `!important` because host apps often paint body via a Tailwind utility
+       class on <body> (higher specificity than the bare `body` selector),
+       and we always want paper-white at print time. */
+    background: white !important;
+  }
+
   /* `print-color-adjust: exact` is inherited per the CSS Color Adjustment
      spec, so setting it once at the root keeps Chromium from economising
      authored backgrounds (cover obsidian, palette chips, the gold rule
