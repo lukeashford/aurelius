@@ -252,9 +252,17 @@ function ConversationRow({
                     : 'text-silver hover:bg-ash/20 hover:text-white'
             )}
         >
+          {/*
+              Key on title so an auto-rename (or any other server-driven
+              title change) remounts this node and fires `animate-fade-in`.
+              Background sidebar refreshes that keep the same title don't
+              re-trigger — the user only sees motion when something actually
+              changed, which is the whole point of the fade.
+            */}
           <p
+              key={conversation.title}
               className={cx(
-                  'text-sm font-medium truncate',
+                  'text-sm font-medium truncate animate-fade-in',
                   onRename ? 'pr-6' : ''
               )}
           >
