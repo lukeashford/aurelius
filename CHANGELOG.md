@@ -1,3 +1,11 @@
+## [4.11.0](https://github.com/lukeashford/aurelius/compare/v4.10.2...v4.11.0) (2026-05-07)
+
+### Features
+
+* **chat:** add BusyOverlay, ChatInputNotice info variant, ChatInterface loading props ([f1e296f](https://github.com/lukeashford/aurelius/commit/f1e296fd64c3493e384ba99faed211278d92bb07))
+* **ChatInterface:** inputDisabled prop forwards to ChatInput ([c602305](https://github.com/lukeashford/aurelius/commit/c60230547977edb1e5c3e86a9dbf42c683b651ec))
+* **HistoryPanel:** cross-fade title on change so auto-rename gets noticed ([5d66c54](https://github.com/lukeashford/aurelius/commit/5d66c542487af860a9082caa7a46e0a3e4ee148b))
+
 ## [4.10.2](https://github.com/lukeashford/aurelius/compare/v4.10.1...v4.10.2) (2026-05-06)
 
 ### Bug Fixes
