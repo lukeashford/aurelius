@@ -300,6 +300,17 @@ export interface ChatInterfaceProps extends Omit<React.HTMLAttributes<HTMLDivEle
    * mounted and the skeletons stand in for the unknown nodes.
    */
   artifactsLoading?: boolean
+  /**
+   * Forwarded to the chat-input's `disabled` prop. Pair with `inputNotice`
+   * to gate the input on consumer-owned conditions (credit exhaustion,
+   * draft hydrating, hypocaust unreachable) without blocking the rest of
+   * the surface. ChatInput stays domain-agnostic; consumers compute the
+   * `{disabled, notice}` pair and ChatInterface forwards both.
+   *
+   * OR-merged with the streaming-driven internal disable, so consumer
+   * disable doesn't accidentally re-enable an input that's mid-stream.
+   */
+  inputDisabled?: boolean
 }
 
 /**
@@ -367,6 +378,7 @@ export const ChatInterface = React.forwardRef<ChatInterfaceHandle, ChatInterface
           onTextareaKeyDown,
           chatLoading = false,
           artifactsLoading = false,
+          inputDisabled = false,
           className,
           ...rest
         },
@@ -868,7 +880,7 @@ export const ChatInterface = React.forwardRef<ChatInterfaceHandle, ChatInterface
                       placeholder={placeholder}
                       helperText={isEmpty ? emptyStateHelper : undefined}
                       onSubmit={handleSubmit}
-                      disabled={isEmpty ? isStreaming : (isStreaming && !onStop)}
+                      disabled={inputDisabled || (isEmpty ? isStreaming : (isStreaming && !onStop))}
                       isStreaming={isStreaming}
                       onStop={onStop}
                       showAttachmentButton={showAttachmentButton}
