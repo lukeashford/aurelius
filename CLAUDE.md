@@ -168,9 +168,9 @@ npm run dev:demo
 
 ### Commit Guidelines
 
+- Ask before committing. Never commit on `main` — warn me if we're on it.
 - Use conventional commits: `feat:`, `fix:`, `refactor:`, `docs:`, `chore:`
-- Run `npm run build` before committing to ensure everything compiles
-- The build regenerates `llms.md` — commit it with your changes
+- Run `npm run build` before committing — it regenerates `llms.md`; commit it with your changes.
 
 ---
 

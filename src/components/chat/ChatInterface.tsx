@@ -4,6 +4,7 @@ import {ChatView, type ChatViewItem} from './ChatView'
 import {ChatInput, type ChatInputNotice} from './ChatInput'
 
 import {ArtifactsPanel} from './ArtifactsPanel'
+import {BusyOverlay} from '../BusyOverlay'
 import {HistoryPanel} from './HistoryPanel'
 import {areAllTasksSettled, type Task, TodosList} from './TodosList'
 import {
@@ -283,6 +284,33 @@ export interface ChatInterfaceProps extends Omit<React.HTMLAttributes<HTMLDivEle
    * Arrow / Enter / Escape while an autocomplete panel is open.
    */
   onTextareaKeyDown?: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void
+  /**
+   * When true, the messages region renders a `BusyOverlay` over its content
+   * — use it while the chat tree for the current session is still loading.
+   * The surrounding chrome (sidebars, input, tool panels, header) stays
+   * mounted, so the user keeps every other affordance during the transition
+   * and the input can still surface its own notice (e.g. "Loading your
+   * draft…").
+   */
+  chatLoading?: boolean
+  /**
+   * Forwarded to the internal `ArtifactsPanel`'s `loading` prop, which
+   * renders aurelius's existing artifact skeletons. Use it during cold-start
+   * or while the artifact snapshot is retrying — the panel chrome stays
+   * mounted and the skeletons stand in for the unknown nodes.
+   */
+  artifactsLoading?: boolean
+  /**
+   * Forwarded to the chat-input's `disabled` prop. Pair with `inputNotice`
+   * to gate the input on consumer-owned conditions (credit exhaustion,
+   * draft hydrating, hypocaust unreachable) without blocking the rest of
+   * the surface. ChatInput stays domain-agnostic; consumers compute the
+   * `{disabled, notice}` pair and ChatInterface forwards both.
+   *
+   * OR-merged with the streaming-driven internal disable, so consumer
+   * disable doesn't accidentally re-enable an input that's mid-stream.
+   */
+  inputDisabled?: boolean
 }
 
 /**
@@ -348,6 +376,9 @@ export const ChatInterface = React.forwardRef<ChatInterfaceHandle, ChatInterface
           autoFocus = true,
           textareaRef,
           onTextareaKeyDown,
+          chatLoading = false,
+          artifactsLoading = false,
+          inputDisabled = false,
           className,
           ...rest
         },
@@ -702,7 +733,11 @@ export const ChatInterface = React.forwardRef<ChatInterfaceHandle, ChatInterface
           [onMessageSubmit]
       )
 
-      const isEmpty = displayItems.length === 0
+      // The "empty" *visual* — centered Welcome + centered input — is only
+      // appropriate when the user has nothing to show *and* we know that for
+      // certain. While the tree is loading we don't know yet, so the messages
+      // region expands and `BusyOverlay` sits over it (driven by `chatLoading`).
+      const isEmpty = displayItems.length === 0 && !chatLoading
 
       // ── Derived: which sides have tools ─────────────────────────
       const leftToolDefs = useMemo(
@@ -738,6 +773,7 @@ export const ChatInterface = React.forwardRef<ChatInterfaceHandle, ChatInterface
             return (
                 <ArtifactsPanel
                     nodes={artifactNodes}
+                    loading={artifactsLoading}
                     openArtifactId={panelOpenArtifactId}
                     onArtifactClosed={handleArtifactPanelClosed}
                     getArtifactActions={getArtifactActions}
@@ -809,7 +845,7 @@ export const ChatInterface = React.forwardRef<ChatInterfaceHandle, ChatInterface
 
                 {/* Messages Area */}
                 <div className={cx(
-                    "transition-all duration-500 ease-in-out overflow-hidden flex flex-col",
+                    "relative transition-all duration-500 ease-in-out overflow-hidden flex flex-col",
                     isEmpty ? "flex-zero opacity-0" : "flex-1 opacity-100"
                 )}>
                   <ChatView
@@ -819,6 +855,7 @@ export const ChatInterface = React.forwardRef<ChatInterfaceHandle, ChatInterface
                       thinkingLabel={thinkingLabel}
                       className="flex-1"
                   />
+                  {chatLoading && <BusyOverlay/>}
                 </div>
 
                 {/* Input Area */}
@@ -843,7 +880,7 @@ export const ChatInterface = React.forwardRef<ChatInterfaceHandle, ChatInterface
                       placeholder={placeholder}
                       helperText={isEmpty ? emptyStateHelper : undefined}
                       onSubmit={handleSubmit}
-                      disabled={isEmpty ? isStreaming : (isStreaming && !onStop)}
+                      disabled={inputDisabled || (isEmpty ? isStreaming : (isStreaming && !onStop))}
                       isStreaming={isStreaming}
                       onStop={onStop}
                       showAttachmentButton={showAttachmentButton}

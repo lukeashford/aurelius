@@ -6,6 +6,7 @@ import {ArtifactGroup} from '../ArtifactGroup'
 import {ArtifactVariantStack} from '../ArtifactVariantStack'
 import {ArtifactLightboxBody, getArtifactLightboxCaption} from '../ArtifactLightboxBody'
 import {CardSlotLoading} from '../Card'
+import {Skeleton} from '../Skeleton'
 import {Lightbox} from '../Lightbox'
 import {ChevronRightIcon} from '../icons'
 import type {Artifact} from './hooks'
@@ -14,15 +15,28 @@ import type {ArtifactNode} from '../ArtifactNode'
 
 const ZOOM_LEVELS = [0.25, 0.5, 0.75, 1.0] as const
 
+const FULL_CARD_SLOT_LOADING: CardSlotLoading = {
+  header: {title: true, subtitle: true},
+  media: true,
+  body: true,
+}
+
+const COLD_START_PLACEHOLDER_COUNT = 3
+
 export interface ArtifactsPanelProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
    * Top-level tree nodes to display in the navigable artifact tree.
    */
   nodes?: ArtifactNode[]
   /**
-   * Whether artifacts are still loading (show skeletons)
+   * Loading signal for the panel. Pass `true` for the cold-start case — the
+   * panel renders placeholder skeleton cards in place of real artifacts so
+   * the user sees "stuff is on its way" instead of an empty grid. Pass a
+   * `CardSlotLoading` config to skeletonise specific slots on existing
+   * cards (e.g. while a single artifact's media is hydrating). Falsy ⇒
+   * render real content.
    */
-  loading?: CardSlotLoading
+  loading?: boolean | CardSlotLoading
   /**
    * When set to a non-null id, surfaces the same expanded artifact card the
    * panel grid would. Drives chip click-through from outside the panel.
@@ -98,6 +112,22 @@ function findArtifactInNodes(nodes: ArtifactNode[], artifactId: string): Artifac
 }
 
 /**
+ * Cold-start placeholder grid: shown when the panel mounts with `loading`
+ * truthy but no nodes have arrived yet. Three card-shaped skeletons stand
+ * in for the unknown artifact list so the user sees "stuff is on its way"
+ * instead of an empty grid.
+ */
+function ColdStartPlaceholders() {
+  return (
+      <>
+        {Array.from({length: COLD_START_PLACEHOLDER_COUNT}, (_, i) => (
+            <Skeleton key={i} className="w-full aspect-video"/>
+        ))}
+      </>
+  )
+}
+
+/**
  * Renders a single node according to its type.
  */
 function NodeRenderer({
@@ -165,6 +195,15 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
     }, ref) => {
       const [expandedArtifact, setExpandedArtifact] = useState<Artifact | null>(null)
       const [zoomIndex, setZoomIndex] = useState<number>(ZOOM_LEVELS.length - 1) // default 1.0
+
+      // Normalise the bivariant `loading` prop. `true` covers the cold-start
+      // case where no card exists yet — we synthesise a full-slot config so
+      // any cards that race in mid-load skeletonise sensibly, and below we
+      // also paint placeholder cards while nodes is empty.
+      const slotLoading: CardSlotLoading | undefined = loading === true
+          ? FULL_CARD_SLOT_LOADING
+          : loading || undefined
+      const showColdStartPlaceholders = !!loading
 
       const treeNav = useArtifactTreeNavigation(nodes || [])
 
@@ -333,15 +372,19 @@ export const ArtifactsPanel = React.forwardRef<HTMLDivElement, ArtifactsPanelPro
                       }
                   >
                     {treeNav.currentNodes.length === 0 ? (
-                        <p className="text-xs text-silver/60 text-center py-8">
-                          {hasNodes ? 'Empty group' : 'No artifacts to display'}
-                        </p>
+                        showColdStartPlaceholders && !hasNodes ? (
+                            <ColdStartPlaceholders/>
+                        ) : (
+                            <p className="text-xs text-silver/60 text-center py-8">
+                              {hasNodes ? 'Empty group' : 'No artifacts to display'}
+                            </p>
+                        )
                     ) : (
                         treeNav.currentNodes.map((node) => (
                             <NodeRenderer
                                 key={node.id}
                                 node={node}
-                                loading={loading}
+                                loading={slotLoading}
                                 onExpandArtifact={handleExpandArtifact}
                                 onGroupClick={handleGroupClick}
                             />
